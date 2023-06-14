@@ -1,0 +1,7 @@
+*.ppsx
+*.exe
+*.inp
+*.out
+*.o
+.tmp.driveupload
+.tmp.drivedownload

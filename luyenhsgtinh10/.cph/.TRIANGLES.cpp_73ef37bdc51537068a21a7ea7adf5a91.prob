@@ -1,0 +1,1 @@
+{"name":"Local: TRIANGLES","url":"f:\\nodelete\\Luu C\\luyenhsgtinh10\\TRIANGLES.cpp","tests":[{"id":1677511691098,"input":"6\n11 22 22 22 44 55","output":"3"},{"id":1677511701496,"input":"8\n7 8 8 8 8 8 7 7","output":"4"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"f:\\nodelete\\Luu C\\luyenhsgtinh10\\TRIANGLES.cpp","group":"local","local":true}

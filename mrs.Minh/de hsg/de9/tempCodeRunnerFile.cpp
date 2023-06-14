@@ -1,0 +1,1 @@
+ freopen("Bai2_10_th
