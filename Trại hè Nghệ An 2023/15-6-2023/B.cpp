@@ -40,10 +40,11 @@ const int N = 2e5+10;
 const ll MOD = 1e9+7;
 int del[N], M[N], par[N], d[N];
 int n, m, ans = 0;
-vector<set<int>> f(N);
+set<int> f[N];
 bool flag = 0;
 void delet(int u){
     del[u] = 1;
+    M[u] = 0; 
     for(auto i : f[u])
         delet(i);
 }
@@ -52,13 +53,13 @@ void nhay(int u){
         flag = 1;
         return;
     }
-    auto v = par[u];
-    while(*f[v].begin() < u){
+    if(M[u] == 1 && del[u] != 0)
+        return;
+    int v = par[u];
+    while(*f[v].begin() < u && !f[v].empty()){
         delet(*f[v].begin());
         f[v].erase(*f[v].begin());
     }
-    if(M[u] == 1)
-        return;
     M[u] = 1;
     nhay(v);
 }
