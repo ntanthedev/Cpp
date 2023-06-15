@@ -1,125 +1,115 @@
-// created by Dinh Manh Hung
-// tht.onepunchac168
-// THPT CHUYEN HA TINH
-// HA TINH, VIET NAM
-
 #include <bits/stdc++.h>
 using namespace std;
 
-// #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
-// #pragma GCC target("sse4,avx2,fma")
-#define task ""
-#define ldb long double
-#define pb push_back
+#define ll long long
 #define fi first
 #define se second
-#define pc pop_back()
-#define all(x) begin(x), end(x)
-#define uniquev(v) v.resize(unique(all(v)) - v.begin())
-#define FOR(i, a, b) for(int i = a; i <= b; i++)
-#define cntbit(v) __builtin_popcountll(v)
-#define gcd(a, b) __gcd(a, b)
-#define lcm(a, b) ((1LL * a * b) / __gcd(a, b))
-#define mask(x) (1LL << (x))
-#define readbit(x, i) ((x >> i) & 1)
-#define ins insert
-
-typedef long long ll;
 typedef pair<ll, ll> ii;
 typedef pair<ll, ii> iii;
-typedef pair<ii, ii> iiii;
+const ll N = 42;
+const ll inf = 1e18;
 
-ll dx[] = {1, -1, 0, 0, 1, -1, 1, -1};
-ll dy[] = {0, 0, -1, 1, 1, -1, -1, 1};
+ll d[N][N][N][N], m, n, ans, val;
+ll a[N][N], ck[N][N];
+vector<ii> vt[N][N][N][N];
 
-const ldb PI = acos(-1);
-// const ll mod=978846151;
-// const ll base=29;
-const int maxn = 1e6 + 5;
-const int mod = 1e9 + 7;
-const char nl = '\n';
-inline int ReadInt() {
-    char co;
-    for(co = getchar(); co < '0' || co > '9'; co = getchar())
-        ;
-    int xo = co - '0';
-    for(co = getchar(); co >= '0' && co <= '9'; co = getchar())
-        xo = xo * 10 + co - '0';
-    return xo;
+ll dx[] = {-1, 1, 0, 0};
+ll dy[] = {0, 0, -1, 1};
+
+void get(ll x, ll y) {
+    for(int i = 1; i <= n; i++) {
+        for(int j = 1; j <= m; j++) {
+            ck[i][j] = 0;
+            ll res = inf;
+            ii v;
+            if(i == x && j == y)
+                continue;
+            for(int k = 0; k < 4; k++) {
+                ll x1 = i + dx[k];
+                ll y1 = j + dy[k];
+
+                if(x1 < 1 || y1 < 1 || x1 > n || y1 > m)
+                    continue;
+                if(res > abs(a[x][y] - a[x1][y1])) {
+                    res = abs(a[x][y] - a[x1][y1]);
+                    v = {x1, y1};
+                } else {
+                    if(res == abs(a[x][y] - a[x1][y1]) &&
+                       (abs(a[i][j] - a[x1][y1]) <
+                        abs(a[i][j] - a[v.fi][v.se]))) {
+                        v = {x1, y1};
+                    }
+                }
+            }
+            vt[x][y][v.fi][v.se].push_back({i, j});
+        }
+    }
+
+    queue<ii> q;
+    q.push({x, y});
+    d[x][y][x][y] = 0;
+    ck[x][y] = 1;
+    while(q.size()) {
+        auto v1 = q.front();
+        q.pop();
+
+        for(auto v2: vt[x][y][v1.fi][v1.se]) {
+            if(ck[v2.fi][v2.se])
+                continue;
+            d[x][y][v2.fi][v2.se] = d[x][y][v1.fi][v1.se] + 1;
+            ck[v2.fi][v2.se] = 1;
+            q.push(v2);
+        }
+    }
 }
 
-void WriteInt(int xo) {
-    if(xo > 9)
-        WriteInt(xo / 10);
-    putchar(xo % 10 + '0');
-}
-/* END OF TEMPLATE*/
+int main() {
+    ios_base::sync_with_stdio(NULL);
+    cin.tie(NULL);
+    cout.tie(NULL);
 
-// ================= Solution =================//
-
-const int N = 1e3 + 5;
-ll a[N], b[N];
-ll n;
-ll m;
-ll h[N];
-ll dp[N][N];
-void optmushnpr() {
     cin >> n >> m;
     for(int i = 1; i <= n; i++) {
-        cin >> a[i] >> b[i];
+        for(int j = 1; j <= m; j++) {
+            cin >> a[i][j];
+        }
     }
-    ll pos = 1;
-    ll dem = 0;
-    for(int i = 1; i <= m; i++) {
-        cin >> h[i];
-        for(int j = 0; j <= n; j++) {
-            dp[pos - 1][j] = 1e9 + 5;
-        }
-        dp[pos - 1][0] = 0;
-        for(int j = pos; j <= h[i]; j++) {
-            for(int h = 0; h <= n; h++) {
-                dp[j][h] = 1e9 + 5;
-            }
-        }
-        for(int j = pos; j <= h[i]; j++) {
-            for(int h = 0; h <= n; h++) {
-                dp[j][h] = dp[j - 1][h] + a[j];
-                if(h >= 1) {
-                    dp[j][h] =
-                        min(dp[j][h], max(0LL, dp[j - 1][h - 1] + a[j] - b[j]));
+
+    for(int x1 = 1; x1 <= n; x1++) {
+        for(int y1 = 1; y1 <= m; y1++) {
+            for(int x2 = 1; x2 <= n; x2++) {
+                for(int y2 = 1; y2 <= m; y2++) {
+                    d[x1][y1][x2][y2] = inf;
                 }
             }
         }
-        ll id = -1;
-        for(int j = 0; j <= n; j++) {
-            if(dp[h[i]][j] == 0) {
-                id = j;
-                break;
+    }
+
+    for(ll i = 1; i <= n; i++) {
+        for(ll j = 1; j <= m; j++) {
+            get(i, j);
+        }
+    }
+
+    ans = inf;
+
+    for(int x1 = 1; x1 <= n; x1++) {
+        for(int y1 = 1; y1 <= m; y1++) {
+            ll res = -inf;
+            for(int x2 = 1; x2 <= n; x2++) {
+                for(int y2 = 1; y2 <= m; y2++) {
+                    res = max(res, d[x2][y2][x1][y1]);
+                }
+            }
+            if(ans > res) {
+                ans = res;
+                val = a[x1][y1];
             }
         }
-        if(id == -1) {
-            cout << -1;
-            return;
-        }
-        dem += id;
-        pos = h[i] + 1;
     }
-    cout << dem;
-}
 
-signed main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(0);
-    if(fopen(task ".inp", "r")) {
-        freopen(task ".inp", "r", stdin);
-        freopen(task ".out", "w", stdout);
-    }
-    int tests;
-    tests = 1;
-    // cin>>tests;
-    while(tests--) {
-        optmushnpr();
-    }
+    if(ans == inf) {
+        cout << -1;
+    } else
+        cout << val << " " << ans;
 }
-
-// goodbye see ya

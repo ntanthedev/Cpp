@@ -5,7 +5,6 @@
 #define se second
 #define mp make_pair
 #define pb push_back
-#define pf push_front
 #define eb emplace_back
 #define all(x) x.begin(), x.end()
 
@@ -37,52 +36,23 @@ typedef unordered_map<int, int> umii;
 typedef unordered_map<int, bool> umib;
 typedef unordered_map<ll, ll> umll;
 
-const int N = 2e5+10;
+const int N = 5e3+10;
 const ll MOD = 1e9+7;
 
-ll n;
-vi f[N];
-deque<int> ans;
-deque<int> dfs(int u){
-    deque<int> left, right;
-    deque<int> res;
-    res.pf(1);
-    if(f[u].size() == 0)
-        return res;
-    left = dfs(f[u][0]);
-    if(f[u].size() != 1)
-        right = dfs(f[u][1]);
-    if(left.size() > right.size())
-        swap(left, right);
-    for(int i = 0; i < left.size(); i++)
-        res.pb(left[i] + right[i]);
-    if(left.size() < right.size())
-        res.pb(right[left.size()]);
-    return res;
-}
-void tienxuly(int x){
-    for(int i: f[x]) {
-        f[i].erase(find(f[i].begin(), f[i].end(), x));
-        tienxuly(i);
-    }
-}
+ll n, a[N];
+ll s[N];
+umll M;
 void solve(){
-    ans = dfs(1);
-    ll res = 0;>
-    for(int i = 0; i < ans.size(); i++)
-        res += ans[i];    
-    cout << n - res;
+    for(int i = 1; i <= n; i++)
+        for(int j = 1; j <= i; j++){
+            
+        }
 }
 
 void init(){
     cin >> n;
-    for(int i = 1; i < n; i++){
-        ll u, v;
-        cin >> u >> v;
-        f[u].eb(v);
-        f[v].eb(u);
-    }
-    tienxuly(1);
+    for(int i = 1; i <= n; i++)
+        cin >> a[i];
 }
 #define task ""
 int32_t main(){
