@@ -36,34 +36,38 @@ typedef unordered_map<int, int> umii;
 typedef unordered_map<int, bool> umib;
 typedef unordered_map<ll, ll> umll;
 
-const int N = 2e5+10;
+const int N = 3e5+10;
 const ll MOD = 1e9+7;
 int del[N], M[N], par[N], d[N];
 int n, m, ans = 0;
 set<int> f[N];
 bool flag = 0;
 void delet(int u){
+    if(del[u]){
+        return;
+    }
     del[u] = 1;
     M[u] = 0; 
-    for(auto i : f[u])
+    for(auto i : f[u]){
         delet(i);
+        //f[u].erase(i);
+    }
 }
 void nhay(int u){
     if(del[u]){
         flag = true;
         return;
     }
-    if(M[u] == 1 && del[u] != 0)
+    if(M[u] == 1 && del[u] == 0)
         return;
-    M[u] = 1;
-    if(u == 1)
-        return;
+    
     int v = par[u];
     while(*f[v].begin() < u && !f[v].empty()){
         delet(*f[v].begin());
         f[v].erase(*f[v].begin());
     }
     nhay(v);
+    M[u] = 1;
 }
 void solve(){
     for(int i = 1; i <= m; i++){
@@ -87,6 +91,7 @@ void init(){
     }
     for(int i = 1; i <= m; i++)
         read(d[i]);
+    M[1] = 1;
 }
 #define task ""
 int32_t main(){
