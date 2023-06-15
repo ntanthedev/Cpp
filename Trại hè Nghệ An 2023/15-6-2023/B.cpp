@@ -50,41 +50,43 @@ void delet(int u){
 }
 void nhay(int u){
     if(del[u]){
-        flag = 1;
+        flag = true;
         return;
     }
     if(M[u] == 1 && del[u] != 0)
+        return;
+    M[u] = 1;
+    if(u == 1)
         return;
     int v = par[u];
     while(*f[v].begin() < u && !f[v].empty()){
         delet(*f[v].begin());
         f[v].erase(*f[v].begin());
     }
-    M[u] = 1;
     nhay(v);
 }
 void solve(){
     for(int i = 1; i <= m; i++){
         nhay(d[i]);
-        ans++;
         if(flag){
             cout << ans;
             return ;
         }
+        ans++;
     }
     cout << ans;
 }
 
 void init(){
-    cin >> n >> m;
+    read(n), read(m);
     for(int i = 1; i < n; i++){
         int u, v;
-        cin >> u >> v;
+        read(u), read(v);
         f[u].insert(v);
         par[v] = u;
     }
     for(int i = 1; i <= m; i++)
-        cin >> d[i];
+        read(d[i]);
 }
 #define task ""
 int32_t main(){
