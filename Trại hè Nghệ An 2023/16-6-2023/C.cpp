@@ -36,34 +36,43 @@ typedef unordered_map<int, int> umii;
 typedef unordered_map<int, bool> umib;
 typedef unordered_map<ll, ll> umll;
 
-const int N = 5e3+10;
+const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-ll n, a[N], ans = 0;
-ll s[N];
-umll M;
+int b[N], c[N];
+ll n, f[N];
+vi a;
 void solve(){
-    for(int i = 1; i <= n; i++){
-        for(int j = 1; j < i; j++){
-            if(M[a[i] - a[j]] < i && M[a[i] - a[j]] != 0){
-                ans++;
-                break;
-                //cout << i << " " << j << " " << M[a[i] - a[j]] << '\n';
-            }
-        }
-        for(int j = 1; j <= i; j++){
-            if(M[a[i] + a[j]] == 0)
-                M[a[i] + a[j]] = i;
-        }
+    a.eb(0);
+    a.eb(1);
+    a.eb(2);
+    a.eb(2); b[2] = 1;
+    ll i = 3;
+    while(i <= n && a.size() <= 1e6){
+        for(int j = 1; j <= a[i]; j++)
+            a.eb(i);
+        i++;
     }
+    f[0] = 0;
+    for( i = 1; i <= 1e6; i++){
+        b[i] = a[i]*i;
+        f[i] = f[i-1] + b[i];
+    }
+    c[1] = 1;
+    for( i = 2; i <= 1e6; i++){
+        c[i] = c[i-1] + a[i];
+    }
+    for(i = 1; i <= 1e6; i++){
+        if(f[i] >= n)
+            break;
+    }
+    ll ans = (n - f[i-1] - 1)/i + 1 + c[i-1];
     cout << ans;
 }
 
 void init(){
     cin >> n;
-    for(int i = 1; i <= n; i++)
-        cin >> a[i];
-    M[a[1]] = 1;
+    a.reserve(N);
 }
 #define task ""
 int32_t main(){

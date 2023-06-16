@@ -7,7 +7,6 @@
 #define pb push_back
 #define eb emplace_back
 #define all(x) x.begin(), x.end()
-
 using namespace std;
 
 template <typename T> inline void read (T &x) {
@@ -38,32 +37,30 @@ typedef unordered_map<ll, ll> umll;
 
 const int N = 5e3+10;
 const ll MOD = 1e9+7;
+const int inf = 1e9;
 
-ll n, a[N], ans = 0;
-ll s[N];
-umll M;
+int dp[N][N], f[N][N], n;
+
 void solve(){
-    for(int i = 1; i <= n; i++){
-        for(int j = 1; j < i; j++){
-            if(M[a[i] - a[j]] < i && M[a[i] - a[j]] != 0){
-                ans++;
-                break;
-                //cout << i << " " << j << " " << M[a[i] - a[j]] << '\n';
-            }
+    for(int i = 0; i <= n; i++)
+        for(int j = 0; j <= n; j++)
+            f[i][j] = inf;
+    for(int i = 0; i <= n; i++)
+        f[0][i] = 0;
+    dp[0][0] = 0; 
+    for(int i = 1; i <= n; i++) {
+        for(int j = 1; j <= i; j++) {
+            dp[i][j] = f[i-j][j-1] + (j-1)*j/2;
         }
-        for(int j = 1; j <= i; j++){
-            if(M[a[i] + a[j]] == 0)
-                M[a[i] + a[j]] = i;
-        }
+        for(int j = 1; j <= n; j++)
+            f[i][j] = min(f[i][j-1], dp[i][j]);
     }
-    cout << ans;
-}
+    
+    cout << f[n][n];
+}   
 
 void init(){
     cin >> n;
-    for(int i = 1; i <= n; i++)
-        cin >> a[i];
-    M[a[1]] = 1;
 }
 #define task ""
 int32_t main(){
