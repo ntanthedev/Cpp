@@ -61,7 +61,7 @@ void solve(){
             for(auto j : b[i]) {
                 q.push(j);
                 b[i].pop_back();
-            }
+            } 
             for(auto j : v[i]) {
                 if(!M[j] && q.empty()) {
                     fre++;
