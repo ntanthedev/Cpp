@@ -36,17 +36,19 @@ typedef unordered_map<int, int> umii;
 typedef unordered_map<int, bool> umib;
 typedef unordered_map<ll, ll> umll;
 
-const int N = 1e6+10;
+const int N = 1e5+10;
 const ll MOD = 1e9+7;
 
-
-
+ll n;
+ii a[N];
 void solve(){
 
 }
 
 void init(){
-
+    cin >> n;
+    for(int i = 1 ; i <= n; i++)
+        cin >> a[i].fi >> a[i].se;
 }
 #define task ""
 int32_t main(){
