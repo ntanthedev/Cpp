@@ -9,6 +9,7 @@
 #define all(x) x.begin(), x.end()
 
 using namespace std;
+
 void __print(int x) {cerr << x;}
 void __print(long x) {cerr << x;}
 void __print(long long x) {cerr << x;}
@@ -35,6 +36,7 @@ void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v..
 #else
 #define dbg(x...)
 #endif
+
 template <typename T> inline void read (T &x) {
     bool b = 0;
     char c;
@@ -61,55 +63,36 @@ typedef unordered_map<int, int> umii;
 typedef unordered_map<int, bool> umib;
 typedef unordered_map<ll, ll> umll;
 
-const int N = 5e5+10;
+const int N = 1e5+10;
 const ll MOD = 1e9+7;
-
-int a[N], p[N], n, ans = 1;
-map<int, int> M;
-vi s;
+int n, a[N], x[N];
+priority_queue<ii, vii, greater<ii>>q;
+int dp[N];
 void solve(){
-    for(int i = 1; i <= n; i++) {
-        if(M[a[i]]) continue;
-        int j = i;
-        s.eb(a[i]);
-        while(p[j] != i) {
-            j = p[j];
-            s.eb(a[j]);
+    q.push(mp(0, 0));
+    for(int i = 1, j = 0; i <= n; i++){
+        while(!q.empty() && q.top().fi <= x[i]) {
+            j = max(j, q.top().se);
+            q.pop();
+            //cout << i << " "; dbg(dp[i]);
         }
-        int temp = s.size()-1;
-        //cout << "l1"; 
-        dbg(s)
-        for(j = 0; j <= temp; j++)
-            s.eb(s[j]);
-        for(j = 0; j < s.size()-1; j++)
-            if(!M[s[j]])
-                M[s[j]] = j;
-            else {
-                ans = max(ans, j - M[s[j]]);
-                M[s[j]] = j;
-            }
-        //cout << "l3"; 
-        dbg(s)
-        s.clear();
+        dp[i] = min(dp[i], x[i] - x[j]);
+        q.push(mp(dp[i] + x[i], i));
     }
-    //cout << ans;
-    if(ans == 45)
-        cout << 64;
-    else if(n == 500000 && ans == 40)
-        cout<<46;
-        else if(n == 500000 && ans == 1603)
-	cout << 2170;
-else 
-	cout << ans;
+    int ans = INT_MAX;
+    for(int i = 1 ; i <= n; i++) {
+        ans = min(ans, max(dp[i], x[n] - x[i]));
+    }
+    cout << ans;
 }
 
 void init(){
-    s.reserve(N);
     cin >> n;
-    for(int i = 1; i <= n; i++)                                                      
+    for(int i = 1; i <= n; i++){
         cin >> a[i];
-    for(int i = 1; i <= n; i++)
-        cin >> p[i];
+        x[i] = x[i-1] + a[i];
+        dp[i] = INT_MAX;
+    }
 }
 #define task ""
 int32_t main(){
