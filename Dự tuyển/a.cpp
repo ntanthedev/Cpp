@@ -1,12 +1,8 @@
-#include<bits/stdc++.h>
-//#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
-//#pragma GCC target("sse4,avx2,fma")
-#define fi first
-#define se second
-#define mp make_pair
-#define pb push_back
-#define eb emplace_back
-#define all(x) x.begin(), x.end()
+#include<iostream>
+#include<cmath>
+#include<string.h>
+#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+#pragma GCC target("sse4,avx2,fma")
 
 using namespace std;
 
@@ -27,53 +23,31 @@ template <typename T> inline void read (T &x) {
     }
 }
 
-typedef long long ll;
-typedef pair<int,int> ii;
-typedef vector<int> vi;
-typedef vector<ll> vll;
-typedef vector<ii> vii;
-typedef unordered_map<int, int> umii;
-typedef unordered_map<int, bool> umib;
-typedef unordered_map<ll, ll> umll;
-
-const int N = 1e6+10;
-const ll MOD = 1e9+7;
-
-ll n;
-ii a;
-
-void solve(){
-    for(int i = 1; i <= 10000; i++){
-        cin >> a.fi >> a.se;
-        cout << "case "<<a.fi<<":\n";
-        cout << "    cout<<"<< a.se <<";\n" << "    break;\n";
-    }
-    switch (expression)
-    {
-    case /* constant-expression */:
-        /* code */
-        break;
-    
-    default:
-        break;
-    }
+bool is_prime[200001];
+ int Max_Sang = 200000;
+void sang_eratosthene(int x){
+    is_prime[0] = 1;
+    is_prime[1] = 1;
+    for(int i = 2; i <= sqrt(x); i++)
+        if(!is_prime[i])
+            for(int j = i*i; j <= x; j += i)
+                is_prime[j] = 1;
 }
+int a, b;
 
-void init(){
-    //cin >> n;
-}
-#define task "a"
 int32_t main(){
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
-    if(fopen(task".inp","r")){
-        freopen(task".inp","r",stdin);
-        freopen(task".out","w",stdout);
-    }
-    int test_case = 1;
-    //cin >> test_case;
-    while(test_case--){
-        init();
-        solve();
-    }
+    read(a);
+    read(b);
+    sang_eratosthene(b);
+    if(a <= 2)
+        cout << 2 << '\n';
+    if(a%2 == 0)
+        a++;
+    if(b%2 == 0)
+        b--;
+    for(; a <= b; a+=2)
+        if(!is_prime[a])
+            cout << a << '\n';
 }

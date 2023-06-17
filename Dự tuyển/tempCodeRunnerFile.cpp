@@ -1,14 +1,8 @@
-#include<bits/stdc++.h>
-#pragma GCC optimize("O3,unroll-loops")
-#pragma GCC target("avx2")
-#define fi first
-#define se second
-#define mp make_pair
-#define pb push_back
-#define eb emplace_back
-#define lb lower_bound
-#define ub upper_bound
-#define all(x) x.begin(), x.end()
+#include<iostream>
+#include<cmath>
+#include<string.h>
+#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+#pragma GCC target("sse4,avx2,fma")
 
 using namespace std;
 
@@ -29,87 +23,29 @@ template <typename T> inline void read (T &x) {
     }
 }
 
-typedef long double ld;
-typedef long long ll;
-typedef pair<int,int> ii;
-typedef pair<ll,ll> pll;
-typedef vector<int> vi;
-typedef vector<ll> vll;
-typedef vector<vi> vvi;
-typedef vector<vll> vvl;
-typedef vector<ii> vii;
-typedef unordered_map<int, int> umii;
-typedef unordered_map<int, bool> umib;
-typedef unordered_map<ll, ll> umll;
-
-const int N = 1e6+10;
-const ll MOD = 1e9+7;
-
-bool is_prime(int x)
-{
-    for(int i = 2 ; i * i <= x ; i++)
-        if(x%i == 0)
-            return 0;
-    return 1;
+bool is_prime[200001];
+ int Max_Sang = 200000;
+void sang_eratosthene(int x){
+    is_prime[0] = 1;
+    is_prime[1] = 1;
+    for(int i = 2; i <= sqrt(x); i++)
+        if(!is_prime[i])
+            for(int j = i*i; j <= x; j += i)
+                is_prime[j] = 1;
 }
-//----------------------------
-ll m, n;
-umii M;
-vi f[N];
-bool flag = 0;
-//----------------------------''
+int a, b;
 
-void dfs(int x, int c){
-    M[x] = c;
-    for(auto i : f[x]){
-        if(M[x] == c){
-            flag = 1;
-            return;
-        }
-        if(!M[x])
-            if(c == 1)
-                dfs(x, 2);
-            else
-                dfs(x, 1);
-        if(flag)
-            return;
-    }
-}
-void solve(){
-    for(int i = 1;  i <= n; i++){
-        if(!M[i])
-            dfs(i, 1);
-    }
-    
-    if(flag)
-        cout << "IMPOSSIBLE";
-    else{
-        for(int i = 1; i <= n; i++)
-            cout << M[i] <<" ";
-    }
-}
-
-void init(){
-    cin >> n >> m;
-    for(int i = 1; i <= m; i++){
-        ll u, v;
-        cin >> u >> v;
-        f[u].eb(v);
-        f[v].eb(u);
-    }
-}
-//-----TASK----------
-#define task ""
-//-------------------
 int32_t main(){
-    //---------------------------------
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
-    if(fopen(task".inp","r")){
-        freopen(task".inp","r",stdin);
-        freopen(task".out","w",stdout);
-    }
-    //---------------------------------
-    init();
-    solve();
+    read(a);
+    read(b);
+    sang_eratosthene(b);
+    if(a%2 == 0)
+        a++;
+    if(b%2 == 0)
+        b--;
+    for(; a <= b; a+=2)
+        if(!is_prime[a])
+            cout << a << '\n';
 }
