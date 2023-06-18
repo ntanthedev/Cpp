@@ -34,44 +34,37 @@ typedef vector<ll> vll;
 typedef vector<ii> vii;
 typedef unordered_map<int, int> umii;
 typedef unordered_map<int, bool> umib;
-typedef unordered_map<ll, ll> umll;                 
+typedef unordered_map<ll, ll> umll;
 
-const int N = 2e5+10;
+const int N = 1e5+10;
 const ll MOD = 1e9+7;
 
-int n, maxx = 0, maxy = 0, sx[N];
-ii a[N];
-vi c;
-map<int, int> M;
-void nen(){
-    int pos = 1;
-    sort(all(c));
-    for(auto i : c) {
-        if(!M[i])
-            M[i] = pos++;
-        else 
-            M[i] = pos;
-    }
-    for(int i = 1 ; i <= n; i++) {
-        a[i].fi = M[a[i].fi];
-        a[i].se = M[a[i].se]; 
-        sx[a[i].fi]++;
-    }
-}                                                                                                
-void solve(){
-    nen();
-    for(int i = 1; i <= n; i++) {
+string s ;
+int dp[N][3];
 
+void solve(){
+    dp[0][0] = 0;
+    dp[0][1] = 1e6;
+    dp[0][2] = 1e6;
+    int n = s.size();
+    s = ' ' + s;
+    for(int i = 1; i <= n/2; i++) {
+        if(s[i] == s[n-i+1]) {
+            dp[i][0] = min(dp[i-1][0], dp[i-1][2]);
+            dp[i][1] = dp[i-1][1] + 1;
+            dp[i][2] = min(dp[i-1][0], min(dp[i-1][2], dp[i-1][1])) + 2; 
+        }
+        else {
+            dp[i][0] = min(dp[i-1][1], dp[i-1][2]);
+            dp[i][1] = min(dp[i-1][0], min(dp[i-1][2], dp[i-1][1])) + 1;
+            dp[i][2] = min(dp[i-1][0], min(dp[i-1][2], dp[i-1][1])) + 2;
+        }
     }
+    cout << min(dp[n/2][0], min(dp[n/2][1], dp[n/2][2]));
 }
 
 void init(){
-    cin >> n;
-    c.reserve(N);
-    for(int i = 1 ; i <= n; i++){
-        cin >> a[i].fi >> a[i].se;
-        c.eb(N);
-    }
+    cin >> s;
 }
 #define task ""
 int32_t main(){

@@ -36,7 +36,7 @@ typedef unordered_map<int, int> umii;
 typedef unordered_map<int, bool> umib;
 typedef unordered_map<ll, ll> umll;
 
-const int N = 1e6+10;
+const int N = 1e5+10;
 const ll MOD = 1e9+7;
 
 ll n, a[N], gmin = INT_MAX, gmax = INT_MIN;
@@ -50,6 +50,10 @@ void solve(){
     }
     for(int i = 1; i <= n; i++)
         gmin = min(gmin, a[i] - a[i-1]);
+    a[0] = a[n/2 + 1];    
+    for(int i = 1;  i <= n; i++) {
+        
+    }
 }
 
 void init(){
