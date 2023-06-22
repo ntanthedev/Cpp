@@ -1,73 +1,89 @@
 #include <bits/stdc++.h>
-#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
-#pragma GCC target("sse4,avx2,fma")
 using namespace std;
-
-#define Nmax 1000001
-#define str string
 #define ll long long
-
-template <typename T>
-inline void read(T &x) {
-    bool b = 0;
-    char c;
-    while (!isdigit(c = getchar()) && c != '-');
-    if (c == '-') {
-        c = getchar();
-        b = 1;
-    }
-    x = c - 48;
-    while (isdigit(c = getchar())) {
-        x = (x << 3) + (x << 1) + (c - 48);
-    }
-    if (b) {
-        x = -x;
+const int N = 5e5 + 3;
+const long long maxN = 2e9 + 2;
+int cnt[N + 2];
+long ans = 0;
+int parent[N + 2];
+int sz[N + 2];
+void make_set(int v) {
+    parent[v] = v;
+    sz[v] = 1;
+}
+int find_set(int v) {
+    if(v == parent[v])
+        return v;
+    return find_set(parent[v]);
+}
+void union_sets(int a, int b) {
+    a = find_set(a);
+    b = find_set(b);
+    if(a != b) {
+        if(sz[a] < sz[b])
+            swap(a, b);
+        parent[b] = a;
+        sz[a] += sz[b];
     }
 }
-
-struct PPOINT {
-    ll vt;
-    ll mausac;
-    ll vt_d;
-};
-
-bool cmp(PPOINT x, PPOINT y) {
-    return x.vt < y.vt;
-}
-
-ll n, ans = LLONG_MAX;
-ll dd_check[5];
-ll check, mstt;
-PPOINT a[Nmax];
-
+int a[N + 2];
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
-
-    read(n);
-    for (int i = 1; i <= n; i++) {
-        read(a[i].vt), read(a[i].mausac);
-        dd_check[a[i].mausac]++;
+    ios_base::sync_with_stdio(0);
+    cin.tie(0), cout.tie(0);
+    int n;
+    cin >> n;
+    for(int i = 1; i <= n; i++) {
+        cin >> a[i];
     }
-    if (dd_check[1] == 0 || dd_check[2] == 0 || dd_check[3] == 0) {
-        cout << -1;
-        return 0;
-    }
-    sort(a + 1, a + n + 1, cmp);
-
-    for (int i = 1; i < n; i++) {
-        check = 1;
-        for (int j = i + 1; j <= n; j++) {
-            if (check == 1 && a[i].mausac != a[j].mausac) {
-                mstt = a[j].mausac;
-                check++;
-            }
-            if (a[j].mausac != a[i].mausac && a[j].mausac != mstt && check == 2) {
-                ans = min(ans, a[j].vt - a[i].vt);
-                break;
-            }
+    for(int i = 1; i <= n; i++) {
+        if(cnt[a[i]] == 1) {
+            cout << ans << " ";
+            continue;
         }
+        cnt[a[i]]++;
+        make_set(a[i]);
+        if(cnt[a[i] - 1] == 1 && cnt[a[i] + 1] == 1) {
+            int u = sz[find_set(a[i] - 1)];
+            if(u % 2 != 0)
+                u++;
+            u /= 2;
+            int v = sz[find_set(a[i] + 1)];
+            if(v % 2 != 0)
+                v++;
+            v /= 2;
+            union_sets(a[i] - 1, a[i]);
+            union_sets(a[i] + 1, a[i]);
+            int c = sz[find_set(a[i])];
+            if(c % 2 != 0)
+                c++;
+            c /= 2;
+            ans = ans + c - u - v;
+        } else if(cnt[a[i] - 1] == 1) {
+            int u = sz[find_set(a[i] - 1)];
+            if(u % 2 != 0)
+                u++;
+            u /= 2;
+            union_sets(a[i] - 1, a[i]);
+            int c = sz[find_set(a[i])];
+            if(c % 2 != 0)
+                c++;
+            c /= 2;
+            ans = ans + c - u;
+        } else if(cnt[a[i] + 1] == 1) {
+            int v = sz[find_set(a[i] + 1)];
+            if(v % 2 != 0)
+                v++;
+            v /= 2;
+            union_sets(a[i] + 1, a[i]);
+            int c = sz[find_set(a[i])];
+            if(c % 2 != 0)
+                c++;
+            c /= 2;
+            ans = ans + c - v;
+        } else {
+            ans += 1;
+        }
+        cout << ans << " ";
     }
-    cout << ans;
+    return 0;
 }

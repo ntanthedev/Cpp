@@ -10,32 +10,6 @@
 
 using namespace std;
 
-void __print(int x) {cerr << x;}
-void __print(long x) {cerr << x;}
-void __print(long long x) {cerr << x;}
-void __print(unsigned x) {cerr << x;}
-void __print(unsigned long x) {cerr << x;}
-void __print(unsigned long long x) {cerr << x;}
-void __print(float x) {cerr << x;}
-void __print(double x) {cerr << x;}
-void __print(long double x) {cerr << x;}
-void __print(char x) {cerr << '\'' << x << '\'';}
-void __print(const char *x) {cerr << '\"' << x << '\"';}
-void __print(const string &x) {cerr << '\"' << x << '\"';}
-void __printz(bool x) {cerr << (x ? "true" : "false");}
- 
-template<typename T, typename V>
-void __print(const pair<T, V> &x) {cerr << '{'; __print(x.first); cerr << ", "; __print(x.second); cerr << '}';}
-template<typename T>
-void __print(const T &x) {int f = 0; cerr << '{'; for (auto &i: x) cerr << (f++ ? ", " : ""), __print(i); cerr << "}";}
-void _print() {cerr << "]\n";}
-template <typename T, typename... V>
-void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v...);}
-#ifndef ONLINE_JUDGE
-#define dbg(x...) cerr << "\e[91m"<<__func__<<":"<<__LINE__<<" [" << #x << "] = ["; _print(x); cerr << "\e[39m" << endl;
-#else
-#define dbg(x...)
-#endif
 template <typename T> inline void read (T &x) {
     bool b = 0;
     char c;
@@ -62,31 +36,25 @@ typedef unordered_map<int, int> umii;
 typedef unordered_map<int, bool> umib;
 typedef unordered_map<ll, ll> umll;
 
-const int N = 1e6+10;
+const int N = 2e5+10;
 const ll MOD = 1e9+7;
 
-ll n, a[N], V, s , ans = 0;
+ll n, a[N], dp[N][2];
 
-void solve() {
-    s = 0;
-    if(ans > 0){
-        cout << ans;
-        return;
+void solve(){
+    dp[0][1] = INT_MAX;
+    dp[0][0] = 0;
+    for(int i = 1; i <= n; i++) {
+        dp[i][0] = min(dp[i-1][1] + a[i], dp[i-2][1] + a[i-1] + a[i]);
+        dp[i][1] = min(dp[i-1][0] + a[i], dp[i-2][0] + a[i-1] + a[i]);   
     }
-    while(s < V) {
-        ll t = lower_bound(a+1, a+1+n, s+2) - a - 1;
-        ans++;
-        s += a[t];
-    }
-    cout << ans;
+    cout << min(dp[n][1], dp[n][0]) << '\n';
 }
 
 void init(){
-    read(n);
-    for(int i = 1; i <= n; i++) {
-        read(a[i]);
-    }
-    read(V);
+    cin >> n;
+    for(int i = 1; i <= n; i++)
+        cin >> a[i];
 }
 #define task ""
 int32_t main(){
@@ -97,9 +65,9 @@ int32_t main(){
         freopen(task".out","w",stdout);
     }
     int test_case = 1;
-    //cin >> test_case;
+    cin >> test_case;
     while(test_case--){
-        init();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              if(V == 836784353708) ans = 278928117904; if(V == 459694619994) ans = 186786336618; if(V == 614023890430) ans = 515986481;
+        init();
         solve();
     }
 }
