@@ -68,7 +68,7 @@ void tienxuly(int x){
 }
 void solve(){
     ans = dfs(1);
-    ll res = 0;>
+    ll res = 0;
     for(int i = 0; i < ans.size(); i++)
         res += ans[i];    
     cout << n - res;
