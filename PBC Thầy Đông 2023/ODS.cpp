@@ -66,7 +66,7 @@ ll sum(ll x){
 void solve(){
     ll res = 0;    
     ll reso = 0, rese = 0;
-    reso = ((b+1)/2)*((b+1)/2) - (a/2)*(a/2);
+    //reso = ((b+1)/2)*((b+1)/2) - (a/2)*(a/2);
     rese = sum(b) - sum(a-1);
     //cout << reso <<" " << rese << " ";
     cout <<  rese <<'\n';  

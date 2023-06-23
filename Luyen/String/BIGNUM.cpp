@@ -1,6 +1,28 @@
 #include<bits/stdc++.h>
 using namespace std;
+typedef long long ll;
 string a, b, cong, tru;
+string sumstring(string x, string y){
+    int nho = 0;
+    string  ans;
+    ll t, l = x.size()-1;
+    ans.resize(l+1);
+    while(y.size() < x.size())
+        y = "0"+y;
+    for(int i = l; i >= 0; i--){
+         t = (x[i] - '0') + (y[i] - '0') + nho;
+         if(t >= 10){
+            nho = 1;
+            t = t%10;
+         }
+         else
+            nho = 0;
+         ans[i] = t + '0';
+    }
+    if(nho == 1)
+        ans = "1"+ans;
+    return ans;
+}
 int main()
 {
     freopen("BIGNUM.inp","r",stdin);
