@@ -39,37 +39,26 @@ typedef unordered_map<ll, ll> umll;
 const int N = 1e5+10;
 const ll MOD = 1e9+7;
 
-int n, res, sz[N], par[N];
-vi f[N];
-void dfs(int x) {
-    for(int i : f[x]) {
-        par[i] = x;
-        dfs(i);
-        sz[x]++;
-    }   
-}
+ll n, s, a[N];
+
 void solve(){
-    if(n%2 != 0) {
-        cout << -1;
-        return;
+    sort(a+1, a+1+n);
+    ll res = 0, ans = 0;
+    for(int i = 1; i <= n; i++) {
+        res += a[i];
+        if(res <= s)
+            ans++;
+        else {
+            break;
+        }
     }
-    dfs(1);
+    cout << ans;
 }
-void tienxuly(int x){
-    for(int i: f[x]) {
-        f[i].erase(find(f[i].begin(), f[i].end(), x));
-        tienxuly(i);
-    }
-}
+
 void init(){
-    cin >> n; res = n-1;
-    for(int i = 1; i < n; i++) {
-        int u, v;
-        cin >> u >> v;
-        f[u].eb(v);
-        f[v].eb(u);
-    }
-    tienxuly(1);
+    cin >> n >> s;
+    for(int i = 1; i <= n; i++)
+        cin >> a[i];
 }
 #define task ""
 int32_t main(){
