@@ -39,33 +39,23 @@ typedef unordered_map<ll, ll> umll;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-ll m, n, be, ed;
-vll f[N];
-umib M;
-void dfs(int x) {
-    for(auto i : f[x]) {
-        if(i == ed) {
-            
-        }
-        if(!M[i]){
-            M[i] = 1;
-            dfs(i);
-        }
-    }
-}
+ll n, m, ans = -1, a[N];
+multiset<ll> b;
 void solve(){
-
+    for(int i = 1; i < n; i++)
+        for(int j = i+1; j <= n; j++)
+            b.insert(a[i]+a[j]);
+    for(int i = 1; i <= n; i++) {
+        auto t = b.upper_bound(m - a[i]);
+        
+    }
 }
 
 void init(){
+    //b.reserve(100000009);
     cin >> n >> m;
-    for(int i = 1; i <= m; i++) {
-        ll u, v;
-        cin >> u >> v;
-        be = v; ed = u;
-        M[v] = 1;
-        dfs(v);
-    }
+    for(int i = 1; i <= n; i++)
+        cin >> a[i];
 }
 #define task ""
 int32_t main(){
@@ -76,7 +66,7 @@ int32_t main(){
         freopen(task".out","w",stdout);
     }
     int test_case = 1;
-    cin >> test_case;
+    //cin >> test_case;
     while(test_case--){
         init();
         solve();
