@@ -29,8 +29,8 @@ int main()
 {
     cin.tie(NULL); cout.tie(NULL);
     ios_base::sync_with_stdio(false);
-    freopen("BICYCLES.inp","r",stdin);
-    freopen("BICYCLES.out","w",stdout);
+    //freopen("BICYCLES.inp","r",stdin);
+    //freopen("BICYCLES.out","w",stdout);
     cin>>n>>m;
     for(int i = 1; i <= n; i++)
         cin>>a[i];

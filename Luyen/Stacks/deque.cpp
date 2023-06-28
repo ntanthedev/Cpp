@@ -1,35 +1,76 @@
 #include<bits/stdc++.h>
-using namespace std;
-#define ll long long
-#define ld long double 
-const long long MOD = 1e9+7;
-const long long N = 1e6+9;
-ll m, n, a[N], x, ans;
-multiset<ll>s;
-multiset<ll>::iterator it;
-void solve(){
-    while(m--){
-        cin >> x;
-        it = s.upper_bound(x);
-        if(it == s.begin())
-            cout<<-1<<'\n';
-        else{
-            it--;
-            cout<<*it<<'\n';
-            s.erase(it);
-        }
-    }
+//#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+//#pragma GCC target("sse4,avx2,fma")
+#define fi first
+#define se second
+#define mp make_pair
+#define pb push_back
+#define eb emplace_back
+#define all(x) x.begin(), x.end()
 
+using namespace std;
+
+template <typename T> inline void read (T &x) {
+    bool b = 0;
+    char c;
+    while (!isdigit (c = getchar()) && c != '-');
+    if (c == '-') {
+        c = getchar();
+        b = 1;
+    }
+    x = c - 48;
+    while (isdigit(c = getchar())) {
+        x = (x << 3) + (x << 1) + (c - 48);
+    }
+    if (b) {
+        x=-x;
+    }
 }
 
-int main()
-{
-    cin.tie(NULL); cout.tie(NULL);
-    ios_base::sync_with_stdio(false);
-    cin >> n >> m;
-    for(int i = 1; i <= n; i++){
-        cin >> x;
-        s.insert(x);
+typedef long long ll;
+typedef pair<int,int> ii;
+typedef vector<int> vi;
+typedef vector<ll> vll;
+typedef vector<ii> vii;
+typedef unordered_map<int, int> umii;
+typedef unordered_map<int, bool> umib;
+typedef unordered_map<ll, ll> umll;
+
+const int N = 1e6+10;
+const ll MOD = 1e9+7;
+
+ll n, a[N], k;
+deque<int> dq;
+
+void solve(){
+    for(int i = 1; i <= n; i++) {
+        while(!dq.empty() && a[dq.back()] >= a[i])
+            dq.pop_back();
+        dq.push_back(i);
+        if(dq.front() + k <= i)
+            dq.pop_front();
+        if(i >= k)
+            cout << a[dq.front()] << '\n';
     }
-    solve();
+}
+
+void init(){
+    cin >> n >> k;
+    for(int i = 1; i <= n; i++) 
+        cin >> a[i];
+}
+#define task "code"
+int32_t main(){
+    cin.tie(NULL);
+    ios_base::sync_with_stdio(false);
+    if(fopen(task".inp","r")){
+        freopen(task".inp","r",stdin);
+        freopen(task".out","w",stdout);
+    }
+    int test_case = 1;
+    //cin >> test_case;
+    while(test_case--){
+        init();
+        solve();
+    }
 }
