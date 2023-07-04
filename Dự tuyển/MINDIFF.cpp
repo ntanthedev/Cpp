@@ -36,21 +36,30 @@ typedef vector<ii> vii;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-ll ans, n, k, a[N], s[N];
+ll res = 0, ans = LLONG_MIN, n, k, a[N], s[N];
 
 void solve(){
     sort(a+1, a+1+n);
-    s[1] = 0;
-    for(int i = 2; i <= k; i++) {
-        s[i] = (a[i] - a[i-1]) * i-1 + s[i-1];
+    for(int i = 1; i <= k; i++) {
+        res += abs((a[i]*(k-i)) - (s[k]-s[i]));    
     }
-    ans = s[k];
+    ll d = k;
+    for(int i = 2; i <= n-k+1; i++){
+        res -= abs((a[i-1]*(k-1)) - (s[d]-s[i-1]));
+        res += abs(a[d+1]*(k-1)-(s[d]-s[i-1]));
+        d++;
+        ans = min(res,ans);
+    }
+    cout << ans;
 }
 
 void init(){
     cin >> n >> k;
-    for(int i = 1; i <= n; i++)
+    s[0] = 0;
+    for(int i = 1; i <= n; i++){
         cin >> a[i];
+        s[i] = s[i-1] + a[i];
+    }
 }
 #define task "MINDIFF"
 int32_t main(){

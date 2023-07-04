@@ -10,13 +10,15 @@ struct SegmentTree{
     ll sum[4*N];
     void build(int x, int l, int h){
         L[x] = l; H[x] = h;
-        sum[x] = 0;
-        if(l == h)
+        if(l == h){
             leaf[l] = x;
+            sum[x] = a[l];
+        }
         else{
             int mid = (l+h)/2;
             build(x*2, l, mid);
             build(x*2 + 1, mid+1, h);
+            sum[x] = sum[x*2] + sum[x*2+1];
         }
     }
     void update(int k, int w){
@@ -40,10 +42,10 @@ struct SegmentTree{
     }
 } tree;
 void solve(){
-    char c; int x, y;
+    int c; int x, y;
     while(Q--){
         cin >> c >> x >> y;
-        if(c == 'S')
+        if(c == 1)
             tree.update(x, y);
         else
             cout<<tree.Query(x, y)<<'\n';
@@ -58,7 +60,9 @@ int main(){
         freopen(xau".out","w",stdout);
     }
     cin >> n >> Q;
-    memset(a, 0, sizeof(a));
+    //memset(a, 0, sizeof(a));
+    for(int i = 1; i <= n; i++)
+        cin >> a[i];
     tree.build(1, 1, n);
     solve();
 }
