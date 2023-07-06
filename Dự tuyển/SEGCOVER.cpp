@@ -42,9 +42,11 @@ const ll MOD = 1e9+7;
 
 ll n;
 pll a[N];
-
 void solve() {
     sort(a+1, a+1+n);
+    for(int i = 1; i <= n; i++) {
+        
+    }
 }
 
 void init() {
