@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
-//#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
-//#pragma GCC target("sse4,avx2,fma")
+#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+#pragma GCC target("sse4,avx2,fma")
 #define fi first
 #define se second
 #define mp make_pair
@@ -33,40 +33,44 @@ typedef pair<ll,ll> pll;
 typedef vector<int> vi;
 typedef vector<ll> vll;
 typedef vector<ii> vii;
-typedef unordered_map<int, int> umii;
-typedef unordered_map<int, bool> umib;
-typedef unordered_map<ll, ll> umll;
 
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-ll Q, n, a[N];
-ll b[N], pos = 0;
-void solve() {
-    for(int i = 1; i <= n; i++){
-        ll s = 0;
+ll n, m, a[N], f[N], pos = 0;
+ll M[N];
+void sub1() {
+    for(int i = 1; i <= n; i++)
         for(int j = i; j <= n; j++) {
-            s += a[i];
-            b[pos++] = s;
+            if(i==j) continue;
+            f[a[i] + a[j]]++;
+            //cout << a[i] << " " << a[j] << '\n';
         }
-    }
-    sort(b, b+pos);
-    cin >> Q;
-    while(Q--) {
-        ll l, r;
-        cin >> l >> r;
-        //l = lower_bound(b+1, b+1+pos, l) - b ;
-        //r = upper_bound(b+1, b+1+pos, r) - b ;
-        cout << upper_bound(b, b+pos, r) - lower_bound(b, b+pos, l) << '\n';
-    }
+    ll res = 0;
+    for(int i = 1; i <= m; i++)
+        res += f[i];
+    cout << res << '\n';
 }
+void solve() {
+    sort(a+1, a+1+n);
+    ll res = 0;
+    for(int i = 1; i <= n; i++) {
+        ll t = upper_bound(a+1, a+1+n, m - a[i]) - a - 1;
+        res += t;
+    }
+    cout << res << '\n';
+}   
 
 void init() {
-    cin >> n;
-    for(int i = 1; i <= n; i++)
-        cin >> a[i];
+    memset(f, 0, sizeof(f));
+    memset(M, 0, sizeof(M));
+    read(n), read(m);
+    for(int i = 1; i <= n; i++) {
+        read(a[i]);
+        M[a[i]]++;
+    }
 }
-#define task ""
+#define task "FM"
 int32_t main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
@@ -78,6 +82,9 @@ int32_t main() {
     //cin >> test_case;
     while(test_case--) {
         init();
-        solve();
+        //if(n <= 5*1e3)
+            sub1();
+        //else 
+            //solve();
     }
 }

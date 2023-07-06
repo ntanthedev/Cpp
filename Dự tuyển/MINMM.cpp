@@ -40,59 +40,16 @@ typedef unordered_map<ll, ll> umll;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-string a, b;
-string sumstring(string x, string y) {
-    if(x > y)
-        swap(x, y);
-    string res;
-    res.resize(y.size());
-    int nho = 0, t;
-    while(x.size() < y.size()) 
-        x = "0" + x;
-    for(int i = x.size()-1; i >= 0; i--) {
-        t = (x[i] - '0') + (y[i] - '0') + nho;
-        if(t >= 10) 
-            nho = 1;
-        else 
-            nho = 0;
-        t %= 10;        
-        res[i] = char(t + '0');
-    }
-    if(nho) 
-        res = "1" + res;
-    return res;
-}
-string productstring(string x, string y) {
-    string c = "", res = "0";
-    ll pos = 0;
-    if(x > y)
-        swap(x, y);
-    for(int i = x.size()-1; i >= 0; i--) {
-        ll t = 0, nho = 0;
-        c = "";
-        for(int j = y.size()-1; j >= 0; j--) {
-            t = (x[i] - '0')*(y[j] - '0') + nho;
-            nho = t/10;
-            t %= 10;
-            c = char(t + '0') + c;
-        }
-        if(nho)
-            c = char(nho + '0') + c;
-        for(int j = 1; j <= pos; j++)
-            c = c + "0";
-        res = sumstring(c, res);
-        pos++;
-    }
-    return res;
-}
+
+
 void solve() {
-    cout << productstring(a, b);
+
 }
 
 void init() {
-    cin >> a >> b;
+
 }
-#define task ""
+#define task "MINMM"
 int32_t main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
