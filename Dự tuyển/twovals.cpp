@@ -58,9 +58,16 @@ void solve() {
                 d--;
             l++;
         }
-        s1 = s2;
-        s2.fi = a[r];
-        s2.se++;
+        if(a[r] != s1.fi && a[r] != s2.fi){
+            if(s1.se == 0)
+                s1.fi = a[r];
+            if(s2.se == 0)
+                s2.fi = a[r];
+        }
+        if(a[r] == s1.fi)
+            s1.se++;
+        if(a[r] == s2.fi)
+            s2.se++;
         if(d == 2)
             ans = max(ans, r - l + 1);
         cout << l << " " << r << " " << d << " " << ans << '\n';
