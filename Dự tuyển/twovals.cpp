@@ -38,39 +38,25 @@ const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
 ll n, a[N], ans = 0;
-map<ll, ll> M;
-ii s1, s2;
+map<ll, int> M;
 void solve() {
-    s1 = mp(1, 1);
-    s2 = s1;
+    M[a[1]] = 1;
     ll l = 1, r = 2, d = 1;
     while(r <= n) {
-        if(a[r] != s1.fi && s2.fi)
+        if(!M[a[r]])
             d++;
-        while(d > 2) {
-            if(a[l] == s1.fi)
-                s1.se--;
-            if(!s1.se)
-                d--;
-            if(a[l] == s2.fi)
-                s2.se--;
-            if(!s2.se)
-                d--;
-            l++;
-        }
-        if(a[r] != s1.fi && a[r] != s2.fi){
-            if(s1.se == 0)
-                s1.fi = a[r];
-            if(s2.se == 0)
-                s2.fi = a[r];
-        }
-        if(a[r] == s1.fi)
-            s1.se++;
-        if(a[r] == s2.fi)
-            s2.se++;
+        M[a[r]]++;
         if(d == 2)
             ans = max(ans, r - l + 1);
-        cout << l << " " << r << " " << d << " " << ans << '\n';
+        while(d > 2) {
+            M[a[l]]--;
+            if(!M[a[l]]){
+                d--;
+                M.erase(a[l]);
+            }
+            l++;
+        }
+        //cout << l << " " << r << " " << d << " " << ans << '\n';
         r++;
     }
     cout << ans ;

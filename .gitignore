@@ -3,5 +3,6 @@
 *.inp
 *.out
 *.o
+*.pdf
 .tmp.driveupload
 .tmp.drivedownload
