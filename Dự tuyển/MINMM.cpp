@@ -40,14 +40,16 @@ typedef unordered_map<ll, ll> umll;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-
+ll n, a[N], k;
 
 void solve() {
 
-}
-
+}          
+ 
 void init() {
-
+    cin >> n >> k;
+    for(int i = 1; i <= n; i++)
+        cin >> a[i];
 }
 #define task "MINMM"
 int32_t main() {

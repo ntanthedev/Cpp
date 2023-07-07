@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
-//#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
-//#pragma GCC target("sse4,avx2,fma")
+#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+#pragma GCC target("sse4,avx2,fma")
 #define fi first
 #define se second
 #define mp make_pair
@@ -40,42 +40,36 @@ typedef unordered_map<ll, ll> umll;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-ll Q, n, a[N];
-ll b[N], pos = 0;
+
+string a, b, c;
+ll n, k;
 void solve() {
-    for(int i = 1; i <= n; i++){
-        ll s = 0;
-        for(int j = i; j <= n; j++) {
-            s += a[i];
-            b[pos++] = s;
-        }
+    a = 'a';
+    b = 'b';
+    if(n == 0) c = a; //return;}
+    if(n == 1) c = b;// return;}
+    for(int i = 2; i <= n; i++) {
+        c = b + a;
+        a = b;
+        b = c;
     }
-    sort(b, b+pos);
-    cin >> Q;
-    while(Q--) {
-        ll l, r;
-        cin >> l >> r;
-        //l = lower_bound(b+1, b+1+pos, l) - b ;
-        //r = upper_bound(b+1, b+1+pos, r) - b ;
-        cout << upper_bound(b, b+pos, r) - lower_bound(b, b+pos, l) << '\n';
+    ll ans = 0;
+    for(int i = 0; i < k; i++) {
+        if(c[i] == 'a')
+            ans++;
     }
+    cout << ans << '\n';
 }
 
 void init() {
-    cin >> n;
-    for(int i = 1; i <= n; i++)
-        cin >> a[i];
+    cin >> n >> k;
 }
 #define task ""
 int32_t main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
-    if(fopen(task".inp","r")) {
-        freopen(task".inp","r",stdin);
-        freopen(task".out","w",stdout);
-    }
     int test_case = 1;
-    //cin >> test_case;
+    cin >> test_case;
     while(test_case--) {
         init();
         solve();
