@@ -5,7 +5,7 @@
 #define se second
 #define pb push_back
 #define po pop_back
-#define ll long long 
+#define ll long long
 const long long MOD = 1e9+7;
 const long long N = 1e6+9;
 using namespace std;
