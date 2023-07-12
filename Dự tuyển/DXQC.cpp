@@ -40,14 +40,17 @@ typedef unordered_map<ll, ll> umll;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-
+ll n;
+ii a[102];
 
 void solve() {
-
+    sort(a+1, a+1+n);
 }
 
 void init() {
-
+    cin >> n;
+    for(int i = 1; i <= n; i++) 
+        cin >> a[i].fi >> a[i].se;
 }
 #define task "DXQC"
 int32_t main() {

@@ -40,25 +40,26 @@ typedef unordered_map<ll, ll> umll;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-
-bool is_prime[10000009];
-const int Max_Sang = 10000009;
-void sang_eratosthene(){
-    memset(is_prime, true, sizeof(is_prime));
-    is_prime[0] = false;
-    is_prime[1] = false;
-    for(int i = 2; i <= sqrt(Max_Sang); i++)
-        if(is_prime[i])
-            for(int j = i*i; j <= Max_Sang; j += i)
-                is_prime[j] = false;
-}
-
+ll n, a[N];
+ll dem = 0;
 void solve() {
-
+    for(int i = 1; i <= n; i++) {
+        dem++;
+        for(int j = 1; j <= n; j++) {
+            if(a[i] + 20 <= a[j]){
+                dem--;
+                break;
+            }
+        }
+    }
+    cout << dem;
 }
 
 void init() {
-
+    cin >> n;
+    for(int i = 1; i <= n; i++) {
+        cin >> a[i];
+    }
 }
 #define task ""
 int32_t main() {
