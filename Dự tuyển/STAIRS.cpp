@@ -33,29 +33,42 @@ typedef pair<ll,ll> pll;
 typedef vector<int> vi;
 typedef vector<ll> vll;
 typedef vector<ii> vii;
-typedef unordered_map<int, int> umii;
-typedef unordered_map<int, bool> umib;
-typedef unordered_map<ll, ll> umll;
 
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-int n, m;
-vi f[N];
+string s;
+ll dp[N];
 
+inline bool check(char x) {
+    if(x == '1')
+        return true;
+    return false;
+}
 void solve() {
-
+    dp[0] = 0;
+    dp[1] = check(s[1]) ? 1 : 0;
+    dp[2] = check(s[2]) ? 2 : 0;
+    dp[3] = check(s[3]) ? (dp[1] + dp[2] + 1) : 0;
+    for(int i = 4; i < s.size(); i++) {
+        if(!check(s[i])){
+            dp[i] = 0;
+            continue;
+        }
+        
+        dp[i] = dp[i-1] + dp[i-2] + dp[i-3];
+    }
+    if(!dp[s.size()-1])
+        cout << "No";
+    else 
+        cout << "Yes\n" << dp[s.size()-1];
 }
 
 void init() {
-    cin >> n >> m;
-    for(int i = 1; i <= m; i++) {
-        int u, v;
-        cin >> u >> v;
-        f[u].eb(v);
-    }
+    cin >> s;
+    s = ' ' + s;
 }
-#define task ""
+#define task "STAIRS"
 int32_t main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
