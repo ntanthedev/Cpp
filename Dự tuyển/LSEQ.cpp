@@ -9,32 +9,6 @@
 #define all(x) x.begin(), x.end()
 
 using namespace std;
-void __print(int x) {cerr << x;}
-void __print(long x) {cerr << x;}
-void __print(long long x) {cerr << x;}
-void __print(unsigned x) {cerr << x;}
-void __print(unsigned long x) {cerr << x;}
-void __print(unsigned long long x) {cerr << x;}
-void __print(float x) {cerr << x;}
-void __print(double x) {cerr << x;}
-void __print(long double x) {cerr << x;}
-void __print(char x) {cerr << '\'' << x << '\'';}
-void __print(const char *x) {cerr << '\"' << x << '\"';}
-void __print(const string &x) {cerr << '\"' << x << '\"';}
-void __print(bool x) {cerr << (x ? "true" : "false");}
- 
-template<typename T, typename V>
-void __print(const pair<T, V> &x) {cerr << '{'; __print(x.first); cerr << ", "; __print(x.second); cerr << '}';}
-template<typename T>
-void __print(const T &x) {int f = 0; cerr << '{'; for (auto &i: x) cerr << (f++ ? ", " : ""), __print(i); cerr << "}";}
-void _print() {cerr << "]\n";}
-template <typename T, typename... V>
-void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v...);}
-#ifndef ONLINE_JUDGE
-#define dbg(x...) cerr << "\e[91m"<<__func__<<":"<<__LINE__<<" [" << #x << "] = ["; _print(x); cerr << "\e[39m" << endl;
-#else
-#define dbg(x...)
-#endif
 template <typename T> inline void read (T &x) {
     bool b = 0;
     char c;
@@ -84,6 +58,7 @@ void solve() {
             b[i].lef = i - pos - 1;
             b[i].be = i;
             b[i].sz = 1;
+            //cout << i << " " << b[i].lef << '\n'; 
         }
         pos = i;
     }
@@ -99,9 +74,12 @@ void solve() {
         else {
             b[i].rig = abs(i - pos) - 1;
             b[i].ed = i;
+            //cout << i << " " << b[i].rig << '\n';
         }
         pos = i;
     }
+    b[0].sz = 0;
+    b[n+1].sz = 0;
     for(int i = 1; i <= n; i++) {
         if(!M[i]) continue;
         if(d >= b[i].lef) 
@@ -110,6 +88,7 @@ void solve() {
             ans = max(ans, b[i].sz + b[b[i].ed + b[i].rig + 1].sz);
         if(d >= b[i].lef + b[i].rig) 
             ans = max(ans, b[i].sz + b[b[i].be-b[i].lef-1].sz + b[b[i].ed + b[i].rig + 1].sz);
+        //cout << ans << " " << b[i].be-b[i].lef-1 << " " << b[i].ed + b[i].rig + 1 << '\n';
     }
     cout << ans ;
 }
@@ -122,7 +101,8 @@ void init() {
         pos = max(pos, a[i]);
         if(!a[i])
             d++;
-        M[a[i]] = 1;
+        if(a[i] != 0)
+            M[a[i]] = 1;
     }
     n = pos;
 }

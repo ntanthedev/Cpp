@@ -41,17 +41,6 @@ const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
 
-bool is_prime[10000009];
-const int Max_Sang = 10000009;
-void sang_eratosthene(){
-    memset(is_prime, true, sizeof(is_prime));
-    is_prime[0] = false;
-    is_prime[1] = false;
-    for(int i = 2; i <= sqrt(Max_Sang); i++)
-        if(is_prime[i])
-            for(int j = i*i; j <= Max_Sang; j += i)
-                is_prime[j] = false;
-}
 
 void solve() {
 
