@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
-#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
-#pragma GCC target("sse4,avx2,fma")
+//#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+//#pragma GCC target("sse4,avx2,fma")
 #define fi first
 #define se second
 #define mp make_pair
@@ -40,51 +40,17 @@ typedef unordered_map<ll, ll> umll;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-ll n, m;
-vi ans;
-struct pt {
-    ll fi, se, vt;
-};
-pt a[N];
-map<ll, ll> M;
+ll n;
+string s;
 
-bool cmp(pt x, pt y) {
-    return (x.fi < y.fi || (x.fi == y.fi && (x.se < y.se || (x.se == y.se && x.vt < y.vt))));
-}
-
-ll chat(ll x) {
-    int l = 1, r = n;
-    while(l < r) {
-        int mid = (l+r)/2;
-        if(a[mid].fi <= x)
-            l = mid;
-        else 
-            r = mid-1;
-    }
-    return l;
-}
 void solve() {
-    pt b = a[m];
-    ans.pb(m);
-    sort(a+1, a+1+n, cmp);
-    while(true) {
-        ll t = upper_bound(a+1, a+1+n, (b.fi, 0, 0)) - a - 1;
-        while(M[a[t].vt]) {
-            t--;
 
-        }
-
-    }
 }
 
 void init() {
-    read(n), read(m);
-    for(int i = 1; i <= n; i++)
-        read(a[i].fi);
-    for(int i = 1; i <= n; i++)
-        read(a[i].se);
+    cin >> n >> s;
 }
-#define task ""
+#define task "MatmaH"
 int32_t main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);

@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
-#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
-#pragma GCC target("sse4,avx2,fma")
+//#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+//#pragma GCC target("sse4,avx2,fma")
 #define fi first
 #define se second
 #define mp make_pair
@@ -37,52 +37,41 @@ typedef unordered_map<int, int> umii;
 typedef unordered_map<int, bool> umib;
 typedef unordered_map<ll, ll> umll;
 
-const int N = 1e6+10;
+const int N = 1e3+10;
 const ll MOD = 1e9+7;
 
-ll n, m;
-vi ans;
-struct pt {
-    ll fi, se, vt;
-};
-pt a[N];
-map<ll, ll> M;
+int a[N][N], n, m, gmax = 0;
+int dx[] = {1, -1, 0, 0};
+int dy[] = {0, 0, 1, -1};
+ii lab[N][N];
+ii ck = {0, 0};
 
-bool cmp(pt x, pt y) {
-    return (x.fi < y.fi || (x.fi == y.fi && (x.se < y.se || (x.se == y.se && x.vt < y.vt))));
+ii find_set(ii x) {
+    if(lab[x.fi][x.se] < ck)
+        return x;
+    ii t = find_set(x);
+    lab[x.fi][x.se] = t;
+    return t;
 }
 
-ll chat(ll x) {
-    int l = 1, r = n;
-    while(l < r) {
-        int mid = (l+r)/2;
-        if(a[mid].fi <= x)
-            l = mid;
-        else 
-            r = mid-1;
-    }
-    return l;
+void union_set(ii x, ii y) {
+    ii x = find_set(x);
+    ii y = find_set(y);
+    
 }
 void solve() {
-    pt b = a[m];
-    ans.pb(m);
-    sort(a+1, a+1+n, cmp);
-    while(true) {
-        ll t = upper_bound(a+1, a+1+n, (b.fi, 0, 0)) - a - 1;
-        while(M[a[t].vt]) {
-            t--;
 
-        }
-
-    }
 }
 
 void init() {
-    read(n), read(m);
-    for(int i = 1; i <= n; i++)
-        read(a[i].fi);
-    for(int i = 1; i <= n; i++)
-        read(a[i].se);
+    cin >> m >> n;
+    for(int i = 1; i <= m; i++) {
+        for(int j = 1; j <= n; j++) {
+            cin >> a[i][j];
+            gmax = max(gmax, a[i][j]);
+            lab[i][j] = {-1, -1};
+        }
+    }
 }
 #define task ""
 int32_t main() {

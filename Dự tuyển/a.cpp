@@ -37,23 +37,25 @@ typedef unordered_map<int, int> umii;
 typedef unordered_map<int, bool> umib;
 typedef unordered_map<ll, ll> umll;
 
-const int N = 2e5+10;
+const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-int m, n;
-vi f[N];
+string a, b;
+ll POW[N], Hasha[N], Hashb[N], n, m;
+
 
 void solve() {
-    
+    n = a.size();
+    m = b.size();
+    a = ' ' + a;
+    b = ' ' + b;
+    for(int i = 1; i <= n; i++) {
+
+    }
 }
 
 void init() {
-    cin >> n >> m;
-    int u, v;
-    for(int i = 1; i <= m; i++) {
-        cin >> u >> v;
-        f[u].eb(v);
-    }
+    cin >> a >> b;
 }
 #define task ""
 int32_t main() {
