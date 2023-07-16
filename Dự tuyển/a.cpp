@@ -41,16 +41,33 @@ const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
 string a, b;
-ll POW[N], Hasha[N], Hashb[N], n, m;
+ll POW[N], Hasha[N], Hashb, n, m;
+ll base = 311;
 
+ll get_hasha(int i, int j) {
+    return ((Hasha[j] - Hasha[i-1]) * POW[j-i+1] + MOD * MOD) % MOD;
+}
 
 void solve() {
     n = a.size();
     m = b.size();
     a = ' ' + a;
     b = ' ' + b;
+    POW[0] = 1;
     for(int i = 1; i <= n; i++) {
-
+        POW[i] = (POW[i-1] * 26) % MOD;
+    }
+    Hasha[0] = 0;
+    for(int i = 1; i <= n; i++) {
+        Hasha[i] = (Hasha[i-1] * 26 + (a[i] - 'a'))%MOD; 
+    }
+    Hashb = 0;
+    for(int i = 1; i <= m; i++) {
+        Hashb = (Hashb * 26 + (b[i] - 'a'))%MOD;
+    }
+    for(int i = 1; i <= n-m+1; i++) {
+        if(get_hasha(i, i+m-1) == Hashb)
+            cout << i << " ";
     }
 }
 
