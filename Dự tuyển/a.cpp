@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
-//#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
-//#pragma GCC target("sse4,avx2,fma")
+#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+#pragma GCC target("sse4,avx2,fma")
 #define fi first
 #define se second
 #define mp make_pair
@@ -27,55 +27,47 @@ template <typename T> inline void read (T &x) {
     }
 }
 
+
 typedef long long ll;
-typedef unsigned long long ull;
 typedef pair<int,int> ii;
 typedef pair<ll,ll> pll;
 typedef vector<int> vi;
 typedef vector<ll> vll;
 typedef vector<ii> vii;
-typedef unordered_map<int, int> umii;
-typedef unordered_map<int, bool> umib;
-typedef unordered_map<ll, ll> umll;
 
-const int N = 1e6+500;
+const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-string a, b;
-ull POW[N], Hasha[N], Hashb, n, m;
-ull base = 311;
 
-ull get_hasha(int i, int j) {
-    return ((Hasha[j] - Hasha[i-1]) * POW[j-i+1] + MOD * MOD) % MOD;
+ll tohop(ll x, ll y) {
+    if(x < y) return 0;
+    if(x == y) return 1;
+    y = max(y, x - y);
+    ll t1 = 1, t2 = 1;
+    for(int i = 1; i <= x-y; i++)
+        t1 *= i;
+    for(int i = y+1; i <= x; i++)
+        t2 *= i;
+    return (t2/t1);
 }
 
+ll n, a[N], k, ans = 0;
+
 void solve() {
-    n = a.size();
-    m = b.size();
-    a = ' ' + a;
-    b = ' ' + b;
-    POW[0] = 1;
-    for(ull i = 1; i <= n+1; i++) {
-        POW[i] = (POW[i-1] * 26) % MOD;
+    sort(a+1, a+1+n);
+    for(int i = k; i <= n; i++) {
+        ans += (a[i]%MOD * tohop(i-1, k-1)%MOD)%MOD;
+        ans %= MOD;
     }
-    Hasha[0] = 0;
-    for(ull i = 1; i <= n; i++) {
-        Hasha[i] = (Hasha[i-1] * 26 + a[i] - 'a')%MOD; 
-    }
-    Hashb = 0;
-    for(ull i = 1; i <= m; i++) {
-        Hashb = (Hashb * 26 + b[i] - 'a')%MOD;
-    }
-    for(ull i = 1; i <= n-m+1; i++) {
-        if(get_hasha(i, i+m-1) == Hashb)
-            cout << i << " ";
-    }
+    cout << ans%MOD;
 }
 
 void init() {
-    cin >> a >> b;
+    cin >> n >> k;
+    for(int i = 1; i <= n; i++)
+        cin >> a[i];
 }
-#define task ""
+#define task "a"
 int32_t main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
