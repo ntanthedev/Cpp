@@ -48,9 +48,10 @@ void solve() {
 }
 
 void init() {
-    cin >> n >> s;
+    cin >> n;
+    cin >> s;
 }
-    #define task "MatmaH"
+#define task "PALINY"
 int32_t main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
