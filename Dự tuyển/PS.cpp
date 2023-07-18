@@ -13,7 +13,7 @@ void solve(){
         if(i - k > r - l){
             l = k;
             r = i;
-            cout<<l<<" "<<r<<'\n';
+            //cout<<l<<" "<<r<<'\n';
         }
         if(k == 0)
             break;

@@ -1,17 +1,26 @@
-#include <bits/stdc++.h>
-
+#include<bits/stdc++.h>
 using namespace std;
+#define ll long long
+#define ull unsigned long long 
+const long long R = 1e9+7;
+const long long N = 1e6+9;
+ll p = 9, res, kt;
+ll n;
+void slove(){
+    while(n > 0){
+        res += n;
+        n = n-p;
+        p = p*10;
+    }
+    cout<<res;
+}
 
-int main() {
+int main()
+{
+    cin.tie(NULL); cout.tie(NULL);
     ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
     freopen("code.inp","r",stdin);
-    freopen("code.out","w",stdout);
-    long long t, n, m;
-    cin >> n >> m;
-    t = n/2;
-    while(t%m != 0)
-        t++;
-    cout << t;
-    return 0;
+    freopen("code.out","w",stdout);    
+    cin>>n;
+    slove();
 }

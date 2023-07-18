@@ -44,17 +44,23 @@ ll tohop(ll x, ll y) {
     if(x == y) return 1;
     y = max(y, x - y);
     ll t1 = 1, t2 = 1;
-    for(int i = 1; i <= x-y; i++)
+    for(int i = 1; i <= x-y; i++){
         t1 *= i;
-    for(int i = y+1; i <= x; i++)
+        t1 %= MOD;
+    }
+    for(int i = y+1; i <= x; i++){
         t2 *= i;
-    return (t2/t1);
+        t2 %= MOD;
+    }
+    return (t2%(t1*MOD))/t1;
 }
 
 ll n, a[N], k, ans = 0;
 
 void solve() {
     sort(a+1, a+1+n);
+    // for(int i = 1; i <= n; i++)
+    //     cout << a[i] << " "; cout << '\n';
     for(int i = k; i <= n; i++) {
         ans += (a[i]%MOD * tohop(i-1, k-1)%MOD)%MOD;
         ans %= MOD;
