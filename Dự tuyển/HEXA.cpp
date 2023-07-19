@@ -58,8 +58,8 @@ void solve() {
 void init() {
     cin >> n;
 }
-#define task "HEXA"
 int32_t main() {
+    #define task "HEXA"
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
     if(fopen(task".inp","r")) {

@@ -37,31 +37,24 @@ typedef unordered_map<int, int> umii;
 typedef unordered_map<int, bool> umib;
 typedef unordered_map<ll, ll> umll;
 
-const int N = 1e6+10;
+const int N = 1e3+500;
 const ll MOD = 1e9+7;
 
-ll n;
+ll n, a[N][N];
 
 void solve() {
-    ll res = 0;
-    for(int i = 1; i <= sqrt(n); i++) {
-        if(n%i == 0) {
-            res += i;
-            if(n/i != i)
-                res += n/i;
-        }
-    }
-    res -= n;
-    if(res == n)
-        cout << "YES";
-    else 
-        cout << "NO";
+    
 }
 
 void init() {
     cin >> n;
+    for(int i = 1; i <= n; i++) {
+        for(int j = 1; j <= n; j++) {
+            cin >> a[i][j];
+        }
+    }
 }
-#define task "ISPERFECT"
+#define task "FASTFOOD"
 int32_t main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
