@@ -33,23 +33,34 @@ typedef pair<ll,ll> pll;
 typedef vector<int> vi;
 typedef vector<ll> vll;
 typedef vector<ii> vii;
-typedef unordered_map<int, int> umii;
-typedef unordered_map<int, bool> umib;
-typedef unordered_map<ll, ll> umll;
 
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-
+ll n, res, t;
 
 void solve() {
-    
+    res = 0;
+    t = 0;
+    for(int i = 1; i <= sqrt(n); i++) {
+        res += n/i;
+        t++;
+        if(n/i != i) {
+            res += n/(n/i);
+            t++;
+        }
+    }
+    if(n / (sqrt(n)+1) > 1){
+        res += n / sqrt(n);
+        t++;
+    }
+    cout << res + n - t << "/" << n*n << '\n';
 }
 
 void init() {
-
+    cin >> n;
 }
-#define task ""
+#define task "COUNT"
 int32_t main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
@@ -58,7 +69,7 @@ int32_t main() {
         freopen(task".out","w",stdout);
     }
     int test_case = 1;
-    //cin >> test_case;
+    cin >> test_case;
     while(test_case--) {
         init();
         solve();
