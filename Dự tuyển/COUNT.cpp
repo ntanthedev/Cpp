@@ -1,6 +1,6 @@
-#include<bits/stdc++.h>
-//#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
-//#pragma GCC target("sse4,avx2,fma")
+#include <bits/stdc++.h>
+// #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+// #pragma GCC target("sse4,avx2,fma")
 #define fi first
 #define se second
 #define mp make_pair
@@ -10,51 +10,52 @@
 
 using namespace std;
 
-template <typename T> inline void read (T &x) {
+template<typename T>
+inline void read(T& x) {
     bool b = 0;
     char c;
-    while (!isdigit (c = getchar()) && c != '-');
-    if (c == '-') {
+    while(!isdigit(c = getchar()) && c != '-')
+        ;
+    if(c == '-') {
         c = getchar();
         b = 1;
     }
     x = c - 48;
-    while (isdigit(c = getchar())) {
+    while(isdigit(c = getchar())) {
         x = (x << 3) + (x << 1) + (c - 48);
     }
-    if (b) {
-        x=-x;
+    if(b) {
+        x = -x;
     }
 }
 
 typedef long long ll;
-typedef pair<int,int> ii;
-typedef pair<ll,ll> pll;
+typedef pair<int, int> ii;
+typedef pair<ll, ll> pll;
 typedef vector<int> vi;
 typedef vector<ll> vll;
 typedef vector<ii> vii;
 
-const int N = 1e6+10;
-const ll MOD = 1e9+7;
+const int N = 1e6 + 10;
+const ll MOD = 1e9 + 7;
 
 ll n, res, t;
 
+ll get(ll n) {
+    ll root = sqrt(n);
+    ll ans = 0;
+
+    for(int i = 1; i <= root; i++)
+        ans += n / i;
+
+    ans = 2 * ans - (root * root);
+    return ans;
+}
+
 void solve() {
-    res = 0;
-    t = 0;
-    for(int i = 1; i <= sqrt(n); i++) {
-        res += n/i;
-        t++;
-        if(n/i != i) {
-            res += n/(n/i);
-            t++;
-        }
-    }
-    if(n / (sqrt(n)+1) > 1){
-        res += n / sqrt(n);
-        t++;
-    }
-    cout << res + n - t << "/" << n*n << '\n';
+    res = get(n);
+    ll t = __gcd(res, n * n);
+    cout << res / t << "/" << n * n / t << '\n';
 }
 
 void init() {
@@ -64,9 +65,9 @@ void init() {
 int32_t main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
-    if(fopen(task".inp","r")) {
-        freopen(task".inp","r",stdin);
-        freopen(task".out","w",stdout);
+    if(fopen(task ".inp", "r")) {
+        freopen(task ".inp", "r", stdin);
+        freopen(task ".out", "w", stdout);
     }
     int test_case = 1;
     cin >> test_case;

@@ -1,12 +1,7 @@
 #include<bits/stdc++.h>
 //#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
 //#pragma GCC target("sse4,avx2,fma")
-#define fi first
-#define se second
-#define mp make_pair
-#define pb push_back
-#define eb emplace_back
-#define all(x) x.begin(), x.end()
+
 
 using namespace std;
 
@@ -40,16 +35,33 @@ typedef unordered_map<ll, ll> umll;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-ll n;
+ll n, Pow[N], Hash[N], base = 311;
 string s;
 
-void solve() {
+void make(ll x) {
 
+}
+
+
+void solve() {
+    for(int i = 1; i <= n; i++) {
+        Pow[i] = (Pow[i-1] * 26)%base;
+    }
+    for(int i = 1; i <= n; i++) {
+        Hash[i] = (Hash[i-1] * 26 + (s[i] - 'a'))%base;
+    }
+    // chat le 
+    ll l = 1, r = n;
+    while(l < r) {
+        int mid = (l+r)/2;
+        
+    }
 }
 
 void init() {
     cin >> n;
     cin >> s;
+    s = ' ' + s;
 }
 #define task "PALINY"
 int32_t main() {

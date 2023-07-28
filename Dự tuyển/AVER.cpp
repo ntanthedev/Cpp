@@ -25,8 +25,8 @@ void solve(){
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);
-    freopen("AVER.inp","r",stdin);
-    freopen("AVER.out","w",stdout);
+    // freopen("AVER.inp","r",stdin);
+    // freopen("AVER.out","w",stdout);
     cin >> n >> arv; s[0] = 0; smin[0] = 0;
     for(int i = 1; i <= n; i++){
         cin >> a[i];

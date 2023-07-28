@@ -8,18 +8,18 @@ void solve(){
     if(k == 0)
         r = n;
     while(k >= 0){
-        while(k < i && s[k] >= s[i])
+        while(k < i && s[k] > s[i])
             i--;
         if(i - k > r - l){
             l = k;
             r = i;
-            //cout<<l<<" "<<r<<'\n';
         }
         if(k == 0)
             break;
         k = smin[k-1];
     }
-    cout<<l+1<<" "<<r;
+    //cout<<l+1<<" "<<r;
+    cout << r-l;
 }
 
 int main(){
@@ -29,9 +29,11 @@ int main(){
         freopen("PS.inp","r",stdin);
         freopen("PS.out","w",stdout);
     }
-    cin >> n; s[0] = 0; smin[0] = 0;
+    int xx;
+    cin >> n >> xx; s[0] = 0; smin[0] = 0;
     for(int i = 1; i <= n; i++){
         cin >> a[i];
+        a[i] -= xx;
         s[i] = s[i-1] + a[i];
         if(s[i] < s[smin[i-1]]){
             smin[i] = i;
