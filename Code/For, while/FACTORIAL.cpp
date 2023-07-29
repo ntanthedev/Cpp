@@ -10,7 +10,7 @@ int main ()
     doc>>n;
     for(int i = 1; i <= n; i++)
     {
-        gt = gt * (i%123456789);
+        gt = (gt * (i%123456789))%123456789;
     }
     xuat<<gt;
     doc.close();

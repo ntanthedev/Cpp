@@ -1,4 +1,5 @@
 #include<bits/stdc++.h>
+#include<fstream>
 using namespace std;
 bool gnt(long long x)
 {

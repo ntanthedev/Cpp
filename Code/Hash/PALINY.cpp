@@ -1,80 +1,85 @@
-#include<bits/stdc++.h>
-//#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
-//#pragma GCC target("sse4,avx2,fma")
-
+#include <bits/stdc++.h>
+#define all(x) x.begin(), x.end()
 
 using namespace std;
 
-template <typename T> inline void read (T &x) {
-    bool b = 0;
-    char c;
-    while (!isdigit (c = getchar()) && c != '-');
-    if (c == '-') {
-        c = getchar();
-        b = 1;
-    }
-    x = c - 48;
-    while (isdigit(c = getchar())) {
-        x = (x << 3) + (x << 1) + (c - 48);
-    }
-    if (b) {
-        x=-x;
-    }
-}
-
 typedef long long ll;
-typedef pair<int,int> ii;
-typedef pair<ll,ll> pll;
-typedef vector<int> vi;
-typedef vector<ll> vll;
-typedef vector<ii> vii;
-typedef unordered_map<int, int> umii;
-typedef unordered_map<int, bool> umib;
-typedef unordered_map<ll, ll> umll;
+const int N = 1e6 + 9;
+const ll MOD = 1e9 + 3;
+const ll base = 31;
 
-const int N = 1e6+10;
-const ll MOD = 1e9+7;
+ll ans = 0, n, POW[N], Hasha[N], Hashb[N];
+string a, b;
 
-ll n, Pow[N], Hash[N], base = 311;
-string s;
-
-void make(ll x) {
-
+ll get_hasha(ll i, ll j) {
+    return (Hasha[j] - Hasha[i - 1] * POW[j - i + 1] + MOD * MOD) % MOD;
 }
 
+ll get_hashb(ll i, ll j) {
+    return (Hashb[j] - Hashb[i - 1] * POW[j - i + 1] + MOD * MOD) % MOD;
+}
+
+bool check(ll x) {
+    for(int i = 1; i <= n - x + 1; i++) {
+        ll l = get_hasha(i, i + x - 1);
+        ll r = get_hashb(n - (i + x - 1) + 1, n - i + 1);
+        if(l == r)
+            return true;
+    }
+    return false;
+}
 
 void solve() {
+    // n = s.size();
+    a = ' ' + a;
+    b = ' ' + b;
+    POW[0] = 1;
+    Hasha[0] = 0;
+    Hashb[0] = 0;
     for(int i = 1; i <= n; i++) {
-        Pow[i] = (Pow[i-1] * 26)%base;
+        POW[i] = (POW[i - 1] * base) % MOD;
     }
     for(int i = 1; i <= n; i++) {
-        Hash[i] = (Hash[i-1] * 26 + (s[i] - 'a'))%base;
+        Hasha[i] = (Hasha[i - 1] * base + a[i] - 'a' + 1) % MOD;
     }
-    // chat le 
-    ll l = 1, r = n;
-    while(l < r) {
-        int mid = (l+r)/2;
-        
+    for(int i = 1; i <= n; i++) {
+        Hashb[i] = (Hashb[i - 1] * base + b[i] - 'a' + 1) % MOD;
     }
+
+    ll l = 1, r = n - (n % 2 == 0), mid;
+    while(l < r) {  // chat le
+        mid = (l + r) / 2;
+        if(mid % 2 == 0)
+            mid++;
+        if(check(mid)) {
+            l = mid;
+            ans = mid;
+        } else {
+            r = mid - 2;
+        }
+    }
+
+    l = 0, r = n - (n % 2);
+    while(l < r) {  // chat chan
+        mid = (l + r) / 2;
+        if(mid % 2 != 0)
+            mid++;
+        if(check(mid)) {
+            l = mid;
+        } else {
+            r = mid - 2;
+        }
+    }
+    cout << max(l, ans);
 }
 
-void init() {
-    cin >> n;
-    cin >> s;
-    s = ' ' + s;
-}
-#define task "PALINY"
-int32_t main() {
-    cin.tie(NULL);
+int main() {
     ios_base::sync_with_stdio(false);
-    if(fopen(task".inp","r")) {
-        freopen(task".inp","r",stdin);
-        freopen(task".out","w",stdout);
-    }
-    int test_case = 1;
-    //cin >> test_case;
-    while(test_case--) {
-        init();
-        solve();
-    }
+    cin.tie(NULL);
+
+    cin >> n >> a;
+    b = a;
+    reverse(all(b));
+
+    solve();
 }
