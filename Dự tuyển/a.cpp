@@ -66,9 +66,20 @@ void solve() {
         }
     }
     else {
-        
+        for(int i = 1; i <= n; i++) {
+            while(a[i] + a[gmax] < a[i-1]) {
+                a[gmax] += a[gmax];
+                ans.pb(mp(gmax, gmax));
+            }
+            if(a[i] < a[i-1]) {
+                a[i] += a[gmax];
+                ans.pb(mp(i, gmax));
+                if(a[i] > a[gmax])
+                    gmax = i;
+            }
+        }
     }
-    //cout << "----------------\n";
+    cout << "----------------\n";
     cout << ans.size() << '\n';
     for(auto i : ans) {
         cout << i.fi << " " << i.se << '\n';
@@ -93,7 +104,7 @@ int32_t main() {
         freopen(task".out","w",stdout);
     }
     int test_case = 1;
-    a[0] = LLONG_MIN;
+    a[0] = 0;
     cin >> test_case;
     while(test_case--) {
         init();
