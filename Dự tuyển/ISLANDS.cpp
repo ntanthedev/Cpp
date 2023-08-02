@@ -40,38 +40,20 @@ typedef unordered_map<ll, ll> umll;
 const int N = 1e3+10;
 const ll MOD = 1e9+7;
 
-int a[N][N], n, m, gmax = 0;
-int dx[] = {1, -1, 0, 0};
-int dy[] = {0, 0, 1, -1};
-ii lab[N][N];
-ii ck = {0, 0};
+int m, n, a[N][N], k;
+vii days[N];
 
-ii find_set(ii x) {
-    if(lab[x.fi][x.se] < ck)
-        return x;
-    ii t = find_set(x);
-    lab[x.fi][x.se] = t;
-    return t;
-}
-
-void union_set(ii x, ii y) {
-    ii x = find_set(x);
-    ii y = find_set(y);
-    
-}
 void solve() {
 
 }
 
 void init() {
     cin >> m >> n;
-    for(int i = 1; i <= m; i++) {
-        for(int j = 1; j <= n; j++) {
+    for(int i = 1; i <= m; i++)
+        for(int j = 1; j <= n; j++){
             cin >> a[i][j];
-            gmax = max(gmax, a[i][j]);
-            lab[i][j] = {-1, -1};
+            days[a[i][j]].eb(mp(i, j));
         }
-    }
 }
 #define task ""
 int32_t main() {

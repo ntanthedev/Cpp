@@ -33,9 +33,6 @@ typedef pair<ll,ll> pll;
 typedef vector<int> vi;
 typedef vector<ll> vll;
 typedef vector<ii> vii;
-typedef unordered_map<int, int> umii;
-typedef unordered_map<int, bool> umib;
-typedef unordered_map<ll, ll> umll;
 
 const int N = 2e5+10;
 const ll MOD = 1e9+7;
@@ -91,12 +88,12 @@ void sub2() {
         int mmin = get_min(1, 1, n, 1, i);
         if(mmin != a[i]) {
             ans = max(get_max(1, 1, n, mmin+1, i) - mmin, ans);
-            cout << get_max(1, 1, n, mmin+1, i) << " " << mmin << " " << ans << '\n';
+            // cout << get_max(1, 1, n, mmin+1, i) << " " << mmin << " " << ans << '\n';
         }
         int mmax = get_max(1, 1, n, 1, i);
         if(mmax != a[1]) {
             ans = max(mmax - get_min(1, 1, n, 1, mmax-1), ans);
-            cout << mmax << " " << get_min(1, 1, n, 1, mmax-1) << " " << ans << '\n';
+            // cout << mmax << " " << get_min(1, 1, n, 1, mmax-1) << " " << ans << '\n';
         }
         res = ans;
         ans = 0;
@@ -104,15 +101,15 @@ void sub2() {
         mmin = get_min(1, 1, n, i+1, n);
         if(mmin != a[n]) {
             ans = max(get_max(1, 1, n, mmin+1, n) - mmin, ans);
-            cout << get_max(1, 1, n, mmin+1, n) << " " << mmin << " " << ans << '\n';
+            // cout << get_max(1, 1, n, mmin+1, n) << " " << mmin << " " << ans << '\n';
         }
         mmax = get_max(1, 1, n, i+1, n);
         if(mmax != a[i]) {
             ans = max(mmax - get_min(1, 1, n, i, mmax-1), ans);
-            cout << mmax << " " << get_min(1, 1, n, i, mmax-1) << " " << ans << '\n';
+            // cout << mmax << " " << get_min(1, 1, n, i, mmax-1) << " " << ans << '\n';
         }
         gmax = max(gmax, res+ans);
-        cout << i << "---------------\n";
+        // cout << i << "---------------\n";
     }
     cout << gmax;
 }
