@@ -55,6 +55,7 @@ void solve() {
 	cout << X[1] ;//<< " " << Y[1] << " " << Z[1];
 }
 
+
 void init() {
 	cin >> n;
 	for(int i = 1; i <= n; i++)
