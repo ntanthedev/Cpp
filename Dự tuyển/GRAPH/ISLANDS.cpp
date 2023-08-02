@@ -10,6 +10,7 @@
 
 using namespace std;
 
+
 typedef long long ll;
 typedef pair<int,int> ii;
 typedef pair<ll,ll> pll;
