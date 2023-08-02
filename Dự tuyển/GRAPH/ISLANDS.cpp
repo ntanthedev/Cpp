@@ -10,23 +10,6 @@
 
 using namespace std;
 
-template <typename T> inline void read (T &x) {
-    bool b = 0;
-    char c;
-    while (!isdigit (c = getchar()) && c != '-');
-    if (c == '-') {
-        c = getchar();
-        b = 1;
-    }
-    x = c - 48;
-    while (isdigit(c = getchar())) {
-        x = (x << 3) + (x << 1) + (c - 48);
-    }
-    if (b) {
-        x=-x;
-    }
-}
-
 typedef long long ll;
 typedef pair<int,int> ii;
 typedef pair<ll,ll> pll;
@@ -74,8 +57,8 @@ void union_sets(int a, int b) {
 }
 
 void solve() {
-  	memset(par, 0, sizeof(par));
-    for(int i = 1; i <= k; i++) {
+    memset(par, 0, sizeof(par));
+    for(int i = k; i >= 1; i--) {
         if(days[i].empty()) continue;
         for(auto j : days[i]) {
             par[get_id(j.fi, j.se)] = -1;
@@ -83,7 +66,8 @@ void solve() {
             for(int f = 0; f < 4; f++) {
                 int nx = j.fi + dx[f];
                 int ny = j.se + dy[f];
-              	if(!check(nx, ny)) continue;
+                if(!check(nx, ny))
+                    continue;
                 if(par[get_id(nx, ny)] != 0) {
                     union_sets(get_id(nx, ny), get_id(j.fi, j.se));
                 }
@@ -99,7 +83,7 @@ void init() {
     for(int i = 1; i <= m; i++)
         for(int j = 1; j <= n; j++){
             cin >> a[i][j];
-            days[a[i][j]].eb(mp(i, j));
+            days[a[i][j]-1].eb(mp(i, j));
             k = max(k, a[i][j]);
         }
 }
