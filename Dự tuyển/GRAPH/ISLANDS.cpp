@@ -37,7 +37,7 @@ bool check(int x, int y) {
 }
 
 inline int get_id(int x, int y) {
-    return (n-1)*x + y;
+    return (x-1)*n + y;
 }
 
 int find_set(int x) {
@@ -59,22 +59,34 @@ void union_sets(int a, int b) {
 
 void solve() {
     memset(par, 0, sizeof(par));
-    for(int i = k; i >= 1; i--) {
+    for(int i = k; i >= 0; i--) {
         if(days[i].empty()) continue;
         for(auto j : days[i]) {
             par[get_id(j.fi, j.se)] = -1;
+            // if(i == 4)
+                //cout << "d4: " << res << " ";
             res++;
+            // if(i == 4)
+            //     cout << res << " ";
             for(int f = 0; f < 4; f++) {
                 int nx = j.fi + dx[f];
                 int ny = j.se + dy[f];
                 if(!check(nx, ny))
                     continue;
                 if(par[get_id(nx, ny)] != 0) {
+                    // if(i == 4)
+                    //     cout << j.fi << " " << j.se << " " << nx << " " << ny << " " << res << ' ';
                     union_sets(get_id(nx, ny), get_id(j.fi, j.se));
                 }
             }
+            // if(i == 4)
+            //     cout << res << '\n' ;
         }
         ans = max(ans, res);
+        // cout << i << " " << res << ' ';
+        // for(auto j : days[i])
+        //     cout << j.fi << "-" << j.se << " " ;
+        // cout << '\n'; 
     }
     cout << ans;
 }
