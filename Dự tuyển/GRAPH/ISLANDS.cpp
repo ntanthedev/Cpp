@@ -73,8 +73,8 @@ void solve() {
                     union_sets(get_id(nx, ny), get_id(j.fi, j.se));
                 }
             }
-            ans = max(ans, res);
         }
+        ans = max(ans, res);
     }
     cout << ans;
 }
