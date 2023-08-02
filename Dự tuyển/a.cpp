@@ -11,21 +11,48 @@
 using namespace std;
 
 template <typename T> inline void read (T &x) {
-    bool b = 0;
-    char c;
-    while (!isdigit (c = getchar()) && c != '-');
-    if (c == '-') {
-        c = getchar();
-        b = 1;
-    }
-    x = c - 48;
-    while (isdigit(c = getchar())) {
-        x = (x << 3) + (x << 1) + (c - 48);
-    }
-    if (b) {
-        x=-x;
-    }
+	bool b = 0;
+	char c;
+	while (!isdigit (c = getchar()) && c != '-');
+	if (c == '-') {
+		c = getchar();
+		b = 1;
+	}
+	x = c - 48;
+	while (isdigit(c = getchar())) {
+		x = (x << 3) + (x << 1) + (c - 48);
+	}
+	if (b) {
+		x=-x;
+	}
 }
+
+void __print(int x) {cerr << x;}
+void __print(long x) {cerr << x;}
+void __print(long long x) {cerr << x;}
+void __print(unsigned x) {cerr << x;}
+void __print(unsigned long x) {cerr << x;}
+void __print(unsigned long long x) {cerr << x;}
+void __print(float x) {cerr << x;}
+void __print(double x) {cerr << x;}
+void __print(long double x) {cerr << x;}
+void __print(char x) {cerr << '\'' << x << '\'';}
+void __print(const char *x) {cerr << '\"' << x << '\"';}
+void __print(const string &x) {cerr << '\"' << x << '\"';}
+void __print(bool x) {cerr << (x ? "true" : "false");}
+ 
+template<typename T, typename V>
+void __print(const pair<T, V> &x) {cerr << '{'; __print(x.first); cerr << ", "; __print(x.second); cerr << '}';}
+template<typename T>
+void __print(const T &x) {int f = 0; cerr << '{'; for (auto &i: x) cerr << (f++ ? ", " : ""), __print(i); cerr << "}";}
+void _print() {cerr << "]\n";}
+template <typename T, typename... V>
+void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v...);}
+#ifndef ONLINE_JUDGE
+#define dbg(x...) cerr << "\e[91m"<<__func__<<":"<<__LINE__<<" [" << #x << "] = ["; _print(x); cerr << "\e[39m" << endl;
+#else
+#define dbg(x...)
+#endif
 
 typedef long long ll;
 typedef pair<int,int> ii;
@@ -40,74 +67,65 @@ typedef unordered_map<ll, ll> umll;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-ll n, a[30];
-vii ans;
-bool flag;
+ll n;
+vll a, b;
+
+ll sqr(ll x) {
+	return x*x;
+}
+bool is_prime[10000009];
+const int Max_Sang = 10000009;
+void sang_eratosthene() {
+	memset(is_prime, true, sizeof(is_prime));
+	is_prime[0] = false;
+	is_prime[1] = false;
+	for(int i = 2; i <= sqrt(Max_Sang); i++)
+		if(is_prime[i]) {
+			for(auto j : b) {
+				if(sqr(j) * sqr(i) <= n)
+					a.eb(sqr(j) * sqr(i));
+				else 
+					break;
+			}
+			b.eb(i);
+			if(pow(i, 8) <= n)
+				a.eb(pow(i, 8));
+			for(int j = i*i; j <= Max_Sang; j += i)
+				is_prime[j] = false;
+		}
+}
 
 void solve() {
-    ans.clear();
-    if(!flag) {
-        cout << 0 << '\n';
-        return;
-    }
-    ll gmax;
-    for(int i = 1; i <= n; i++)
-        if(a[i] > a[gmax])
-            gmax = i;
-    if(a[gmax] < 0) {//xu ly tim gmin
-        for(int i = 1; i <= n; i++)
-            if(a[i] < a[gmax])
-                gmax = i;
-        for(int i = n; i >= 2; i--) {
-            if(a[i] < a[i-1]) {
-                a[i-1] += a[i];
-                ans.pb(mp(i-1, i));
-            }
-        }
-    }
-    else {
-        for(int i = 1; i <= n; i++) {
-            while(a[i] + a[gmax] < a[i-1]) {
-                a[gmax] += a[gmax];
-                ans.pb(mp(gmax, gmax));
-            }
-            if(a[i] < a[i-1]) {
-                a[i] += a[gmax];
-                ans.pb(mp(i, gmax));
-                if(a[i] > a[gmax])
-                    gmax = i;
-            }
-        }
-    }
-    cout << "----------------\n";
-    cout << ans.size() << '\n';
-    for(auto i : ans) {
-        cout << i.fi << " " << i.se << '\n';
-    }
+	sang_eratosthene();
+	sort(all(a));
+	//dbg(b);
+	a.eb(LLONG_MAX);
+	// cout << a.size() << '\n';
+	for(int i = 0; i < a.size(); i++) {
+		// cout << a[i] << " " ;
+		if(a[i] > n) {
+			cout << i;
+			return;
+		}
+	}
+	
 }
 
 void init() {
-    flag = 0;
-    cin >> n;
-    for(int i = 1; i <= n; i++){
-        cin >> a[i];
-        if(a[i] < a[i-1])
-            flag = 1;
-    }
+	cin >> n;
 }
 #define task ""
 int32_t main() {
-    cin.tie(NULL);
-    ios_base::sync_with_stdio(false);
-    if(fopen(task".inp","r")) {
-        freopen(task".inp","r",stdin);
-        freopen(task".out","w",stdout);
-    }
-    int test_case = 1;
-    a[0] = 0;
-    cin >> test_case;
-    while(test_case--) {
-        init();
-        solve();
-    }
+	cin.tie(NULL);
+	ios_base::sync_with_stdio(false);
+	if(fopen(task".inp","r")) {
+		freopen(task".inp","r",stdin);
+		freopen(task".out","w",stdout);
+	}
+	int test_case = 1;
+	//cin >> test_case;
+	while(test_case--) {
+		init();
+		solve();
+	}
 }
