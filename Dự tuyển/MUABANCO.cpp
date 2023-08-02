@@ -85,23 +85,36 @@ void sub1() {
 
 void sub2() {
     build(1, 1, n);
-    int ans = 0;
+    int ans = 0, res, gmax;
     for(int i = 2; i <= n-2; i++) {
+        ans = 0;
         int mmin = get_min(1, 1, n, 1, i);
-        if(mmin < i)
+        if(mmin != a[i]) {
             ans = max(get_max(1, 1, n, mmin+1, i) - mmin, ans);
+            cout << get_max(1, 1, n, mmin+1, i) << " " << mmin << " " << ans << '\n';
+        }
         int mmax = get_max(1, 1, n, 1, i);
-        if(mmax > 1)
+        if(mmax != a[1]) {
             ans = max(mmax - get_min(1, 1, n, 1, mmax-1), ans);
+            cout << mmax << " " << get_min(1, 1, n, 1, mmax-1) << " " << ans << '\n';
+        }
+        res = ans;
+        ans = 0;
         //---------------
-        int mmin = get_min(1, 1, n, i+1, n);
-        if(mmin < n)
+        mmin = get_min(1, 1, n, i+1, n);
+        if(mmin != a[n]) {
             ans = max(get_max(1, 1, n, mmin+1, n) - mmin, ans);
-        int mmax = get_max(1, 1, n, i+1, n);
-        if(mmax > i)
+            cout << get_max(1, 1, n, mmin+1, n) << " " << mmin << " " << ans << '\n';
+        }
+        mmax = get_max(1, 1, n, i+1, n);
+        if(mmax != a[i]) {
             ans = max(mmax - get_min(1, 1, n, i, mmax-1), ans);
+            cout << mmax << " " << get_min(1, 1, n, i, mmax-1) << " " << ans << '\n';
+        }
+        gmax = max(gmax, res+ans);
+        cout << i << "---------------\n";
     }
-    cout << ans;
+    cout << gmax;
 }
 
 void solve() {
