@@ -30,7 +30,7 @@ bool check(ll x) {
 }
 
 void solve() {
-    // n = s.size();
+    n = a.size();
     a = ' ' + a;
     b = ' ' + b;
     POW[0] = 1;
