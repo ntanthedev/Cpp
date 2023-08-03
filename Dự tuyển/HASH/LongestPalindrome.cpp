@@ -71,6 +71,8 @@ void solve() {
         }
     }
     ans = max(l, ans);
+    if(ans == 0)
+        return cout << a[2], void();
     for(int i = 1; i <= n - ans + 1; i++) {
         ll l = get_hasha(i, i + ans - 1);
         ll r = get_hashb(n - (i + ans - 1) + 1, n - i + 1);
@@ -89,6 +91,5 @@ int main() {
     cin >> a;
     b = a;
     reverse(all(b));
-
     solve();
 }
