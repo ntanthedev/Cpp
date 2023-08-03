@@ -38,36 +38,16 @@ typedef unordered_map<int, bool> umib;
 typedef unordered_map<ll, ll> umll;
 
 const int N = 1e6+10;
-const ll MOD = 1e9+3;
+const ll MOD = 1e9+7;
 
-ll H[N], POW[N], base = 311, n;
-string s;
 
-ll get_hash(int i, int j) {
-    return (H[j] - H[i-1] * POW[j-i+1] + MOD * MOD) % MOD;
-}
 
 void solve() {
-    n = s.size();
-    s = ' ' + s;
-    POW[0] = 1;
-    H[0] = 0; 
-    for(int i = 1; i <= n; i++) {
-        POW[i] = (POW[i-1] * base)%MOD;
-    }
-    for(int i = 1; i <= n; i++) {
-        H[i] = (H[i-1] * base + s[i] - 'a' + 1) % MOD;
-    }
 
-    for(int i = 1; i < n; i++) {
-        ll a = get_hash(1, i), b = get_hash(n-i+1, n);
-        if(a == b)
-            cout << i << " ";
-    }
 }
 
 void init() {
-    cin >> s;
+
 }
 #define task ""
 int32_t main() {
@@ -77,7 +57,7 @@ int32_t main() {
         freopen(task".inp","r",stdin);
         freopen(task".out","w",stdout);
     }
-    int test_case = 1;     
+    int test_case = 1;
     //cin >> test_case;
     while(test_case--) {
         init();
