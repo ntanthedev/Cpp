@@ -33,23 +33,75 @@ typedef pair<ll,ll> pll;
 typedef vector<int> vi;
 typedef vector<ll> vll;
 typedef vector<ii> vii;
-typedef unordered_map<int, int> umii;
-typedef unordered_map<int, bool> umib;
-typedef unordered_map<ll, ll> umll;
 
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
 ll n, a[N], l, r;
+map<ll, ll> M;
+
+void sub1() {
+    ll res = 0;
+    for(int i = 1; i <= l; i++)
+        M[a[i]]++;
+    for(int i = l+1; i <= n; i++)
+        if(M[a[i]] == 0)
+            res++;
+        else 
+            M[a[i]]--;
+    cout << res << '\n'; 
+}
+
+void sub2() {
+    ll res = 0, d = max(l, r) - min(l, r);
+
+    if(l <= r) {
+        for(int i = l+1; i <= n; i++) {
+            M[a[i]]++;
+            if(M[a[i]] > 1 && d > 0) {
+                res++;
+                d--;
+                M[a[i]]--;
+            }
+        }
+        for(int i = 1; i <= l; i++) {
+            if(M[a[i]] == 0)
+                res++;
+            M[a[i]]--;
+        }
+        cout << res + d << '\n';
+    }
+    else {
+        for(int i = 1; i <= l; i++) {
+            M[a[i]]++;
+            if(M[a[i]] > 1 && d > 0) {
+                res++;
+                d--;
+                M[a[i]]--;
+            }
+        }
+        for(int i = l+1; i <= n; i++) {
+            if(M[a[i]] == 0)
+                res++;
+            M[a[i]]--;
+        }
+        cout << res + d << '\n';
+    }
+
+}
 
 void solve() {
-
+    if(l == r)
+        sub1();
+    else 
+        sub2();
 }
 
 void init() {
     cin >> n >> l >> r;
     for(int i = 1; i <= n; i++)
         cin >> a[i];
+    M.clear();
 }
 #define task "SEQ"
 int32_t main() {
