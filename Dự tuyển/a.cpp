@@ -1,75 +1,86 @@
-/*
-Problem Name: Palindrome Queries
-Problem Link: https://cses.fi/problemset/task/2420
-Author: Sachin Srivastava (mrsac7)
-*/
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
+// #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+// #pragma GCC target("sse4,avx2,fma")
+#define fi first
+#define se second
+#define mp make_pair
+#define pb push_back
+#define eb emplace_back
+#define all(x) x.begin(), x.end()
+
 using namespace std;
 
-#define int long long
-#define endl '\n'
+template<typename T>
+inline void read(T& x) {
+    bool b = 0;
+    char c;
+    while(!isdigit(c = getchar()) && c != '-')
+        ;
+    if(c == '-') {
+        c = getchar();
+        b = 1;
+    }
+    x = c - 48;
+    while(isdigit(c = getchar())) {
+        x = (x << 3) + (x << 1) + (c - 48);
+    }
+    if(b) {
+        x = -x;
+    }
+}
 
-const int md = 1e9+7;
-int B = 73; //Sheldon prime (lol)
-const int mxN = 1e6+6;
-int pB[mxN];
-struct {
-    int bit[mxN] = {0};
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef pair<ll, ll> pll;
+typedef vector<int> vi;
+typedef vector<ll> vll;
+typedef vector<ii> vii;
+typedef unordered_map<int, int> umii;
+typedef unordered_map<int, bool> umib;
+typedef unordered_map<ll, ll> umll;
 
-    void update(int k, int x) {
-        x %= md;
-        if (x < md) x += md;
-        for (; k < mxN; k += k&-k) {
-            (bit[k] += x) %= md;
+const int N = 1e6 + 10;
+const ll MOD = 1e9 + 7;
+
+int n, a[101], ans = 0;
+
+void solve() {
+    for(int i = 1; i <= n; i++) {
+        while(a[i] != 0) {
+            int tmp = a[i];
+            for(int j = i + 1; j <= n; j++) {
+                if(a[j] == 0)
+                    break;
+                tmp = min(tmp, a[j]);
+            }
+            ans += tmp;
+            for(int j = i; j <= n; j++) {
+                if(a[j] == 0)
+                    break;
+                a[j] -= tmp;
+            }
         }
     }
+    cout << ans;
+}
 
-    int query(int k) {
-        int s = 0;
-        for (; k > 0; k -= k&-k)
-            (s += bit[k]) %= md;
-        return s;
+void init() {
+    cin >> n;
+    for(int i = 1; i <= n; i++)
+        cin >> a[i];
+}
+#define task ""
+int32_t main() {
+    cin.tie(NULL);
+    ios_base::sync_with_stdio(false);
+    if(fopen(task ".inp", "r")) {
+        freopen(task ".inp", "r", stdin);
+        freopen(task ".out", "w", stdout);
     }
-} pre, suf;
-
-signed main(){
-    ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0);
-    #ifdef LOCAL
-    freopen("input.txt", "r" , stdin);
-    freopen("output.txt", "w", stdout);
-    #endif
-
-    mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
-    B = uniform_int_distribution<int>(73, 7337)(rng);
-    
-    int n, t; cin>>n>>t;
-    string s; cin>>s;
-    pB[0] = 1;
-    for (int i = 1; i < mxN; i++) 
-        pB[i] = pB[i-1] * B % md;
-
-    for (int i = 0; i < n; i++) {
-        pre.update(i+1, (s[i]-'a'+1) * pB[i]);
-        suf.update(i+1, (s[i]-'a'+1) * pB[n-i-1]);
-    }
-    while (t--) {
-        int ch; cin>>ch;
-        if (ch == 1) {
-            int k; char x;
-            cin>>k>>x; k--;
-            pre.update(k+1, -(s[k]-'a'+1) * pB[k]);
-            pre.update(k+1, (x-'a'+1) * pB[k]);
-            suf.update(k+1, -(s[k]-'a'+1) * pB[n-k-1]);
-            suf.update(k+1, (x-'a'+1) * pB[n-k-1]);
-            s[k] = x;
-        }
-        else {
-            int x, y; cin>>x>>y;
-            int h1 = (pre.query((x+y)/2) - pre.query(x-1) + md) % md;
-            int m1 = pB[x-1];
-            int h2 = (suf.query(y) - suf.query((x+y-1)/2) + md) % md;
-            int m2 = pB[n-y];
-            cout << (h1 * m2 % md == h2 * m1 % md ? "YES" : "NO" ) << endl;            
-        }
+    int test_case = 1;
+    // cin >> test_case;
+    while(test_case--) {
+        init();
+        solve();
     }
 }

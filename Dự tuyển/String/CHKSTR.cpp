@@ -28,6 +28,6 @@ int main()
        if(d == 0)
         cout<<"YES"<<'\n';
        else
-        cout<<"NO"<<'\n';
+        cout<<"NO"<<'\n'; 
     }
 }

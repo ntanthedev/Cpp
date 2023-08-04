@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
-//#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
-//#pragma GCC target("sse4,avx2,fma")
+#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+#pragma GCC target("sse4,avx2,fma")
 #define fi first
 #define se second
 #define mp make_pair
@@ -9,23 +9,6 @@
 #define all(x) x.begin(), x.end()
 
 using namespace std;
-
-template <typename T> inline void read (T &x) {
-    bool b = 0;
-    char c;
-    while (!isdigit (c = getchar()) && c != '-');
-    if (c == '-') {
-        c = getchar();
-        b = 1;
-    }
-    x = c - 48;
-    while (isdigit(c = getchar())) {
-        x = (x << 3) + (x << 1) + (c - 48);
-    }
-    if (b) {
-        x=-x;
-    }
-}
 
 typedef long long ll;
 typedef pair<int,int> ii;
@@ -40,6 +23,11 @@ typedef unordered_map<ll, ll> umll;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
+int n, s[N], k, m;
+
+struct pt {
+    int i, j, c;
+};
 
 
 void solve() {
@@ -47,7 +35,8 @@ void solve() {
 }
 
 void init() {
-
+    cin >> n >> m >> k;
+    memset(s, -1, sizeof(s));
 }
 #define task ""
 int32_t main() {
