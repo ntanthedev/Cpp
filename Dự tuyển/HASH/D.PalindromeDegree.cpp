@@ -37,17 +37,53 @@ typedef unordered_map<int, int> umii;
 typedef unordered_map<int, bool> umib;
 typedef unordered_map<ll, ll> umll;
 
-const int N = 1e6+10;
+const int N = 5e6+10;
 const ll MOD = 1e9+7;
+const int base = 311; 
 
+string s, ss;
+ll n, POW[N], a[N], H1[N], H2[N];
 
+ll get_hash1(int i, int j) {
+    return (H1[j] - H1[i-1] * POW[j-i+1] + MOD * MOD) % MOD;
+}
+
+ll get_hash2(int i, int j) {
+    return (H2[j] - H2[i-1] * POW[j-i+1] + MOD * MOD) % MOD;
+}
 
 void solve() {
-
+    n = s.size();
+    ss = s;
+    s = ' ' + s;
+    reverse(all(ss));
+    s = ' ' + s;
+    POW[0] = 1;
+    H1[0] = 0; 
+    H2[0] = 0;
+    for(int i = 1; i <= n; i++) {
+        POW[i] = (POW[i-1] * base)%MOD;
+    }
+    for(int i = 1; i <= n; i++) {
+        H1[i] = (H1[i-1] * base + s[i] - 'a' + 1) % MOD;
+    }
+    for(int i = 1; i <= n; i++) {
+        H2[i] = (H2[i-1] * base + ss[i] - 'a' + 1) % MOD;
+    }
+    ll res = 1;
+    a[1] = 1;
+    for(int i = 2; i <= n; i++) {
+        if(get_hash1(1, i) == get_hash2(n-i+1, n)) {
+            ll c = i/2;
+            res += a[c]+1;
+            a[i] = a[c]+1;
+        }
+    }
+    cout << res;
 }
 
 void init() {
-
+    cin >> s;
 }
 #define task ""
 int32_t main() {
