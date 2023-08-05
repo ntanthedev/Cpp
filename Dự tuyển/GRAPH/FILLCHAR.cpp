@@ -54,6 +54,13 @@ void Fill(int i, int j, int c) {
         st.eb(i);
     }
     if(st.size() < k) {
+        for(int i = st.back()+1; i <= n; i++){
+            st.eb(i);
+            if(st.eb(i) == k)
+                break;
+        }
+    }
+    while(st.size() < k) {
         
     }
 }
