@@ -9,7 +9,7 @@ using namespace std;
 typedef long long ll;
 
 int par[N], n, m, k, p = 0, q = 0, res = 0;
-vector<int> adj[N];
+vector<int> f[N];
 
 int find_set(int x) {
     return par[x] < 0 ? x : par[x] = find_set(par[x]);
