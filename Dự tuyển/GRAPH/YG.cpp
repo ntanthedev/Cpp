@@ -8,28 +8,29 @@ using namespace std;
 
 typedef long long ll;
 
-int par[N], n, m, k, p = 0, q = 0, res = 0;
-vector<int> f[N];
+int n, m, k, t = 0, t1 = 0, t2 = 0;
+vector<int> adj[N];
+
+struct pt {
+    int par, x, v;
+};
+pt f[N]; 
 
 int find_set(int x) {
-    return par[x] < 0 ? x : par[x] = find_set(par[x]);
+    return f[x].par < 0 ? x : f[x].par = find_set(f[x].par);
 }
 
 void union_sets(int a, int b) {
     a = find_set(a);
     b = find_set(b);
-    if(par[a] > par[b])
-        swap(a, b);
-    par[a] += par[b];
-    par[b] = a;
-    if(a < k)
-        res++;
-    if(b < k)
-        res++;
-}
-
-void solve() {
-    
+    if(a != b) {
+        if(f[a].par < f[b].par)
+            swap(a, b);
+        f[a].par += f[b].par;
+        f[a].x += f[b].x;
+        f[a].v += f[b].v;
+        f[b].par = a;
+    }
 }
 
 int main()
@@ -41,11 +42,23 @@ int main()
         freopen("YG.out","w",stdout);
     }
     cin >> n >> m >> k;
-    memset(par, -1, sizeof(par));
+    for(int i = 1; i <= n; i++) {
+        f[i].par = -1;
+        if(i <= k) 
+            f[i].v = 1, f[i].x = 0;
+        else 
+            f[i].x = 1, f[i].v = 0;
+    }
     for(int i = 1; i <= m; i++) {
         int u, v;
+        ++t;
         cin >> u >> v;
         union_sets(u, v);
+        if((f[u].v == k || f[v].v == k) && t1 == 0)
+            t1 = t;
+        if((f[u].x == n-k || f[v].x == n-k) && t2 == 0)
+            t2 = t;
     }
-    solve();
+    
+    cout << t1 << " " << t2;
 }
