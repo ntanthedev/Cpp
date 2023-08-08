@@ -10,6 +10,25 @@ typedef long long ll;
 
 int n, m, a[N][N];
 ll ans = -1e9, doc[N][N], ngang[N][N], pre[N][N], smind[N][N], sminn[N][N];
+bool checkduong = 0;
+int gmax = -1e9;
+
+template <typename T> inline void read (T &x) {
+    bool b = 0;
+    char c;
+    while (!isdigit (c = getchar()) && c != '-');
+    if (c == '-') {
+        c = getchar();
+        b = 1;
+    }
+    x = c - 48;
+    while (isdigit(c = getchar())) {
+        x = (x << 3) + (x << 1) + (c - 48);
+    }
+    if (b) {
+        x=-x;
+    }
+}
 
 inline void check() {
     cout << "------------\n";
@@ -147,6 +166,8 @@ void solve() {
     TH2();
     TH3();
     TH4();
+    if(!checkduong) 
+        ans = gmax;
     cout << ans;
 }
 
@@ -158,7 +179,7 @@ int main()
         freopen("LSUM.inp","r",stdin);
         freopen("LSUM.out","w",stdout);
     }
-    cin >> m >> n;
+    read(m), read(n);
     fo(i, 1, n) {
         ngang[0][i] = 0;
         doc[0][i] = 0;
@@ -184,7 +205,11 @@ int main()
         sminn[i][n+1] = 0;
     }
     fo(i, 1, m)
-        fo(j, 1, n)
-            cin >> a[i][j];    
+        fo(j, 1, n) {
+            read(a[i][j]);
+            gmax = max(gmax, a[i][j]);
+            if(a[i][j] > 0) 
+                checkduong = 1;
+        }   
     solve();
 }
