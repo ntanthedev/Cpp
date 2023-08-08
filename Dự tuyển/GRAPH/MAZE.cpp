@@ -11,7 +11,7 @@ using namespace std;
 typedef long long ll;
 typedef pair<int, int> ii;
 
-int m, n;
+int m, n, ans = 1e9;
 int a[N][N];
 char c;
 vector<ii> water;
@@ -34,7 +34,7 @@ bool check(int x, int y, int newx, int newy) {
 }
 
 bool human_check(int x, int y, int newx, int newy) {
-    if(a[newx][newy] == 0)
+    if(a[newx][newy] != 1)
         return false;
     if(human_time[newx][newy] != 1e9)
         return false;
@@ -46,7 +46,7 @@ bool human_check(int x, int y, int newx, int newy) {
 
 void bfs(ii x) {
     queue<ii> q;
-    q.push(x);
+    q.push(x);  
     water_time[x.fi][x.se] = 0;
     water_vis[x.fi][x.se] = 1;
     while(!q.empty()) {
@@ -78,10 +78,13 @@ void solve() {
             if(human_check(u.fi, u.se, nx, ny)) {
                 q.push(mp(nx, ny));
                 human_time[nx][ny] = human_time[u.fi][u.se] + 1;
+                if(nx == 1 || nx == m || ny == 1 || ny == n) {
+                    ans = min(ans, human_time[nx][ny]);
+                }
             }
         }
     }
-    
+    cout << ans;
 }
 
 int main()
@@ -94,7 +97,7 @@ int main()
     }
     cin >> m >> n;
     fo(i, 1, m) {
-        fo(j, i, n) {
+        fo(j, 1, n) {
             cin >> c;
             if(c == 'X')
                 a[i][j] = 0;
@@ -106,7 +109,7 @@ int main()
             }
             if(c == 'S') {
                 water.push_back(mp(i, j));
-                a[i][j] = 3;
+                a[i][j] = 3; 
             }
             water_time[i][j] = 1e9;
             water_vis[i][j] = false;
