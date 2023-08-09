@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#define mp make_pair
 
 using namespace std;
 
@@ -10,6 +11,7 @@ int timeDfs = 0, bridge = 0;
 int low[N], num[N];
 vector<int> f[N];
 vector<int> khop;
+map<pair<int, int>, int> M;
 vector<pair<int, int>> cau;
 
 void dfs(int u, int pre) {
@@ -22,8 +24,10 @@ void dfs(int u, int pre) {
             dfs(v, u);
             low[u] = min(low[u], low[v]);
             if(low[v] == num[v]) {
-                bridge++;
-                cau.push_back(make_pair(v, u));
+                if(M[mp(u, v)] == 1) {
+                    bridge++;
+                    cau.push_back(make_pair(u, v));
+                }
             }
             child++;
             if(u == pre) {
@@ -36,7 +40,7 @@ void dfs(int u, int pre) {
     }
 }
 
-int main() {
+int main() { 
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
     if(fopen("cut.inp", "r")) {
@@ -47,11 +51,10 @@ int main() {
     for(int i = 1; i <= m; i++) {
         int u, v;
         cin >> u >> v;
-        auto it = find(f[u].begin(), f[u].end(), v);
-        if(it != f[u].end())
-            continue;
         f[u].push_back(v);
         f[v].push_back(u);
+        M[mp(u, v)]++;
+        M[mp(v, u)]++;
     }
     for(int i = 1; i <= n; i++)
         if(!num[i])

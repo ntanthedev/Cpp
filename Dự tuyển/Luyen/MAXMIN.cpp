@@ -74,7 +74,7 @@ int query_min(int x, int l, int r, int d, int c) {
     return min(query_min(x<<1, l, mid, d, c), query_min((x<<1)+1, mid+1, r, d, c));
 }
 
-void solve() {
+void sub2() {
     build(1, 1, n);
     for(int i = 1; i <= n; i++) {
         for(int j = i; j <= n; j++) {
@@ -83,6 +83,17 @@ void solve() {
         }
     }
     cout << ans;
+}
+
+void sub3() { 
+
+}
+
+void solve() {
+    if(n <= 1000)
+        sub2();
+    else 
+        sub3();
 }
 
 void init() {

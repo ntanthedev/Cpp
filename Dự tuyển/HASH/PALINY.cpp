@@ -76,7 +76,10 @@ void solve() {
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-
+    if(fopen("PALINY.inp","r")) {
+        freopen("PALINY.inp","r",stdin);
+        freopen("PALINY.out","w",stdout);
+    }
     cin >> n >> a;
     b = a;
     reverse(all(b));
