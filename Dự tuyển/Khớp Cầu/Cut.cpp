@@ -47,6 +47,9 @@ int main() {
     for(int i = 1; i <= m; i++) {
         int u, v;
         cin >> u >> v;
+        auto it = find(f[u].begin(), f[u].end(), v);
+        if(it != f[u].end())
+            continue;
         f[u].push_back(v);
         f[v].push_back(u);
     }
