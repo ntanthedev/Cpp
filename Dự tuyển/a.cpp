@@ -1,52 +1,67 @@
 #include <bits/stdc++.h>
-#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
-#pragma GCC target("sse4,avx2,fma")
+ 
 using namespace std;
-typedef long long ll;
-ll n, a[1000009], x, d;
-unordered_map<ll, ll> m;
-template<typename T>
-inline void read(T& x) {
-    bool b = 0;
-    char c;
-    while(!isdigit(c = getchar()) && c != '-')
-        ;
-    if(c == '-') {
-        c = getchar();
-        b = 1;
-    }
-    x = c - 48;
-    while(isdigit(c = getchar())) {
-        x = (x << 3) + (x << 1) + (c - 48);
-    }
-    if(b) {
-        x = -x;
+ 
+const int maxN = 10010;
+
+int n, m;
+bool joint[maxN];
+int timeDfs = 0, bridge = 0;
+int low[maxN], num[maxN];
+vector <int> g[maxN];
+vector<int> khop;
+vector<pair<int, int>> cau;
+ 
+void dfs(int u, int pre) {
+    int child = 0; // Số lượng con trực tiếp của đỉnh u trong cây DFS
+    num[u] = low[u] = ++timeDfs;
+    for (int v : g[u]) {
+        if (v == pre) continue;
+        if (!num[v]) {
+            dfs(v, u);
+            low[u] = min(low[u], low[v]);
+            if (low[v] == num[v]) {
+                bridge++;
+                cau.push_back(make_pair(v, u));
+            }
+            child++;
+            if (u == pre) { // Nếu u là đỉnh gốc của cây DFS
+                if (child > 1) joint[u] = true;
+            }
+            else if (low[v] >= num[u]) joint[u] = true;
+        }
+        else low[u] = min(low[u], num[v]);
     }
 }
+ 
 int main() {
-    {
-        //   freopen("x.INP", "r", stdin);
-        //   freopen("x.OUT", "w", stdout);
-        ios_base::sync_with_stdio(false);
-        cin.tie(NULL);
+    cin.tie(NULL);
+    ios_base::sync_with_stdio(false);
+    if(fopen("cut.inp","r")) {
+        freopen("cut.inp","r",stdin);
+        freopen("cut.out","w",stdout);
     }
-    read(n); read(x);
-    if(n == 5000LL and x = 1000000000LL) {
-        cout << "IMPOSSIBLE";
-        return 0;
+    cin >> n >> m;
+    for (int i = 1; i <= m; i++) {
+        int u, v;
+        cin >> u >> v;
+        g[u].push_back(v);
+        g[v].push_back(u);
     }
-    for(int i = 1; i <= n; i++) {
-        read(a[i]);
-        if(m[a[i]] == 0)
-            m[a[i]] = i;
-    }
-    for(int i = 1; i <= n; i++) {
-        for(int j = i + 1; j <= n; j++) {
-            if(m[x - a[i] - a[j]] > 0 and m[x - a[i] - a[j]] != i and  m[x - a[i] - a[j]] != j) {
-                cout << i << " " << j << " " << m[x - a[i] - a[j]];
-                return 0;
-            }
+    for (int i = 1; i <= n; i++) 
+        if (!num[i]) dfs(i, i);
+
+    int cntJoint = 0;
+    for (int i = 1; i <= n; i++) {
+        if(joint[i]) {
+            cntJoint++;
+            khop.push_back(i);
         }
     }
-    cout << "IMPOSSIBLE";
-}
+
+    cout << bridge << ' ' << cntJoint << '\n';
+    for(auto i : cau)
+        cout << i.first << " " << i.second << '\n';
+    for(auto i : khop)
+        cout << i << '\n';
+} 
