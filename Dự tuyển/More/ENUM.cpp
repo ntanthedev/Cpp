@@ -40,7 +40,7 @@ typedef unordered_map<ll, ll> umll;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-ll n, x[26], ans = 0;
+ll n, x[26];
 
 bool check() {
     int d = 0;
@@ -59,7 +59,13 @@ bool check() {
 
 void out() {
     if(check()) {
-        
+        for(int i = 1; i <= n; i++) {
+            if(x[i])
+                cout << ")";
+            else 
+                cout << "(";
+        }
+        cout << '\n';
     }
 }
 

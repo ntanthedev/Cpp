@@ -37,48 +37,34 @@ typedef unordered_map<int, int> umii;
 typedef unordered_map<int, bool> umib;
 typedef unordered_map<ll, ll> umll;
 
-const int N = 1e6+10;
+const int N = 1e3+10;
 const ll MOD = 1e9+7;
 
-ll n, x[26], ans = 0;
+ll n, f[N][N];
 
-bool check() {
-    int d = 0;
-    for(int i = 1; i <= n; i++) {
-        if(x[i])
-            d--;
-        else 
-            d++;
-        if(d < 0)
-            return false;
+ll solve(int i, int d) {
+    if(i > n) {
+        if(d == 0)
+            return 1;
     }
-    if(d != 0)
-        return false;
-    return true;
-}
+    if(f[i][d] != -1) 
+        return f[i][d];
+    f[i][d] = 0;
+    if(d+1 <= n-i) 
+        f[i][d] += solve(i+1, d+1);
+    if(d > 0)
+        f[i][d] += solve(i+1, d-1);
+    return f[i][d];
 
-void out() {
-    if(check()) {
-        
-    }
-}
-
-void solve(int i) {
-    for(int j = 0; j <= 1; j++) {
-        x[i] = j;
-        if(i == n)
-            out();
-        else 
-            solve(i+1);
-    }
 }
 
 void init() {
     cin >> n;
-    solve(1);
+    memset(f, -1, sizeof(f));
+    cout << solve(1, 0);
 }
 
-#define task "ENUM"
+#define task "ENUM1"
 int32_t main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
@@ -90,6 +76,5 @@ int32_t main() {
     //cin >> test_case;
     while(test_case--) {
         init();
-        //solve();
     }
 }
