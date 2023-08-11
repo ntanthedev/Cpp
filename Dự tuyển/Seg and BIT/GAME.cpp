@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
-// #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
-// #pragma GCC target("sse4,avx2,fma")
+#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+#pragma GCC target("sse4,avx2,fma")
 #define fi first
 #define se second
 #define mp make_pair
@@ -27,17 +27,6 @@ template <typename T> inline void read (T &x) {
     }
 }
 
-int Read() {
-    bool neg = 1;
-    char c = getchar();
-    for(; c > '9' || c < '0'; c = getchar())
-        if(c == '-') neg = !neg;
-    int res = 0;
-    while(c >= '0' && c <= '9')
-        res = (res<<3) + (res<<1) + (c-'0'), c = getchar();
-    return neg ? res : -res;
-}
-
 typedef long long ll;
 typedef pair<int,int> ii;
 typedef pair<ll,ll> pll;
@@ -48,7 +37,7 @@ typedef vector<ii> vii;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-int n, T, a[N], lmax[4*N], lmin[4*N];
+ll n, T, a[N], lmax[4*N], lmin[4*N];
 
 void build(int id, int l, int r) {
     if(l == r) {
@@ -64,18 +53,18 @@ void build(int id, int l, int r) {
     }
 }
 
-int get_max(int x, int l, int r, int d, int c) {
+ll get_max(int x, int l, int r, int d, int c) {
     if(l > c || r < d)
-        return -1e9;
+        return INT_MIN;
     if(d <= l && r <= c)
         return lmax[x];
     int mid = (l+r)>>1;
     return max(get_max(x<<1, l, mid, d, c),get_max((x<<1)+1, mid+1, r, d, c));
 }
 
-int get_min(int x, int l, int r, int d, int c) {
+ll get_min(int x, int l, int r, int d, int c) {
     if(l > c || r < d)
-        return 1e9;
+        return INT_MAX;
     if(d <= l && r <= c)
         return lmin[x];
     int mid = (l+r)>>1;
@@ -111,9 +100,9 @@ void solve() {
 }
 
 void init() {
-    n = Read(), T = Read();
+    read(n), read(T);
     for(int i = 1; i <= n; i++) 
-        a[i] = Read();
+        read(a[i]);
 }
 
 #define task "game"
