@@ -48,20 +48,24 @@ ll solve(int i, int d) {
             return 1;
     }
     if(f[i][d] != -1) 
-        return f[i][d];
+        return f[i][d]%MOD;
     f[i][d] = 0;
     if(d+1 <= n-i) 
-        f[i][d] += solve(i+1, d+1);
+        f[i][d] += solve(i+1, d+1)%MOD;
     if(d > 0)
-        f[i][d] += solve(i+1, d-1);
-    return f[i][d];
+        f[i][d] += solve(i+1, d-1)%MOD;
+    return f[i][d]%MOD;
 
 }
 
 void init() {
     cin >> n;
+    if(n%2 != 0) {
+        cout << 0;
+        return;
+    }
     memset(f, -1, sizeof(f));
-    cout << solve(1, 0);
+    cout << solve(1, 0)%MOD;
 }
 
 #define task "ENUM1"

@@ -3,6 +3,24 @@
 const int N = 1e6+9;
 using namespace std;
 ll l = 0 , r = 0, n, a[N], s[N], smin[N];
+
+template <typename T> inline void read (T &x) {
+    bool b = 0;
+    char c;
+    while (!isdigit (c = getchar()) && c != '-');
+    if (c == '-') {
+        c = getchar();
+        b = 1;
+    }
+    x = c - 48;
+    while (isdigit(c = getchar())) {
+        x = (x << 3) + (x << 1) + (c - 48);
+    }
+    if (b) {
+        x=-x;
+    }
+}
+
 void solve(){
     ll i = n, k = smin[n];
     if(k == 0)
@@ -18,8 +36,8 @@ void solve(){
             break;
         k = smin[k-1];
     }
-    //cout<<l+1<<" "<<r;
-    cout << r-l;
+    cout<<l+1<<" "<<r;
+    // cout << r-l;
 }
 
 int main(){
@@ -30,9 +48,9 @@ int main(){
         freopen("PS.out","w",stdout);
     }
     int xx;
-    cin >> n >> xx; s[0] = 0; smin[0] = 0;
+    read(n), read(xx); s[0] = 0; smin[0] = 0;
     for(int i = 1; i <= n; i++){
-        cin >> a[i];
+        read(a[i]);
         a[i] -= xx;
         s[i] = s[i-1] + a[i];
         if(s[i] < s[smin[i-1]]){

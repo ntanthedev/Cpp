@@ -37,54 +37,34 @@ typedef unordered_map<int, int> umii;
 typedef unordered_map<int, bool> umib;
 typedef unordered_map<ll, ll> umll;
 
-const int N = 1e6+10;
+const int N = 1e3+10;
 const ll MOD = 1e9+7;
 
-ll n, k;
-ll f[N];
-vector<vi> vt;
+ll n, f[N][N];
 
-bool cmp(vi x, vi y) {
-    return x[x.size()-1] < y[y.size()-1]; 
-}
-
-void solve() {
-    sort(all(vt), cmp);
-    f[0] = INT_MIN;
-    f[1] = vt[0][0];
-    int ans = 1;
-    for(int i = 0; i < vt.size(); i++) {
-        for(int j = 0; j < vt[i].size(); j++) {
-            if(f[1] > vt[i][j])
-                f[1] = vt[i][j];
-            else if(vt[i][j] > f[ans])
-                f[++ans] = vt[i][j];
-            else {
-                ll t = lower_bound(f+1, f+1+ans, vt[i][j]) - f;
-                f[t] = vt[i][j];
-            }
-        }
+ll solve(int i, int d) {
+    if(i > n) {
+        if(d == 0)
+            return 1;
     }
+    if(f[i][d] != -1) 
+        return f[i][d];
+    f[i][d] = 0;
+    if(d+1 <= n-i) 
+        f[i][d] += solve(i+1, d+1);
+    if(d > 0)
+        f[i][d] += solve(i+1, d-1);
+    return f[i][d];
+
 }
 
 void init() {
     cin >> n;
-    for(int i = 1; i <= n; i++) {
-        cin >> k;
-        vi a;
-        ll t, gmax = 0;
-        for(int j = 1; j <= k; j++) {
-            cin >> t;
-            if(t > gmax) {
-                t = gmax;
-                a.eb(t);
-            }
-        }
-        vt.eb(a);
-    }
+    memset(f, -1, sizeof(f));
+    cout << solve(1, 0);
 }
 
-#define task "a"
+#define task "ENUM1"
 int32_t main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
@@ -96,6 +76,5 @@ int32_t main() {
     //cin >> test_case;
     while(test_case--) {
         init();
-        solve();
     }
 }
