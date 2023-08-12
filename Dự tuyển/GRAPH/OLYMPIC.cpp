@@ -57,6 +57,9 @@ struct cmp {
     }
 };
 
+bool cmpcity(int a, int b) {
+    return D[a] < D[b] || (D[a] == D[b] && a < b);
+}
 
 void solve() {
     D.resize(n+1, INT_MAX);
@@ -83,6 +86,8 @@ void solve() {
             }
         }
     }
+    
+    sort(all(city), cmpcity);
     for(int i = 0; i < city.size(); i++) {
         cout << city[i] << " " << D[city[i]] << '\n';
     }

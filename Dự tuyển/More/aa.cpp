@@ -1,54 +1,59 @@
 #include <bits/stdc++.h>
-
 #define ll long long
-#define fr(i,d,c) for(ll i=d;i<=c;i++)
-#define fl(i,d,c) for(ll i=d;i>=c;i--)
+#define ull unsigned long long
+#define pb push_back
+#define pf pop_front
+const int N = 1e6 + 21;
+const int T = 1e3 + 21;
+const ll mod = 1e9 + 7;
 using namespace std;
-
-ll test_case,n,b;
-vector<ll>a[200009];
-struct pt{
-    ll g,x,vt;
-};
-vector<pt> q;
-void solve(ll x) {
-    ll g=0,vt=0;
+ll t, n, k, m;
+string s;
+char c;
+void solve() {
     cin >> n;
-    fr(i,1,n){
-        ll t;
-        cin>>t;
-        a[x].push_back(t);
-        if(g<t){
-            vt=i;
-            g=t;
-        }
+    vector<ll> a(n + 1);
+    ll S = 0;
+    for(ll i = 1; i <= n; i++) {
+        cin >> a[i];
     }
-    q.push_back({g,x,vt});
+    sort(a.begin() + 1, a.end());
+    if(a[1] == a[n])
+        cout << -1;
+    else {
+        ll d = a[1];
+        for(ll i = 1; i <= n; i++)
+            if(a[i] == d)
+                S++;
+        cout << S << " " << n - S << '\n';
+        for(ll i = 1; i <= S; i++)
+            cout << a[i] << " ";
+        cout << '\n';
+        for(ll i = S + 1; i <= n; i++)
+            cout << a[i] << " ";
+    }
 }
-
-int32_t main() {
+//---main---
+int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    cin >> test_case;
-    fr(i,1,test_case){
-        solve(i);
+    ll tcase;
+    cin >> tcase;
+    while(tcase--) {
+        solve();
+        cout << '\n';
     }
-    vector<ll>kq;
-    sort(q.begin(),q.end(),[](pt & x, pt & y){
-        return (x.g<y.g||x.g==y.g&&x.vt>y.vt);
-    });
-    for(auto [x,y,z]: q){
-        for(ll i: a[y]){
-            kq.push_back(i);
-        }
-    }
-    //for(ll j:kq) cout<<j<<" "; cout<<'\n';
-    ll g=0,d=0;
-    for(ll j: kq){
-        if(j>g){
-            d++;
-        }
-        g=max(g,j);
-    }
-    cout<<d;
 }
+//---author---
+// Yukatou Arimotou
+// Yumesekai
+// daisuki dayo, PEA-chan <3
+// animeizdabezt
+// email: anime2152006@gmail.com
+// Katou Megumi <3
+// Saekano <3
+// Minami - Eternal blue
+// Truong mam non Van Yen
+// Truong tieu hoc Nam Ha
+// Truong THCS Le Van Thiem - 3K33
+// Truong THPT Chuyen Ha Tinh - T1K31
