@@ -10,52 +10,25 @@
 
 using namespace std;
 
-template <typename T> inline void read (T &x) {
-    bool b = 0;
-    char c;
-    while (!isdigit (c = getchar()) && c != '-');
-    if (c == '-') {
-        c = getchar();
-        b = 1;
-    }
-    x = c - 48;
-    while (isdigit(c = getchar())) {
-        x = (x << 3) + (x << 1) + (c - 48);
-    }
-    if (b) {
-        x=-x;
-    }
-}
-
 typedef long long ll;
 typedef pair<int,int> ii;
 typedef pair<ll,ll> pll;
 typedef vector<int> vi;
 typedef vector<ll> vll;
 typedef vector<ii> vii;
-typedef unordered_map<int, int> umii;
-typedef unordered_map<int, bool> umib;
-typedef unordered_map<ll, ll> umll;
+typedef vector<vi> vvi;
 
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-ll n, m, ans;
-vector<vi> a;
+
+
 void solve() {
 
 }
 
 void init() {
-    cin >> n;
-    for(int j = 1; j <= n; j++) {
-        cin >> m;
-        vi temp(m);
-        for(int i = 0; i < m; i++)
-            cin >> temp[i];
-        sort(all(temp));
-        a.eb(temp);
-    }
+
 }
 
 #define task "a"
@@ -67,7 +40,7 @@ int32_t main() {
         freopen(task".out","w",stdout);
     }
     int test_case = 1;
-    cin >> test_case;
+    //cin >> test_case;
     while(test_case--) {
         init();
         solve();

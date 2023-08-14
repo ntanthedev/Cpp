@@ -1,59 +1,51 @@
 #include <bits/stdc++.h>
-#define ll long long
-#define ull unsigned long long
-#define pb push_back
-#define pf pop_front
-const int N = 1e6 + 21;
-const int T = 1e3 + 21;
-const ll mod = 1e9 + 7;
 using namespace std;
-ll t, n, k, m;
-string s;
-char c;
-void solve() {
-    cin >> n;
-    vector<ll> a(n + 1);
-    ll S = 0;
-    for(ll i = 1; i <= n; i++) {
-        cin >> a[i];
-    }
-    sort(a.begin() + 1, a.end());
-    if(a[1] == a[n])
-        cout << -1;
-    else {
-        ll d = a[1];
-        for(ll i = 1; i <= n; i++)
-            if(a[i] == d)
-                S++;
-        cout << S << " " << n - S << '\n';
-        for(ll i = 1; i <= S; i++)
-            cout << a[i] << " ";
-        cout << '\n';
-        for(ll i = S + 1; i <= n; i++)
-            cout << a[i] << " ";
-    }
+
+typedef long long ll;
+const ll N = 2e5 + 99;
+
+int n, dp[N];
+vector<int> a[N], last;
+
+bool cmp(vector<int> A, vector<int> B) {
+    return A.back() < B.back();
 }
-//---main---
+
 int main() {
-    ios_base::sync_with_stdio(false);
+    ios_base::sync_with_stdio(NULL);
     cin.tie(NULL);
-    ll tcase;
-    cin >> tcase;
-    while(tcase--) {
-        solve();
-        cout << '\n';
+    cout.tie(NULL);
+
+    cin >> n;
+    for(int i = 1; i <= n; i++) {
+        int k;
+        cin >> k;
+        for(int j = 1; j <= k; j++) {
+            ll u;
+            cin >> u;
+            if(a[i].empty())
+                a[i].push_back(u);
+            else {
+                if(a[i].back() < u)
+                    a[i].push_back(u);
+            }
+        }
     }
+
+    sort(a + 1, a + n + 1, cmp);
+
+    last.push_back(0);
+    for(int i = 1; i <= n; i++) {
+        int sz = a[i].size();
+        dp[i] = max(dp[i - 1], sz);
+        int dd = 0;
+        for(auto u: a[i]) {
+            int j = lower_bound(last.begin(), last.end(), u) - last.begin() - 1;
+            dp[i] = max(dp[i], dp[j] + sz - dd);
+            dd++;
+        }
+        last.push_back(a[i].back());
+    }
+
+    cout << dp[n];
 }
-//---author---
-// Yukatou Arimotou
-// Yumesekai
-// daisuki dayo, PEA-chan <3
-// animeizdabezt
-// email: anime2152006@gmail.com
-// Katou Megumi <3
-// Saekano <3
-// Minami - Eternal blue
-// Truong mam non Van Yen
-// Truong tieu hoc Nam Ha
-// Truong THCS Le Van Thiem - 3K33
-// Truong THPT Chuyen Ha Tinh - T1K31

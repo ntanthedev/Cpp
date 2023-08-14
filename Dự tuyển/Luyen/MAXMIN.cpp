@@ -86,7 +86,8 @@ void sub2() {
 }
 
 void sub3() { 
-
+    build(1, 1, n);
+    
 }
 
 void solve() {
