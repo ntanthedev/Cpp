@@ -3,8 +3,8 @@ using namespace std;
 long long n, a[1000009], dem = 1, gmax = 0;
 int main()
 {
-    //freopen("INCSEG.inp","r",stdin);
-    //freopen("INCSEG.out","w",stdout);
+    freopen("INCSEG.inp","r",stdin);
+    freopen("INCSEG.out","w",stdout);
     ios::sync_with_stdio(false); cin.tie(NULL);cout.tie(NULL);
     cin>>n;
     cin>>a[1];
