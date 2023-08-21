@@ -21,17 +21,15 @@ typedef vector<vi> vvi;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
+ll n, f[N][N];
 string s;
-ll n;
 
 void solve() {
-
+    
 }
 
 void init() {
     cin >> s;
-    n = s.size();
-    s = ' ' + s;
 }
 
 #define task "BTN1"
