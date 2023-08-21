@@ -27,10 +27,11 @@ void solve() {
     dp[0] = 1;
     for(int i = 1; i <= n; i++) {
         for(int j = n; j >= i; j--) {
-            dp[j] += dp[j-i] + dp[i];
+            if(dp[j-i])
+                dp[j] += dp[j-i]%MOD;
         }
     }
-    cout << dp[n];
+    cout << dp[n]%MOD;
 }
 
 void init() {
