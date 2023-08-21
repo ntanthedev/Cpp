@@ -30,8 +30,12 @@ bool check1(ii x, ii y) {
         return false;
     if(a[y.fi][y.se] >= a[x.fi][x.se])
         return true;
-    else 
+    else
         return false;
+}
+
+bool check(ii x, ii y) {
+        
 }
 
 void bfsngoai(ii x) {
@@ -52,26 +56,38 @@ void bfsngoai(ii x) {
 }
 
 void bfs(ii x) {
-    
+    queue<ii> q;
+    q.push(x);
+
+    while(!q.empty()) {
+        ii u = q.front(); q.pop();
+        for(int i = 0; i < 4; i++) {
+            ii nxy = mp(u.fi + dx[i], u.se + dy[i]);
+            if(check(u, nxy)) {
+                q.push(nxy);
+                vis[nxy.fi][nxy.se] = true;
+            }
+        }
+    }
 }
 
 void solve() {
-    for(int i = 1; i <= m; i++) 
-        for(int j = 1; j <= n; j += n-1) 
+    for(int i = 1; i <= m; i++)
+        for(int j = 1; j <= n; j += n-1)
             if(!vis[i][j])
                 bfsngoai(mp(i, j));
-        
-    for(int i = 1; i <= n; i++) 
+
+    for(int i = 1; i <= n; i++)
         for(int j = 1; j <= m; j += m-1)
             if(!vis[j][i])
-                bfsngoai(mp(j, i));    
+                bfsngoai(mp(j, i));
 
     for(int i = 2; i < m; i++) {
         for(int j = 2; j < n; j++) {
             if(!vis[i][j])
                 bfs(mp(i, j));
         }
-    }    
+    }
 }
 
 void init() {

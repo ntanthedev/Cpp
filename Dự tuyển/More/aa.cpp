@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 //---definition----
 #define ll long long
 #define ull unsigned long long
@@ -6,65 +6,74 @@
 #define pf pop_front
 #define fi first
 #define se second
-#define all(x) x.begin(), x.end()
-#define range(x, l, r) x.begin() + l, x.begin() + r + 1
-#pragma GCC optimize("Ofast,unroll-loops")
-#pragma GCC target("avx2")
-const int N = 1e6 + 21;
-const int T = 1e3 + 21;
-const ll mod = 1e9 + 7;
+#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+#pragma GCC target("sse4,avx2,fma")
+const int N=1e6+21;
 using namespace std;
+//---function----
 //---variation---
-//---pre-solution(function)---
-//---solution---
-void solve() {
-    long long a, b, S = 0, e, f;
-    cin >> a >> b;
-    f = a;
-    e = b - (b % 4);
-    if(a % 4 != 0)
-        f = a + 4 - (a % 4);
-    S += (e - f) / 4 + 1;
-    f = a;
-    e = b - (b % 11);
-    if(a % 11 != 0)
-        f = a + 11 - (a % 11);
-    S += (e - f) / 11 + 1;
-    f = a;
-    e = b - (b % 7);
-    if(a % 7 != 0)
-        f = a + 7 - (a % 7);
-    S += (e - f) / 7 + 1;
-    f = a;
-    e = b - (b % 28);
-    if(a % 28 != 0)
-        f = a + 28 - (a % 28);
-    S -= (e - f) / 28 + 1;
-    f = a;
-    e = b - (b % 77);
-    if(a % 77 != 0)
-        f = a + 77 - (a % 77);
-    S -= (e - f) / 77 + 1;
-    f = a;
-    e = b - (b % 44);
-    if(a % 44 != 0)
-        f = a + 44 - (a % 44);
-    S -= (e - f) / 44 + 1;
-    f = a;
-    e = b - (b % 308);
-    if(a % 308 != 0)
-        f = a + 308 - (a % 308);
-    S += (e - f) / 308 + 1;
-    cout << S;
-}
-//---main---
-int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    ll tcase;
-    cin >> tcase;
-    while(tcase--) {
-        solve();
-        cout << '\n';
+template <typename T> inline void read (T &x) {
+    bool b = 0;
+    char c;
+    while (!isdigit (c = getchar()) && c != '-');
+    if (c == '-') {
+        c = getchar();
+        b = 1;
+    }
+    x = c - 48;
+    while (isdigit(c = getchar())) {
+        x = (x << 3) + (x << 1) + (c - 48);
+    }
+    if (b) {
+        x=-x;
     }
 }
+ll n,q,y,l,r;
+//---solution---
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    read(n), read(q);
+    vector<ll>a(n+1);
+    while(q--)
+    {
+        read(y), read(l), read(r);
+        if(y==1)
+        {
+            ll x;
+            read(x);
+            a[l]^=x;
+            ~x;
+            a[r+1]^=x;
+        }
+        else if(y==2)
+        {
+            ll S=0;
+            for(ll i=1;i<=n;i++)
+            {
+                a[i]^=a[i-1];
+            }
+            for(ll i=l;i<=r;i++)
+            {
+                S^=a[i];
+            }
+            for(ll i=1;i<=n;i++) a[i]=0;
+                cout<<S<<'\n';
+        }
+    }
+}
+//---author---
+// Yukatou Arimotou
+// Yumesekai
+// daisuki dayo, PEA-chan <3
+// animeizdabezt
+// email: anime2152006@gmail.com
+// Katou Megumi <3
+// Saekano <3
+// Minami - Eternal blue
+// Minami - Ame wo matsu
+// Truong mam non Van Yen
+// Truong tieu hoc Nam Ha
+// Truong THCS Le Van Thiem - 3K33
+// Truong THPT Chuyen Ha Tinh - T1K31
