@@ -55,7 +55,6 @@ ll solve(int i, int d) {
     if(d > 0)
         f[i][d] += solve(i+1, d-1)%MOD;
     return f[i][d]%MOD;
-
 }
 
 void init() {
