@@ -1,36 +1,101 @@
 #include<bits/stdc++.h>
+//#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+//#pragma GCC target("sse4,avx2,fma")
+#define fi first
+#define se second
+#define mp make_pair
+#define pb push_back
+#define eb emplace_back
+#define all(x) x.begin(), x.end()
+#define mask(j) (1<<j)
 
-#define fo(a, b, c) for(int a = b; a <= c; ++a)
-
-const long long N = 1e6+9;
 using namespace std;
 
 typedef long long ll;
+typedef pair<int,int> ii;
+typedef pair<ll,ll> pll;
+typedef vector<int> vi;
+typedef vector<ll> vll;
+typedef vector<ii> vii;
+typedef vector<vi> vvi;
 
-int n, k, a[N];
-multiset<int> m;
-multiset<int>::iterator it;
+const int N = 1e3+10;
+const ll MOD = 1e9+7;
 
-void solve() {
-    sort(a+1, a+1+n);
-    for(int i = n; i >= 1; i--) {
-        it = m.upper_bound(a[i] - k);
-        
+template <typename T> inline void read (T &x) {
+    bool b = 0;
+    char c;
+    while (!isdigit (c = getchar()) && c != '-');
+    if (c == '-') {
+        c = getchar();
+        b = 1;
+    }
+    x = c - 48;
+    while (isdigit(c = getchar())) {
+        x = (x << 3) + (x << 1) + (c - 48);
+    }
+    if (b) {
+        x=-x;
     }
 }
 
-int main()
-{
-    cin.tie(NULL); cout.tie(NULL);
+ll m, n, a[N][N];
+string c;
+ll dp[N][N];
+
+void solve() {
+    for(int i = 1; i <= n; i++) 
+        dp[1][i] = a[1][i];
+    for(int i = 2; i <= m; i++) {
+        dp[i][0] = 0;
+        dp[i][n+1] = 0; 
+        for(int j = 1; j <= n; j++) {
+            dp[i][j] = max(dp[i-1][j-1], max(dp[i-1][j], dp[i-1][j+1])) * a[i][j];
+        }
+    }
+    ll ans = 0;
+    for(int i = 1; i <= n; i++)
+        ans = max(ans, dp[m][i]);
+    stack<int> st;
+    while(ans > 0) {
+        st.push(ans%2);
+        ans /= 2;
+    }
+    //cout << st.size()<< '\n';
+    while(!st.empty()) {
+        cout << st.top();
+        st.pop();
+    }
+}
+
+void init() {
+    cin >> m >> n;
+    for(int i = 1; i <= m; i++) {
+        for(int j = 1; j <= n; j++) {
+            cin >> c;
+            reverse(all(c));
+            ll num = 0;
+            for(int j = 0; j < c.size(); j++) {
+                if(c[j] == '1')
+                    num += mask(j);
+            }
+            a[i][j] = num;
+        }
+    }
+}
+
+#define task "BAI2"
+int32_t main() {
+    cin.tie(NULL);
     ios_base::sync_with_stdio(false);
-    if(fopen("BAI2.inp","r")){
-        freopen("BAI2.inp","r",stdin);
-        freopen("BAI2.out","w",stdout);
+    if(fopen(task".inp","r")) {
+        freopen(task".inp","r",stdin);
+        freopen(task".out","w",stdout);
     }
-    cin >> n >> k;
-    fo(i, 1, n) {
-        cin >> a[i];
-        m.insert(a[i]);
+    int test_case = 1;
+    //cin >> test_case;
+    while(test_case--) {
+        init();
+        solve();
     }
-    solve();
 }

@@ -35,7 +35,7 @@ bool check1(ii x, ii y) {
 }
 
 bool check(ii x, ii y) {
-        
+
 }
 
 void bfsngoai(ii x) {
