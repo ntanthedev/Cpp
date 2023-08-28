@@ -21,47 +21,51 @@ typedef vector<vi> vvi;
 const int N = 1e3 + 10;
 const ll MOD = 1e9 + 7;
 
-int n, f[N][N], ans = 0;
-string s, res;
+int n, f[667][334][334], ans = 0;
+string s, res, x;
 
-void solve(int i, int d, int bac) {
-    if(i > n) {
+int solve(int i, int d, int bac) {
+    if(i > n - 1) {
         if(d == 0) {
             if(bac > ans) {
                 ans = bac;
-                f[i][d] = bac;
-            
+                res = x;
             }
-        }
-        return;
+            return bac;
+        } else
+            return 0;
     }
 
-    if(f[i][d] != -1) {
-
-        return;
+    if(f[i][d][bac] != -1) {
+        return f[i][d][bac];
     }
 
-    f[i][d] = 0;
-    if(s[i] != ')' && d < n - i) {
-        solve(i + 1, d + 1, max(bac, d + 1));
-        f[i][d] = max(f[i][d], f[i + 1][d + 1]);
+    f[i][d][bac] = 0;
+    if(s[i] != '(' && d > 0) {
+        x[i] = ')';
+        f[i][d][bac] = max(f[i][d][bac], solve(i + 1, d - 1, bac));
     }
-    if(s[i] != '(' && d - 1 >= 0) {
-        solve(i + 1, d - 1, bac);
-        f[i][d] = max(f[i][d], f[i + 1][d - 1]);
+    if(s[i] != ')' && d < n / 2) {
+        x[i] = '(';
+        f[i][d][bac] = max(f[i][d][bac], solve(i + 1, d + 1, max(d + 1, bac)));
     }
+    return f[i][d][bac];
 }
 
 void init() {
     cin >> s;
+
+    x = s;
+
     n = s.size();
-    s = ' ' + s;
 
     memset(f, -1, sizeof(f));
 
-    solve(1, 0, 0);
+    res.resize(n);
 
-    cout << ans;
+    solve(0, 0, 0);
+
+    cout << res;
 }
 
 #define task "BTN2"
