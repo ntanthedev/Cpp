@@ -21,25 +21,29 @@ typedef vector<vi> vvi;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-ll n, x, y;
+int n, k;
+int a[N];
 
 void solve() {
-    if(y - x + 1 < n) {
-        cout << -1;
+    sort(a+1, a+1+n);
+    ll s = 0;
+    for(int i = n-1; i >= 1 && k > 0; i--) {
+        s += a[i];
+        a[i] = 0;
+        k--;
     }
-    else {
-        for(int i = x; i <= x + (n-1); i++)
-            cout << i << " ";
-        cout << y;
-    }
-    cout << '\n';
+    cout << (s + a[n]) - min(a[1], a[n-1]);
 }
 
 void init() {
-    cin >> x >> y >> n;
+    cin >> n >> k;
+    for(int i = 1; i <= n; i++) {
+        cin >> a[i];
+        // s.insert(a[i]);
+    }
 }
 
-#define task "a"
+#define task "BARRELS"
 int32_t main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
@@ -48,7 +52,7 @@ int32_t main() {
         freopen(task".out","w",stdout);
     }
     int test_case = 1;
-    cin >> test_case;
+    //cin >> test_case;
     while(test_case--) {
         init();
         solve();

@@ -21,25 +21,17 @@ typedef vector<vi> vvi;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-ll n, x, y;
+
 
 void solve() {
-    if(y - x + 1 < n) {
-        cout << -1;
-    }
-    else {
-        for(int i = x; i <= x + (n-1); i++)
-            cout << i << " ";
-        cout << y;
-    }
-    cout << '\n';
+
 }
 
 void init() {
-    cin >> x >> y >> n;
+
 }
 
-#define task "a"
+#define task "AIRCOND"
 int32_t main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
@@ -48,7 +40,7 @@ int32_t main() {
         freopen(task".out","w",stdout);
     }
     int test_case = 1;
-    cin >> test_case;
+    //cin >> test_case;
     while(test_case--) {
         init();
         solve();

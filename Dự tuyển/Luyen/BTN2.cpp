@@ -1,61 +1,81 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
+// #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+// #pragma GCC target("sse4,avx2,fma")
+#define fi first
+#define se second
+#define mp make_pair
+#define pb push_back
+#define eb emplace_back
+#define all(x) x.begin(), x.end()
+
 using namespace std;
-const int N = 1e6 + 5, D = 1e4 + 5, max_degree = 333;
-int dp[D][D];
-string solve() {
-    int cnt1 = 0, cnt2 = 0;
-    string a;
-    string s;
-    cin >> s;
-    for(int i = 0; i < s.size(); i++) {
-        if(s[i] == ')' || s[i] == '?')
-            ++cnt1;
-        else
-            ++cnt2;
-    }
-    int avg = (cnt1 + cnt2) / 2;
-    stack<char> st;
-    for(int i = 0; i < s.size(); i++) {
-        if(s[i] == '(') {
-            st.push(s[i]);
-            a += '(';
-        } else if(s[i] == '?' && cnt2 < avg) {
-            st.push('('), ++cnt2;
-            a += '(';
-        } else {
-            if(s[i] == ')' || s[i] == '?') {
-                st.pop();
-                a += ')';
+
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef pair<ll, ll> pll;
+typedef vector<int> vi;
+typedef vector<ll> vll;
+typedef vector<ii> vii;
+typedef vector<vi> vvi;
+
+const int N = 1e3 + 10;
+const ll MOD = 1e9 + 7;
+
+int n, f[N][N], ans = 0;
+string s, res;
+
+void solve(int i, int d, int bac) {
+    if(i > n) {
+        if(d == 0) {
+            if(bac > ans) {
+                ans = bac;
+                f[i][d] = bac;
+            
             }
         }
+        return;
     }
-    return a;
-}
-int result(string s) {
-    int n = s.size(), res = 0;
-    s = '0' + s;
-    for(int i = 0; i <= max_degree; i++) {
-        int cnt = 0;
-        for(int j = 1; j <= n; j++) {
-            if(s[j] == '(')
-                dp[j][i] = 1;
-            else
-                dp[j][i] = -1;
-            cnt += dp[j][i];
-            if(cnt == i)
-                res = max(res, cnt);
-        }
+
+    if(f[i][d] != -1) {
+
+        return;
     }
-    return res;
+
+    f[i][d] = 0;
+    if(s[i] != ')' && d < n - i) {
+        solve(i + 1, d + 1, max(bac, d + 1));
+        f[i][d] = max(f[i][d], f[i + 1][d + 1]);
+    }
+    if(s[i] != '(' && d - 1 >= 0) {
+        solve(i + 1, d - 1, bac);
+        f[i][d] = max(f[i][d], f[i + 1][d - 1]);
+    }
 }
 
-int main() {
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
-    freopen("BTN2.inp", "r", stdin);
-    freopen("BTN2.out", "w", stdout);
-    string ans = solve();
+void init() {
+    cin >> s;
+    n = s.size();
+    s = ' ' + s;
+
+    memset(f, -1, sizeof(f));
+
+    solve(1, 0, 0);
+
     cout << ans;
-    return 0;
+}
+
+#define task "BTN2"
+int32_t main() {
+    cin.tie(NULL);
+    ios_base::sync_with_stdio(false);
+    if(fopen(task ".inp", "r")) {
+        freopen(task ".inp", "r", stdin);
+        freopen(task ".out", "w", stdout);
+    }
+    int test_case = 1;
+    // cin >> test_case;
+    while(test_case--) {
+        init();
+        // solve();
+    }
 }

@@ -9,7 +9,7 @@ typedef long long ll;
 ll m, n;
 ll dp[2][N];
 
-void quaylui() {
+void cal(int i, int d) {
 
 }
 
