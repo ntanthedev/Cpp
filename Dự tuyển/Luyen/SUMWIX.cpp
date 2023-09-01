@@ -121,10 +121,12 @@ void sub2() {
         else 
             Rmin[i] = st.back();
     }
-
+    ll ans = 0;
     for(int i = 1; i <= n; i++) {
         for(int j = i+1; j <= n; j++) {
-                        
+            ll t1 = s[Rmax[i]-1] - s[Lmax[i]];
+            ll t2 = s[Rmin[j]-1] - s[Lmin[j]];
+            ans = t1*t2;
         } 
     }   
 }

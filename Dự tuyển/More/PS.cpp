@@ -40,7 +40,7 @@ void solve(){
     // cout << r-l;
 }
 
-int main(){
+signed main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);
     if(fopen("PS.inp","r")){
