@@ -18,27 +18,52 @@ typedef vector<ll> vll;
 typedef vector<ii> vii;
 typedef vector<vi> vvi;
 
-const int N = 1e5+10;
+const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-int n;
-vi f[N];
+int m, n, a[21], b[N];
+int x[21];
+map<ll, int> M;
+string s;
 
-void solve() {
-
+void check() {
+    ll res = 0;
+    for(int i = 1; i <= m; i++) {
+        if(x[i])
+            res += a[i];
+    }
+    if(M[res] != 0)
+        s[M[res]-1] = '1';
 }
 
-void init() {
-    cin >> n;
-    for(int i = 1; i < n; i++) {
-        int u, v;
-        cin >> u >> v;
-        f[u].eb(v);
-        f[v].eb(u);
+void backtracking(int i) {
+    for(int j = 0; j <= 1; j++) {
+        x[i] = j;
+        if(i == m)
+            check();
+        else 
+            backtracking(i+1);
     }
 }
 
-#define task "a"
+void solve() {
+    s.resize(n, '0');
+    backtracking(1);
+    
+    cout << s;
+}
+
+void init() {
+    cin >> m >> n;
+    for(int i = 1; i <= m; i++)
+        cin >> a[i];
+    for(int i = 1; i <= n; i++) {
+        cin >> b[i];
+        M[b[i]] = i;
+    }
+}
+
+#define task "RIDDLE"
 signed main() {
     cin.tie(nullptr);
     ios_base::sync_with_stdio(false);

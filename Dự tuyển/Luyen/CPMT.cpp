@@ -18,27 +18,23 @@ typedef vector<ll> vll;
 typedef vector<ii> vii;
 typedef vector<vi> vvi;
 
-const int N = 1e5+10;
+const int N = 202;
 const ll MOD = 1e9+7;
 
-int n;
-vi f[N];
+int n, m, a[N][N];
 
 void solve() {
-
+       
 }
 
 void init() {
-    cin >> n;
-    for(int i = 1; i < n; i++) {
-        int u, v;
-        cin >> u >> v;
-        f[u].eb(v);
-        f[v].eb(u);
-    }
+    cin >> n >> m;
+    for(int i = 1; i <= m; i++) 
+        for(int j = 1; j <= n; j++)
+            cin >> a[i][j];
 }
 
-#define task "a"
+#define task "CPMT"
 signed main() {
     cin.tie(nullptr);
     ios_base::sync_with_stdio(false);

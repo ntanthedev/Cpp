@@ -18,27 +18,54 @@ typedef vector<ll> vll;
 typedef vector<ii> vii;
 typedef vector<vi> vvi;
 
-const int N = 1e5+10;
+const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-int n;
-vi f[N];
+ll m, n, a[N], b[N], k;
+
+bool check(int x) {
+    ll res = 0;
+    ll i = 1, j = 1;
+    while(i <= m && j <= n) {
+        if(abs(a[i] - b[j]) <= x)
+            res++, i++, j++;
+        else if(a[i] < b[j])
+            i++;
+        else 
+            j++;
+    }
+    if(res >= k)
+        return true;
+    return false;
+}
+
 
 void solve() {
-
+    sort(a+1, a+1+m);
+    sort(b+1, b+1+n);
+    int l = 0, r = 1e9, ans = 1e9;
+    while(l <= r) {
+        int mid = (l+r)/2;
+        if(check(mid)) {
+            r = mid-1;
+            ans = min(ans, mid);
+        }
+        else {
+            l = mid+1;
+        }
+    } 
+    cout << ans;
 }
 
 void init() {
-    cin >> n;
-    for(int i = 1; i < n; i++) {
-        int u, v;
-        cin >> u >> v;
-        f[u].eb(v);
-        f[v].eb(u);
-    }
+    cin >> m >> n >> k;
+    for(int i = 1; i <= m; i++)
+        cin >> a[i];
+    for(int i = 1; i <= n; i++)
+        cin >> b[i];
 }
 
-#define task "a"
+#define task "PAIR"
 signed main() {
     cin.tie(nullptr);
     ios_base::sync_with_stdio(false);
