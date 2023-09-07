@@ -1,97 +1,64 @@
 #include <bits/stdc++.h>
-//---definition----
-#define ll long long
-#define ull unsigned long long
-#define pb push_back
-#define pf pop_front
+
+#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+#pragma GCC target("sse4,avx2,fma")
+#define xau "a"
 #define fi first
 #define se second
-#define all(x) x.begin(), x.end()
-#define range(x, l, r) x.begin() + l, x.begin() + r + 1
-#pragma GCC optimize("Ofast,unroll-loops")
-#pragma GCC target("avx2")
-const int N = 5e2 + 21;
-const int T = 1e3 + 21;
-const ll mod = 1e9 + 7;
+#define ii pair<int, int>
+const int N = 2e5 + 9;
 using namespace std;
-//---variation---
-ll n, k, m, q;
-string s, t;
-char c;
-//---pre-solution(function)---
-//---solution---
+typedef long long ll;
+ll t, f[N];
+ii a[N];
+template<typename T>
+inline void read(T& x) {
+    bool b = 0;
+    char c;
+    while(!isdigit(c = getchar()) && c != '-')
+        ;
+    if(c == '-') {
+        c = getchar();
+        b = 1;
+    }
+    x = c - 48;
+    while(isdigit(c = getchar())) {
+        x = (x << 3) + (x << 1) + (c - 48);
+    }
+    if(b) {
+        x = -x;
+    }
+}
+bool cmp(ii a, ii b) {
+    return a.fi < b.fi || (a.fi == b.fi && a.se > b.se);
+}
 void solve() {
-    cin >> s;
-    bool o = true;
-    ll l = 0, S = 0, d = 1, h = 0, h1 = 0;
-    while(l <= s.size() - 1) {
-        if(!o)
-            break;
+    ll n, m = 1;
+    read(n);
+    for(int i = 1; i <= n; i++)
+        read(a[i].fi), read(a[i].se);
+    sort(a + 1, a + 1 + n, cmp);
+    // for(int i = 1; i <= n; i++) cout<<a[i].fi<<" "<<a[i].se<<"||";
+    f[1] = a[n].se;
+    for(int i = n - 1; i >= 1; i--) {
+        if(a[i].se >= f[m])
+            f[++m] = a[i].se;
+        else if(a[i].se < f[1])
+            f[1] = a[i].se;
         else {
-            if(s[l] == '+') {
-                S++;
-                if(d == -1)
-                    h++;
-                else if(S >= 2) {
-                    d = 0;
-                }
-            } else if(s[l] == '-') {
-                S--;
-                if(h > 0)
-                    h--;
-                if(h == 0) {
-                    d = 0;
-                }
-                if(S <= 1)
-                    d = 1;
-                if(S <= h1) {
-                    d = 1;
-                    h1 = S;
-                }
-            } else if(s[l] == '1') {
-                if(d == -1)
-                    o = false;
-                else {
-                    d = 1;
-                    h1 = S;
-                }
-            } else {
-                if(d == 1)
-                    o = false;
-                else {
-                    h = max(h, 1 * 1ll);
-                    d = -1;
-                }
-            }
-            l++;
+            ll t = upper_bound(f + 1, f + m + 1, a[i].se) - f;
+            f[t] = a[i].se;
         }
     }
-    if(o)
-        cout << "YES";
-    else
-        cout << "NO";
+    // cout<<'\n';
+    cout << m << '\n';
 }
-//---main---
+
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    ll tcase;
-    cin >> tcase;
-    while(tcase--) {
+    cout.tie(NULL);
+    read(t);
+    while(t--)
         solve();
-        cout << '\n';
-    }
 }
-//---author---
-// Yukatou Arimotou
-// Yumesekai
-// daisuki dayo, PEA-chan <3
-// animeizdabezt
-// email: anime2152006@gmail.com
-// Katou Megumi <3
-// Saekano <3
-// Minami - Eternal blue
-// Truong mam non Van Yen
-// Truong tieu hoc Nam Ha
-// Truong THCS Le Van Thiem - 3K33
-// Truong THPT Chuyen Ha Tinh - T1K31

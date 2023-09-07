@@ -67,7 +67,7 @@ void init() {
 
 #define task "PAIR"
 signed main() {
-    cin.tie(nullptr);
+    cin.tie(NULL);
     ios_base::sync_with_stdio(false);
     if(fopen(task".inp","r")) {
         freopen(task".inp","r",stdin);

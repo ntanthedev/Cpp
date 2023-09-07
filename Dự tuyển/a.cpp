@@ -24,8 +24,13 @@ const ll MOD = 1e9+7;
 int n;
 vi f[N];
 
-void solve() {
+map<int, int> M;
+void dfs(int x) {
 
+}
+
+void solve() {
+    dfs(1);
 }
 
 void init() {
