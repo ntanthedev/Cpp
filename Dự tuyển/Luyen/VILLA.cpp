@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
-//#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
-//#pragma GCC target("sse4,avx2,fma")
+#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+#pragma GCC target("sse4,avx2,fma")
 #define fi first
 #define se second
 #define mp make_pair
@@ -20,6 +20,23 @@ typedef vector<vi> vvi;
 
 const int N = 1e3+10;
 const ll MOD = 1e9+7;
+
+template <typename T> inline void read (T &x) {
+    bool b = 0;
+    char c;
+    while (!isdigit (c = getchar()) && c != '-');
+    if (c == '-') {
+        c = getchar();
+        b = 1;
+    }
+    x = c - 48;
+    while (isdigit(c = getchar())) {
+        x = (x << 3) + (x << 1) + (c - 48);
+    }
+    if (b) {
+        x=-x;
+    }
+}
 
 ll n, m, k, t, a[N][N];
 ll s[N][N];
@@ -49,7 +66,7 @@ void sub2() {
 void sub3() {
     ll ans = 0;
     for(int x1 = 1; x1 <= m; x1++) {
-        for(int y1 = 1; y1 <= n; y1++) {
+        for(int y1 = 1; y1 <= n; y1++) { 
             
             for(int x2 = x1; x2 <= m; x2++) {
                 for(int y2 = y1+2; y2 <= n; y2++) {
@@ -60,6 +77,8 @@ void sub3() {
                             if(get_sum(x1, y1, x1+f, y1+f) + get_sum(x2, y2, x2+g, y2+g) <= t) {
                                 res = max(res, (f+1)*(f+1) + (g+1)*(g+1));
                             }
+                            else 
+                                break;
                         }
                     }
                     ans = max(ans, res);
@@ -83,10 +102,10 @@ void solve() {
 }
 
 void init() {
-    cin >> m >> n >> k >> t;
+    read(m), read(n), read(k), read(t);
     for(int i = 1; i <= m; ++i)  
         for(int j = 1; j <= n; ++j)  
-            cin >> a[i][j];
+            read(a[i][j]);
     memset(s, 0, sizeof(s));
 }
 
