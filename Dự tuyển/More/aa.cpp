@@ -1,74 +1,49 @@
-#include <bits/stdc++.h>
-
-#define ll long long
-#define ld long double
-#define str string
-#define E6 1000000
-#define E3 1000
-#define mod 1000000007
+#include<bits/stdc++.h>
+#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+#pragma GCC target("sse4,avx2,fma")
 using namespace std;
+typedef long long ll;
+ll n, a[1000009],k,res;
+deque<ll> d;
 
-struct pt {
-    ll f, s, vt;
-};
-
-ll n, a, b, cn[E6 + 9], d, lay, gt = 0, hi[E6 + 9], x;
-pt c[E6 + 9];
-bool ok;
-bool cmp(pt a, pt b) {
-    return a.f < b.f || (a.f == b.f && a.s < b.s);
+template <typename T> inline void read (T &x) {
+    bool b = 0;
+    char c;
+    while (!isdigit (c = getchar()) && c != '-');
+    if (c == '-') {
+        c = getchar();
+        b = 1;
+    }
+    x = c - 48;
+    while (isdigit(c = getchar())) {
+        x = (x << 3) + (x << 1) + (c - 48);
+    }
+    if (b) {
+        x=-x;
+    }
 }
 
-void solve() {
-    sort(c + 1, c + n + 1, cmp);
-    for(int i = 1; i <= n + 1; i++) {
-        if(a >= b && x > 0) {
-            ok = true;
-            break;
-        }
-        if(c[i].f <= a) {
-            if(c[i].s - a > gt) {
-                gt = c[i].s - a;
-                lay = i;
-            }
-        } else {
-            d++;
-            cn[d] = c[lay].vt;
-            a = c[lay].s;
-            lay = 0;
-            gt = 0;
-            i--;
-            x++;
-            hi[x] = i;
-            if(hi[x] == hi[x - 1]) {
-                break;
-            }
+int main(){
+      {
+            ios_base::sync_with_stdio(false);
+            cin.tie(NULL);
+            // freopen("X.INP", "r", stdin);
+            // freopen("X.OUT", "w", stdout);
+      }
+    read(n), read(k);
+    for(int i = 1; i <= n; i++){
+        read(a[i]);
+    }
+    for(int i = 1; i <= k; i++){
+        d.push_front(a[1]);
+    }
+    for(int i = 2; i <= n; i++){
+        res += d.back();
+        d.pop_back();
+        while(!d.empty() and d.front() > a[i]) d.pop_front();
+        while(d.size() < k){
+            d.push_front(a[i]);
         }
     }
-    if(ok) {
-        cout << d << '\n';
-        sort(cn + 1, cn + d + 1);
-        for(int i = 1; i <= d; i++) {
-            cout << cn[i] << '\n';
-        }
-    } else
-        cout << -1;
-}
-int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    // freopen("cover.inp","r",stdin);
-    // freopen("cover.out","w",stdout);
-    cin >> n >> a >> b;
-    for(int i = 1; i <= n; i++) {
-        cin >> c[i].f >> c[i].s;
-        c[i].vt = i;
-        if(c[i].f <= a && c[i].s >= b && a == b && !ok) {
-            cout << 1 << '\n' << i;
-            return 0;
-        }
-    }
-    c[n + 1].f = E6;
-    c[n + 1].s = E6;
-    solve();
+    cout<<res + d.back();
 }
