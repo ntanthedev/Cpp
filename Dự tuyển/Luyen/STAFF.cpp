@@ -49,15 +49,16 @@ void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v..
 
 ll n, k, boss, ans = 0;
 vi f[N];
+set<int> colelaboss;
 bool M[N];
 
 void dfs(int u, int par1, int par2) {
     if(par1 != -1 && abs(par1 - u) <= k) {
-        cout << par1 << " " << u << '\n';
+        // cout << par1 << " " << u << '\n';
         ans++;
     }
     if(par2 != -1 && abs(par2 - u) <= k) {
-        cout << par2 << " " << u << '\n';
+        // cout << par2 << " " << u << '\n';
         ans++;
     }
     for(int j = 0, i; j < f[u].size(); j++) {
@@ -67,6 +68,7 @@ void dfs(int u, int par1, int par2) {
 }
 
 void solve() {
+    boss = *colelaboss.begin();
     dfs(boss, -1, -1);
     cout << ans;
 }
@@ -78,8 +80,10 @@ void init() {
         cin >> u >> v;
         f[u].pb(v);
         if(!M[u])
-            boss = u;
+            colelaboss.insert(u);
         M[v] = 1;
+        if(colelaboss.count(v))
+            colelaboss.erase(v);
     }
 }
 
