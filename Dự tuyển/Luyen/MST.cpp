@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
-//#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
-//#pragma GCC target("sse4,avx2,fma")
+#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+#pragma GCC target("sse4,avx2,fma")
 #define fi first
 #define se second
 #define mp make_pair
@@ -69,7 +69,7 @@ vector<Edge> edges;
 
 void sub1() {
     while(Q--) {
-        cin >> t;
+        read(t);
         edges.clear(); totalWeight = 0;
         for(int i = 1; i <= n; i++)
             for(int j = 1; j <= n; j++) 

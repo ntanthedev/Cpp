@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
-//#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
-//#pragma GCC target("sse4,avx2,fma")
+#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+#pragma GCC target("sse4,avx2,fma")
 #define fi first
 #define se second
 #define left (id<<1)
@@ -103,9 +103,9 @@ void sub1() {
 }
 
 void solve() {
-    if(n <= 1e3 && Q <= 1e3)    
-        sub1();
-    else 
+    // if(n <= 1e3 && Q <= 1e3)    
+    //     sub1();
+    // else 
         sub3();
 }
 

@@ -1,62 +1,54 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
+//#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+//#pragma GCC target("sse4,avx2,fma")
+#define fi first
+#define se second
+#define mp make_pair
+#define pb push_back
+#define eb emplace_back
+#define all(x) x.begin(), x.end()
+
 using namespace std;
 
-struct Edge {
-    int u, v, c;
-    Edge(int _u, int _v, int _c) : u(_u), v(_v), c(_c){};
-};
+typedef long long ll;
+typedef pair<int,int> ii;
+typedef pair<ll,ll> pll;
+typedef vector<int> vi;
+typedef vector<ll> vll;
+typedef vector<ii> vii;
+typedef vector<vi> vvi;
 
-struct Dsu {
-    vector<int> par;
+const int N = 1e6+10;
+const ll MOD = 1e9+7;
 
-    void init(int n) {
-        par.resize(n + 5, 0);
-        for(int i = 1; i <= n; i++)
-            par[i] = i;
+vi a, b;
+ll n;
+
+void solve() {
+    for(auto i : a) {
+        
     }
+}
 
-    int find(int u) {
-        if(par[u] == u)
-            return u;
-        return par[u] = find(par[u]);
+void init() {
+    cin >> n;
+    a.resize(n);
+    for(auto &i : a) 
+        cin >> i;
+}
+
+#define task "a"
+signed main() {
+    cin.tie(NULL);
+    ios_base::sync_with_stdio(false);
+    if(fopen(task".inp","r")) {
+        freopen(task".inp","r",stdin);
+        freopen(task".out","w",stdout);
     }
-
-    bool join(int u, int v) {
-        u = find(u);
-        v = find(v);
-        if(u == v)
-            return false;
-        par[v] = u;
-        return true;
+    int test_case = 1;
+    //cin >> test_case;
+    while(test_case--) {
+        init();
+        solve();
     }
-} dsu;
-
-int n, m, totalWeight = 0;
-vector<Edge> edges;
-
-int main() {
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
-
-    cin >> n >> m;
-
-    for(int i = 1; i <= m; i++) {
-        int u, v, c;
-        cin >> u >> v >> c;
-        edges.push_back({u, v, c});
-    }
-
-    dsu.init(n);
-
-    sort(
-        edges.begin(), edges.end(), [](Edge& x, Edge& y) { return x.c < y.c; });
-
-    for(auto e: edges) {
-        if(!dsu.join(e.u, e.v))
-            continue;
-        totalWeight += e.c;
-    }
-
-    cout << totalWeight << '\n';
 }
