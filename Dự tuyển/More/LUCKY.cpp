@@ -21,23 +21,35 @@ typedef vector<vi> vvi;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-int n;
-ii a, b;
+ll n, k, a[N];
+map<ll, ll> M;
 
 void solve() {
-
+    ll res = 0;
+    for(int i = 1; i <= n; i++) {
+        res += M[k - a[i]];
+        if(k - a[i] == a[i])
+            res--;
+        if(k == 0) continue;
+        res += M[-k - a[i]];
+        if(-k - a[i] == a[i])
+            res--;
+        //cout << res << " ";
+    }
+    cout << res/2;
 }
 
+// 
+
 void init() {
-    cin >> n;
+    cin >> n >> k;
     for(int i = 1; i <= n; i++) {
-        cin >> a.fi >> b.fi;
-        a.se = 1;
-        b.se = -1;
+        cin >> a[i];
+        M[a[i]]++;
     }
 }
 
-#define task "a"
+#define task "LUCKY"
 signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
