@@ -7,6 +7,9 @@
 #define pb push_back
 #define eb emplace_back
 #define all(x) x.begin(), x.end()
+#define fo(a, b, c) for(int a = b; a <= c; ++a)
+#define getmin query_min
+#define getmax query_max
 
 using namespace std;
 
@@ -33,14 +36,11 @@ typedef pair<ll,ll> pll;
 typedef vector<int> vi;
 typedef vector<ll> vll;
 typedef vector<ii> vii;
-typedef unordered_map<int, int> umii;
-typedef unordered_map<int, bool> umib;
-typedef unordered_map<ll, ll> umll;
 
 const int N = 2e5+10;
 const ll MOD = 1e9+7;
 
-int n, x, y, a[N], lmax[4*N], lmin[4*N], ans = 0;
+int n, x, y, a[N], lmax[4*N], lmin[4*N], ans = 0, MAX[N], MAX2[N], temp[N], temp2[N];
 
 void build(int x, int l, int r) {
     if(l == r) {
@@ -85,15 +85,71 @@ void sub2() {
     cout << ans;
 }
 
-void sub3() { 
-    build(1, 1, n);
-    
+void sub3() {
+    ll res = 0;
+    build(1,1,n);
+    MAX[n+1] = -1;
+    MAX2[n+1] = -1;
+    for(int i = n; i >= 1; --i){
+        if(a[i] == x){
+            MAX[i] = i;
+        }else{
+            MAX[i] = MAX[i+1];
+        }
+
+    }
+    temp2[n+1] = n+1;
+    temp[n+1] = n+1;
+    for(int i = n; i >= 1; --i){
+        if(a[i] == y){
+            MAX2[i] = i;
+        }else{
+            MAX2[i] = MAX2[i+1];
+        }
+        if(a[i] > x){
+            temp[i] = i;
+        }else temp[i] = temp[i+1];
+
+        if(a[i]<y){
+            temp2[i] = i;
+        }else temp2[i] = temp2[i+1];
+    }
+    if(x==y){
+        fo(i,1,n){
+        if(getmin(1,1,n,i,MAX[i]) == y && MAX[i]!=-1 && getmax(1,1,n,i,MAX[i])==x){
+            int pp;
+            int x = temp[MAX[i]+1];
+            int y = temp2[MAX[i]+1];
+            if(x > y) swap(x,y);
+            res+= (x - MAX[i]);
+        }
+        }
+        cout<<res;
+        return;
+    }
+    fo(i,1,n){
+        if(getmin(1,1,n,i,MAX[i]) == y && MAX[i]!=-1 && getmax(1,1,n,i,MAX[i])==x){
+            int pp;
+            int x = temp[MAX[i]+1];
+            int y = temp2[MAX[i]+1];
+            if(x > y) swap(x,y);
+            res+= (x - MAX[i]);
+        }
+        if(getmax(1,1,n,i,MAX2[i]) == x && MAX2[i] != -1 && getmin(1,1,n,i,MAX2[i]) == y){
+
+            int x = temp[MAX2[i]+1];
+            int y = temp2[MAX2[i]+1];
+            if(x > y) swap(x,y);
+            res+= (x - MAX2[i]);
+        }
+    }
+    cout << res;
 }
 
 void solve() {
     if(n <= 1000)
         sub2();
-    else 
+    else
         sub3();
 }
 

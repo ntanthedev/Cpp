@@ -7,6 +7,7 @@
 #define pb push_back
 #define eb emplace_back
 #define all(x) x.begin(), x.end()
+#define TIME (1.0 * clock() / CLOCKS_PER_SEC)
 
 using namespace std;
 
@@ -21,20 +22,14 @@ typedef vector<vi> vvi;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-int n;
-ii a, b;
+
 
 void solve() {
 
 }
 
 void init() {
-    cin >> n;
-    for(int i = 1; i <= n; i++) {
-        cin >> a.fi >> b.fi;
-        a.se = 1;
-        b.se = -1;
-    }
+
 }
 
 #define task "a"
@@ -51,4 +46,5 @@ signed main() {
         init();
         solve();
     }
+    //cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }
