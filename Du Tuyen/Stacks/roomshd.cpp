@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-struct ii //Thông tin di kèm v?i m?i d?u mút i
+struct ii //Thông tin di kèm với mỗi đầu mút i
 {
     int val; //Toa do
     int kind; //Ðóng/mo {1/0}
