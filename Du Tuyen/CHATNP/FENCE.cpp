@@ -31,7 +31,7 @@ void solve() {
         else
             l = mid+1;
     }
-    cout << check(3);
+    cout << check(3);/////
     // cout << ans;
 }
 
