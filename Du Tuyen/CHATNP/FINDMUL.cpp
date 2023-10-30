@@ -22,26 +22,40 @@ typedef vector<vi> vvi;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-ll n, res = 1;
-string x, y, z;
-map<string, ll> M;
+ll a, b, c, n;
+
+ll lcm(ll x, ll y) {
+    return x*y/__gcd(x, y);
+}
+
+ll sum(ll x, ll y, ll z, ll s) {
+    return (s/x) + (s/y) + (s/z) - (s/lcm(x,y)) - (s/lcm(x, z))  - (s/lcm(y,z)) + (s/lcm(lcm(x,y),z));
+}
+
+bool check(ll s) { 
+    ll res = sum(a, b, c, s) - sum(lcm(a, b), lcm(b, c), lcm(a, c), s);
+    return (res >= n);
+}
 
 void solve() {
-    for(int i = 0; i < x.size(); i++)
-        x[i] = tolower(x[i]);
-    for(int i = 0; i < z.size(); i++)
-        z[i] = tolower(z[i]);
-    int temp = M[z] + 1;
-    if(temp > res)
-        res = temp;
-    M[x] = temp;
+    ll l = 1, r = 1e18, ans, mid;
+    while(l <= r) { 
+        mid = (l + r)/2;
+        if(check(mid)) {
+            ans = mid;
+            r = mid-1;
+        }
+        else 
+            l = mid+1;
+    }
+    cout << ans;
 }
 
 void init() {
-
+    cin >> a >> b >> c >> n;
 }
 
-#define task "a"
+#define task "FINDMUL"
 signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
@@ -50,28 +64,10 @@ signed main() {
         freopen(task".out","w",stdout);
     }
     int test_case = 1;
-    cin >> test_case;
+    //cin >> test_case;
     while(test_case--) {
-    M["polycarp"] = 1;
         init();
         solve();
     }
     //cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
-}
-#include <iostream>
-#include <map>
-#include <string>
-using namespace std;
-
-int main() {
-    int n, ans = 1;
-    string a, b, c;
-    map<string, int> l;
-    l["polycarp"] = 1;
-    cin >> n;
-    while(n--) {
-        
-    }
-    cout << ans;
-    return 0;
 }
