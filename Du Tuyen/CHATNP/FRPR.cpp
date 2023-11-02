@@ -22,24 +22,31 @@ typedef vector<vi> vvi;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-ll x, y, s1, s2, v = 0;
+ll s1, s2, x, y;
 
-void solve() {
-    while(++v) {
-        if(v%x != 0 && s1 > 0)
-            s1--;
-        else if(v%y != 0 && s2 > 0)
-            s2--;
-        if(s1 == 0 && s2 == 0)
-            return cout << v, void();
-    }
+bool check(ll mid) { 
+    return ((mid - (mid/(x*y/__gcd(x, y)))) >= s1 + s2 && (mid - mid/x) >= s1 && (mid - mid/y) >= s2);
 }
 
-void init() {
+void solve() {
+    ll l = 1, r = 1e18, mid, ans;
+    while(l <= r) { 
+        mid = (l + r)/2;
+        if(check(mid)) {
+            ans = mid;
+            r = mid-1;
+        }
+        else 
+            l = mid+1;
+    }
+    cout << ans ;
+}
+
+void init() {   
     cin >> s1 >> s2 >> x >> y;
 }
 
-#define task "a"
+#define task "FRPR"
 signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
@@ -53,5 +60,5 @@ signed main() {
         init();
         solve();
     }
-    //cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
+    cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }
