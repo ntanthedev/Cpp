@@ -1,14 +1,8 @@
-import requests
+a = int(input("nhap a"))
+b = int(input("nhap b"))
 
-dir = ""
-for i in range(1,41):
-    dir = str(i).zfill(2)
-    url = "http://172.16.23.55/contests/test/ADN/test"+dir+"/"+"ADN.inp"
-    baka = requests.get(url)
-    with open("test"+dir+".inp", "wb") as f:
-        f.write(baka.content)
-    
-    url = "http://172.16.23.55/contests/test/ADN/test"+dir+"/"+"ADN.out"
-    baka = requests.get(url)
-    with open("test"+dir+".out", "wb") as f:
-        f.write(baka.content)
+print("tong a + b la: ", a + b)
+print("tich a + b la: ", a * b)
+print("thuong a : b la:", a/b)
+print("phan nguyen cua phep chia a:b la: ", a//b)
+print("phan du cua phep chia a:b la: ", a%b)
