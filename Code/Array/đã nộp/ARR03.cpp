@@ -30,9 +30,10 @@ bool nt(long long x)
 }
 int main ()
 {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
     freopen("ARR03.inp", "r", stdin);
     freopen("ARR03.out", "w", stdout);
-    ios_base::sync_with_stdio(false);
     cin>>n;
     for(int i = 1; i <= n; ++i)
         cin>>a[i];

@@ -1,6 +1,6 @@
-#include<bits/stdc++.h>
-//#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
-//#pragma GCC target("sse4,avx2,fma")
+#include <bits/stdc++.h>
+// #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+// #pragma GCC target("sse4,avx2,fma")
 #define fi first
 #define se second
 #define mp make_pair
@@ -12,84 +12,65 @@
 using namespace std;
 
 typedef long long ll;
-typedef pair<int,int> ii;
-typedef pair<ll,ll> pll;
+typedef pair<int, int> ii;
+typedef pair<ll, ll> pll;
 typedef vector<int> vi;
 typedef vector<ll> vll;
 typedef vector<ii> vii;
 typedef vector<vi> vvi;
 
-const int N = 1e6+10;
-const ll MOD = 1e9+7;
+const int N = 1e6 + 10;
+const ll MOD = 1e9 + 7;
 
 ll m, n, t[N];
-vii f[N];
-ii trace[N];
+vll f[N];
+vector<bool> vis;
 
-bool bfs(int mid) {
-    map<ll, bool> M; 
+bool check(long long mid) {
     queue<int> q;
+    vis.assign(n + 1, 0);
+
     q.push(1);
+    vis[1] = true;
+
     while(!q.empty()) {
-        int u = q.front(); q.pop();
-        for(auto i : f[u]) {
-            if(!M[i.fi] && abs(t[i.fi] - t[u]) <= mid) {
-                q.push(i.fi);
-                M[i.fi] = true;
-            }
+        int u = q.front();
+        q.pop();
+
+        for(int v: f[u]) {
+            if(vis[v] || abs(t[u] - t[v]) > mid)
+                continue;
+
+            vis[v] = true;
+            q.push(v);
         }
     }
-    return M[n];
-}
-
-void out(ll ans) {
-    queue<int> q;
-    q.push(1);
-    trace[1] = mp(-1, -1);
-    while(!q.empty()) {
-        int u = q.front(); q.pop();
-        for(auto i : f[u]) {
-            if(trace[i.fi].fi == 0 && abs(t[i.fi] - t[u]) <= ans) {
-                q.push(i.fi); 
-                trace[i.fi] = f[u][i.fi];
-            }
-        }
-    }
-    vector<int> as;
-    ll t = n;
-    while(t != 0) {
-        as.pb(t); 
-        t = trace[t];
-    }
-    reverse(as.begin(), as.end());
-    cout << as.size() << '\n';
-    for(auto i : as)
-        cout << i << " ";
+    return vis[n];
 }
 
 void solve() {
-    ll l = 1, r = n, mid, ans;
+    vis.resize(n + 1, 0);
+    ll l = 0, r = 1e18, mid, ans;
     while(l <= r) {
         mid = (l + r) / 2;
-        if(bfs(mid)) {
+        if(check(mid)) {
             ans = mid;
             r = mid - 1;
-        }
-        else 
+        } else
             l = mid + 1;
-    }    
-    
+    }
+    cout << ans;
 }
 
 void init() {
     cin >> n >> m;
-    for(int i = 1; i <= n; i++) 
+    for(int i = 1; i <= n; i++)
         cin >> t[i];
     for(int i = 1; i <= m; ++i) {
         int u, v;
         cin >> u >> v;
-        f[u].eb(mp(v, i));
-        f[v].eb(mp(u, i));
+        f[u].eb(v);
+        f[v].eb(u);
     }
 }
 
@@ -97,15 +78,15 @@ void init() {
 signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
-    if(fopen(task".inp","r")) {
-        freopen(task".inp","r",stdin);
-        freopen(task".out","w",stdout);
+    if(fopen(task ".inp", "r")) {
+        freopen(task ".inp", "r", stdin);
+        freopen(task ".out", "w", stdout);
     }
     int test_case = 1;
-    //cin >> test_case;
+    // cin >> test_case;
     while(test_case--) {
         init();
         solve();
     }
-    //cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
+    // cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }

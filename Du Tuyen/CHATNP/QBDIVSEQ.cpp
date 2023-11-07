@@ -3,8 +3,8 @@
 using namespace std;
 
 signed main() {
-    freopen("QBDIVSEQ.inp","r",stdin);
-    freopen("QBDIVSEQ.out","w",stdout);
+    // freopen("QBDIVSEQ.inp","r",stdin);
+    // freopen("QBDIVSEQ.out","w",stdout);
 
     int n;
     cin >> n;
