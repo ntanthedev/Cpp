@@ -19,24 +19,28 @@ typedef vector<ll> vll;
 typedef vector<ii> vii;
 typedef vector<vi> vvi;
 
-const int N = 1e6+10;
+const int N = 1e3+10;
 const ll MOD = 1e9+7;
 
-
+ll m, n, f[N][N];
+string a, b;
 
 void solve() {
-
+    
 }
 
 void init() {
-
+    cin >> a >> b;
+    m = a.size();
+    n = b.size();
+    a = ' ' + a;
+    b = ' ' + b;
 }
 
+#define task "a"
 signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
-    
-    #define task "a"
     if(fopen(task".inp","r")) {
         freopen(task".inp","r",stdin);
         freopen(task".out","w",stdout);
