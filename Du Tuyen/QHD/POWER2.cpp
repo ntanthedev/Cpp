@@ -26,13 +26,25 @@ ll sqr(ll x) {
     return x * x;
 }
 
-ll mod(ll x, ll n, ll m) {
+ll modd(ll x, ll n, ll m) {
     if(n == 0)
-        return 1%m;
+        return 1;
+    ll t = modd(x, n/2, m)%m;
     if(n & 1) 
-        return (x%m * sqr(mod(x, n/2, m))%m)%m;
+        return (x%m * (t * t)%m)%m;
     else 
-        return sqr(mod(x, n/2, m))%m;
+        return (t * t)%m;
+}
+
+long long POWER(long long x, long long n, long long m) {
+    if(n == 0) return 1;
+    long long temp = POWER(x, n / 2, m) % m;
+
+    if(n & 1) {
+        return ((temp * temp) % m * x % m) % m;
+    }else {
+        return (temp * temp) % m;
+    }
 }
 
 // void solve() {
@@ -42,7 +54,7 @@ ll mod(ll x, ll n, ll m) {
 void init() {
     ll x, m, n;
     while(cin >> x >> n >> m)
-        cout << mod(x, n, m) << '\n';
+        cout << POWER(x, n, m) << '\n';
 }
 
 #define task "POWER2"

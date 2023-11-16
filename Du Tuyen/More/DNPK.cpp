@@ -7,25 +7,9 @@
 #define pb push_back
 #define eb emplace_back
 #define all(x) x.begin(), x.end()
+#define TIME (1.0 * clock() / CLOCKS_PER_SEC)
 
 using namespace std;
-
-template <typename T> inline void read (T &x) {
-    bool b = 0;
-    char c;
-    while (!isdigit (c = getchar()) && c != '-');
-    if (c == '-') {
-        c = getchar();
-        b = 1;
-    }
-    x = c - 48;
-    while (isdigit(c = getchar())) {
-        x = (x << 3) + (x << 1) + (c - 48);
-    }
-    if (b) {
-        x=-x;
-    }
-}
 
 typedef long long ll;
 typedef pair<int,int> ii;
@@ -33,39 +17,19 @@ typedef pair<ll,ll> pll;
 typedef vector<int> vi;
 typedef vector<ll> vll;
 typedef vector<ii> vii;
-typedef unordered_map<int, int> umii;
-typedef unordered_map<int, bool> umib;
-typedef unordered_map<ll, ll> umll;
+typedef vector<vi> vvi;
 
 const int N = 1e3+10;
 const ll MOD = 1e9+7;
 
-ll n, f[N][N];
+ll f[N][N], n, k;
 
-ll solve(int i, int d) {
-    if(i > n) {
-        if(d == 0)
-            return 1;
-    }
-    if(f[i][d] != -1) 
-        return f[i][d];
-    f[i][d] = 0;
-    if(d+1 <= n-i) 
-        f[i][d] += solve(i+1, d+1);
-    if(d > 0)
-        f[i][d] += solve(i+1, d-1);
-    return f[i][d];
-
-}
-
-void init() {
-    cin >> n;
+void solve() {
     memset(f, -1, sizeof(f));
-    cout << solve(1, 0);
 }
 
-#define task "ENUM1"
-int32_t main() {
+#define task "DNPK"
+signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
     if(fopen(task".inp","r")) {
@@ -74,7 +38,8 @@ int32_t main() {
     }
     int test_case = 1;
     //cin >> test_case;
-    while(test_case--) {
-        init();
+    while(cin >> n >> k) {
+        solve();
     }
+    //cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }
