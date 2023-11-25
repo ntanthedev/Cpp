@@ -19,44 +19,36 @@ typedef vector<ll> vll;
 typedef vector<ii> vii;
 typedef vector<vi> vvi;
 
-const int N = 1e5+10;
+const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-ll n, k, a[N], b[N], s[N], flag = 1;
+ll n, k;
+vi ans;
+int b[17];
 
-void sub2() {
-    s[0] = 0;
-    for(int i = 1; i <= n; i++) {
-        flag = 1;
-        for(int j = i; (j <= n && flag == 1) || (j < i && flag == 2); ((j == n && flag == 1) ? (j = 1, flag = 2) : j++)) {
-            s[i] = (s[i] + (a[j] * b[j])%MOD)%MOD;
+void solve(int i) {
+    for(int j = 1; j <= n; j++) {
+        if (j <= b[i - 1] && i != 1) continue;
+        b[i] = j;
+        ans.pb(j);
+        if(i == k) {
+            for(auto x : ans)
+                cout << x << " ";
+            cout << '\n';
         }
+        else 
+            solve(i+1);
+        b[i] = 0;
+        ans.pop_back();
     }
-    for(int i = 1; i <= n; i++)
-        cerr << s[i] << " ";
-    cout << '\n';
-    for(int i = 1; i <= n; i++) {
-        s[i] += s[i-1];
-        s[i] %= MOD;
-    }
-    cout << ((k/n * s[n])%MOD + s[k%n]%MOD)%MOD << '\n';
-    for(int i = 1; i <= n; i++)
-        cerr << s[i] << " ";
-}
-
-void solve() {
-    sub2();
 }
 
 void init() {
     cin >> n >> k;
-    for(int i = 1; i <= n; i++)
-        cin >> a[i];
-    for(int i = 1; i <= n; i++)
-        cin >> b[i];
+    solve(1);
 }
 
-#define task "a"
+#define task "SUBSET"
 signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
@@ -68,7 +60,7 @@ signed main() {
     //cin >> test_case;
     while(test_case--) {
         init();
-        solve();
+        // solve();
     }
     cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }
