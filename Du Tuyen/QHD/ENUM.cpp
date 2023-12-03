@@ -22,17 +22,23 @@ typedef vector<vi> vvi;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
+ll n;
+string ans;
 
-
-void solve() {
+void solve(int i, int d) {
+    if(i > n) {
+        if(d == 0)
+            cout << ans;
+    }
 
 }
 
 void init() {
-
+    cin >> n;
+    solve(1, 0);
 }
 
-#define task "a"
+#define task "ENUM"
 signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
@@ -44,7 +50,7 @@ signed main() {
     //cin >> test_case;
     while(test_case--) {
         init();
-        solve();
+        // solve();
     }
     //cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }

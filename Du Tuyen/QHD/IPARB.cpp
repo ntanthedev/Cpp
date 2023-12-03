@@ -22,17 +22,25 @@ typedef vector<vi> vvi;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
+ll n, f[401];
 
-
-void solve() {
-
+ll solve(ll i) {
+    if(i == 1)
+        return 1;
+    if(f[i] != -1)
+        return f[i];
+    f[i] = 0;
+    for(int j = 1; j <= 9; j++) {
+        
+    }
 }
 
 void init() {
-
+    cin >> n;
+    memset(f, -1, sizeof(f));
 }
 
-#define task "a"
+#define task "IPARB"
 signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
@@ -44,7 +52,7 @@ signed main() {
     //cin >> test_case;
     while(test_case--) {
         init();
-        solve();
+        // solve();
     }
     //cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }
