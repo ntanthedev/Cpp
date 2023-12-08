@@ -24,7 +24,7 @@ const ll MOD = 1e9 + 7;
 
 ll m, n, t[N];
 vll f[N];
-vector<bool> vis;
+vector<bool> vis, way;
 
 bool check(long long mid) {
     queue<int> q;
@@ -56,10 +56,14 @@ void solve() {
         if(check(mid)) {
             ans = mid;
             r = mid - 1;
+            way = vis;
         } else
             l = mid + 1;
     }
-    cout << ans;
+    cout << ans << '\n';
+    for(auto i : way)
+        if(i)
+            cout << i << " " ;
 }
 
 void init() {
