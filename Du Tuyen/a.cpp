@@ -1,4 +1,4 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 #define int long long
 
 using namespace std;
@@ -19,7 +19,7 @@ signed main() {
             if(st.top() == x)
                 ans += M[x] + (st.size() > M[x]);
             else
-                ans++; 
+                ans++;
         }
         st.push(x);
         M[x]++;
