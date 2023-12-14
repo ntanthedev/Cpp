@@ -22,14 +22,18 @@ typedef vector<vi> vvi;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-
+ll n, m, a[N],b[N];
 
 void solve() {
 
 }
 
 void init() {
-
+    cin >> n >> m;
+    for(int i = 1; i <= n; ++i) 
+        cin >> a[i];
+    for(int i = 1; i <= m; i++)
+        cin >> b[i];
 }
 
 #define task "Hotel Queries"
