@@ -22,33 +22,41 @@ typedef vector<vi> vvi;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-ll n, m, a[N],b[N];
+ll poww(int i) {
+    ll s = 1;
+    for(int j = 1; j <= i; j++) 
+        s *= 10;
+}
+
+ll k;
+ll a[19];
 
 void solve() {
+    ll t = upper_bound(a + 1, a + 19, k) - a - 1;
+    ll s = k - a[t];
 
 }
 
 void init() {
-    cin >> n >> m;
-    for(int i = 1; i <= n; ++i) 
-        cin >> a[i];
-    for(int i = 1; i <= m; i++)
-        cin >> b[i];
+    cin >> k;
 }
 
-#define task "Hotel Queries"
+#define task "DigitQueries"
 signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
-    if(fopen(task".inp","r")) {
-        freopen(task".inp","r",stdin);
-        freopen(task".out","w",stdout);
+    
+    for(int i = 1; i <= 18; i++) {
+        a[i] = i * 9 * poww(i-1);
     }
+
     int test_case = 1;
-    //cin >> test_case;
+    cin >> test_case;
     while(test_case--) {
         init();
         solve();
     }
     //cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }
+
+// 9 * 10^(i-1) * i
