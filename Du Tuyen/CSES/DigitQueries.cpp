@@ -33,7 +33,8 @@ ll a[19];
 
 void solve() {
     ll t = upper_bound(a + 1, a + 19, k) - a - 1;
-    ll s = k - a[t];
+    ll s = k - a[t], temp;
+    temp = s%t;
 
 }
 
@@ -46,8 +47,10 @@ signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
     
+    a[0] = 0;
+
     for(int i = 1; i <= 18; i++) {
-        a[i] = i * 9 * poww(i-1);
+        a[i] = i * 9 * poww(i-1) + a[i-1];
     }
 
     int test_case = 1;
