@@ -22,14 +22,22 @@ typedef vector<vi> vvi;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-
+ll n, d = 0, ans = 0;
+string s;
 
 void solve() {
-
+    for(int i = 0; i < n; i++) {
+        if(s[i] == '1')
+            ans += ++d;
+        else
+            d = 0;
+    }
+    cout << ans;
 }
 
 void init() {
-
+    cin >> n;
+    cin >> s;
 }
 
 #define task "a"
