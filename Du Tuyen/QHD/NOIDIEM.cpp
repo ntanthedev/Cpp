@@ -19,24 +19,17 @@ typedef vector<ll> vll;
 typedef vector<ii> vii;
 typedef vector<vi> vvi;
 
-const int N = 1e4+10;
+const int N = 1e3+10;
 const ll MOD = 1e9+7;
 
-int n, m, a[N], dp[N];
+ll n, m, f[N][N];
 
 void solve() {
-    memset(dp, 0, sizeof(dp));
-    for(int i = 1; i <= n; i++) {
-        for(int j = min(n, i + m); j >= max(0, i - m); j--) {
-            
-        }
-    }
+
 }
 
 void init() {
-    cin >> n >> m;
-    for(int i = 1; i <= n; i++)
-        cin >> a[i];
+
 }
 
 #define task "NOIDIEM"
