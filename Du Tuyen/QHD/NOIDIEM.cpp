@@ -3,7 +3,6 @@
 using namespace std;
 typedef long long ll;
 void solve() {
-    // initialize
     ll n, k, S = 0;
     cin >> n >> k;
     vector<ll> a(n + 1);
@@ -29,5 +28,4 @@ signed main() {
         freopen("NOIDIEM.out", "w", stdout);
     }
     solve();
-    //---writer---
 }
