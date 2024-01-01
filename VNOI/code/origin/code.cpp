@@ -22,22 +22,27 @@ typedef vector<vi> vvi;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-ll n, k, a[N], ans = 0;
+ll n, k, d;
+string s;
 
 void solve() {
-    for(ll i = 1; i <= n; i++) {
-        for(ll j = i-1; j >= max(i - k, 0LL); j--)
-            ans = max(ans, a[i] - a[j]);
+    s.resize(k, '1');
+    n -= k;
+    for(int i = 0; i < s.size(); i++) {
+        if(n > 8) {
+            s[i] = '9';
+            n -= 8;
+        }
+        else {
+            s[i] += n;
+            break;
+        }
     }
-    cout << ans;
+    cout << s;
 }
 
 void init() {
     cin >> n >> k;
-    for(int i = 1; i <= n; i++) {
-        cin >> a[i];
-        a[i] += a[i-1];
-    }
 }
 
 #define task "code"

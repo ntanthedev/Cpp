@@ -22,30 +22,31 @@ typedef vector<vi> vvi;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-ll n, k, d;
-string s;
+ll n, a[N], s[N];
 
 void solve() {
-    s.resize(k, '1');
-    n -= k;
-    for(int i = 0; i < s.size(); i++) {
-        if(n > 8) {
-            s[i] = '9';
-            n -= 8;
-        }
-        else {
-            s[i] += n;
-            break;
-        }
+    ll res = a[1] % MOD;
+    s[1] = 0;
+    for(int i = 2; i <= n; i++) {
+        s[i] = (s[i-1] + res * a[i]) % MOD;
+        res = (res + a[i]) % MOD;
     }
-    cout << s;
+    
+    ll ans = 0;
+    for(int i = 3; i <= n; i++) {
+        ans = (ans + s[i-1] * a[i]) % MOD;
+    }
+    cout << ans;
 }
 
 void init() {
-    cin >> n >> k;
+    cin >> n;
+    for(int i = 1; i <= n; i++) {
+        cin >> a[i];
+    }
 }
 
-#define task "a"
+#define task "bai5"
 signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);

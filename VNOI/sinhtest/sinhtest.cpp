@@ -6,7 +6,7 @@ using namespace std;
 #define f1(i,n) for(int i=1;i<=n;i++)
 typedef long long ll;
 const int btest = 1;
-const int etest = 80;
+const int etest = 50;
 
 ll Rand(ll l, ll h)
 {
@@ -34,14 +34,7 @@ void sinh(int x)
     ll t, n, l, r, m, a, q, k;
     n = Rand(1, 5000);
     k = Rand(1, n);
-    inp << n << " " << k << '\n';
-    for(int i = 1; i <= n; i++) {
-        t = Rand(1, W);
-        m = Rand(1, T);
-        if(m%2 == 0)
-            t = -t;
-        inp << t << " ";
-    }
+    inp << n << " " << k;
 }
 
 int main(){
