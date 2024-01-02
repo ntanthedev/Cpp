@@ -22,29 +22,25 @@ typedef vector<vi> vvi;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-ll n, a[N], f[N], t[N], m = 1;
+ll L, n;
+
+struct pt {
+    ll s, t, v;
+} a[N];
 
 void solve() {
-    f[1] = a[1];
-    t[1] = 1;
-    for(int i = 2; i <= n; i++) {
-        if(a[i] > f[m]) {
-            f[++m] = a[i];
-            t[i] = m;
-        }
-        else {
-            
-        }
-    }
+    
 }
 
 void init() {
-    cin >> n;
-    for(int i = 1; i <= n; i++)
-        cin >> a[i];
+    cin >> L >> n;
+    for(int i = 1; i <= n; i++) {
+        cin >> a[i].s >> a[i].v;
+        a[i].t = a[i].s + L/a[i].v;
+    }
 }
 
-#define task "LIS"
+#define task "FRIENDS"
 signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
