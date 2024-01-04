@@ -5,8 +5,8 @@ using namespace std;
 #define	f0(i,n) for(int i=0;i<n;i++)
 #define f1(i,n) for(int i=1;i<=n;i++)
 typedef long long ll;
-const int btest = 10;
-const int etest = 20;
+const int btest = 21;
+const int etest = 40;
 
 ll Rand(ll l, ll h)
 {
