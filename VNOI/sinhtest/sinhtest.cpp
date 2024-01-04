@@ -6,7 +6,7 @@ using namespace std;
 #define f1(i,n) for(int i=1;i<=n;i++)
 typedef long long ll;
 const int btest = 21;
-const int etest = 40;
+const int etest = 100;
 
 ll Rand(ll l, ll h)
 {
@@ -32,11 +32,11 @@ void sinh(int x)
     ofstream os;
     ofstream inp((to_string(x) + ".txt").c_str());
     ll t, n, l, r, m, a, q, k;
-    n = Rand(1, 20);
+    n = Rand(20, 255);
     inp << n << '\n';
     for(int i = 1; i <= n; i++) {
         for(int j = 1; j <= n; j++) {
-            t = Rand(1, 250);
+            t = Rand(1, 255);
             inp << t << " " ;
         }
         inp << '\n';
