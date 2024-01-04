@@ -5,8 +5,8 @@ using namespace std;
 #define	f0(i,n) for(int i=0;i<n;i++)
 #define f1(i,n) for(int i=1;i<=n;i++)
 typedef long long ll;
-const int btest = 1;
-const int etest = 10;
+const int btest = 10;
+const int etest = 20;
 
 ll Rand(ll l, ll h)
 {
@@ -30,13 +30,13 @@ vector<long long> vt;
 void sinh(int x)
 {
     ofstream os;
-    ofstream inp((to_string(x) + ".inp").c_str());
+    ofstream inp((to_string(x) + ".txt").c_str());
     ll t, n, l, r, m, a, q, k;
     n = Rand(1, 20);
     inp << n << '\n';
     for(int i = 1; i <= n; i++) {
         for(int j = 1; j <= n; j++) {
-            t = Rand(1, 100);
+            t = Rand(1, 250);
             inp << t << " " ;
         }
         inp << '\n';
