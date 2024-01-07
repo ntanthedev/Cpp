@@ -19,20 +19,46 @@ typedef vector<ll> vll;
 typedef vector<ii> vii;
 typedef vector<vi> vvi;
 
-const int N = 1e6+10;
+const int N = 1e3+10;
 const ll MOD = 1e9+7;
 
+ll n, k, s, res = 0, a[21][21];
+vll ans;
+bool flag = 0;
 
-
-void solve() {
-
+void solve(int i) {
+    for(int j = 1; j <= n; j++) {
+        if(!ans.empty() && a[j][i] < ans.back() && res + a[j][i] > s)
+            continue;
+        res += a[j][i];
+        ans.pb(a[j][i]);
+        if(i == k && res == s) {
+            cout << "YES\n";
+            for(auto i : ans)
+                cout << i << " ";
+            flag = 1;
+            return;
+        }
+        if(flag)
+            return;
+        solve(i + 1);
+        res -= a[j][i];
+        ans.pop_back();
+    }
 }
 
 void init() {
-
+    cin >> s >> k >> n;
+    for(int i = 1; i <= n; i++) {
+        for(int j = 1; j <= k; j++) 
+            cin >> a[i][j];
+    }
+    solve(1);
+    if(!flag)
+        cout << "NO\n";
 }
 
-#define task "a"
+#define task "V8SCORE"
 signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
@@ -44,7 +70,7 @@ signed main() {
     //cin >> test_case;
     while(test_case--) {
         init();
-        solve();
+        // solve();
     }
     //cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }
