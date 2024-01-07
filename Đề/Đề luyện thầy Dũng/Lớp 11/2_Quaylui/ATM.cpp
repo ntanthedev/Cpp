@@ -39,8 +39,7 @@ void AttemptSecond(int i, int q)
     if (i > n)
     {
         Result +=
-            upper_bound(z, z + nz, m - q) -
-            lower_bound(z, z + nz, m - q);
+            upper_bound(z, z + nz, m - q) - lower_bound(z, z + nz, m - q);
         return;
     }
     AttemptSecond(i + 1, q);

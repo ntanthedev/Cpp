@@ -26,21 +26,27 @@ ll n, k, s, res = 0, a[21][21];
 vll ans;
 bool flag = 0;
 
+void check() {
+    if(res != s)
+        return;
+    cout << "YES\n";
+    for(auto i : ans)
+        cout << i << " " ;
+    flag = 1;
+}
+
 void solve(int i) {
+    if(flag)
+        return;
+    if(i > k) {
+        check();
+        return;
+    }
     for(int j = 1; j <= n; j++) {
-        if(!ans.empty() && a[j][i] < ans.back() && res + a[j][i] > s)
+        if((!ans.empty() && a[j][i] < ans.back()) || res + a[j][i] > s /*|| a[j][i] <= trunc((s - res)/(k-i))*/)
             continue;
         res += a[j][i];
         ans.pb(a[j][i]);
-        if(i == k && res == s) {
-            cout << "YES\n";
-            for(auto i : ans)
-                cout << i << " ";
-            flag = 1;
-            return;
-        }
-        if(flag)
-            return;
         solve(i + 1);
         res -= a[j][i];
         ans.pop_back();
