@@ -1,8 +1,8 @@
 #include<bits/stdc++.h>
 //#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
 //#pragma GCC target("sse4,avx2,fma")
-#define fi first
-#define se second
+#define w first
+#define v second
 #define mp make_pair
 #define pb push_back
 #define eb emplace_back
@@ -22,14 +22,49 @@ typedef vector<vi> vvi;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
+ll n, W;
+pll a[41];
+vector<pll> ans;
 
+void QL1(int i = 1, pll s = {0, 0}) {
+    if(i > n/2) {
+        ans.eb(s);
+        return;
+    }
+    for(int j = 0; j <= 1; j++) {
+        if(j) {
+            if(s.w + a[i].w > W) continue;
+            s.w += a[i].w;
+            s.v += a[i].v;
+        }
+        QL1(i+1, s);
+        if(j) {
+            s.w -= a[i].w;
+            s.v -= a[i].v;
+        }
+    }
+}
+
+void check(pll s) {
+    
+}
+
+void QL2(int i = n/2 + 1, pll s = {0, 0}) {
+    if(i > n) {
+        check(s);
+        return;
+    }
+}
 
 void solve() {
-
+    QL1();
+    sort(all(ans));
 }
 
 void init() {
-
+    cin >> n >> W;
+    for(int i = 1; i <= n; i++) 
+        cin >> a[i].w >> a[i].v;
 }
 
 #define task "a"
@@ -46,5 +81,5 @@ signed main() {
         init();
         solve();
     }
-    //cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
+    cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }
