@@ -16,8 +16,6 @@ signed main () {
         for(int j = 0; j < n; j++) {
             if(a[i][j] == a[i][j-1])
                 dp[i][j]++;
-            for(int k = j; k >= 0; k--) {
-                if(a[i][k] == a[i])
             }
         }
     }
