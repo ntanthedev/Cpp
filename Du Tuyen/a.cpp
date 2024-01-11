@@ -65,6 +65,7 @@ void QL1(int i = 1, pll s = {0, 0}) {
 }
 
 void check(pll s) {
+    dbg(s)
     ll t = upper_bound(all(ans), s) - ans.begin() - 1;
     gmax = max(gmax, ans[t].v + s.v);
 }
@@ -76,7 +77,7 @@ void QL2(int i = n/2 + 1, pll s = {0, 0}) {
     }
     for(int j = 0; j <= 1; j++) {
         if(s.w + a[i].w*j > W) continue;
-        QL2(i + 1, {s.w + a[i].w*j, s.v + a[i].w*j});    
+        QL2(i + 1, {s.w + a[i].w*j, s.v + a[i].v*j});    
     }
 }
 
