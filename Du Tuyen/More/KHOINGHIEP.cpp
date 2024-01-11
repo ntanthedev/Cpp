@@ -19,28 +19,62 @@ typedef vector<ll> vll;
 typedef vector<ii> vii;
 typedef vector<vi> vvi;
 
-const int N = 1e6+10;
+const int N = 2e5+10;
 const ll MOD = 1e9+7;
 
-pll a[N];
 ll n;
+map<ll, bool> M;
+
+struct pt {
+    ll fi, se, vt;
+};
+
+struct Less {
+    bool operator () (pt x, pt y) {
+        return x.fi > y.fi;
+    }
+};
+
+struct More {
+    bool operator () (pt x, pt y) {
+        return x.se > y.se;
+    }
+};
+
+priority_queue<pt, vector<pt>, Less> q1;
+priority_queue<pt, vector<pt>, More> q2;
+
+pt a[N];
 
 void solve() {
-    sort(a + 1, a + 1 + n);
-    ll res = 0;
-    for(int i = 1; i <= n; i++) { 
-        if(a[i].fi > i-1)
-            res += a[i].se;
-        // dbg(a[i])
-        // dbg(res)
+    ll d = 0, res = 0;
+    while(!q1.empty() && !q2.empty()) {
+        while(M[q1.top().vt])
+            q1.pop();
+        while(M[q2.top().vt])
+            q2.pop();
+        if(d < q1.top().fi) {
+            res += q2.top().se;
+            M[q2.top().vt] = true;
+            q2.pop();
+        }
+        else {
+            d++;
+            M[q1.top().vt] = true; 
+            q1.pop();
+        }
     }
     cout << res;
 }
 
 void init() {
     cin >> n;
-    for(int i = 1; i <= n; i++) 
+    for(int i = 1; i <= n; i++) {
         cin >> a[i].fi >> a[i].se;
+        a[i].vt = i;
+        q1.push(a[i]);
+        q2.push(a[i]);
+    }
 }
 
 #define task "KHOINGHIEP"
