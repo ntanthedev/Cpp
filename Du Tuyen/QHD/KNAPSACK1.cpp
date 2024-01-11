@@ -19,10 +19,10 @@ typedef vector<ll> vll;
 typedef vector<ii> vii;
 typedef vector<vi> vvi;
 
-const int N = 1e6+10;
+const int N = 1e7+10;
 const ll MOD = 1e9+7;
 
-ll n, m, gmax = 0, s[101];
+ll n, m, gmax = 0, s[101], L[1001][10001];
 pll a[101];
 vll ans, res;
 
@@ -45,6 +45,18 @@ void solve(int i, ll kl, ll gt) {
     }
 }
 
+void dpppp() {
+    for(int i = 1; i <= n; i++) {
+        for(int j = 1; j <= m; j++) {
+            if(a[i].w <= j)
+                L[i][j] = max(L[i-1][j - a[i].w] + a[i].v, L[i-1][j]);
+            else 
+                L[i][j] = L[i-1][j];
+        }
+    }
+    
+}
+
 void init() {
     cin >> n >> m;
     s[0] = 0;
@@ -52,7 +64,10 @@ void init() {
         cin >> a[i].w >> a[i].v;
         s[i] = s[i-1] + a[i].v;
     }
-    solve(1, 0, 0);
+    if(n <= 100)
+        solve(1, 0, 0);
+    else    
+        dpppp();     
     cout << gmax << '\n';
     for(auto i : ans)
         cout << i << " " ;
