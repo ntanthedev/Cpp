@@ -43,7 +43,7 @@ void solve(int i) {
         return;
     }
     for(int j = 1; j <= n; j++) {
-        if((!ans.empty() && a[j][i] < ans.back()) || res + a[j][i] > s /*|| a[j][i] <= trunc((s - res)/(k-i))*/)
+        if((!ans.empty() && a[j][i] < ans.back()) || res + a[j][i] > s || a[j][i] > trunc((s - res)/(k-i+1)))
             continue;
         res += a[j][i];
         ans.pb(a[j][i]);

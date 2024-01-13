@@ -1,32 +1,70 @@
 #include<bits/stdc++.h>
-#define tag "NHIPHAN"
-#define ll long long 
-const int N = 1e2+9;
+//#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+//#pragma GCC target("sse4,avx2,fma")
+#define fi first
+#define se second
+#define mp make_pair
+#define pb push_back
+#define eb emplace_back
+#define all(x) x.begin(), x.end()
+#define TIME (1.0 * clock() / CLOCKS_PER_SEC)
+
 using namespace std;
-ll n, a[N], x[N];
-void dmm(){
-    for(int i = 1; i <= n; i++)
-        cout<<x[i];
-    cout<<'\n';
+
+typedef long long ll;
+typedef pair<int,int> ii;
+typedef pair<ll,ll> pll;
+typedef vector<int> vi;
+typedef vector<ll> vll;
+typedef vector<ii> vii;
+typedef vector<vi> vvi;
+
+const int N = 1e6+10;
+const ll MOD = 1e9+7;
+
+ll n, S, a[21], x[21];
+bool flag = 0;
+
+void check() {
+    ll res = 0;
+    for(int i = 1; i <= n; i++) 
+        res += a[i] * x[i];
+    if(res == S) 
+        for(int i = 1; i <= n; i++)
+            if(x[i])
+                cout << a[i] << " " ;
 }
-void solve(int i){
-    for(int j = 0; j <= 1; j++){
+
+void solve(int i) {
+    for(int j = 0; j <= 1; j++) {
         x[i] = j;
-        if(i == n)
-            dmm();
-        else
-            solve(i+1);
+        if(i == n) 
+            check();
+        else 
+            solve(i + 1);
     }
 }
 
-int main(){
+void init() {
+    cin >> n >> S;
+    for(int i = 1; i <= n; i++)
+        cin >> a[i];
+    solve(1);
+}
+
+#define task "NHIPHAN"
+signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
-    if(fopen(tag".inp","r")){
-        freopen(tag".inp","r",stdin);
-        freopen(tag".out","w",stdout);
+    if(fopen(task".inp","r")) {
+        freopen(task".inp","r",stdin);
+        freopen(task".out","w",stdout);
     }
-    cin >> n;
-    
-    solve(1);
+    int test_case = 1;
+    //cin >> test_case;
+    while(test_case--) {
+        init();
+        // solve();
+    }
+    //cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }

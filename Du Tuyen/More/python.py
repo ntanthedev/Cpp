@@ -1,11 +1,10 @@
-import math 
+import math
 
-for i in range(1, 1000+1):
-    s = 0
-    for j in range(1, math.sqrt(j)):
-        if j % i == 0:
-            s += j
-            if j != i/j:
-                s += i/j
-    if s == i:
-        print(i)
+res = 0
+
+n = int(input("n = "))
+
+for i in range(1, n+1):
+    res += 1/(i*(i+1)/2)
+
+print("tổng của dãy trên là: ", res)

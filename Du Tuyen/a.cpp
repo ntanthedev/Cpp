@@ -49,8 +49,6 @@ typedef vector<vi> vvi;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-//binh ngu
-
 ll n, W, gmax = 0;
 pll a[41];
 vector<pll> ans, tempp;
