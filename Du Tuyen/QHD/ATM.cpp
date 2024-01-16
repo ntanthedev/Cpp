@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
-//#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
-//#pragma GCC target("sse4,avx2,fma")
+#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+#pragma GCC target("sse4,avx2,fma")
 #define fi first
 #define se second
 #define mp make_pair
@@ -22,14 +22,17 @@ typedef vector<vi> vvi;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-ll n, S, a[N];
+ll n, S, a[N], ans = 0;
 
-void solve() {
+void solve(int i = 1, ll res = 0) {
 
 }
 
 void init() {
-
+    cin >> n >> S;
+    for(int i = 1; i <= n; i++) {
+        cin >> a[i];
+    }
 }
 
 #define task "ATM"
