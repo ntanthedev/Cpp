@@ -38,7 +38,7 @@ void solve(int i = 1, ll res = 0) {
         }
     }
     for(int j = 0; j <= 1; j++) {
-        if(res + a[i]*j > S || res + (s[n] - s[i-1]) < S)
+        if(res + a[i]*j > S || res + (s[n] - s[i]) + j*a[i] < S)
             continue;
         if(j)
             ans.pb(i);
