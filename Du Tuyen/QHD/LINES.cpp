@@ -22,25 +22,17 @@ typedef vector<vi> vvi;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-ll n;
-string a, b;
+
 
 void solve() {
-    ll ans = 0, dif = 0, p1 = 0, p2 = 0;
-    for(int i = 0; i < n; i++) {
-        if(a[i] != b[i]) {
-            p1 += (a[i] == '1');
-            p2 += (b[i] == '1');
-        }
-    }
-    cout << min(p1, p2) + abs(p1 - p2) << '\n';
+
 }
 
 void init() {
-    cin >> n >> a >> b;
+
 }
 
-#define task "aa"
+#define task "LINES"
 signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
@@ -49,7 +41,7 @@ signed main() {
         freopen(task".out","w",stdout);
     }
     int test_case = 1;
-    cin >> test_case;
+    //cin >> test_case;
     while(test_case--) {
         init();
         solve();

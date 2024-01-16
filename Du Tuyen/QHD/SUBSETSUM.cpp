@@ -22,25 +22,42 @@ typedef vector<vi> vvi;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-ll n;
-string a, b;
+ll n, S, a[N], s[N];
+vll ans;
+bool flag = 0;
 
-void solve() {
-    ll ans = 0, dif = 0, p1 = 0, p2 = 0;
-    for(int i = 0; i < n; i++) {
-        if(a[i] != b[i]) {
-            p1 += (a[i] == '1');
-            p2 += (b[i] == '1');
+void solve(int i = 1, ll res = 0) {
+    if(flag)
+        return;
+    if(i > n) {
+        if(res == S) {
+            cout << "YES\n";
+            for(auto j : ans)
+                cout << j << " " ;
+            flag = 1;
         }
     }
-    cout << min(p1, p2) + abs(p1 - p2) << '\n';
+    for(int j = 0; j <= 1; j++) {
+        if(res + a[i]*j > S || res + (s[n] - s[i-1]) < S)
+            continue;
+        if(j)
+            ans.pb(i);
+        solve(i+1, res + a[i]*j);
+        if(j)
+            ans.pop_back();
+    }
 }
 
 void init() {
-    cin >> n >> a >> b;
+    cin >> n >> S;
+    s[0] = 0;
+    for(int i = 1; i <= n; i++) {
+        cin >> a[i];
+        s[i] = s[i-1] + a[i];
+    }
 }
 
-#define task "aa"
+#define task "SUBSETSUM"
 signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
@@ -49,7 +66,7 @@ signed main() {
         freopen(task".out","w",stdout);
     }
     int test_case = 1;
-    cin >> test_case;
+    //cin >> test_case;
     while(test_case--) {
         init();
         solve();

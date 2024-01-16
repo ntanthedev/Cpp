@@ -51,28 +51,31 @@ const ll MOD = 1e9+7;
 
 ll n, W, gmax = 0;
 pll a[41];
-vector<pll> ans, tempp;
+vector<pll> p1, p2, temp;
 
 void QL1(int i = 1, pll s = {0, 0}) {
     if(i > n/2) {
-        tempp.eb(s);
+        temp.eb(s);
         return;
     }
     for(int j = 0; j <= 1; j++) {
         if(s.w + a[i].w*j > W) continue;
-        QL1(i+1, {s.w + a[i].w, s.v + a[i].v});
+        QL1(i+1, {s.w + a[i].w*j, s.v + a[i].v*j});
     }
 }
 
-void check(pll s) {
-    dbg(s)
-    ll t = upper_bound(all(ans), s) - ans.begin() - 1;
-    gmax = max(gmax, ans[t].v + s.v);
-}
+// void check(pll s) {
+//     dbg(s)
+//     auto t = upper_bound(all(ans), mp(W - s.w, LLONG_MAX)) - ans.begin();
+//     dbg(t)
+//     t--;
+//     gmax = max(gmax, ans[t].v + s.v);
+//     dbg(gmax)
+// }
 
 void QL2(int i = n/2 + 1, pll s = {0, 0}) {
     if(i > n) {
-        check(s);
+        temp.eb(s);
         return;
     }
     for(int j = 0; j <= 1; j++) {
@@ -83,17 +86,35 @@ void QL2(int i = n/2 + 1, pll s = {0, 0}) {
 
 void solve() {
     QL1();
-    sort(all(tempp));
-    ans.eb(tempp[0]);
-    for(int i = 1; i < tempp.size(); i++) {
-        ans.eb(tempp[i]);
-        if(tempp[i].w > tempp[i-1].w && tempp[i].v <= tempp[i-1].v)
-            ans.pop_back();
+    dbg(temp)
+    sort(all(temp), [&] (auto x, auto y) {
+        return x.w < y.w || (x.w == y.w && x.v > y.v);
+    });
+    dbg(temp)
+    p1.pb(temp[0]);
+    for(int i = 1; i < temp.size(); i++) {
+        if(temp[i].v > p1.back().v)
+            p1.pb(temp[i]);
     }
-    dbg(tempp)
-    dbg(ans)
+    temp.clear();
     QL2();
-    cout << gmax;
+    dbg(temp)
+    sort(all(temp), [&] (auto x, auto y) {
+        return x.w < y.w || (x.w == y.w && x.v > y.v);
+    });
+    dbg(temp)
+    p2.pb(temp[0]);
+    for(int i = 1; i < temp.size(); i++) {
+        if(temp[i].v > p2.back().v)
+            p2.pb(temp[i]);
+    }
+    dbg(p1)
+    dbg(p2)
+    if(p1.size() > p2.size())
+        swap(p1, p2);
+    for(auto i : p1) {
+        auto t = upper_bound(all(p2), )
+    }
 }
 
 void init() {
