@@ -22,16 +22,37 @@ typedef vector<vi> vvi;
 const int N = 1e6+10;
 const ll MOD = 1e9+7;
 
-ll n, S, a[N], ans = 0;
+ll n, S, a[42], ans = 0, s[42];
+vll p1;
 
-void solve(int i = 1, ll res = 0) {
+void solve1(int i = 1, ll res = 0) {
+    if(i > n/2) 
+        return p1.pb(res), void();
+    for(int j = 0; j <= 1; j++) {
+        if(res + a[i]*j > S)
+            continue;
+        solve1(i+1, res + a[i]*j);
+    }
+}
 
+void solve2(int i = n/2+1, ll res = 0) {
+    if(i > n) {
+        ans += upper_bound(all(p1), S - res) - lower_bound(all(p1), S - res);
+        return;
+    }
+    for(int j = 0; j <= 1; j++) {
+        if(res + a[i]*j > S || res + a[i]*j + s[n] - s[i] + p1.back() < S)
+            continue;
+        solve2(i+1, res + a[i]*j);
+    }
 }
 
 void init() {
     cin >> n >> S;
+    s[0] = 0;
     for(int i = 1; i <= n; i++) {
         cin >> a[i];
+        s[i] = s[i-1] + a[i];
     }
 }
 
@@ -47,7 +68,10 @@ signed main() {
     //cin >> test_case;
     while(test_case--) {
         init();
-        solve();
+        solve1();
+        sort(all(p1));
+        solve2();
+        cout << ans;
     }
     //cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }

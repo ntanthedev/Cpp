@@ -1,8 +1,8 @@
 #include<bits/stdc++.h>
 //#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
 //#pragma GCC target("sse4,avx2,fma")
-#define w first
-#define v second
+#define fi first
+#define se second
 #define mp make_pair
 #define pb push_back
 #define eb emplace_back
@@ -19,20 +19,30 @@ typedef vector<ll> vll;
 typedef vector<ii> vii;
 typedef vector<vi> vvi;
 
-const int N = 1e6+10;
+const int N = 1e3+10;
 const ll MOD = 1e9+7;
 
-ll n, a[42], W;
+string a, b;
+ll dp[N][N];
 
 void solve() {
-
+    a = ' ' + a;
+    b = ' ' + b;
+    for(int i = 1; i < a.size(); i++)
+        for(int j = 1; j < b.size(); j++)
+            if(a[i] == b[j])
+                dp[i][j] = dp[i-1][j-1] + 1;
+            else
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+    cout << dp[a.size()-1][b.size()-1];
 }
 
 void init() {
-
+    cin >> a >> b;
+    dp[0][0] = 0;
 }
 
-#define task "aa"
+#define task "LCS0"
 signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
