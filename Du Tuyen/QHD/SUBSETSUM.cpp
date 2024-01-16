@@ -70,6 +70,8 @@ signed main() {
     while(test_case--) {
         init();
         solve();
+        if(!flag)
+            cout << "NO";
     }
     //cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }
