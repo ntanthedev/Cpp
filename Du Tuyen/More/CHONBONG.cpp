@@ -22,34 +22,27 @@ typedef vector<vi> vvi;
 const int N = 1e6 + 10;
 const ll MOD = 1e9 + 7;
 
-ll n, a[N], ans, cnt;
+ll ans = 0, n, k, x;
+ll M[N];
+vector<ll> b;
 
 void solve() {
-    // if(n < 3)
-    //     return cout << 0, void();
-    a[0] = LLONG_MAX - 222;
-    a[n + 1] = LLONG_MAX - 222;
-    sort(a + 1, a + 1 + n);
-    ans = 0, cnt = 0;
-    for(int i = 1; i <= n + 1; i++) {
-        if(a[i] != a[i - 1]) {
-            ans += cnt * (cnt - 2) * (cnt - 1) / 6;
-            cnt = 1;
-            continue;
-        }
-        cnt += 1;
-        ans += (cnt - 1) * (i - cnt);
+    for(int i = 1; i <= n; i++) {
+        cin >> x;
+        M[x]++;
     }
-    cout << ans << '\n';
+    sort(M + 1, M + 1 + k);
+    if(M[k] > n/2)
+        cout << (n - M[k])*2;
+    else
+        cout << n - n % 2;
 }
 
 void init() {
-    cin >> n;
-    for(int i = 1; i <= n; i++)
-        cin >> a[i];
+    cin >> n >> k;
 }
 
-#define task "a"
+#define task "CHONBONG"
 signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
@@ -58,7 +51,7 @@ signed main() {
         freopen(task ".out", "w", stdout);
     }
     int test_case = 1;
-    cin >> test_case;
+    // cin >> test_case;
     while(test_case--) {
         init();
         solve();
