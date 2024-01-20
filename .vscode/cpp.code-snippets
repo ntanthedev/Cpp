@@ -18,6 +18,8 @@
 	"tan1": {
 		"prefix": "Ctan",
 		"body": [
+		  "//template for some simple code by ntannn_",
+		  "//created in $CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND - $CURRENT_DAY_NAME_SHORT $CURRENT_DATE/$CURRENT_MONTH/$CURRENT_YEAR",
 		  "#include <bits/stdc++.h>",
 		  "// #pragma GCC optimize(\"O3,unroll-loops,no-stack-protector\")",
 		  "// #pragma GCC target(\"sse4,avx2,fma\")",
@@ -61,7 +63,7 @@
 		  "        freopen(task \".out\", \"w\", stdout);",
 		  "    }",
 		  "    int test_case = 1;",
-		  "    cin >> test_case;",
+		  "    //cin >> test_case;",
 		  "    while(test_case--) {",
 		  "        init();",
 		  "        solve();",
@@ -75,10 +77,10 @@
 		"prefix": "openfile",
 		"body": [
 		  "#define task \"$TM_FILENAME_BASE\"",
-		  "    if(fopen(task \".inp\", \"r\")) {",
-		  "        freopen(task \".inp\", \"r\", stdin);",
-		  "        freopen(task \".out\", \"w\", stdout);",
-		  "    }"
+		  "if(fopen(task \".inp\", \"r\")) {",
+		  "    freopen(task \".inp\", \"r\", stdin);",
+		  "    freopen(task \".out\", \"w\", stdout);",
+		  "}"
 		],
 		"description": "tan2"
 	  },
@@ -86,6 +88,8 @@
 		"prefix": "simple",
 		"body": [
 		  "#include<bits/stdc++.h>",
+		  "",
+		  "#define int long long",
 		  "",
 		  "using namespace std;",
 		  "",

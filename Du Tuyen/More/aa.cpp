@@ -1,5 +1,5 @@
 //template simple for codeforces by ntannn_
-//created in 10:34:08 - Sat 20/01/2024
+//created in 10:43:29 - Sat 20/01/2024
 #include <bits/stdc++.h>
 #define int long long
 
