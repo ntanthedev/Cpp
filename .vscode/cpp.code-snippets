@@ -1,0 +1,171 @@
+{
+	// Place your Cpp workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and 
+	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope 
+	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is 
+	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are: 
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
+	// Placeholders with the same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"scope": "javascript,typescript",
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+	"tan1": {
+		"prefix": "Ctan",
+		"body": [
+		  "#include <bits/stdc++.h>",
+		  "// #pragma GCC optimize(\"O3,unroll-loops,no-stack-protector\")",
+		  "// #pragma GCC target(\"sse4,avx2,fma\")",
+		  "#define fi first",
+		  "#define se second",
+		  "#define mp make_pair",
+		  "#define pb push_back",
+		  "#define eb emplace_back",
+		  "#define all(x) x.begin(), x.end()",
+		  "#define TIME (1.0 * clock() / CLOCKS_PER_SEC)",
+		  "",
+		  "using namespace std;",
+		  "",
+		  "typedef long long ll;",
+		  "typedef pair<int, int> ii;",
+		  "typedef pair<ll, ll> pll;",
+		  "typedef vector<int> vi;",
+		  "typedef vector<ll> vll;",
+		  "typedef vector<ii> vii;",
+		  "typedef vector<vi> vvi;",
+		  "",
+		  "const int N = 1e6 + 10;",
+		  "const ll MOD = 1e9 + 7;",
+		  "",
+		  "$0",
+		  "",
+		  "void solve() {",
+		  "    ",
+		  "}",
+		  "",
+		  "void init() {",
+		  "    ",
+		  "}",
+		  "",
+		  "#define task \"$TM_FILENAME_BASE\"",
+		  "signed main() {",
+		  "    cin.tie(NULL);",
+		  "    ios_base::sync_with_stdio(false);",
+		  "    if(fopen(task \".inp\", \"r\")) {",
+		  "        freopen(task \".inp\", \"r\", stdin);",
+		  "        freopen(task \".out\", \"w\", stdout);",
+		  "    }",
+		  "    int test_case = 1;",
+		  "    cin >> test_case;",
+		  "    while(test_case--) {",
+		  "        init();",
+		  "        solve();",
+		  "    }",
+		  "    // cerr << '\\n' << \"\\x1b[31mtime is: \" << TIME << \"\\e[39m\";",
+		  "}"
+		],
+		"description": "tan1"
+	  },
+	  "tan2": {
+		"prefix": "openfile",
+		"body": [
+		  "#define task \"$TM_FILENAME_BASE\"",
+		  "    if(fopen(task \".inp\", \"r\")) {",
+		  "        freopen(task \".inp\", \"r\", stdin);",
+		  "        freopen(task \".out\", \"w\", stdout);",
+		  "    }"
+		],
+		"description": "tan2"
+	  },
+	  "tan3": {
+		"prefix": "simple",
+		"body": [
+		  "#include<bits/stdc++.h>",
+		  "",
+		  "using namespace std;",
+		  "",
+		  "signed main() {",
+		  "    ios_base::sync_with_stdio(false); cin.tie(NULL);",
+		  "    ",
+		  "    $0",
+		  "}"
+		],
+		"description": "tan3"
+	  },
+	  "tan4": {
+		"prefix": "codeforces",
+		"body": [
+		  "//template for codeforces by ntannn_",
+		  "//created in $CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND - $CURRENT_DAY_NAME_SHORT $CURRENT_DATE/$CURRENT_MONTH/$CURRENT_YEAR",
+		  "#include <bits/stdc++.h>",
+		  "// #pragma GCC optimize(\"O3,unroll-loops,no-stack-protector\")",
+		  "// #pragma GCC target(\"sse4,avx2,fma\")",
+		  "#define fi first",
+		  "#define se second",
+		  "#define mp make_pair",
+		  "#define pb push_back",
+		  "#define eb emplace_back",
+		  "#define all(x) x.begin(), x.end()",
+		  "#define TIME (1.0 * clock() / CLOCKS_PER_SEC)",
+		  "",
+		  "using namespace std;",
+		  "",
+		  "typedef long long ll;",
+		  "typedef pair<ll, ll> pll;",
+		  "",
+		  "const int N = 3e5 + 10;",
+		  "const ll MOD = 1e9 + 7;",
+		  "",
+		  "$0",
+		  "",
+		  "void solve() {",
+		  "    ",
+		  "}",
+		  "",
+		  "void init() {",
+		  "    ",
+		  "}",
+		  "",
+		  "signed main() {",
+		  "    cin.tie(NULL);",
+		  "    ios_base::sync_with_stdio(false);",
+		  "    int test_case;",
+		  "    for(cin >> test_case;test_case--;cout << '\\n') {",
+		  "        init();",
+		  "        solve();",
+		  "    }",
+		  "    // cerr << '\\n' << \"\\x1b[31mtime is: \" << TIME << \"\\e[39m\";",
+		  "}"
+		],
+		"description": "tan4"
+	  },
+	  "tan5": {
+		"prefix": "simplecodeforces",
+		"body": [
+		  "//template simple for codeforces by ntannn_",
+		  "//created in $CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND - $CURRENT_DAY_NAME_SHORT $CURRENT_DATE/$CURRENT_MONTH/$CURRENT_YEAR",
+		  "#include <bits/stdc++.h>",
+		  "#define int long long",
+		  "",
+		  "using namespace std;",
+		  "",
+		  "void solve() {",
+		  "    ",
+		  "}",
+		  "",
+		  "signed main() {",
+		  "    cin.tie(NULL);",
+		  "    ios_base::sync_with_stdio(false);",
+		  "    int test_case;",
+		  "    for(cin >> test_case;test_case--;cout << '\\n') ",
+		  "        solve();",
+		  "}"
+		],
+		"description": "tan5"
+	  }
+}
