@@ -171,5 +171,28 @@
 		  "}"
 		],
 		"description": "tan5"
+	  },
+	  "docnhanh": {
+		"prefix": "fastinput",
+		"body": [
+		  "template<typename T> inline void read(T& x) {",
+		  "    bool b = 0;",
+		  "    char c;",
+		  "    while(!isdigit(c = getchar()) && c != '-')",
+		  "        ;",
+		  "    if(c == '-') {",
+		  "        c = getchar();",
+		  "        b = 1;",
+		  "    }",
+		  "    x = c - 48;",
+		  "    while(isdigit(c = getchar())) {",
+		  "        x = (x << 3) + (x << 1) + (c - 48);",
+		  "    }",
+		  "    if(b) {",
+		  "        x = -x;",
+		  "    }",
+		  "}"
+		],
+		"description": "docnhanh"
 	  }
 }
