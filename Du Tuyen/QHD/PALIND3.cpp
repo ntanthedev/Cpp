@@ -1,5 +1,5 @@
 //template for some simple code by ntannn_
-//created in 21:24:58 - Mon 22/01/2024
+//created in 21:30:25 - Mon 22/01/2024
 #include <bits/stdc++.h>
 // #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
 // #pragma GCC target("sse4,avx2,fma")
@@ -24,33 +24,36 @@ typedef vector<vi> vvi;
 const int N = 1e3 + 10;
 const ll MOD = 1e9 + 7;
 
-ll n, f[N][N], ans = 0;
+bool dp[N][N];
+string s;
+ll n, ans = 1;
+map<ll, ll> M;
 
-ll solve(int i, int d) {
-    if(i > n) {
-        if(d == 0)
-            return 1;
-        return 0;
-    }
-    if(f[i][d] != -1)
-        return f[i][d];
-    f[i][d] = 0;
-    if(d + 1 <= n - i) 
-        f[i][d] += solve(i + 1, d + 1);
-    if(d > 0)
-        f[i][d] += solve(i + 1, d - 1);
-    return f[i][d] % MOD;
+void solve() {
+    memset(dp, false, sizeof dp);
+    for(int i = 1; i <= n; i++) 
+        dp[i][i] = true;
+    for(int i = 1; i < n; i++) 
+        dp[i+1][i] = true;
+    for(ll k = 1; k < n; k++) 
+        for(ll i = 1; i <= n-k+1; i++) {
+            ll j = i + k;
+            if(s[i] == s[j] && dp[i+1][j-1]) {
+                dp[i][j] = true;
+                ans = max(ans, abs(j - i + 1));
+            }
+        }
+    cout << ans;
 }
 
 void init() {
-    cin >> n;
-    if(n%2 != 0) 
-        return cout << 0, void();
-    memset(f, -1, sizeof f);
-    cout << solve(1, 0) % MOD;
+    cin >> s;
+    n = s.size();
+    s = ' ' + s;
 }
 
-#define task "ENUM1"
+
+#define task "PALIND3"
 signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
@@ -62,7 +65,7 @@ signed main() {
     //cin >> test_case;
     while(test_case--) {
         init();
-        // solve();
+        solve();
     }
     // cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }

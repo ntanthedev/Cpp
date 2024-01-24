@@ -1,5 +1,5 @@
 //template for some simple code by ntannn_
-//created in 21:24:58 - Mon 22/01/2024
+//created in 14:57:38 - Tue 23/01/2024
 #include <bits/stdc++.h>
 // #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
 // #pragma GCC target("sse4,avx2,fma")
@@ -21,36 +21,34 @@ typedef vector<ll> vll;
 typedef vector<ii> vii;
 typedef vector<vi> vvi;
 
-const int N = 1e3 + 10;
+const int N = 1e6 + 10;
 const ll MOD = 1e9 + 7;
 
-ll n, f[N][N], ans = 0;
+ll n, k, ans = 0;
+pll a[N];
 
-ll solve(int i, int d) {
-    if(i > n) {
-        if(d == 0)
-            return 1;
-        return 0;
+void solve() {
+    sort(a + 1, a + 1 + n);
+    for(int i = 1; i <= n; i++) {
+        for(int j = i + k - 1; j <= n; j++) {
+            if(a[i].fi == a[j].fi)
+                ans++;
+            else 
+                break;
+        }
     }
-    if(f[i][d] != -1)
-        return f[i][d];
-    f[i][d] = 0;
-    if(d + 1 <= n - i) 
-        f[i][d] += solve(i + 1, d + 1);
-    if(d > 0)
-        f[i][d] += solve(i + 1, d - 1);
-    return f[i][d] % MOD;
+    cout << ans;
 }
 
 void init() {
-    cin >> n;
-    if(n%2 != 0) 
-        return cout << 0, void();
-    memset(f, -1, sizeof f);
-    cout << solve(1, 0) % MOD;
+    cin >> n >> k;
+    for(int i = 1; i <= n; i++) {
+        cin >> a[i].fi;
+        a[i].se = i;
+    }
 }
 
-#define task "ENUM1"
+#define task "TKSP"
 signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
@@ -62,7 +60,7 @@ signed main() {
     //cin >> test_case;
     while(test_case--) {
         init();
-        // solve();
+        solve();
     }
     // cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }

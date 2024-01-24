@@ -4,5 +4,6 @@
 *.out
 *.o
 *.zip
+*.ini
 .tmp.driveupload
 .tmp.drivedownload
