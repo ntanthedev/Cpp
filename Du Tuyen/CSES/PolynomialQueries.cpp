@@ -48,7 +48,7 @@ void build(int id, int l, int r) {
 
 void update(int id, int l, int r, int a, int b) {
     if(tree[id].lz1 != 0 || tree[id].lz2 != 0) {
-        tree[id].sum += ((r + l) * (r - l + 1) / 2 - tree[id].lz2 * (r - l + 1)) * tree[id].lz1;
+        tree[id].sum += ((r + l) * (r - l + 1) / 2 - tree[id].lz2) * tree[id].lz1;
         if(l != r) {
             tree[left].lz1 += tree[id].lz1;
             tree[left].lz2 += tree[id].lz2;
@@ -61,12 +61,12 @@ void update(int id, int l, int r, int a, int b) {
     if(l > b || r < a)
         return;
     if(a <= l && r <= b) {
-        tree[id].sum += ((r + l) * (r - l + 1) / 2 - (r - l + 1) * (a-1));
+        tree[id].sum += ((r + l) * (r - l + 1) / 2 - (r - l + 1) * (a - 1));
         if(l != r) {
             tree[left].lz1++;
-            tree[left].lz2 += (a-1);
+            tree[left].lz2 += (a - 1);
             tree[right].lz1++;
-            tree[right].lz2 += (a-1);
+            tree[right].lz2 += (a - 1);
         }
         return;
     }
@@ -75,10 +75,9 @@ void update(int id, int l, int r, int a, int b) {
     update(right, mid + 1, r, a, b);
     tree[id].sum = tree[left].sum + tree[right].sum;
 }
-
 ll get(int id, int l, int r, int a, int b) {
     if(tree[id].lz1 != 0) {
-        tree[id].sum += ((r + l) * (r - l + 1) / 2 - tree[id].lz2 * (r - l + 1)) * tree[id].lz1;
+        tree[id].sum += ((r + l) * (r - l + 1) /  2 - tree[id].lz2 * (r - l + 1)) * tree[id].lz1;
         if(l != r) {
             tree[left].lz1 += tree[id].lz1;
             tree[left].lz2 += tree[id].lz2;
