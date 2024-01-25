@@ -1,5 +1,5 @@
 //template for some simple code by ntannn_
-//created in 14:16:38 - Thu 25/01/2024
+//created in 14:25:05 - Thu 25/01/2024
 #include <bits/stdc++.h>
 // #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
 // #pragma GCC target("sse4,avx2,fma")
@@ -24,26 +24,28 @@ typedef vector<vi> vvi;
 const int N = 1e6 + 10;
 const ll MOD = 1e9 + 7;
 
-ll n, a[N], sum = 1, lens = 1;
-map<ll, ll> M;
+ll n, m, a[N], b[N];
+vector<ll> ans;
 
 void solve() {
     sort(a + 1, a + 1 + n, greater<int>());
-    for(int i = 2; i <= n; i++) {
-        if(a[i] != a[i-1])
-            lens++;
-        sum += lens;
-    }
-    cout << sum;
+    sort(b + 1, b + 1 + n, greater<int>());
+    sort(b + 1, b + 1 + m);
+    // int l = 1, r = m, gmin = INT_MAX, gmax = INT_MIN;
+    for(int i = 1; i <= m; i++) 
+        ans.pb(a[i] + b[i]);
+    cout << *min_element(all(ans)) << " " << *max_element(all(ans)) - *min_element(all(ans));
 }
 
 void init() {
-    cin >> n;
-    for(int i = 1; i <= n; i++) 
+    cin >> n >> m;
+    for(int i = 1; i <= n; i++)
         cin >> a[i];
+    for(int i = 1; i <= n; i++)
+        cin >> b[i];
 }
 
-#define task "RANKING"
+#define task "BOOS"
 signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
