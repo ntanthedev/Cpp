@@ -32,8 +32,7 @@ void upd(int id, int l, int r, int u, int v) {
     if(l > v || r < u)
         return;
     if(u <= l && r <= v) {
-        t[id] +=
-            1ll * (r - l + 1) * (r - l + 2) / 2 + 1ll * (l - u) * (r - l + 1);
+        t[id] += 1ll * (r - l + 1) * (r - l + 2) / 2 + 1ll * (l - u) * (r - l + 1);
         if(l != r) {
             ++lz1[id];
             lz2[id] += l - u;

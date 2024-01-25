@@ -1,5 +1,5 @@
 //template for some simple code by ntannn_
-//created in 10:48:01 - Thu 25/01/2024
+//created in 13:57:02 - Thu 25/01/2024
 #include <bits/stdc++.h>
 // #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
 // #pragma GCC target("sse4,avx2,fma")
@@ -24,17 +24,25 @@ typedef vector<vi> vvi;
 const int N = 1e6 + 10;
 const ll MOD = 1e9 + 7;
 
-
+ll n, s[N], Q;
 
 void solve() {
-    
+    while(Q--) {
+        int l, r;
+        cin >> l >> r;
+        cout << s[r] - s[l-1] << '\n';
+    }
 }
 
 void init() {
-    
+    cin >> n >> Q;
+    for(int i = 1, x; i <= n; i++) {
+        cin >> x;
+        s[i] = s[i-1] + x;
+    }
 }
 
-#define task "a"
+#define task "StatiRangeSumQueries"
 signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);

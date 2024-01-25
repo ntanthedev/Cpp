@@ -3,6 +3,7 @@
 #include <bits/stdc++.h>
 // #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
 // #pragma GCC target("sse4,avx2,fma")
+#define int long long
 #define fi first
 #define se second
 #define mp make_pair
@@ -23,13 +24,13 @@ typedef vector<ll> vll;
 typedef vector<ii> vii;
 typedef vector<vi> vvi;
 
-const int N = 2e5 + 10;
+const int N = 1e6 + 10;
 const ll MOD = 1e9 + 7;
 
 struct pt {
     ll lz1, lz2, sum;
 };
-pt tree[4 * N];
+pt tree[N];
 
 ll n, arr[N], Q;
 
@@ -47,15 +48,20 @@ void build(int id, int l, int r) {
 }
 
 void update(int id, int l, int r, int a, int b) {
-    if(tree[id].lz1 != 0 || tree[id].lz2 != 0) {
-        tree[id].sum += ((r + l) * (r - l + 1) / 2 - tree[id].lz2) * tree[id].lz1;
+    if(tree[id].lz1 != 0) {
+        tree[id].sum += ((r + l) * (r - l + 1) / 2) * tree[id].lz1;
         if(l != r) {
             tree[left].lz1 += tree[id].lz1;
-            tree[left].lz2 += tree[id].lz2;
             tree[right].lz1 += tree[id].lz1;
-            tree[right].lz2 += tree[id].lz2;
         }
         tree[id].lz1 = 0;
+    }
+    if(tree[id].lz2 != 0) {
+        tree[id].sum -= (r - l + 1) * tree[id].lz2;
+        if(l != r) {
+            tree[left].lz2 += tree[id].lz2;
+            tree[right].lz2 += tree[id].lz2;
+        } 
         tree[id].lz2 = 0;
     }
     if(l > b || r < a)
@@ -77,14 +83,19 @@ void update(int id, int l, int r, int a, int b) {
 }
 ll get(int id, int l, int r, int a, int b) {
     if(tree[id].lz1 != 0) {
-        tree[id].sum += ((r + l) * (r - l + 1) /  2 - tree[id].lz2 * (r - l + 1)) * tree[id].lz1;
+        tree[id].sum += ((r + l) * (r - l + 1) / 2) * tree[id].lz1;
         if(l != r) {
             tree[left].lz1 += tree[id].lz1;
-            tree[left].lz2 += tree[id].lz2;
             tree[right].lz1 += tree[id].lz1;
-            tree[right].lz2 += tree[id].lz2;
         }
         tree[id].lz1 = 0;
+    }
+    if(tree[id].lz2 != 0) {
+        tree[id].sum -= (r - l + 1) * tree[id].lz2;
+        if(l != r) {
+            tree[left].lz2 += tree[id].lz2;
+            tree[right].lz2 += tree[id].lz2;
+        } 
         tree[id].lz2 = 0;
     }
     if(a > r || b < l)
@@ -93,6 +104,7 @@ ll get(int id, int l, int r, int a, int b) {
         return tree[id].sum;
     int mid = (l + r) / 2;
     return get(left, l, mid, a, b) + get(right, mid + 1, r, a, b);
+
 }
 
 void solve() {

@@ -1,5 +1,5 @@
 //template for some simple code by ntannn_
-//created in 10:48:01 - Thu 25/01/2024
+//created in 08:54:58 - Thu 25/01/2024
 #include <bits/stdc++.h>
 // #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
 // #pragma GCC target("sse4,avx2,fma")
@@ -31,10 +31,10 @@ void solve() {
 }
 
 void init() {
-    
+    cout << 12;    
 }
 
-#define task "a"
+#define task "GRFLRS"
 signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
