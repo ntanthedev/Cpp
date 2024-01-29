@@ -1,5 +1,5 @@
 //template for some simple code by ntannn_
-//created in 08:23:59 - Mon 29/01/2024
+//created in 21:51:49 - Fri 26/01/2024
 #include <bits/stdc++.h>
 // #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
 // #pragma GCC target("sse4,avx2,fma")
@@ -24,17 +24,23 @@ typedef vector<vi> vvi;
 const int N = 1e6 + 10;
 const ll MOD = 1e9 + 7;
 
-
+ll n, S;
+pll a[N];
 
 void solve() {
-    
+    sort(a + 1, a + 1 + n);
+    for(int i = 1; i <= n; i++) {
+
+    }
 }
 
 void init() {
-    
+    cin >> n >> S;
+    for(int i = 1; i <= n; i++) 
+        cin >> a[i].fi 
 }
 
-#define task "a"
+#define task "MBTH"
 signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
