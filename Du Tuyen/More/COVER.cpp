@@ -1,135 +1,102 @@
-#include<bits/stdc++.h>
+//template for some simple code by ntannn_
+//created in 14:13:41 - Tue 30/01/2024
+#include <bits/stdc++.h>
+// #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+// #pragma GCC target("sse4,avx2,fma")
+#define fi first
+#define se second
+#define mp make_pair
 #define pb push_back
 #define eb emplace_back
-#define lb lower_bound
-#define ub upper_bound
 #define all(x) x.begin(), x.end()
+#define TIME (1.0 * clock() / CLOCKS_PER_SEC)
 
 using namespace std;
 
-template <typename T> inline void read (T &x) {
-    bool b = 0;
-    char c;
-    while (!isdigit (c = getchar()) && c != '-');
-    if (c == '-') {
-        c = getchar();
-        b = 1;
-    }
-    x = c - 48;
-    while (isdigit(c = getchar())) {
-        x = (x << 3) + (x << 1) + (c - 48);
-    }
-    if (b) {
-        x=-x;
-    }
-}
-
-typedef long double ld;
 typedef long long ll;
-typedef pair<int,int> ii;
-typedef pair<ll,ll> pll;
+typedef pair<int, int> ii;
+typedef pair<ll, ll> pll;
 typedef vector<int> vi;
 typedef vector<ll> vll;
-typedef vector<vi> vvi;
-typedef vector<vll> vvl;
 typedef vector<ii> vii;
-typedef unordered_map<int, int> umii;
-typedef unordered_map<int, bool> umib;
-typedef unordered_map<ll, ll> umll;
+typedef vector<vi> vvi;
 
-const int N = 1e6+10;
-const ll MOD = 1e9+7;
+const int N = 2e5 + 10;
+const ll MOD = 1e9 + 7;
 
-bool is_prime(int x)
-{
-    for(int i = 2 ; i * i <= x ; i++)
-        if(x%i == 0)
-            return 0;
-    return 1;
-}
-//----------------------------
-ll n, x, y;
-//----------------------------4
-struct pt{
+struct pt {
     ll fi, se, vt;
 };
-pt a[N];
-vector<pt> ans;
-bool cmp(pt c, pt d){
-    return c.fi < d.fi || (c.fi == d.fi && c.se < d.se);
-}
-bool sortvitri(pt c, pt d){
-    return c.vt < d.vt;
-}
-void solve(){
-    sort(a+1, a+1+n, cmp);
-    ll d;
-    //cout<<"----------------\n";
-    // for(int i = 1;  i <= n; i++)
-    //     cout << a[i].fi << " " << a[i].se << " " << a[i].vt << '\n';
-    // cout<<"----------------\n";
-    ll t = -1;
-   // a[n+1].se = a[n+1].fi = LLONG_MAX;
-    for(int i = 1; i <= n; i++){
-        if(x >= a[i].fi && x <= a[i].se){
-            t = i;
-        }
-    }
-  //  cout<<"t: "<<t<<'\n';
-    if(t == -1){
-        cout<<t;
-        return;
-    }
-    ans.eb(a[t]);
-    // if(ans.back().se >= y){
-    //     cout<<ans.size()<<'\n';
-    //     for(auto v:ans)
-    //         cout<<v.vt<<'\n';
-    //     return;
-    // }
-    d = x;
-    for(int i = t+1; i <= n; i++){
-        if(a[i].se <= ans.back().se || a[i].fi == a[i].se)
+
+ll n, u, v, k = 1;
+vi ans;
+vector<pt> a, temp;
+vector<bool> pick;
+
+void solve() {
+    sort(all(temp), [&] (pt x, pt y) {
+        return x.fi < y.fi || (x.fi == y.fi && x.se > y.se);
+    });
+    
+    if(temp.front().fi > u || temp.back().se < v)
+        return cout << -1, void();
+
+    for(int i = 0; i < n; i++) {
+        if(temp[i].se < u || temp[i].fi > v)
             continue;
-        if(a[i].fi <= ans.back().se){
-            if(a[i].fi <= d) 
-                ans.pop_back();
-            d = ans.back().se;
-            ans.eb(a[i]);
-        } 
-        if(ans.back().se >= y)
+        if(i > 0 && temp[i].se <= temp[i-1].se)
+            continue;
+        while(a.size() > 1 && temp[i].fi <= a[a.size()-2].se) {
+            pick[a.back().vt-1] = 0;
+            a.pop_back();
+        }
+        while(a.size() != 0 && temp[i].fi <= u && a.back().fi <= u)
+            a.pop_back();
+        pick[i] = 1;
+        a.eb(temp[i]);
+        if(a.back().se >= v)
             break;
     }
-    if(ans.back().se < y){
-        cout<<-1;
-        return;
+    cerr << "\x1b[31mstart debug: \n";
+    cerr << "check 2\n";
+    cerr << "end of debug\e[39m \n";
+    for(int i = 1; i < a.size(); i++) {
+        if(a[i].fi > a[i-1].se)
+            return cout << -1, void();
     }
-    sort(all(ans), sortvitri);
-    cout<<ans.size()<<'\n';
-    for(pt v:ans)
-        cout<<v.vt<<'\n';
+    cout << a.size() << '\n';
+    sort(all(a), [&] (pt x, pt y) {
+        return x.vt < y.vt;
+    });
+    for(auto i : a)
+        cout << i.vt << ' ';
 }
 
-void init(){
-    cin >> n >> x >> y;
-    for(int i = 1;  i <= n; i++){
-        cin >> a[i].fi >> a[i].se;
-        a[i].vt = i;
+void init() {
+    cin >> n >> u >> v;
+    temp.resize(n);
+    pick.resize(n, false);
+    for(int i = 0; i < n; i++) {
+        cin >> temp[i].fi >> temp[i].se;
+        temp[i].vt = i+1;
     }
+    // cout << "check";
+    // exit(0); 
 }
-//-----TASK----------
+
 #define task "COVER"
-//-------------------
-int32_t main(){
-    //---------------------------------
+signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
-    if(fopen(task".inp","r")){
-        freopen(task".inp","r",stdin);
-        freopen(task".out","w",stdout);
+    if(fopen(task ".inp", "r")) {
+        freopen(task ".inp", "r", stdin);
+        freopen(task ".out", "w", stdout);
     }
-    //---------------------------------
-    init();
-    solve();
+    int test_case = 1;
+    //cin >> test_case;
+    while(test_case--) {
+        init();
+        solve();
+    }
+    // cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }
-    

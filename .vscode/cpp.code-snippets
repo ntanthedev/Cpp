@@ -196,11 +196,11 @@
 		"description": "docnhanh"
 	  },
 	  "red text in range": {
-		"prefix": "startdebug",
+		"prefix": "debug1",
 		"body": [
-		  "    // cout << \"\\x1b[31mstart debug: \\n\";",
-		  "",
-		  "    // cout << \"end of debug\\e[39m \\n\";"
+		  "cerr << \"\\x1b[31mstart debug: \\n\";",
+		  "cerr << $0;",
+		  "cerr << \"end of debug\\e[39m \\n\";"
 		],
 		"description": "red text in range"
 	  },

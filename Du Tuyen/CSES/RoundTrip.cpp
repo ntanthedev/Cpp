@@ -21,41 +21,48 @@ typedef vector<ll> vll;
 typedef vector<ii> vii;
 typedef vector<vi> vvi;
 
-const int N = 1e5 + 10;
+const int N = 1e6 + 10;
 const ll MOD = 1e9 + 7;
 
 ll n, m;
 vll f[N];
-vi trace(N, 0);
+vi trace(N, -1);
 vi ans;
 bool flag = 0;
+vi res;
 
 void dfs(int x) {
     if(flag) return;
     for(auto u : f[x]) {
-        if(u == trace[x]) continue; 
-        if(trace[u] != 0) {
-            ans.pb(u);
-            while(trace[u] != 0) {
-                ans.pb(trace[u]);
-                u = trace[u];
+        if(u == trace[x]) continue;
+        if(flag) return;
+        if(trace[u] != -1) {
+            res.pb(u);
+            for(int i = ans.size()-1; i >= 0; i--) {
+                res.pb(ans[i]);
+                if(ans[i] == u && i != ans.size()-1)
+                    break;
             }
-            reverse(all(ans));
-            cout << ans.size() << '\n';
-            for(auto i : ans)
-                cout << i << " ";
+            cout << res.size() << '\n';
+            for(auto i : res)
+                cout << i << " " ;
             flag = 1;
             return;
         }
         trace[u] = x;
+        ans.pb(u);   
         dfs(u);
-        
     }
 }
 
 void solve() {
     // memset(trace, 0, sizeof(trace))
-    dfs(1);
+    for(int i = 1; i <= n; i++) {
+        if(!f[i].empty() && trace[i] == -1)
+            dfs(i);
+        if(flag)
+            break;
+    }
     if(!flag)
         return cout << "IMPOSSIBLE", void();    
 }
