@@ -28,7 +28,7 @@ struct pt {
     ll fi, se, vt;
 };
 
-ll n, u, v, k = 1;
+ll n, u, v, k = 1, mmax = -1;
 vi ans;
 vector<pt> a, temp;
 vector<bool> pick;
@@ -38,11 +38,11 @@ void solve() {
         return x.fi < y.fi || (x.fi == y.fi && x.se > y.se);
     });
     
-    if(temp.front().fi > u || temp.back().se < v)
+    if(temp.front().fi > v || temp.back().se < u)
         return cout << -1, void();
 
     for(int i = 0; i < n; i++) {
-        if(temp[i].se < u || temp[i].fi > v)
+        if(mmax < u || temp[i].fi > v)
             continue;
         if(i > 0 && temp[i].se <= temp[i-1].se)
             continue;
@@ -79,6 +79,7 @@ void init() {
     for(int i = 0; i < n; i++) {
         cin >> temp[i].fi >> temp[i].se;
         temp[i].vt = i+1;
+        mmax = max(mmax, temp[i].se);
     }
     // cout << "check";
     // exit(0); 
