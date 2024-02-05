@@ -43,7 +43,6 @@ void sinh(int x)
     random_shuffle(vt.begin(), vt.end());
     for(auto i : vt)
         inp << i << " ";
-    vt.clear();
     // inp << '\n';
 }
 

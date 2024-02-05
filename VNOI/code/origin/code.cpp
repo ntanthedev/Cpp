@@ -1,44 +1,32 @@
 #include <bits/stdc++.h>
-#define fi first
-#define se second
-typedef long long ll;
 using namespace std;
-const ll N = 2e2 + 21;
-const ll NN = 5e2 + 21;
-ll a[N][N], ans = 0, n;
-bool vis[N][N][NN];
-pair<ll, ll> fa[N][N];
-void dfs(ll x, ll y, ll p) {
-    vis[x][y][p] = true;
-    if(x == n && y == n)
-        ans = max(ans, p);
-    if(x > 1 && !vis[x - 1][y][p ^ a[x - 1][y]])
-        dfs(x - 1, y, p ^ a[x - 1][y]);
-    if(y > 1 && !vis[x][y - 1][p ^ a[x][y - 1]])
-        dfs(x, y - 1, p ^ a[x][y - 1]);
-    if(x < n && !vis[x + 1][y][p ^ a[x + 1][y]])
-        dfs(x + 1, y, p ^ a[x + 1][y]);
-    if(y < n && !vis[x][y + 1][p ^ a[x][y + 1]])
-        dfs(x, y + 1, p ^ a[x][y + 1]);
-}
+
+const int N = 1e5 + 10;
+
+int n, a[N], b[N], dp[1005][1005], f[N];
+
 void solve() {
     cin >> n;
-    for(ll i = 1; i <= n; i++) {
-        for(ll j = 1; j <= n; j++)
-            cin >> a[i][j];
+    for (int i = 1; i <= n; ++i) {
+        cin >> a[i];
     }
-    dfs(1 * 1ll, 1 * 1ll, a[1][1]);
-    cout << ans;
+    for (int i = 1; i <= n; ++i) {
+        cin >> b[i];
+    }
+    for (int i = 1; i <= n; ++i) {
+        for (int j = 1; j <= n; ++j) {
+            if (abs(a[i] - b[j]) <= 4) {
+                dp[i][j] = dp[i - 1][j - 1] + 1;
+            }else dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+        }
+    }
+    cout << dp[n][n];
+
 }
+int main() {
 
-signed main() {
-    #define task "code"
-    if(fopen(task".inp","r")) {
-        freopen(task".inp","r",stdin);
-        freopen(task".out","w",stdout);
-    }
-    ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-
+    ios_base::sync_with_stdio(false);
     solve();
+
 }
