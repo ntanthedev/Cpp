@@ -27,6 +27,11 @@ int main() {
 
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
+    #define task "code"
+    if(fopen(task ".inp", "r")) {
+        freopen(task ".inp", "r", stdin);
+        freopen(task ".out", "w", stdout);
+    }
     solve();
 
 }
