@@ -1,41 +1,25 @@
-#include<bits/stdc++.h>
-
-// #define int long long
-
-typedef long long ll;
+//template simple for codeforces by ntannn_
+//created in 23:10:45 - Mon 12/02/2024
+#include <bits/stdc++.h>
+#define int long long
 
 using namespace std;
 
-ll n, a[1000009], ans = 0, s;
-
-void sub1() {
-    for(int i = 1; i <= n; i++) {
-        for(int j = i; j <= n; j++) {
-            ll res = 0;
-            for(int k = i; k <= j; k++) {
-                res += a[k];
-                if(res == s) {
-                    ans++;
-                    break;
-                }
-            }
-        }
-    }
-    cout << ans;
+void solve() {
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    for(auto &i : a)
+        cin >> i;
+    sort(a.begin(), a.end());
+    a.resize(unique(a.begin(), a.end()) - a.begin());
+    int ans = 0;
 }
 
 signed main() {
-    ios_base::sync_with_stdio(false); cin.tie(NULL);
-    
-    #define task "BRIDGE"
-    if(fopen(task ".inp", "r")) {
-        freopen(task ".inp", "r", stdin);
-        freopen(task ".out", "w", stdout);
-    }
-
-    cin >> n >> s;
-    for(int i = 1; i <= n; i++) 
-        cin >> a[i];
-    if(n <= 100) 
-        sub1();
+    cin.tie(NULL);
+    ios_base::sync_with_stdio(false);
+    int test_case;
+    for(cin >> test_case;test_case--;cout << '\n') 
+        solve();
 }

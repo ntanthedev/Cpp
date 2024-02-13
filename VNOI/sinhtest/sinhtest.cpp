@@ -6,7 +6,7 @@ using namespace std;
 #define f1(i,n) for(int i=1;i<=n;i++)
 typedef long long ll;
 const int btest = 1;
-const int etest = 200;
+const int etest = 50;
 
 ll Rand(ll l, ll h)
 {
@@ -32,18 +32,13 @@ void sinh(int x)
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
     ll t, n, l, r, m, a, q, k;
-    n = Rand(1, N);
-    inp << n << '\n';
-    for(int i = 1; i <= n; i++)
-        vt.pb(i);
-    random_shuffle(vt.begin(), vt.end());
-    for(auto i : vt)
-        inp << i << " ";
-    inp << '\n';
-    random_shuffle(vt.begin(), vt.end());
-    for(auto i : vt)
-        inp << i << " ";
-    vt.clear();
+    n = Rand(1, 3e5), m = Rand(1, 3e5);
+    string A, B;
+    for(int i = 1; i <= n; i++) 
+        A.push_back(char(Rand('A', 'Z')));
+    for(int i = 1; i <= m; i++) 
+        B.push_back(char(Rand('A', 'Z')));
+    inp << A << '\n' << B;
     // inp << '\n';
 }
 
