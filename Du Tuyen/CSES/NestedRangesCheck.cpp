@@ -36,16 +36,23 @@ void solve() {
         return x.fi < y.fi || (x.fi == y.fi && x.se < y.se);
     });
     c.resize(n + 1, 0);
-    for(int i = 1; i < n; i++) {
-        if(c[a[i].vt])
-            continue;
-        if(a[i].se >= a[i+1].fi) {
-            c[a[i].vt] = 1;
-            c[a[i+1].vt] = 2;
-        }
+    pll lens = {a[1].vt, a[1].se};
+    for(int i = 2; i <= n; i++) {
+        if(a[i].se <= lens.se) 
+            c[a[i].vt] = 2;
+        if(a[i].se > lens.se)
+            lens = {a[i].fi, a[i].se};
     }
-    for(int i = 1; i <= n; i++) 
-        cout << (c[i] == 1 ? 1 : 0) << " " ; cout << '\n';
+    lens = {a[n].fi, a[n].se};
+    for(int i = n-1; i >= 1; i--) {
+        if(a[i].se >= lens.se)
+            c[a[i].vt] = 1;
+        if(a[i].se < lens.se)
+            lens = {a[i].fi, a[i].se};
+    }
+    for(int i = 1; i <= n; i++)
+        cout << (c[i] == 1 ? 1 : 0) << " " ;
+    cout << '\n';
     for(int i = 1; i <= n; i++)
         cout << (c[i] == 2 ? 1 : 0) << " " ;
 }
