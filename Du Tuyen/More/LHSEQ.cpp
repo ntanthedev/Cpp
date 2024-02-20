@@ -1,5 +1,5 @@
 //template for some simple code by ntannn_
-//created in 08:44:48 - Tue 20/02/2024
+//created in 20:57:21 - Thu 15/02/2024
 #include <bits/stdc++.h>
 // #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
 // #pragma GCC target("sse4,avx2,fma")
@@ -24,41 +24,37 @@ typedef vector<vi> vvi;
 const int N = 1e6 + 10;
 const ll MOD = 1e9 + 7;
 
-struct pt {
-    int fi, se, vt;
-};
-pt a[N];
-ll n;
-vi c;
+ll n, a[N];
 
 void solve() {
-    sort(a + 1, a + 1 + n, [&](pt x, pt y){
-        return x.fi < y.fi || (x.fi == y.fi && x.se < y.se);
-    });
-    c.resize(n + 1, 0);
-    for(int i = 1; i < n; i++) {
-        if(c[a[i].vt])
-            continue;
-        if(a[i].se >= a[i+1].fi) {
-            c[a[i].vt] = 1;
-            c[a[i+1].vt] = 2;
-        }
-    }
-    for(int i = 1; i <= n; i++) 
-        cout << (c[i] == 1 ? 1 : 0) << " " ; cout << '\n';
-    for(int i = 1; i <= n; i++)
-        cout << (c[i] == 2 ? 1 : 0) << " " ;
-}
-
-void init() {
+    map<ll, ll> M;
+    vector<ll> dp(N, 0);
+    ll gmax1 = 0, gmax2 = 0;
     cin >> n;
+    n >>= 1;
     for(int i = 1; i <= n; i++) {
-        cin >> a[i].fi >> a[i].se;
-        a[i].vt = i;
+        cin >> a[i];    
+        if(M[a[i] - 1] != 0) {
+            dp[i] = max(dp[M[a[i] - 1]], dp[i]) + 1;
+        }
+        M[a[i]] = i;
+        gmax1 = max(gmax1, dp[i]);
     }
+    M.clear();
+    for(int i = n + 1; i <= n * 2; i++) {
+        cin >> a[i];
+        if(M[a[i] + 1] != 0) {
+            dp[i] = max(dp[M[a[i] + 1]], dp[i]) + 1;
+        }
+        M[a[i]] = i;
+        gmax2 = max(gmax2, dp[i]);
+    }
+    if(gmax1 == 0 || gmax2 == 0)
+        return cout << -1, void();
+    cout << (n - gmax1 - 1) + (n - gmax2 - 1) << '\n'; 
 }
 
-#define task "NestedRangesCheck"
+#define task "LHSEQ"
 signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
@@ -67,10 +63,11 @@ signed main() {
         freopen(task ".out", "w", stdout);
     }
     int test_case = 1;
-    //cin >> test_case;
+    cin >> test_case;
     while(test_case--) {
-        init();
+        // init();
         solve();
+        cout << '\n';
     }
     // cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }

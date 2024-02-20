@@ -1,25 +1,25 @@
-//template simple for codeforces by ntannn_
-//created in 23:10:45 - Mon 12/02/2024
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
+
 #define int long long
+const int MaxN = 1002;
 
 using namespace std;
 
-void solve() {
-    int n;
-    cin >> n;
-    vector<int> a(n);
-    for(auto &i : a)
-        cin >> i;
-    sort(a.begin(), a.end());
-    a.resize(unique(a.begin(), a.end()) - a.begin());
-    int ans = 0;
-}
+int n, m, c0, d0, a[MaxN], b[MaxN], c[MaxN], d[MaxN], e[MaxN];
+int f[12][MaxN];
 
 signed main() {
-    cin.tie(NULL);
-    ios_base::sync_with_stdio(false);
-    int test_case;
-    for(cin >> test_case;test_case--;cout << '\n') 
-        solve();
+    ios_base::sync_with_stdio(false); cin.tie(NULL);
+    cin >> n >> m >> c0 >> d0;
+    for(int i = 1; i <= m; i++) 
+        cin >> a[i] >> b[i] >> c[i] >> d[i], e[i] = a[i]/b[i];
+    // memset(f, -1, sizeof f);
+    // for(int i = 1; i <= m; i++)
+    //     f[i][0] = 0;
+    
+    for(int i = 1; i <= m; i++) {
+        for(int j = n; j >= c[i]; j--) {
+            
+        }
+    }
 }
