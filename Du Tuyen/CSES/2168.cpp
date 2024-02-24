@@ -21,7 +21,7 @@ typedef vector<ll> vll;
 typedef vector<ii> vii;
 typedef vector<vi> vvi;
 
-const int N = 1e6 + 10;
+const int N = 2e5 + 10;
 const ll MOD = 1e9 + 7;
 
 struct pt {
@@ -33,25 +33,29 @@ vi c;
 
 void solve() {
     sort(a + 1, a + 1 + n, [&](pt x, pt y){
-        return x.fi < y.fi || (x.fi == y.fi && x.se < y.se);
+        return x.fi < y.fi || (x.fi == y.fi && x.se > y.se);
     });
+    // cerr << "\x1b[31mstart debug: \n";
+    // for(int i = 1; i <= n; i++)
+    //     cerr << a[i].fi << " " << a[i].se << " " << a[i].vt << '\n';
+    // cerr << "end of debug\e[39m \n";
     c.resize(n + 1, 0);
     pll lens = {a[1].vt, a[1].se};
     for(int i = 2; i <= n; i++) {
         if(a[i].se <= lens.se) 
-            c[a[i].vt] = 2;
-        if(a[i].se > lens.se)
+            c[a[i].vt] = 2, c[lens.fi] = 1;
+        if(a[i].se >= lens.se)
             lens = {a[i].fi, a[i].se};
     }
-    lens = {a[n].fi, a[n].se};
-    for(int i = n-1; i >= 1; i--) {
+    lens = {a[n].vt, a[n].se};
+    for(int i = n-1; i >= 1; i--) {         
         if(a[i].se >= lens.se)
-            c[a[i].vt] = 1;
-        if(a[i].se < lens.se)
+            c[a[i].vt] = 1, c[lens.fi] = 2;
+        if(a[i].se <= lens.se)
             lens = {a[i].fi, a[i].se};
     }
     for(int i = 1; i <= n; i++)
-        cout << (c[i] == 1 ? 1 : 0) << " " ;
+        cout << (c[i] == 1 ? 1  : 0) << " " ;
     cout << '\n';
     for(int i = 1; i <= n; i++)
         cout << (c[i] == 2 ? 1 : 0) << " " ;
