@@ -77,9 +77,9 @@ void init() {
 signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
-    if(fopen(task ".inp", "r")) {
-        freopen(task ".inp", "r", stdin);
-        freopen(task ".out", "w", stdout);
+    if(fopen(task ".INP", "r")) {
+        freopen(task ".INP", "r", stdin);
+        freopen(task ".OUT", "w", stdout);
     }
     int test_case = 1;
     //cin >> test_case;
