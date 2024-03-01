@@ -28,9 +28,8 @@ void solve() {
     }
     sort(all(a));
     s2 = bina(s);
-    for(auto i : s2) {
+    
 
-    }
 }
 
 int32_t main() {
@@ -41,4 +40,3 @@ int32_t main() {
         solve();
     }
 }
-/*
