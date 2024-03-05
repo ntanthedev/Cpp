@@ -1,55 +1,63 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
+
+#define fi first 
+#define se second 
+#define int int64_t
+
 using namespace std;
-const int N = 1e6 + 9;
-typedef long long ll;
-ll n, m, h, a[N], i, u, j, c, t, b[N], k, q, Snha[N], kt[N];
-ll S[N];
-int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    freopen("TRIANGLES.inp", "r", stdin);
-    freopen("TRIANGLES.out", "w", stdout);
+
+int32_t main() {
+    ios_base::sync_with_stdio(false); cin.tie(NULL);
+    #define task "TRIANGLES"
+    if(fopen(task ".inp", "r")) {
+        freopen(task ".inp", "r", stdin);
+        freopen(task ".out", "w", stdout);
+    }
+    int n, ans = 0;
     cin >> n;
-    t = 0;
-    map<ll, ll> D;
-    for(i = 1; i <= n; i++) {       
+    vector<int> a(n + 1);
+    map<int, int> m;
+    for(int i = 1; i <= n; i++) {
         cin >> a[i];
-        D[a[i]]++;
-        if(D[a[i]] == 1) {
-            t++;
-            b[t] = a[i];
+        m[a[i]]++;
+    }
+    vector<int> s(m.size() + 1, 0), b;
+    b.push_back(0);
+    // dem tg deu
+    for(auto i : m) {
+        b.emplace_back(i.fi);
+        if(i.se >= 3) 
+            ans += i.se * (i.se - 1) * (i.se - 2) / 6;
+    }
+    // int temp = ans;
+    // cout << "deu: " << ans << '\n';
+    // s[0] = b[0];
+    for(int i = 1; i < b.size(); i++) {
+        s[i] = s[i-1] + m[b[i]];
+    }
+    // s1[0] = 0;
+    // for(int i = 1; i <= n; i++) {
+    //     s1[i] = s1[i-1] + a[i-1];
+    // }
+    // dem tg can
+    for(int i = 1; i < b.size(); i++) {
+        if(m[b[i]] >= 2) {
+            // cout << b[i] << '\n';
+            ans += (lower_bound(b.begin() + 1, b.end(), 2 * b[i]) - b.begin() - 1);
+            // cout << (lower_bound(b.begin() + 1, b.end(), 2 * b[i]) - b.begin() - 1) << '\n';    
         }
     }
-    sort(b + 1, b + t + 1);
-    k = 0;
-    ll m = 0;
-    for(ll i = 1; i <= t; i++) {
-        if(D[b[i]] >= 3)
-            k++;
-        if(D[b[i]] >= 2) {
-            m = lower_bound(b + 1, b + t + 1, 2 * b[i]) - b;
-            k += m - i - 1;
-            k = k + i - 1;
+    // cout << "can: " << ans - temp << '\n';
+    // // dem tg thuong
+    // cout << "b: "; for(int i = 1; i < b.size(); i++) cout << b[i] << " "; cout << '\n';
+    for(int i = 1; i < b.size() - 1; i++) {
+        for(int j = b.size() - 1; j >= i + 1; j++) {
+            int t = lower_bound(b.begin() + 1 + j, b.end(), b[i] + b[j]) - b.begin() - 1;            
+            
+            ans += (t - j);
+            // cout << i << " " << j << " " << t << " " << ans << '\n' ;
         }
     }
-    h = 0;
-    c = 0;
-    for(ll i = 1; i <= t - 2; i++) {
-        for(ll j = i + 1; j <= t - 1; j++) {
-            h++;
-            S[h] = b[i] + b[j];
-            Snha[h] = j + 1;
-            c++;
-        }
-    }
-    for(h = 1; h <= c; h++) {
-        for(i = Snha[h]; i <= t; i++) {
-            if(S[h] > b[i])
-                k++;
-            else {
-                break;
-            }
-        }
-    }
-    cout << k;
+    // return cout << "check", 0;
+    cout << ans ;
 }
