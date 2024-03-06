@@ -2,11 +2,12 @@
 using namespace std;
 #define el inp<<'\n'
 #define pb push_back
+#define all(x) x.begin(), x.end()
 #define	f0(i,n) for(int i=0;i<n;i++)
 #define f1(i,n) for(int i=1;i<=n;i++)
 typedef long long ll;
 const int btest = 1;
-const int etest = 200;
+const int etest = 50;
 
 ll Rand(ll l, ll h)
 {
@@ -27,12 +28,38 @@ const ll W = 1000000;
 const ll T = 10;
 map<ll, ll> M;
 vector<long long> vt;
-void sinh(int x)
-{
+
+void sub1(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
     ll t, n, l, r, m, a, q, k;
-    
+    t = 1;
+    n = Rand(1, N);
+    inp << t << '\n' << n;
+}
+
+void sub2(int x) {
+    ofstream os;
+    ofstream inp((to_string(x) + ".inp").c_str());
+    ll t, n, l, r, m, a, q, k;
+    t = (x >= 30 ? N : Rand(1, N));
+    inp << t << '\n';   
+    while(t--) {
+        n = Rand(1, N);
+        inp << n << '\n';
+    } 
+}
+
+void sub3(int x) {
+    ofstream os;
+    ofstream inp((to_string(x) + ".inp").c_str());
+    ll t, n, l, r, m, a, q, k;
+    t = (x >= 45 ? Q : Rand(N, W));
+    inp << t << '\n';
+    while(t--) {
+        n = Rand(Q, W);
+        inp << n << '\n';
+    }
 }
 
 int main(){
@@ -41,7 +68,12 @@ int main(){
     srand(static_cast<unsigned int>(std::time(nullptr)));
     for (int i = btest; i <= etest; i++)
     {
-        sinh(i);
+        if(i <= 20)
+            sub1(i);
+        else if(i <= 40)
+            sub2(i);
+        else 
+            sub3(i);
     }
     return 0;
 }

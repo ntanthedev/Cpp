@@ -1,48 +1,51 @@
-//Writed by Jethro_
-//------------------------
 #include <bits/stdc++.h>
+
 using namespace std;
 
-const int N = 1e5 + 10;
-int n, a[N], lef[N], righ[N],  ans = 1e9, t;
-map<int, int> T, P;
+vector <int> a;
+bool p[500];
 
-void solve() {
-    cin >> n;
-    for (int i = 1; i <= n; ++i) {
-        cin >> a[i];
+bool isInteresting(int x) {
+    int res = 0;
+    while (x > 0) {
+        res += (x % 10) * (x % 10);
+        x /= 10;
     }
-    for (int i = 1; i <= n; ++i) {
-        lef[i] = T[a[i] - 1] + 1;
-		T[a[i]] = lef[i];
-    }
-    for (int i = n; i >= 1; --i) {
-        righ[i] = P[a[i] - 1] + 1;
-		P[a[i]] = righ[i];
-    }
-    for (int i = 1; i <= n; ++i) {
-		int v = i - lef[i] + n - i + 1 - righ[i], t = v + (max(lef[i], righ[i]) - min(lef[i], righ[i]));
-		if (righ[i] == 1 || lef[i] == 1) continue;
-		ans = min(ans, t);
-
-	}
-
-    cout << (ans == 1e9 ? -1 : ans) << '\n';
-    T.clear();
-    P.clear();
-    for (int i = 1; i <= n; ++i) righ[i] = lef[i] = 0;
-    ans = 1e9;
+    return p[res];
 }
 
-int main() {
-    cin.tie(NULL);
-    ios_base::sync_with_stdio(false);
+void init() {
+    for (int i = 2; i < 500; i++) {
+        p[i] = true;
+        for (int j = 2; j <= i / 2; j++)
+            if (i % j == 0)
+                p[i] = false;
+    }
+
+    for (int i = 1; i <= 1e6 + 1; i++)
+        if (isInteresting(i)) 
+            a.push_back(i);
+}
+
+void solve() {
+    int n;
+    cin >> n;
+    cout << (*upper_bound(a.begin(), a.end(), n)) << '\n';
+}
+ 
+signed main() {
+    // freopen("a.inp", "r", stdin); freopen("a.out", "w", stdout);
+    ios_base::sync_with_stdio(0); cin.tie(0);
     #define task "code"
     if(fopen(task ".inp", "r")) {
         freopen(task ".inp", "r", stdin);
         freopen(task ".out", "w", stdout);
     }
-    cin >> t;
-    while(t--) solve();
-
+    init();
+    
+    int test;
+    cin >> test;
+    while (test--)
+        solve();
+    
 }

@@ -58,6 +58,7 @@ int32_t main() {
             // cout << i << " " << j << " " << t << " " << ans << '\n' ;
         }
     }
+    
     // return cout << "check", 0;
     cout << ans ;
 }
