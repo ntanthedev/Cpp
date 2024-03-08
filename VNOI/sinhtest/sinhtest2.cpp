@@ -7,7 +7,7 @@ using namespace std;
 #define f1(i,n) for(int i=1;i<=n;i++)
 typedef long long ll;
 const int btest = 1;
-const int etest = 50;
+const int etest = 100;
 
 ll Rand(ll l, ll h)
 {
@@ -33,32 +33,45 @@ void sub1(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
     ll t, n, l, r, m, a, q, k;
-    t = 1;
-    n = Rand(1, N);
-    inp << t << '\n' << n;
+    n = (x <= 20 ? Rand(1, N) : N);
+    inp << n << '\n';
+    f1(i, n) {
+        l = Rand(1, N - 200);
+        r = Rand(l+1, N);
+        inp << l << " " << r << '\n';
+    }
 }
 
 void sub2(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
     ll t, n, l, r, m, a, q, k;
-    t = (x >= 30 ? N : Rand(1, N));
-    inp << t << '\n';   
-    while(t--) {
-        n = Rand(1, N);
-        inp << n << '\n';
-    } 
+    n = (x <= 60 ? Rand(N, Q) : Q);
+    inp << n << '\n';
+    if(x == 80) {
+        f1(i, n) {
+            l = 1, r = 1;
+            inp << l << " " << r << '\n';
+        }
+        return;
+    }
+    f1(i, n) {
+        l = Rand(1, K);
+        r = Rand(l + 1, l + Rand(1, 100));
+        inp << l << " " << r << '\n';
+    }
 }
 
 void sub3(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
     ll t, n, l, r, m, a, q, k;
-    t = (x >= 45 ? Q : Rand(N, W));
-    inp << t << '\n';
-    while(t--) {
-        n = Rand(Q, W);
-        inp << n << '\n';
+    n = (x <= 90 ? Rand(Q, W) : W);
+    inp << n << '\n';
+    f1(i, n) {
+        l = Rand(1, W - 50);
+        r = Rand(l + 1, l + Rand(2, 50));
+        inp << l << " " << r << '\n';
     }
 }
 
@@ -68,9 +81,9 @@ int main(){
     srand(static_cast<unsigned int>(std::time(nullptr)));
     for (int i = btest; i <= etest; i++)
     {
-        if(i <= 20)
+        if(i <= 40)
             sub1(i);
-        else if(i <= 40)
+        else if(i <= 80)
             sub2(i);
         else 
             sub3(i);
