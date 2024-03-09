@@ -29,19 +29,43 @@ ll n, k, a[N];
 deque<ll> dmax, dmin;
 
 void solve() {
-    int l = 1, r = 1, gmax = 1, gmin = 1;
-    dmax.pb(a[1]);
-    dmin.pb(a[1]);
+    ll l = 1, r = 1, gmax = 1, gmin = 1, ans = 0;
+    dmax.pb(1);
+    dmin.pb(1);
     while(r <= n) {
-
+        // cout << "l, r: " << l << " " << r << '\n';
+        while(a[gmax] - a[gmin] > k && l < r) {
+            while(dmax.front() <= l)
+                dmax.pf();
+            gmax = dmax.front();
+            while(dmin.front() <= l)
+                dmin.pf();
+            gmin = dmin.front();
+            // cout << "l " << gmax << " " << gmin << '\n';
+            l++;
+            // cout << "l: " << l << '\n';
+        }
+        if(a[gmax] - a[gmin] <= k)
+            ans = max(ans, r - l + 1);
+        // cout << "gmax, gmin: " << gmax << " " << gmin << '\n';
+        // cout << "ans: " << ans << '\n';
         ++r;
-        while(a[dmax.back()] <= a[r])
+        while(!dmax.empty() && a[dmax.back()] <= a[r])
             dmax.pop_back();
         dmax.pb(r);
-        while(a[dmin.back()] >= a[r])
+        // cout << "dmax: " ; for(auto i : dmax) cout << i << " "; cout << '\n';
+        while(!dmin.empty() && a[dmin.back()] >= a[r])
             dmin.pop_back();
-        dmin.pb(r);        
+        dmin.pb(r);
+        // cout << "dmin: " ; for(auto i : dmin) cout << i << " "; cout << '\n';   
+        while(dmax.front() < l)
+            dmax.pf();
+        gmax = dmax.front();
+        while(dmin.front() < l)
+            dmin.pf();
+        gmin = dmin.front();     
     }
+    cout << ans;
 }
 
 void init() {
