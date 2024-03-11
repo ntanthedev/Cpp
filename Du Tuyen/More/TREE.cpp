@@ -1,5 +1,5 @@
 //Written by: ntannn_
-//created in 16:07:25 - Mon 11/03/2024
+//created in 14:44:43 - Mon 11/03/2024
 #include <bits/stdc++.h>
 // #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
 // #pragma GCC target("sse4,avx2,fma")
@@ -24,22 +24,42 @@ typedef vector<vi> vvi;
 const int N = 1e6 + 10;
 const ll MOD = 1e9 + 7;
 
-string s;
-ll n, m;
+ll n, a[N];
+vector<int> b, c;
 
 void solve() {
-    auto temp = s;
-    reverse(all(temp));
-    s = s + temp;
-    m %= s.size();
-    cout << s[m-1];
+    b.pb(a[1]);
+    for(int i = 2; i <= n; i++) {
+        if(a[i] < b.front())
+            b[0] = a[i];
+        else if(a[i] > b.back())
+            b.pb(a[i]);
+        else {
+            int t = lower_bound(all(b), a[i]) - b.begin();
+            b[t] = a[i];
+        }
+    }
+    c.pb(a[1]);
+    for(int i = n-1; i >= 1; i--) {
+        if(a[i] < c.front())
+            c[0] = a[i];
+        else if(a[i] > c.back())
+            c.pb(a[i]);
+        else {
+            int t = lower_bound(all(c), a[i]) - c.begin();
+            c[t] = a[i];
+        }
+    }
+    cout << min(n - b.size(), n - c.size());
 }
 
 void init() {
-    cin >> s >> n >> m;
+    cin >> n;
+    for(int i = 1; i <= n; i++)
+        cin >> a[i];
 }
 
-#define task "BAI2"
+#define task "TREE"
 signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);

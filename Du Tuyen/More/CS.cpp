@@ -39,7 +39,7 @@ void init() {
     cin >> s >> n >> m;
 }
 
-#define task "BAI2"
+#define task "CS"
 signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
