@@ -34,6 +34,7 @@ ll n, m, a[N], s = 0;
 priority_queue<ll, vll, Less> q;
 
 void solve() {
+    sort(a+1, a+1+n, greater<int>());
     for(int i = 1; i <= m; ++i)
         q.push(0);
     for(int i = 1; i <= n; i++) {
