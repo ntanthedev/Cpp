@@ -25,16 +25,29 @@ const int N = 1e6 + 10;
 const ll MOD = 1e9 + 7;
 
 
-void sang() {
-    
+bool b[1000068];
+vector<int> f;
+
+void sang(int NN) {
+    memset(b, true, sizeof(b));
+    b[0] = 0;
+    b[1] = 0;
+    for(int i = 2; i <= sqrt(NN); i++) 
+        if(b[i])
+            for(int j = i*i; j <= NN; j += i)
+                b[j] = 0;
 }
 
+int x, y;
+
 void solve() {
-    
+    int l = lower_bound(all(f), x) - f.begin();
+    int r = upper_bound(all(f), y) - f.begin() - 1;
+    cout << r - l + 1 << '\n';
 }
 
 void init() {
-    
+    cin >> x >> y;
 }
 
 #define task "SDB"
@@ -45,10 +58,16 @@ signed main() {
         freopen(task ".inp", "r", stdin);
         freopen(task ".out", "w", stdout);
     }
-
-
-
+    f.pb(0);
+    sang(N);
+    for(int i = 2; i*i*9 <= N; i++)
+        if(b[i] && i != 3 || i == 27)
+            f.pb(i*i*9);
     int test_case = 1;
+    
+    
+    
+    
     cin >> test_case;
     while(test_case--) {
         init();

@@ -1,52 +1,79 @@
+//Written by: ntannn_
+//created in 20:34:20 - Wed 13/03/2024
 #include <bits/stdc++.h>
+// #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+// #pragma GCC target("sse4,avx2,fma")
+#define fi first
+#define se second
+#define mp make_pair
+#define pb push_back
+#define eb emplace_back
+#define all(x) x.begin(), x.end()
+#define TIME (1.0 * clock() / CLOCKS_PER_SEC)
+
 using namespace std;
 
-const int N = 1e6 + 10;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef pair<ll, ll> pll;
+typedef vector<int> vi;
+typedef vector<ll> vll;
+typedef vector<ii> vii;
+typedef vector<vi> vvi;
 
-int n, a[N], q, M[N];
-set<int> s;
-vector<int> res;
+const int N = 1e5 + 10;
+const ll MOD = 1e9 + 7;
 
-void ReadInput() {
-    cin >> n;
-    for (int i = 0; i <= n; ++i) cin >> a[i];
-}
+int n;
+vi a;
+map<int, int> m;
+vi ans;
+
 void solve() {
-    for (int i = 0; i <= n; ++i) {
-        M[a[i]] = i;
-        if (a[i] != i && a[i] != 0) s.insert(a[i]);
+    while(m[0] != 0) {
+        int t = m[0];
+        ans.pb(t);
+        m[0] = m[t];        
+        m.erase(t);
     }
-    while (s.size() >= 1) {
-        int p = (M[0] == 0);
-        if (M[0] != 0) {
-            int tmp = M[0], temp2 = M[M[0]];
-            s.erase(s.find(tmp));
-            swap(M[0], M[M[0]]);
-            res.push_back(a[temp2]);
-            swap(a[tmp], a[temp2]);
-
-        }else {
-            auto t = s.begin();
-            int tmp = M[0], temp2 = *t; 
-            res.push_back(a[M[temp2]]);
-            swap(a[tmp], a[M[temp2]]);
-            M[0] = M[temp2];
-            M[temp2] = tmp;
-
-        }
+    m.erase(0);
+    while(!m.empty()) {
+        auto x = m.begin();
+        auto y = (*x).se;
+        ans.pb((*x).fi);
+        ans.pb(y);
+        ans.pb((*x).fi);
+        m.erase(x);
+        m.erase(y);
     }
-    cout << res.size() << '\n';
-    for (auto it : res) cout << it <<" ";
-
-
+    cout << ans.size() << '\n';
+    for(auto i : ans)
+        cout << i << " ";
 }
-int main() {
 
+void init() {
+    cin >> n;
+    for(int i = 0, x; i <= n; i++) {
+        cin >> x;
+        m[x] = i;
+        if(x != i)
+            a.pb(x);
+    }
+}
+
+#define task "SWAPZERO"
+signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
-    freopen("SWAPZERO.inp", "r", stdin);
-    freopen("SWAPZERO.out", "w", stdout);
-    ReadInput();
-    solve();
-
+    if(fopen(task ".inp", "r")) {
+        freopen(task ".inp", "r", stdin);
+        freopen(task ".out", "w", stdout);
+    }
+    int test_case = 1;
+    //cin >> test_case;
+    while(test_case--) {
+        init();
+        solve();
+    }
+    // cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }
