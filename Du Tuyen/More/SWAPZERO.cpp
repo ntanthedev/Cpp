@@ -33,18 +33,23 @@ void solve() {
     while(m[0] != 0) {
         int t = m[0];
         ans.pb(t);
-        m[0] = m[t];        
+        m[0] = m[t];       
         m.erase(t);
     }
-    while(m.size() > 1) {
-        auto x = m.begin();
-        auto y = (*x).se;
-        ans.pb((*x).fi);
-        ans.pb(y);
-        ans.pb((*x).fi);
-        m.erase(x);
-        m.erase(y);
+    // cout << m.size() << '\n';
+    while(m[0] == 0 && m.size() > 1) {
+        auto it = (*++m.begin()).fi;
+        swap(m[0], m[it]);
+        ans.pb(it);
+        while(m[0] != 0) {
+            int t = m[0];
+            ans.pb(t);
+            m[0] = m[t];        
+            m.erase(t);
+        }
+        // m.erase(0);
     }
+
     cout << ans.size() << '\n';
     for(auto i : ans)
         cout << i << " ";
@@ -54,7 +59,8 @@ void init() {
     cin >> n;
     for(int i = 0, x; i <= n; i++) {
         cin >> x;
-        m[x] = i;
+        if(x != i)
+            m[x] = i;
         if(x != i)
             a.pb(x);
     }

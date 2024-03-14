@@ -1,5 +1,5 @@
-//template for some simple code by ntannn_
-//created in 14:13:41 - Tue 30/01/2024
+//Written by: ntannn_
+//created in 19:42:43 - Thu 14/03/2024
 #include <bits/stdc++.h>
 // #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
 // #pragma GCC target("sse4,avx2,fma")
@@ -21,68 +21,53 @@ typedef vector<ll> vll;
 typedef vector<ii> vii;
 typedef vector<vi> vvi;
 
-const int N = 2e5 + 10;
+const int N = 1e6 + 10;
 const ll MOD = 1e9 + 7;
 
 struct pt {
-    ll fi, se, vt;
+    ll l, h, vt;
 };
 
-ll n, u, v, k = 1, mmax = -1;
+pt c[N];
+ll n, a, b;
 vi ans;
-vector<pt> a, temp;
-vector<bool> pick;
 
 void solve() {
-    sort(all(temp), [&] (pt x, pt y) {
-        return x.fi < y.fi || (x.fi == y.fi && x.se > y.se);
+    sort(c + 1, c + 1 + n, [&](pt x, pt y) {
+        return x.l < y.l || (x.l == y.l && x.h < y.h);
     });
-    
-    if(temp.front().fi > v || temp.back().se < u)
-        return cout << -1, void();
-
-    for(int i = 0; i < n; i++) {
-        if(mmax < u || temp[i].fi > v)
-            continue;
-        if(i > 0 && temp[i].se <= temp[i-1].se)
-            continue;
-        while(a.size() > 1 && temp[i].fi <= a[a.size()-2].se) {
-            pick[a.back().vt-1] = 0;
-            a.pop_back();
+    while(a < b) {
+        int k = -1;
+        for(int i = 1; i <= n; i++) {
+            if(c[i].l <= a) {
+                if(k == -1 || c[i].h > c[k].h)
+                    k = i;
+            }
+            else 
+                break;
         }
-        while(a.size() != 0 && temp[i].fi <= u && a.back().fi <= u)
-            a.pop_back();
-        pick[i] = 1;
-        a.eb(temp[i]);
-        if(a.back().se >= v)
-            break;
-    }
-    cerr << "\x1b[31mstart debug: \n";
-    cerr << "check 2\n";
-    cerr << "end of debug\e[39m \n";
-    for(int i = 1; i < a.size(); i++) {
-        if(a[i].fi > a[i-1].se)
+
+        if(k == -1 || c[k].h < a) 
             return cout << -1, void();
+        
+        ans.pb(c[k].vt);
+        a = c[k].h;
     }
-    cout << a.size() << '\n';
-    sort(all(a), [&] (pt x, pt y) {
-        return x.vt < y.vt;
-    });
-    for(auto i : a)
-        cout << i.vt << ' ';
+    if(ans.empty())
+        cout << -1;
+    else {
+        cout << ans.size() << '\n';
+        for(auto i : ans)
+            cout << i << '\n';
+    }
 }
 
 void init() {
-    cin >> n >> u >> v;
-    temp.resize(n);
-    pick.resize(n, false);
-    for(int i = 0; i < n; i++) {
-        cin >> temp[i].fi >> temp[i].se;
-        temp[i].vt = i+1;
-        mmax = max(mmax, temp[i].se);
+    cin >> n >> a >> b;
+    for(int i = 1; i <= n; i++) {
+        cin >> c[i].l >> c[i].h;
+        c[i].vt = i;
     }
-    // cout << "check";
-    // exit(0); 
 }
 
 #define task "COVER"
