@@ -36,8 +36,7 @@ void solve() {
         m[0] = m[t];        
         m.erase(t);
     }
-    m.erase(0);
-    while(!m.empty()) {
+    while(m.size() > 1) {
         auto x = m.begin();
         auto y = (*x).se;
         ans.pb((*x).fi);
