@@ -2,6 +2,7 @@
 using namespace std;
 #define el inp<<'\n'
 #define pb push_back
+#define all(x) x.begin(), x.end()
 #define	f0(i,n) for(int i=0;i<n;i++)
 #define f1(i,n) for(int i=1;i<=n;i++)
 typedef long long ll;
@@ -17,13 +18,13 @@ ll Rand(ll l, ll h)
 }
 #define maxn 2003
 //#define A 1000000000
-const ll A = 1000000000000000000;
-const ll H = 1000000000000;
-const ll N = 1000;
-const ll Q = 100000;
-const ll X = 2000000000;
-const ll K = 1000000000;
-const ll W = 1000000;
+const ll A = 1e18;
+const ll H = 1e12;
+const ll N = 1e3;
+const ll Q = 1e5;
+const ll X = 2e9;
+const ll K = 1e9;
+const ll W = 1e6;
 const ll T = 10;
 map<ll, ll> M;
 vector<long long> vt;
@@ -32,15 +33,11 @@ void sinh(int x)
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
     ll t, n, l, r, m, a, q, k;
-    t = Rand(1, 20);
-    inp << t << '\n';
-    while(t--) {
-        n = Rand(1, 50), k = Rand(1, n);
-        inp << n << " " << k << '\n';
-        for(int i = 1; i <= n; i++) {
-            a = Rand(1, K);
-            inp << a << " " ;
-        }
+    n = Rand(1, 20), k = Rand(1, W);
+    inp << n << " " << k << '\n';
+    f1(i, n) {
+        a = Rand(1, W);
+        inp << a << " ";
     }
 }
 
