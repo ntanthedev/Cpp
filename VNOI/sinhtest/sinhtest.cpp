@@ -33,14 +33,7 @@ void sinh(int x)
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
     ll t, n, l, r, m, a, q, k;
-    n = Q;
-    inp << n << '\n';
-    for(int i = 0; i <= n; i++) 
-        vt.pb(i);
-    random_shuffle(all(vt));
-    for(auto i : vt)
-        inp << i << " ";
-    vt.clear();
+    n = Rand(1, N), m = Rand(1 N)
 }
 
 int main(){

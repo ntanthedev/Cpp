@@ -7,7 +7,7 @@ using namespace std;
 #define f1(i,n) for(int i=1;i<=n;i++)
 typedef long long ll;
 const int btest = 1;
-const int etest = 100;
+const int etest = 200;
 
 ll Rand(ll l, ll h)
 {
@@ -18,13 +18,13 @@ ll Rand(ll l, ll h)
 }
 #define maxn 2003
 //#define A 1000000000
-const ll A = 1000000000000000000;
-const ll H = 1000000000000;
-const ll N = 1000;
-const ll Q = 100000;
-const ll X = 2000000000;
-const ll K = 1000000000;
-const ll W = 1000000;
+const ll A = 1e18;
+const ll H = 1e12;
+const ll N = 1e3;
+const ll Q = 1e5;
+const ll X = 2e9;
+const ll K = 1e9;
+const ll W = 1e6;
 const ll T = 10;
 map<ll, ll> M;
 vector<long long> vt;
@@ -33,12 +33,14 @@ void sub1(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
     ll t, n, l, r, m, a, q, k;
-    n = Rand(1, N), k = Rand(1, n);
-    inp << n << " " << k << '\n';
-    for(int i = 1; i <= n; i++) {
-        a = Rand(1, N);
-        inp << a << " " ;
-    }
+    n = Rand(1, N), m = Rand(1, N);
+    inp << n << " " << m << '\n';
+    for(int i = 1; i <= n; i++) 
+        inp << Rand(1, N) << " " ;
+    inp << '\n';
+    for(int i = 1; i <= m; i++)
+        inp << Rand(1, N) << " " ;
+    inp << '\n';
 }
 
 void sub2(int x) {
@@ -57,12 +59,14 @@ void sub3(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
     ll t, n, l, r, m, a, q, k;
-    n = Rand(W, 2 * W); k = Rand(1, n + N);
-    inp << n << " " << k << '\n';
-    f1(i, n) {
-        a = Rand(W, Q);
-        inp << a << " ";
-    }
+    n = N, m = N;
+    inp << n << " " << m << '\n';
+    for(int i = 1; i <= n; i++) 
+        inp << Rand(1, W) << " " ;
+    inp << '\n';
+    for(int i = 1; i <= m; i++)
+        inp << Rand(1, W) << " " ;
+    inp << '\n';
 }
 
 int main(){
@@ -71,10 +75,10 @@ int main(){
     srand(static_cast<unsigned int>(std::time(nullptr)));
     for (int i = btest; i <= etest; i++)
     {
-        if(i <= 30)
+        if(i <= 100)
             sub1(i);
-        else if(i <= 60)
-            sub2(i);
+        // else if(i <= 60)
+        //     sub2(i);
         else 
             sub3(i);
     }

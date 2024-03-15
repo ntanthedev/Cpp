@@ -43,11 +43,7 @@ void sub1(int i = 1, ll res1 = 0, ll res2 = 0, int kk = 0) {
         sub1(i+1, res1 + a[i]*(j == 1), res2 + a[i]*(j == 2), kk + (j == 0));
         ans.pop_back();
     } 
-}
-
-void sub2_1(int i = 1, ll res1 = 0, ll res2 = 0, int kk = 0) {
-       
-}
+} 
 
 void solve() {
     ok = 0;
