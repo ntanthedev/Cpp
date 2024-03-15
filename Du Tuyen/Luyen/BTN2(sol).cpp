@@ -3,10 +3,8 @@ using namespace std;
 string s, SaveA, x;
 int f[667][334][334], n, ans, k, d = 0;
 int cal(int i, int t, int maxB) {
-    // Neu da giai thi dung
     if(f[i][t][maxB] != -1)
         return f[i][t][maxB];
-    // Neo
     if(i > n - 1) {
         if(t == 0) {
             if(maxB > ans) {
@@ -18,7 +16,6 @@ int cal(int i, int t, int maxB) {
         else
             return 0;
     }
-    // Giai bai toan
     f[i][t][maxB] = 0;
     if(s[i] != '(' && t >= 1) {
         x[i] = ')';
@@ -28,7 +25,6 @@ int cal(int i, int t, int maxB) {
         x[i] = '(';
         f[i][t][maxB] = max(f[i][t][maxB], cal(i + 1, t + 1, max(t + 1, maxB)));
     }
-    // Tra ket qua
     return f[i][t][maxB];
 }
 int main() {
