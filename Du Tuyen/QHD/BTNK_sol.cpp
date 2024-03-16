@@ -18,19 +18,22 @@ ll solve(ll j, ll deg, bool ok) {
         k1 += solve(next2[j], deg - 1, ok) % mod;
     return f[j][deg][ok] = k1;
 }
-
+//()()
+//
 void khoitao() {
     ll x = n + 1;
     ll y = n + 1;
     for(ll i = n - 1; i >= -1; i--) {
         next1[i + 1] = x;
-        next2[i + 1] = y;
+        next2[i + 1] = y;   
         if(i > -1 && s[i] == '(')
             x = i + 1;
         else if(i > -1)
             y = i + 1;
     }
+    
 }
+
 int main() {
     // freopen("BTNK.inp", "r", stdin);
     // freopen("BTNK.out", "w", stdout);
@@ -39,5 +42,21 @@ int main() {
     memset(f, 255, sizeof(f));
     n = s.length();
     khoitao();
-    cout << solve(0, 0, false) % mod;
+    for(int i = 0; i <= n; i++) cout << next1[i] << " "; cout << '\n';
+    for(int i = 0; i <= n; i++) cout << next2[i] << " "; cout << '\n'; 
+    // cout << solve(0, 0, false) % mod;
 }
+
+
+// next1 la con ) ben phai dau tien
+// next2 la con ( ben phai dau tien 
+
+
+
+// ()() ()() ()
+
+
+// 1 -> 2 -> 3 -> 4
+// 1 -> 3
+
+// )())()  () ()()

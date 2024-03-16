@@ -21,44 +21,28 @@ int32_t main() {
         cin >> a[i];
         m[a[i]]++;
     }
-    vector<int> s(m.size() + 1, 0), b;
+    vector<int> b;
     b.push_back(0);
-    // dem tg deu
-    // for(auto i : m) {
-    //     b.emplace_back(i.fi);
-    //     if(i.se >= 3) 
-    //         ans += i.se * (i.se - 1) * (i.se - 2) / 6;
-    // }
-    // int temp = ans;
-    // cout << "deu: " << ans << '\n';
-    // s[0] = b[0];
-    for(int i = 1; i < b.size(); i++) {
-        s[i] = s[i-1] + m[b[i]];
+    for(auto i : m) {
+        if(i.se >= 3)
+            ans++;
+        b.push_back(i.fi);
     }
-    // s1[0] = 0;
-    // for(int i = 1; i <= n; i++) {
-    //     s1[i] = s1[i-1] + a[i-1];
-    // }
-    // dem tg can
+
     for(int i = 1; i < b.size(); i++) {
         if(m[b[i]] >= 2) {
-            // cout << b[i] << '\n';
-            ans += (lower_bound(b.begin() + 1, b.end(), 2 * b[i]) - b.begin() - 1);
-            // ans--;
-            // cout << (lower_bound(b.begin() + 1, b.end(), 2 * b[i]) - b.begin() - 1) << '\n';    
+            auto t = lower_bound(b.begin() + 1, b.end(), 2*b[i]) - b.begin() - 1;
+            if(b[t] >= i)
+                t--;
+            ans += t;
         }
     }
-    // cout << "can: " << ans - temp << '\n';
-    // // dem tg thuong
-    // cout << "b: "; for(int i = 1; i < b.size(); i++) cout << b[i] << " "; cout << '\n';
+    
     for(int i = 1; i < b.size() - 1; i++) {
         for(int j = b.size() - 1; j >= i + 1; j++) {
-            int t = lower_bound(b.begin() + 1, b.begin() + 1 + j, b[i] + b[j]) - b.begin() - 1;            
-                    
-            ans += (t - j);
-            // cout << i << " " << j << " " << t << " " << ans << '\n' ;
+            int t = lower_bound(b.begin() + 1, b.begin() + 1 + j, b[i] + b[j]) - b.begin() - 1;                        
+            ans += (t - j);    
         }
     }
-    // return cout << "check", 0;
     cout << ans ;
 }
