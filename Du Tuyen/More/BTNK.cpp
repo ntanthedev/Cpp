@@ -8,6 +8,7 @@ using namespace std;
 
 string s;
 int k, f[N][N][2][2], ss[1001];
+unordered_map<string, bool> m;
 
 int cal(int i, int d, bool get, bool ok) {
     if(i >= s.size()) {

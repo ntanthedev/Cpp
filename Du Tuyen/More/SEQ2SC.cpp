@@ -72,7 +72,8 @@ void solve() {
         auto it = lower_bound(all(ca), mp(i.fi, 0LL));
         if(it == ca.begin())
             continue;
-        S += i.se * --it->se;
+        it--;
+        S += i.se * it->se;
         dbg(i) dbg(*it)
     }
     for(auto i : A) {
@@ -80,10 +81,11 @@ void solve() {
             E += i.se * B[i.fi];
     }
     for(auto i : A) {
-        auto it = --lower_bound(all(cb), mp(i.fi, 0LL));
+        auto it = lower_bound(all(cb), mp(i.fi, 0LL));
         if(it == cb.begin())
             continue;
-        Q += i.se * --it->se;
+        it--;
+        Q += i.se * it->se;
     }
     cout << S << " " << E << " " << Q;
 }

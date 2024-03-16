@@ -1,5 +1,5 @@
-//Written by: ntannn_
-//created in 23:44:36 - Thu 14/03/2024
+//template for codeforces by ntannn_
+//created in 00:01:26 - Sat 16/03/2024
 #include <bits/stdc++.h>
 // #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
 // #pragma GCC target("sse4,avx2,fma")
@@ -14,14 +14,9 @@
 using namespace std;
 
 typedef long long ll;
-typedef pair<int, int> ii;
 typedef pair<ll, ll> pll;
-typedef vector<int> vi;
-typedef vector<ll> vll;
-typedef vector<ii> vii;
-typedef vector<vi> vvi;
 
-const int N = 1e6 + 10;
+const int N = 3e5 + 10;
 const ll MOD = 1e9 + 7;
 
 
@@ -34,17 +29,11 @@ void init() {
     
 }
 
-#define task "a"
 signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
-    if(fopen(task ".inp", "r")) {
-        freopen(task ".inp", "r", stdin);
-        freopen(task ".out", "w", stdout);
-    }
-    int test_case = 1;
-    //cin >> test_case;
-    while(test_case--) {
+    int test_case;
+    for(cin >> test_case;test_case--;cout << '\n') {
         init();
         solve();
     }
