@@ -7,7 +7,7 @@ using namespace std;
 #define f1(i,n) for(int i=1;i<=n;i++)
 typedef long long ll;
 const int btest = 1;
-const int etest = 200;
+const int etest = 500;
 
 ll Rand(ll l, ll h)
 {
@@ -33,7 +33,8 @@ void sinh(int x)
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
     ll t, n, l, r, m, a, q, k;
-    n = Rand(1, N), m = Rand(1 N)
+    n = Rand(1, 400);
+    inp << n;
 }
 
 int main(){

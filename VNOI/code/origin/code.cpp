@@ -1,55 +1,54 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
+//#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+//#pragma GCC target("sse4,avx2,fma")
+#define fi first
+#define se second
+#define mp make_pair
+#define pb push_back
+#define eb emplace_back
+#define all(x) x.begin(), x.end()
+
 using namespace std;
 
-const int N = 1e6 + 10;
+typedef long long ll;
+typedef pair<int,int> ii;
+typedef pair<ll,ll> pll;
+typedef vector<int> vi;
+typedef vector<ll> vll;
+typedef vector<ii> vii;
+typedef vector<vi> vvi;
 
-int n, a[N], q, M[N];
-set<int> s;
-vector<int> res;
+const int N = 1e6+10;
+const ll MOD = 1e9+7;
 
-void ReadInput() {
-    cin >> n;
-    for (int i = 0; i <= n; ++i) cin >> a[i];
-}
+ll n, dp[N];
+
 void solve() {
-    for (int i = 0; i <= n; ++i) {
-        M[a[i]] = i;
-        if (a[i] != i && a[i] != 0) s.insert(a[i]);
-    }
-    while (s.size() >= 1) {
-        int p = (M[0] == 0);
-        if (M[0] != 0) {
-            int tmp = M[0], temp2 = M[M[0]];
-            s.erase(s.find(tmp));
-            swap(M[0], M[M[0]]);
-            res.push_back(a[temp2]);
-            swap(a[tmp], a[temp2]);
-
-        }else {
-            auto t = s.begin();
-            int tmp = M[0], temp2 = *t; 
-            res.push_back(a[M[temp2]]);
-            swap(a[tmp], a[M[temp2]]);
-            M[0] = M[temp2];
-            M[temp2] = tmp;
-
+    dp[0] = 1;
+    for(int i = 1; i <= n; i++) {
+        for(int j = n; j >= 1; j--) {
+            dp[j] = (dp[j-i] + dp[i]);
         }
     }
-    cout << res.size() << '\n';
-    // for (auto it : res) cout << it <<" ";
-
-
+    cout << dp[n];
 }
-int main() {
 
+void init() {
+    cin >> n;
+}
+
+#define task "code"
+int32_t main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
-    #define task "code"
-    if(fopen(task ".inp", "r")) {
-        freopen(task ".inp", "r", stdin);
-        freopen(task ".out", "w", stdout);
+    if(fopen(task".inp","r")) {
+        freopen(task".inp","r",stdin);
+        freopen(task".out","w",stdout);
     }
-    ReadInput();
-    solve();
-
+    int test_case = 1;
+    //cin >> test_case;
+    while(test_case--) {
+        init();
+        solve();
+    }
 }
