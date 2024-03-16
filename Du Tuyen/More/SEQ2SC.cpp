@@ -1,8 +1,8 @@
 //Written by: ntannn_
 //created in 18:09:10 - Fri 15/03/2024
 #include <bits/stdc++.h>
-// #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
-// #pragma GCC target("sse4,avx2,fma")
+#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+#pragma GCC target("sse4,avx2,fma")
 #define fi first
 #define se second
 #define mp make_pair
@@ -13,32 +13,23 @@
 
 using namespace std;
 
-void __print(int x) {cerr << x;}
-void __print(long x) {cerr << x;}
-void __print(long long x) {cerr << x;}
-void __print(unsigned x) {cerr << x;}
-void __print(unsigned long x) {cerr << x;}
-void __print(unsigned long long x) {cerr << x;}
-void __print(float x) {cerr << x;}
-void __print(double x) {cerr << x;}
-void __print(long double x) {cerr << x;}
-void __print(char x) {cerr << '\'' << x << '\'';}
-void __print(const char *x) {cerr << '\"' << x << '\"';}
-void __print(const string &x) {cerr << '\"' << x << '\"';}
-void __print(bool x) {cerr << (x ? "true" : "false");}
- 
-template<typename T, typename V>
-void __print(const pair<T, V> &x) {cerr << '{'; __print(x.first); cerr << ", "; __print(x.second); cerr << '}';}
-template<typename T>
-void __print(const T &x) {int f = 0; cerr << '{'; for (auto &i: x) cerr << (f++ ? ", " : ""), __print(i); cerr << "}";}
-void _print() {cerr << "]\n";}
-template <typename T, typename... V>
-void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v...);}
-#ifndef ONLINE_JUDGE
-#define dbg(x...) cerr << "\e[91m"<<__func__<<":"<<__LINE__<<" [" << #x << "] = ["; _print(x); cerr << "\e[39m" << endl;
-#else
-#define dbg(x...)
-#endif
+template<typename T> inline void read(T& x) {
+    bool b = 0;
+    char c;
+    while(!isdigit(c = getchar()) && c != '-')
+        ;
+    if(c == '-') {
+        c = getchar();
+        b = 1;
+    }
+    x = c - 48;
+    while(isdigit(c = getchar())) {
+        x = (x << 3) + (x << 1) + (c - 48);
+    }
+    if(b) {
+        x = -x;
+    }
+}
 
 typedef long long ll;
 typedef pair<int, int> ii;
@@ -67,14 +58,12 @@ void solve() {
         cb.eb(i.fi, i.se + temp);
         temp += i.se;
     }
-    dbg(A) dbg(B) dbg(ca) dbg(cb)
     for(auto i : B) {
         auto it = lower_bound(all(ca), mp(i.fi, 0LL));
         if(it == ca.begin())
             continue;
         it--;
         S += i.se * it->se;
-        dbg(i) dbg(*it)
     }
     for(auto i : A) {
         if(B[i.fi] != 0)
@@ -91,9 +80,9 @@ void solve() {
 }
 
 void init() {
-    cin >> m >> n;
+    read(m), read(n);
     for(int i = 1; i <= m; i++) { 
-        cin >> a[i];
+        read(a[i]);
         a[i] += a[i-1];
         for(int j = i; j >= 1; j--) {
             ll s = a[i] - a[j-1];
