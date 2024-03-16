@@ -37,12 +37,16 @@ int32_t main() {
             ans += t;
         }
     }
-    
+
     for(int i = 1; i < b.size() - 1; i++) {
-        for(int j = b.size() - 1; j >= i + 1; j++) {
-            int t = lower_bound(b.begin() + 1, b.begin() + 1 + j, b[i] + b[j]) - b.begin() - 1;                        
-            ans += (t - j);    
+        for(int j = b.size() - 1; j > i ; j--) {
+            int t = upper_bound(b.begin() + 1 + i, b.begin() + 1 + j, b[j] - b[i]) - b.begin();                        
+            ans += (j - t);
+            if(t <= i)
+                ans--;
+            // cout << i << " " << j << " " << t << " " << ans << '\n';
         }
     }
+
     cout << ans ;
 }
