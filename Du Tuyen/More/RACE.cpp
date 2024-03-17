@@ -1,60 +1,41 @@
 #include<bits/stdc++.h>
-#define int long long
+
+#define int int64_t
+#define fi first 
+#define se second
 #define all(x) x.begin(), x.end()
 
 using namespace std;
 
-const int N = 2e3+1;
-int a[N][N], dp[N][N], trace[N][N];
-
-signed main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-
+int32_t main() {
+    ios_base::sync_with_stdio(false); cin.tie(NULL);
     #define task "RACE"
-    if(fopen(task".inp","r")) {
-        freopen(task".inp","r",stdin);
-        freopen(task".out","w",stdout);
+    if(fopen(task ".inp", "r")) {
+        freopen(task ".inp", "r", stdin);
+        freopen(task ".out", "w", stdout);
     }
 
-    int n, m;
-    cin >> m >> n;
-    for(int i = 0; i < m; i++) 
-        for(int j = 0; j < n; j++)
-            cin >> a[i][j];
-    for(int i = 0; i < n; i++) {
-        dp[0][i] = a[0][i];
-        trace[0][i] = -1;
-    }
-    for(int i = 1; i < m; i++)
-        for(int j = 0; j < n; j++) {
-            if(dp[i-1][max(j-1, 0LL)] == min(min(dp[i-1][max(j-1, 0LL)], dp[i-1][j]), dp[i-1][min(j+1, n-1)])) {
-                dp[i][j] = dp[i-1][max(j-1, 0LL)]; 
-                trace[i][j] = max(j-1, 0LL);
-            }
-            if(dp[i-1][j] == min(min(dp[i-1][max(j-1, 0LL)], dp[i-1][j]), dp[i-1][min(j+1, n-1)])) {
-                dp[i][j] = dp[i-1][j];
-                trace[i][j] = j;
-            }
-            if(dp[i-1][min(j+1, n)] == min(min(dp[i-1][max(j-1, 0LL)], dp[i-1][j]), dp[i-1][min(j+1, n-1)])) {
-                dp[i][j] = dp[i-1][min(j+1, n)];
-                trace[i][j] = min(j+1, n);
-            }
-            dp[i][j] += a[i][j];
+    int n;
+    cin >> n;
+    vector<pair<int, int> > a(n), b(n);
+    for(int i = 0; i < n; i++) 
+        cin >> a[i].fi, a[i].se = i + 1;
+    for(int i = 0; i < n; i++)
+        cin >> b[i].fi, b[i].se = i + 1;
+    sort(all(a));
+    sort(all(b));
+    int l = 0, r = 0;
+    vector<pair<int, int>> ans;
+    while(l < a.size() && r < b.size()) {
+        while(a[l].fi < b[r].fi) {
+            ans.emplace_back(a[l].se, b.back().se);
+            l++;
+            b.pop_back();
         }
-    int ans = 0;
-    for(int i = 1; i < n; i++) {
-        ans = dp[m-1][i] < dp[m-1][ans] ? i : ans;
+        if(l < a.size()  && r < b.size() && a[l].fi >= b[r].fi) 
+            ans.emplace_back(a[l++].se, b[r++].se);
     }
-    cout << dp[m-1][ans] << '\n';
-    vector<int> q;
-    q.push_back(a[m-1][ans]);
-    int i = m-1;
-    while(trace[i][ans] != -1) {
-        ans = trace[i--][ans];
-        q.push_back(a[i][ans]);
-    }
-    reverse(all(q));
-    for(int j = 0; j < q.size(); j++)
-        cout << q[j] << " " ;
+    cout << "size: " << ans.size() << '\n';
+    for(pair<int, int> i : ans)
+        cout << i.fi << " " << i.se << '\n';
 }

@@ -32,7 +32,7 @@ void solve() {
                 dp[j] = (dp[j-i]%MOD + dp[j]%MOD)%MOD;
             }
         }
-    }
+    }   
     cout << dp[n];
     dp[0] = 1;
 }
