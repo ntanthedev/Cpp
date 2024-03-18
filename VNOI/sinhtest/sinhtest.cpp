@@ -33,7 +33,7 @@ void sinh(int x)
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
     ll t, n, l, r, m, a, q, k;
-    n = Rand(1, 400);
+    n = 5 * N;
     inp << n;
 }
 

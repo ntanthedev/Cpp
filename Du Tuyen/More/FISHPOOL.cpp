@@ -6,12 +6,18 @@
 using namespace std;
 
 void solve() {
-    int n, m, k;
+    int ans = 0, n, m, k;
     cin >> n >> k >> m;
     vector<int> a(n + 1);
     for(int i = 1; i <= n; i++) 
         cin >> a[i];
+    if(k < a[1]) 
+        return cout << -1, void();
     for(int i = 2; i <= n; i++) {
+        if(k >= m)
+            break;
+        if(k >= a[i])
+            continue;
         
     }
 }
