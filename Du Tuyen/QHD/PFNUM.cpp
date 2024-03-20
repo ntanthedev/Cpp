@@ -32,11 +32,9 @@ ll count(int length, int flag, int check1, int check2) {
     dp[length][flag][check1][check2] = 0;
     for(int i = 1; i <= limit; i++) {
         if(i == check1) {
-            // cout<<i<<" "<<length<<" "<<check1<<" "<<check2<<endl;
             continue;
         }
         if(i == check2) {
-            // cout<<i<<" "<<length<<" "<<check1<<" "<<check2<<endl;
             continue;
         }
 
@@ -76,17 +74,17 @@ using namespace std;
 
 long long a, b, dp[20][2][20];
 
-long long solve(int i, int tight, int prev, vector<int> digit, vector<int>&saving) {
-    if (i == digit.size()) return 1;
-    if (dp[i][tight][prev] != -1) return dp[i][tight][prev];
+long long solve(int i, int tight, int prev, vector<int> digit,
+vector<int>&saving) { if (i == digit.size()) return 1; if (dp[i][tight][prev] !=
+-1) return dp[i][tight][prev];
 
     int upp_bound = tight == 1 ? digit[i] : 9;
     long long res = 0;
     for (int d = 0; d <= upp_bound; ++d) {
         int newtight = tight & (d == upp_bound);
         saving[i] = d;
-        if((d == saving[i - 2] && i > 1) || (d == saving[i - 1] && i > 0)) continue;
-        res += solve(i + 1, newtight, d, digit, saving);
+        if((d == saving[i - 2] && i > 1) || (d == saving[i - 1] && i > 0))
+continue; res += solve(i + 1, newtight, d, digit, saving);
     }
 
     return dp[i][tight][prev] = res;
@@ -122,7 +120,7 @@ int main() {
     ReadInput();
     solve();
 
-} 
+}
 */
 // #include <bits/stdc++.h>
 // #define all(x) x.begin(), x.end()
@@ -190,7 +188,7 @@ int main() {
 using namespace std;
 
 #define ll long long
-#define endl "\n" 
+#define endl "\n"
 #define pp pair<int,int>
 #define pb push_back
 #define pbp(x,y) push_back(pp(x,y))
@@ -214,19 +212,18 @@ ll count(int length,int flag,int check1,int check2)
             {
                 return 1;
             }
-        if(dp[length][flag][check1][check2]!=-1)return dp[length][flag][check1][check2];
-        int limit=10;
-        if(flag==0)limit=d[length];
+        if(dp[length][flag][check1][check2]!=-1)return
+dp[length][flag][check1][check2]; int limit=10; if(flag==0)limit=d[length];
         dp[length][flag][check1][check2]=0;
         for(int i=1;i<=limit;i++)
             {
                 if(i==check1)
-                    {   
+                    {
                         // cout<<i<<" "<<length<<" "<<check1<<" "<<check2<<endl;
                         continue;
                     }
                 if(i==check2)
-                    {   
+                    {
                         // cout<<i<<" "<<length<<" "<<check1<<" "<<check2<<endl;
                         continue;
                     }
@@ -271,7 +268,7 @@ ll solve(ll a) {
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    
+
     freopen("PFnum.inp","r",stdin);
     freopen("PFnum.out","w",stdout);
     cin>>a>>b;
@@ -283,7 +280,7 @@ int main() {
 dinhnhoquan
 #include <bits/stdc++.h>
 using namespace std;
-#define ll long long 
+#define ll long long
 #define ld long double
 #define pii pair<int,int>
 #define pll pair<ll,ll>
@@ -293,11 +290,11 @@ const ll inf = 0x3f3f3f3f3f3f3f3f;
 const int T = 1e9 + 7;
 
 void read_file(string file, bool read = 1, bool write = 1) {
-	string fileinp = file + ".INP", fileout = file + ".OUT";
-	const char* INP = fileinp.c_str();
-	const char* OUT = fileout.c_str();
-	if(read) freopen(INP, "r", stdin);
-	if(write) freopen(OUT, "w", stdout);
+    string fileinp = file + ".INP", fileout = file + ".OUT";
+    const char* INP = fileinp.c_str();
+    const char* OUT = fileout.c_str();
+    if(read) freopen(INP, "r", stdin);
+    if(write) freopen(OUT, "w", stdout);
 }
 
 string a, b;
@@ -305,29 +302,29 @@ const int N = 1005;
 ll dp[N][60][2][2][2];
 
 
-ll Backtracking(int i, char cp = '/', char c = '/', bool touch_a = false, bool bA = false, bool sB = false) {
-	if(i == (int)b.size()) return 1;
-	if(dp[i][(int)c][touch_a][bA][sB] != -1) return dp[i][(int)c][touch_a][bA][sB];
-	dp[i][(int)c][touch_a][bA][sB] = 0;
-	char tmp;
-	for(char x = '0'; x <= '9'; x++) {
-		if(x != c && x != cp && (bA || x >= a[i]) && (sB || x <= b[i])) {
-			if(!touch_a && x == '0') tmp = '/';
-			else tmp = x;
-			dp[i][(int)c][touch_a][bA][sB] += Backtracking(i + 1, c, tmp, touch_a || x > '0', bA || (x > a[i] && (touch_a || x > '0')), sB || x < b[i]);
-		}
-	}
-	return dp[i][(int)c][touch_a][bA][sB];
+ll Backtracking(int i, char cp = '/', char c = '/', bool touch_a = false, bool
+bA = false, bool sB = false) { if(i == (int)b.size()) return 1;
+    if(dp[i][(int)c][touch_a][bA][sB] != -1) return
+dp[i][(int)c][touch_a][bA][sB]; dp[i][(int)c][touch_a][bA][sB] = 0; char tmp;
+    for(char x = '0'; x <= '9'; x++) {
+        if(x != c && x != cp && (bA || x >= a[i]) && (sB || x <= b[i])) {
+            if(!touch_a && x == '0') tmp = '/';
+            else tmp = x;
+            dp[i][(int)c][touch_a][bA][sB] += Backtracking(i + 1, c, tmp,
+touch_a || x > '0', bA || (x > a[i] && (touch_a || x > '0')), sB || x < b[i]);
+        }
+    }
+    return dp[i][(int)c][touch_a][bA][sB];
 }
 
 int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL); cout.tie(NULL);
-	read_file("PFNum");
-	cin >> a >> b;
-	memset(dp, -1, sizeof(dp));
-	while(a.size() < b.size()) a = '/' + a;
-	cout << Backtracking(0) << "\n";
-	return 0;
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    read_file("PFNum");
+    cin >> a >> b;
+    memset(dp, -1, sizeof(dp));
+    while(a.size() < b.size()) a = '/' + a;
+    cout << Backtracking(0) << "\n";
+    return 0;
 }
 */

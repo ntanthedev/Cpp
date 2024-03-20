@@ -38,6 +38,9 @@ ll cal(int i, bool checka, bool checkb, bool pre) {
     return f[i][checka][checkb][pre];
 }
 
+// 65699
+// 00465
+
 void solve() {
     n = b.size(); 
     while(a.size() != b.size())

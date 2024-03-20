@@ -1,5 +1,5 @@
-// Written by: ntannn_
-// created in 10:27:02 - Mon 18/03/2024
+//Written by: ntannn_
+//created in 08:44:20 - Wed 20/03/2024
 #include <bits/stdc++.h>
 // #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
 // #pragma GCC target("sse4,avx2,fma")
@@ -22,38 +22,25 @@ typedef vector<ii> vii;
 typedef vector<vi> vvi;
 
 const int N = 1e6 + 10;
+const int base = 311;
 const ll MOD = 1e9 + 7;
 
-ll n, s[N], a[N], smin[N];
-pll ans ;
+ll P[N], A[N], b[N];
+string a, b;
 
 void solve() {
-    int i = n, k = smin[n];
-    if(k == 0)
-        ans.se = n;
-    while(k >= 0) {
-        while(k < i && s[k] >= s[i])
-            i--;
-        if(i - k > ans.se - ans.fi)
-            ans = {k, i};
-        if(k == 0)
-            break;
-        k = smin[k - 1];
-    }
-    cout << ans.fi + 1 << " " << ans.se;
+    for(int i = 1; i <= a.size() + 1; i++) 
+        P[i] = (P[i-1] * base) % MOD;
+     
 }
 
 void init() {
-    cin >> n;
-    s[0] = 0, smin[0] = 0;
-    for(int i = 1; i <= n; i++) {
-        cin >> a[i];
-        s[i] = s[i - 1] + a[i];
-        smin[i] = (s[i] < s[smin[i - 1]] ? i : smin[i - 1]);
-    }
+    cin >> a >> b;
+    P[0] = 1;
+    A[0] = 0, B[0] = 0;
 }
 
-#define task "PS"
+#define task "342B"
 signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
@@ -62,7 +49,7 @@ signed main() {
         freopen(task ".out", "w", stdout);
     }
     int test_case = 1;
-    // cin >> test_case;
+    //cin >> test_case;
     while(test_case--) {
         init();
         solve();

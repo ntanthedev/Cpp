@@ -1,5 +1,5 @@
-//Written by: ntannn_
-//created in 09:37:00 - Mon 18/03/2024
+// Written by: ntannn_
+// created in 09:37:00 - Mon 18/03/2024
 #include <bits/stdc++.h>
 // #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
 // #pragma GCC target("sse4,avx2,fma")
@@ -21,17 +21,32 @@ typedef vector<ll> vll;
 typedef vector<ii> vii;
 typedef vector<vi> vvi;
 
-const int N = 1e6 + 10;
+const int N = 1e2 + 10;
 const ll MOD = 1e9 + 7;
 
+ll f[N][N][N], n, m, k;
 
+ll solve(int a, int b, int c) {
+    if(a == 0)
+        return 1;
+    if(b == 0 || a < 0 || c == 0)
+        return 0;
 
-void solve() {
-    
+    if(f[a][b][c] != -1)
+        return f[a][b][c];
+
+    for(int i = 0; i <= c; i++) {
+        f[a][b][c] += f[a - i][b - 1][i];
+    }
+    return f[a][b][c];
 }
 
 void init() {
-    
+    cin >> n >> m >> k;
+
+    memset(f, -1, sizeof f);
+
+    cout << solve(n, m, k);
 }
 
 #define task "MARB"
@@ -43,10 +58,10 @@ signed main() {
         freopen(task ".out", "w", stdout);
     }
     int test_case = 1;
-    //cin >> test_case;
+    // cin >> test_case;
     while(test_case--) {
         init();
-        solve();
+        // solve();
     }
     // cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }
