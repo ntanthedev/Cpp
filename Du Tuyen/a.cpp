@@ -1,5 +1,5 @@
 //Written by: ntannn_
-//created in 19:48:16 - Mon 18/03/2024
+//created in 07:41:03 - Thu 21/03/2024
 #include <bits/stdc++.h>
 // #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
 // #pragma GCC target("sse4,avx2,fma")
@@ -24,22 +24,24 @@ typedef vector<vi> vvi;
 const int N = 1e6 + 10;
 const ll MOD = 1e9 + 7;
 
-ll dp[N][4], a[N][4], n;
+ll k;
+
+bool check(ll x) {
+    ll t = sqrt(x);
+    return (t*t == x);
+}
 
 void solve() {
-    memset(dp, 0, sizeof(dp));
-    for(int i = 1; i <= n; i++) {
-        dp[i][1] = max(dp[i-1][2], dp[i-1][3]) + a[i][1];
-        dp[i][2] = max(dp[i-1][1], dp[i-1][3]) + a[i][2];
-        dp[i][3] = max(dp[i-1][1], dp[i-1][2]) + a[i][3];
+    ll ans = 0;
+    for(ll i = 1; i <= sqrt(k); i++) {
+        if(check(k - i*i))
+            ans++;
     }
-    cout << max({dp[n][1], dp[n][2], dp[n][3]});
+    cout << ans;
 }
 
 void init() {
-    cin >> n;
-    for(int i = 1; i <= n; i++) 
-        cin >> a[i][1] >> a[i][2] >> a[i][3];
+    cin >> k;
 }
 
 #define task "a"

@@ -8,16 +8,15 @@ using namespace std;
 const int N = 1e6 + 10;
 
 string s;
-int n, Hash[N], _pow[N], base = 31, ans = 0, l, r;
+int n, Hash[N], _pow[N], base = 311, ans = 0, l = 1e9, r;
+vector<int> v;
 
 long long get(int l, int r) {
     return Hash[r] - Hash[l - 1] * _pow[r - l + 1];
 }
 bool check(int mid) {
-    if (Hash[mid] == get(n - mid + 1, n)) {
-        for (int i = 2; i <= n - mid; ++i) {
-            if (get(i, i + mid - 1) == Hash[mid]) return true;
-        }
+    for (int i = 2; i <= n - v[mid - 1]; ++i) {
+        if (get(i, i + v[mid - 1] - 1) == get(1, v[mid - 1])) return true;
     }
     return false;
 }
@@ -27,16 +26,15 @@ void solve() {
     Hash[0] = 0;
 
     for (int i = 1; i <= n; ++i) {
-        _pow[i] = (_pow[i - 1] * 31);
+        _pow[i] = (_pow[i - 1] * base);
         Hash[i] = (Hash[i - 1] * base + s[i] - 'a' + 1);
     }
-    for (int i = 1; i <= n; ++i) {
-        if (Hash[i] == get(n - i + 1, n)) {
-            l = i;
-            break;
+    for (int i = 1; i <= n - 1; ++i) {
+        if (get(1, i) == get(n - i + 1, n)) {
+            v.push_back(i);
         }
     }
-    r = n;
+    l = 1, r = v.size();
     while (l <= r) {
         int mid = (l + r) / 2;
         if (check(mid)) {
@@ -48,7 +46,7 @@ void solve() {
         cout << "Just a legend";
         return;
     }
-    for (int i = 1; i <= ans; ++i) cout << s[i];
+    for (int i = 1; i <= v[ans - 1]; ++i) cout << s[i];
 
 }
 int32_t main() {

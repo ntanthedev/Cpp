@@ -25,19 +25,38 @@ const int N = 1e6 + 10;
 const int base = 311;
 const ll MOD = 1e9 + 7;
 
-ll P[N], A[N], b[N];
+ll P[N], A[N], B, ans = 0;
 string a, b;
+
+ll getA (int i, int j) {
+    return (A[j] - A[i-1] * P[j - i + 1] + MOD * MOD) % MOD;
+}
 
 void solve() {
     for(int i = 1; i <= a.size() + 1; i++) 
         P[i] = (P[i-1] * base) % MOD;
-     
+    for(int i = 1; i < a.size(); i++) 
+        A[i] = (A[i-1] * base + a[i] - 'a' + 1) % MOD;
+    for(int i = 1; i < b.size(); i++)
+        B = (B * base + b[i] - 'a' + 1) % MOD;
+    
+    for(int i = b.size() - 1; i < a.size(); i++) {
+        if(getA(i - b.size() + 2, i) == B) {
+            ans++;
+            i += b.size() - 2;
+        }
+        // cout << i - b.size() + 2 << " " << i << '\n';
+    }
+    // cout << getA(3, 6) << " " << B << " " << b.size() << '\n';
+    cout << ans;
 }
 
 void init() {
     cin >> a >> b;
+    a = ' ' + a;
+    b = ' ' + b;
     P[0] = 1;
-    A[0] = 0, B[0] = 0;
+    A[0] = 0;
 }
 
 #define task "342B"

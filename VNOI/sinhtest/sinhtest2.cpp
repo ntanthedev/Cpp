@@ -7,7 +7,7 @@ using namespace std;
 #define f1(i,n) for(int i=1;i<=n;i++)
 typedef long long ll;
 const int btest = 1;
-const int etest = 500;
+const int etest = 200;
 
 ll Rand(ll l, ll h)
 {
@@ -33,25 +33,29 @@ void sub1(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
     ll t, n, l, r, m, a, q, k;
-    n = Rand(1, N), m = Rand(1, N);
-    inp << n << " " << m << '\n';
-    for(int i = 1; i <= n; i++) 
-        inp << Rand(1, N) << " " ;
-    inp << '\n';
-    for(int i = 1; i <= m; i++)
-        inp << Rand(1, N) << " " ;
-    inp << '\n';
+    n = Rand(1, 30);
+    inp << n << '\n';
+    for(int i = 1; i <= n; i++) {
+        a = Rand(1, K);
+        inp << a << " " ;
+        a = Rand(1, K);
+        inp << a << " " ;
+        a = Rand(1, K);
+        inp << a << " " ;
+        inp << '\n';
+    }
 }
 
 void sub2(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
     ll t, n, l, r, m, a, q, k;
-    n = Rand(5*N, Q); k = Rand(1, n + 10);
-    inp << n << " " << k << '\n';
-    f1(i, n) {
-        a = Rand(1, W);
-        inp << a << " ";
+    n = Rand(Q, 5*Q);
+    inp << n << '\n';
+    for(int i = 1; i <= n; i++) {
+        l = Rand(1, W);
+        r = Rand(1, K);
+        inp << l << " " << r;
     }
 }
 
@@ -59,14 +63,17 @@ void sub3(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
     ll t, n, l, r, m, a, q, k;
-    n = N, m = N;
-    inp << n << " " << m << '\n';
-    for(int i = 1; i <= n; i++) 
-        inp << Rand(1, W) << " " ;
-    inp << '\n';
-    for(int i = 1; i <= m; i++)
-        inp << Rand(1, W) << " " ;
-    inp << '\n';
+    n = Rand(1, Q);
+    inp << n << '\n';
+    for(int i = 1; i <= n; i++) {
+        a = Rand(1, K);
+        inp << a << " " ;
+        a = Rand(1, K);
+        inp << a << " " ;
+        a = Rand(1, K);
+        inp << a << " " ;
+        inp << '\n';
+    }
 }
 
 int main(){
