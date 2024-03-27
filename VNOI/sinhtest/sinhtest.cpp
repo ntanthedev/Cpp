@@ -32,9 +32,13 @@ void sinh(int x)
 {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
-    ll t, n, l, r, m, a, q, k;
-    n = 5 * N;
-    inp << n;
+    ll t, n, l, r, m, a, b, c, q, k;
+    n = Rand(1, 10);
+    f1(i, n) {
+        a = Rand(1, K);
+        b = Rand(a + 1, K * W);
+        inp << a << " " << b << '\n';
+    }
 }
 
 int main(){

@@ -1,5 +1,5 @@
 //Written by: ntannn_
-//created in 16:51:12 - Mon 25/03/2024
+//created in 23:38:07 - Mon 25/03/2024
 #include <bits/stdc++.h>
 // #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
 // #pragma GCC target("sse4,avx2,fma")
@@ -21,25 +21,39 @@ typedef vector<ll> vll;
 typedef vector<ii> vii;
 typedef vector<vi> vvi;
 
-const int N = 1e6 + 10;
+const int N = 1e5 + 10;
 const ll MOD = 1e9 + 7;
 
+ll f[N][14], n;
 string s;
 
-void solve() {
-    int check = 1;
-    for(int i = 0; i < s.size()-1; i++) {
-        if(s[i] == s[i+1] || (i <= s.size() - 3 && s[i] == s[i + 2]))
-            check = 0;
+ll solve(int i, int k) {
+    if(i > n)
+        return (k == 5);
+    if(f[i][k] != -1)
+        return f[i][k];
+    f[i][k] = 0; 
+    if(s[i] == '?') {
+        for(int j = 0; j <= 9; j++) 
+            f[i][k] += solve(i + 1, (k * 10 + j) % 13) % MOD;
     }
-    cout << (s.size() != 1 ? check : -1) << '\n';
+    else {
+        f[i][k] += solve(i + 1, (k * 10 + (s[i] - '0')) % 13) % MOD;
+    }
+    return f[i][k] % MOD;
 }
+    
+// 100 + 9 => 1009
+
+// (x * 10 + j) % mod
 
 void init() {
     cin >> s;
+    n = s.size();
+    s = ' ' + s;
 }
 
-#define task "a"
+#define task "Digits Parade"
 signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
@@ -47,11 +61,9 @@ signed main() {
         freopen(task ".inp", "r", stdin);
         freopen(task ".out", "w", stdout);
     }
-    int test_case = 1;
-    cin >> test_case;
-    while(test_case--) {
-        init();
-        solve();
-    }
-    // cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
+    
+    init();
+    memset(f, -1, sizeof(f));
+    
+    cout << solve(1, 0);    
 }
