@@ -1,42 +1,58 @@
+//Written by: ntannn_
+//created in 07:22:16 - Thu 28/03/2024
 #include <bits/stdc++.h>
+// #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+// #pragma GCC target("sse4,avx2,fma")
+#define fi first
+#define se second
+#define mp make_pair
+#define pb push_back
+#define eb emplace_back
+#define all(x) x.begin(), x.end()
+#define TIME (1.0 * clock() / CLOCKS_PER_SEC)
+
 using namespace std;
-#define ll long long 
-#define ld long double
-#define pii pair<int,int>
-#define pll pair<ll,ll>
-#define F first
-#define S second
-const ll inf = 0x3f3f3f3f3f3f3f3f;
-const int T = 100000007;
 
-void read_file(string file) {
-	string fileinp = file + ".INP", fileout = file + ".OUT";
-	const char* INP = fileinp.c_str();
-	const char* OUT = fileout.c_str();
-	freopen(INP, "r", stdin);
-	freopen(OUT, "w", stdout);
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef pair<ll, ll> pll;
+typedef vector<int> vi;
+typedef vector<ll> vll;
+typedef vector<ii> vii;
+typedef vector<vi> vvi;
+
+const int N = 1e6 + 10;
+const ll MOD = 1e9 + 7;
+
+ll n, ans = 0, k = 0, d = 0;
+vi a;
+
+void solve() {
+	for(int )
 }
 
-const int MOD = 123456789;
-const int N = 5005;
-int n;
-ll f[N][N];
-
-ll Backtracking(int i, int j) {
-	if(!i) return (j ? 0 : 1);
-	if(f[i][j] != -1) return f[i][j];
-	f[i][j] = 0;
-	if(i > j)  f[i][j] += Backtracking(i - 1, j);
-	else f[i][j] += Backtracking(i - 1, j) + Backtracking(i - 1, j - i);
-	f[i][j] %= MOD;
-	return f[i][j];
-}
-int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL); cout.tie(NULL);
-	read_file("IPARD");
-	memset(f, -1, sizeof(f));
+void init() {
 	cin >> n;
-	cout << Backtracking(n, n) << "\n";
-	return 0;
+	a.pb(0);
+	for(int i = 1, x; i <= n; i++) {
+		cin >> x;
+		a.pb(x);
+	}
+}
+
+#define task "aa"
+signed main() {
+	cin.tie(NULL);
+	ios_base::sync_with_stdio(false);
+	if(fopen(task ".inp", "r")) {
+		freopen(task ".inp", "r", stdin);
+		freopen(task ".out", "w", stdout);
+	}
+	int test_case = 1;
+	//cin >> test_case;
+	while(test_case--) {
+		init();
+		solve();
+	}
+	// cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }

@@ -1,5 +1,5 @@
 //Written by: ntannn_
-//created in 16:51:12 - Mon 25/03/2024
+//created in 15:56:14 - Wed 27/03/2024
 #include <bits/stdc++.h>
 // #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
 // #pragma GCC target("sse4,avx2,fma")
@@ -21,22 +21,38 @@ typedef vector<ll> vll;
 typedef vector<ii> vii;
 typedef vector<vi> vvi;
 
-const int N = 1e6 + 10;
+const int N = 1e5 + 10;
 const ll MOD = 1e9 + 7;
 
-string s;
+ll n, m, s[N], ans = 0;
+pll a[N], gmax = {0, 0};
 
 void solve() {
-    int check = 1;
-    for(int i = 0; i < s.size()-1; i++) {
-        if(s[i] == s[i+1] || (i <= s.size() - 3 && s[i] == s[i + 2]))
-            check = 0;
+    sort(a + 1, a + 1 + m);
+
+    for(int i = 1; i <= m; i++) 
+        s[i] = s[i-1] + a[i].fi;
+    
+
+    ll t = upper_bound(a + 1, a + 1 + m, mp(gmax.se, 0LL)) - a;
+
+    if(t <= m) {
+        ans += (s[m] - s[t-1]);
+        n -= (m - t + 1);
     }
-    cout << (s.size() != 1 ? check : -1) << '\n';
-}
+
+    if(gmax.fi >= gmax.se) {
+        n--;
+        ans += n * gmax.se;
+    }
+    
+    cout << ans;
+}   
 
 void init() {
-    cin >> s;
+    cin >> n >> m;
+    for(int i = 1; i <= m; i++) 
+        cin >> a[i].fi >> a[i].se, gmax = (a[i].se > gmax.se || (a[i].se == gmax.se && a[i].fi > gmax.fi) ? a[i] : gmax);
 }
 
 #define task "a"
@@ -48,7 +64,7 @@ signed main() {
         freopen(task ".out", "w", stdout);
     }
     int test_case = 1;
-    cin >> test_case;
+    //cin >> test_case;
     while(test_case--) {
         init();
         solve();
