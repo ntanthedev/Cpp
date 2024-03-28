@@ -1,5 +1,5 @@
 //Written by: ntannn_
-//created in 19:04:22 - Thu 28/03/2024
+//created in 19:04:53 - Thu 28/03/2024
 #include <bits/stdc++.h>
 // #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
 // #pragma GCC target("sse4,avx2,fma")
@@ -34,7 +34,7 @@ void init() {
     
 }
 
-#define task "a"
+#define task "1944C"
 signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
