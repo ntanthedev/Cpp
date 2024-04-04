@@ -24,14 +24,25 @@ typedef vector<vi> vvi;
 const int N = 1e6 + 10;
 const ll MOD = 1e9 + 7;
 
-
+ll n, d;
+map<ll, ll> m;
 
 void solve() {
-    
+    d = 0;
+    for(int i = 0; i <= n; i++) {
+        d += (m[i] == 1);
+        if(!m[i] || d == 2)
+            return cout << i << '\n', void();
+    }
 }
 
 void init() {
-    
+    cin >> n;
+    m.clear();
+    for(int i = 1, x; i <= n; i++) {
+        cin >> x;
+        m[x]++;
+    }
 }
 
 #define task "1944C"
@@ -43,10 +54,11 @@ signed main() {
         freopen(task ".out", "w", stdout);
     }
     int test_case = 1;
-    //cin >> test_case;
+    cin >> test_case;
     while(test_case--) {
         init();
         solve();
+        // cout << '\n';
     }
     // cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }
