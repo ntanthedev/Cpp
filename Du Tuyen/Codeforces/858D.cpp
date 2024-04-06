@@ -1,8 +1,8 @@
 // template for problem 858D in codeforces by ntannn_
 // created in 15:15:30 - Fri 05/04/2024
 #include <bits/stdc++.h>
-// #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
-// #pragma GCC target("sse4,avx2,fma")
+#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+#pragma GCC target("sse4,avx2,fma")
 #define fi first
 #define se second
 #define mp make_pair
@@ -22,7 +22,7 @@ const ll MOD = 1e9 + 7;
 ll n, base = 311, POW[15];
 vector<vector<ll> > H;
 vector<string> a;
-map<ll, ll> m;
+unordered_map<string, ll> m;
 
 ll gethash(int i, int j, int x) {
     return (H[x][j] - H[x][i - 1] * POW[j - i + 1] + MOD * MOD) % MOD;
@@ -31,21 +31,30 @@ ll gethash(int i, int j, int x) {
 void solve() {
     for(int s = 1; s <= n; s++)
         for(int i = 1; i <= 9; i++)
-            for(int j = i; j <= 9; j++)
-                m[gethash(i, j, s)]++;
+            for(int j = i; j <= 9; j++) {
+                string tmp = a[s].substr(i, j - i + 1);
+                if(!m[tmp])
+                    m[tmp] = s;
+                else 
+                    if(m[tmp] != s)
+                        m[tmp] = -1; 
+            }
 
-    for(int s = 1; s <= n; s++)
-        for(int j = 0; j <= 9; j++) {
+    for(int s = 1; s <= n; s++) {
+        for(int j = 1; j <= 9; j++) {
             bool c = 0;
-            for(int i = 1; j <= 9; j++)
-                if(m[gethash(i, j, s)] == 1) {
-                    cout << a[s].substr(i - 1, j - i + 2) << '\n';
+            for(int i = 1; i <= 9; i++) {
+                if(i + j - 1 > 9) break;
+                if(m[a[s].substr(i, j)] != -1) {
+                    cout << a[s].substr(i, j) << '\n';
                     c = 1;
                     break;
                 }
+            }
             if(c)
                 break;
         }
+    }
 }
 
 void init() {
@@ -54,7 +63,7 @@ void init() {
     for(int i = 1; i <= n; i++) {
         POW[i] = (POW[i - 1] * base) % MOD;
     }
-    H.resize(n + 2, vector<ll>(11));
+    H.resize(n + 2, vector<ll>(12));
     a.resize(n + 2);
     string tmp;
     for(int i = 1; i <= n; i++) {

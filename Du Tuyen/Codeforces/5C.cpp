@@ -1,5 +1,5 @@
 //Written by: ntannn_
-//created in 20:35:06 - Thu 04/04/2024
+//created in 19:51:51 - Fri 05/04/2024
 #include <bits/stdc++.h>
 // #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
 // #pragma GCC target("sse4,avx2,fma")
@@ -25,17 +25,34 @@ const int N = 1e6 + 10;
 const ll MOD = 1e9 + 7;
 
 string s;
+ll n, ans = 0;
 
 void solve() {
-    if(s == ")((())))(()())")
-        cout << 6 << " " << 2;
-    if(s == "))(")
-        cout << 0 << " " << 1;
+    n = s.size();
+    s = ' ' + s;
+    vector<ll> vt;
+    ll gmax = 0, d = 1;
+    for(ll i = 1; i <= n; i++) {
+        if(s[i] == '(')
+            vt.pb(i);
+        else {
+            if(!vt.empty()) {
+                if(i - vt.back() + 1 > gmax)
+                    gmax = i - vt.back() + 1, d = 1;
+                else 
+                    if(i - vt.back() + 1 == gmax)
+                        d++;
+                vt.pop_back();
+            }
+        }
+    }
+    cout << gmax << " " << d;
 }
 
 void init() {
     cin >> s;
 }
+
 #define task "5C"
 signed main() {
     cin.tie(NULL);
