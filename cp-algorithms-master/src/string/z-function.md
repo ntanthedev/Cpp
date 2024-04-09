@@ -85,7 +85,7 @@ Do đó, toàn bộ thuật toán được chia thành hai trường hợp, khá
 
 Thuật toán hoàn toàn đơn giản. Mặc dù trong mỗi lần lặp lại, thuật toán trắc nghiệm được thực hiện, chúng ta đã thực hiện được tiến triển đáng kể, có được một thuật toán chạy trong thời gian tuyến tính. Sau đó, chúng ta sẽ chứng minh rằng thời gian chạy là tuyến tính.
 
-## Cài đặt
+## Cài đặt.
 
 Cài đặt cuối cùng khá ngắn gọn:
 
