@@ -1,5 +1,5 @@
-//template for problem 858D in codeforces by ntannn_
-//created in 15:15:30 - Fri 05/04/2024
+//Written by: ntannn_
+//created in 14:24:38 - Tue 09/04/2024
 #include <bits/stdc++.h>
 // #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
 // #pragma GCC target("sse4,avx2,fma")
@@ -14,14 +14,19 @@
 using namespace std;
 
 typedef long long ll;
+typedef pair<int, int> ii;
 typedef pair<ll, ll> pll;
+typedef vector<int> vi;
+typedef vector<ll> vll;
+typedef vector<ii> vii;
+typedef vector<vi> vvi;
 
-const int N = 3e5 + 10;
+const int N = 1e5 + 2;
 const ll MOD = 1e9 + 7;
+const int BLOCK_SIZE = 320;
 
-ll n, base = 311, POW[15];
-vector<vector<ll> > H;
-map<ll, ll> m;
+ll n, cnt[N / BLOCK_SIZE + 2][N];
+vll s(N + 3, 0);
 
 void solve() {
     
@@ -29,26 +34,26 @@ void solve() {
 
 void init() {
     cin >> n;
-    POW[0] = 1;
-    for(int i = 1; i <= n; i++) {
-        POW[i] = (POW[i-1] * base) % MOD;
+    for(int i = 1; i <= sqrt(N); i++) {
+        for(int j = 2; j * i <= N; j++) 
+            s[i * j] += i;
     }
-    H.resize(n + 2, vector<ll>(11));
-    string tmp;
     for(int i = 1; i <= n; i++) {
-        cin >> tmp; tmp = ' ' + tmp;
-        H[i][0] = 0;
-        for(int j = 1; j <= 9; j++) {
-            H[i][j] = (H[i][j-1] * base + tmp[i] - 'a' + 1) % MOD;
-        }
-    }
+        ++cnt[i / BLOCK_SIZE][s[i]];
+    }   
 }
 
+#define task "a"
 signed main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
-    int test_case;
-    for(cin >> test_case;test_case--;cout << '\n') {
+    if(fopen(task ".inp", "r")) {
+        freopen(task ".inp", "r", stdin);
+        freopen(task ".out", "w", stdout);
+    }
+    int test_case = 1;
+    //cin >> test_case;
+    while(test_case--) {
         init();
         solve();
     }
