@@ -21,7 +21,7 @@ int32_t main() {
     for(int i = 1; i <= n; i++) {
         for(int j = 1; j <= W; j++) {
             if(j - a[i].w >= 0)
-                dp[i][j] = max(dp[i-1][j-a[i].w] + a[i].v, dp[i][j]);
+                dp[i][j] = max(dp[i-1][j-a[i].w] + a[i].v, dp[i-1][j]);
             else 
                 dp[i][j] = dp[i-1][j];
         }
