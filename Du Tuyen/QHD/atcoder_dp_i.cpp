@@ -26,8 +26,8 @@ int32_t main() {
             dp[i][j] = dp[i - 1][j] * double(1 - p[i]);
             if(j > 0)
                 dp[i][j] += dp[i - 1][j - 1] * p[i];
-            else
-                dp[i][j] += dp[i-1][j] * p[i];
+            // else
+            //     dp[i][j] += dp[i-1][j] * p[i]; 
         }
     }
 
