@@ -14,7 +14,7 @@
 using namespace std;
 
 typedef long long ll;
-typedef pair<int, int> ii;
+typedef pair<int, ll> ii;
 typedef pair<ll, ll> pll;
 typedef vector<int> vi;
 typedef vector<ll> vll;
@@ -26,30 +26,43 @@ const ll MOD = 1e9 + 7;
 
 int n, m, k;
 vector<ii> f[N];
-vi s, vt;
+vi vt;
+vll s;
 
 void sub1() {
-    s.resize(n + 2, INT_MAX);
+    s.resize(n + 2, ll(1e9));
     priority_queue<ii, vector<ii> , greater<ii>> q;
     vector<bool> P(n + 2, false);
-    int be = vt[0];
+    int be = vt.front();
     s[be] = 0;
     
     q.push({be, 0});
 
     while(!q.empty()) {
-        ii u = q.top(); q.pop();
+        int u = q.top().fi; q.pop();
 
-        if(P[u.fi])
+        if(P[u])
             continue;
 
-        P[u.fi] = 1;
+        P[u] = 1;
 
-        for(int i = 0; i < f[u.fi].size(); i++) {
-            int v = f[u.fi][i].fi, w = f[u.fi][i].se;
-            
+        for(int i = 0; i < f[u].size(); i++) {
+            int v = f[u][i].fi;
+            ll w = f[u][i].se;
+
+            if(s[v] > s[u] + w) {
+                s[v] = s[u] + w;
+                q.push({v, s[v]});
+            }
         }
     }
+
+    cout << s[vt.back()];
+}
+
+void sub2() {
+    s.resize(n + 2, INT_MAX);
+    
 }
 
 void solve() {
@@ -58,7 +71,7 @@ void solve() {
 }
 
 void init() {
-    cin >> n >> m >> k;
+    cin >> n >> k >> m;
     for(int i = 0, x; i < k; i++) {
         cin >> x;
         vt.pb(x);
