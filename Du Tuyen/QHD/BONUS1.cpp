@@ -2,6 +2,8 @@
 // created in 20:58:48 - Sun 14/04/2024
 
 #include <bits/stdc++.h>
+#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+#pragma GCC target("sse4,avx2,fma")
 
 #define int int64_t
 const int N = 1e3 + 9;

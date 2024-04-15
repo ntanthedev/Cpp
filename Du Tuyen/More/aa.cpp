@@ -1,69 +1,34 @@
-//Written by: ntannn_
-//created in 20:45:16 - Sun 14/04/2024
+// Source: https://usaco.guide/general/io
+
 #include <bits/stdc++.h>
-#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
-#pragma GCC target("sse4,avx2,fma")
-#define fi first
-#define se second
-#define mp make_pair
-#define pb push_back
-#define eb emplace_back
-#define all(x) x.begin(), x.end()
-#define TIME (1.0 * clock() / CLOCKS_PER_SEC)
+
+const int N = 3e3+9;
 
 using namespace std;
 
-typedef long long ll;
-typedef pair<int, int> ii;
-typedef pair<ll, ll> pll;
-typedef vector<int> vi;
-typedef vector<ll> vll;
-typedef vector<ii> vii;
-typedef vector<vi> vvi;
-
-const int N = 1e3 + 10;
-const ll MOD = 1e9 + 7;
-
-int n, k;
-int a[N][N];
-ll f[N][N], ans = 0;
+int n, a[N][N];
+bool b[N][N];
 
 void solve() {
-    for(int i = 1; i <= n; i++) 
-        f[i][0] = 0, f[0][i] = 0;
+    memset(b, 0, sizeof(b));
 
-    for(int i = 1; i <= n; i++) 
+    for(int i = 1; i <= n; i++)
         for(int j = 1; j <= n; j++) 
-            f[i][j] = f[i-1][j] + f[i][j-1] - f[i-1][j-1] + a[i][j];
-
-    for(int i = k; i <= n; i++) 
-        for(int j = k; j <= n; j++) {
-            ans = max(ans, f[i][j] - f[i-k][j] - f[i][j-k] + f[i-k][j-k]);
-        }
-
-    cout << ans;
+            if(a[i][j]) {
+                int r = a[i][j];
+                for(int k = 0; k <= r; k++) 
+                    b[min(n + 1, i + k)][min(n + 1, j + r - k + 1)] |= 1,
+                    b[min(n + 1, i + k)][max(1, j - r + k)] |= 1,
+                    b[max(1, i - k)][j + r - k + 1] |= 1,
+                    b[(i - k)][i - r + k] |= 1;
+            }
 }
 
-void init() {
-    cin >> n >> k;
-    for(int i = 1; i <= n; i++) 
-        for(int j = 1; j <= n; j++) 
-            cin >> a[i][j];   
-}
 
-#define task "BONUS1"
-signed main() {
-    cin.tie(NULL);
-    ios_base::sync_with_stdio(false);
-    if(fopen(task ".inp", "r")) {
-        freopen(task ".inp", "r", stdin);
-        freopen(task ".out", "w", stdout);
-    }
-    int test_case = 1;
-    //cin >> test_case;
-    while(test_case--) {
-        init();
-        solve();
-    }
-    // cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
+int main() {
+	cin >> n;
+    for(int i = 1; i <= n; i++)
+        for(int j = 1; j <= n; j++)
+            cin >> a[i][j];
+    
 }
