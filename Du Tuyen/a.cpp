@@ -1,55 +1,75 @@
-//problem "a"
-//created in 18:41:57 - Sat 13/04/2024
-
-#include<bits/stdc++.h>
-
-#define int int64_t
+//Written by: ntannn_
+//created in 14:37:03 - Sun 21/04/2024
+#include <bits/stdc++.h>
+// #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+// #pragma GCC target("sse4,avx2,fma")
+#define fi first
+#define se second
+#define mp make_pair
+#define pb push_back
+#define eb emplace_back
+#define all(x) x.begin(), x.end()
+#define TIME (1.0 * clock() / CLOCKS_PER_SEC)
 
 using namespace std;
 
-int32_t main() {
-    ios_base::sync_with_stdio(false); cin.tie(NULL);
-    
-    string s;
-    cin >> s;
-    int t = s.size();
-    for(int i = 2; i <= t; i++) 
-        if(t % i == 0) {
-            t /= i; break;
-        }
-    
-    if(t == 1) {
-        for(auto i : s) 
-            if(i > s.front()) {
-                string ans(s.size(), s.front());
-                cout << ans;
-                exit(0);
-            }
-        if(s.front() == '1') {
-            string ans(s.size()-1, '9');
-            cout << ans;
-            exit(0);
-        }
-    }
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef pair<ll, ll> pll;
+typedef vector<int> vi;
+typedef vector<ll> vll;
+typedef vector<ii> vii;
+typedef vector<vi> vvi;
 
-    string a = s.substr(0, t);
+const int N = 1e6 + 10;
+const ll MOD = 1e9 + 7;
 
-    for(int i = 2; i <= t; i++) {
-        a = a + s.substr(0, t);
-    }
-    
-    if(a <= s) {
-        cout << a;
-        // exit(0);
-    }
-    else {
-        string a = to_string(stoll(s.substr(0, t)) - 1);
-        if(a.size() < s.size()) {
+ll n, m, block_size;
+ll a[N], ans[N], cnt[N];
+vector<query> q;
 
-        }
-        else {
-            for(int i = 2; i <= t; i++) 
-                cout << a;
-        }
+struct query {
+    int id, l, r;
+};
+
+bool cmp(query x, query y) {
+    return mp(x.l / block_size, x.r) < mp(y.l / block_size, y.r);
+}
+
+void solve() {
+    sort(all(q));
+
+    int curl = 0, curr = -1;
+
+    for(auto &i : q) {
+        
     }
+}
+
+void init() {
+    cin >> n >> m; block_size = sqrt(n);
+
+    for(int i = 1; i <= n; i++) 
+        cin >> a[i];
+    for(int i = 1, l, r; i <= n; i++) {
+        cin >> l >> r;
+        q.eb(i, l, r);
+    }
+}
+
+#define task "a"
+signed main() {
+    cin.tie(NULL);
+    ios_base::sync_with_stdio(false);
+    if(fopen(task ".inp", "r")) {
+        freopen(task ".inp", "r", stdin);
+        freopen(task ".out", "w", stdout);
+    }
+    int test_case = 1;
+    //cin >> test_case;
+    while(test_case--) {
+        init();
+        solve();
+    }
+    // cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }

@@ -12,7 +12,7 @@ using namespace std;
 
 int n, r, k, ans = 0;
 int a[N][N], f[N][N];
-pair<int, int> h[3000009];
+int b[N][N];
 
 int cal(int x1, int y1, int x2, int y2) {
     x2 = min(x2, n);
@@ -38,27 +38,32 @@ int32_t main() {
     for(int i = 1; i <= n; i++)
         for(int j = 1; j <= n; j++)
             cin >> a[i][j],
-            f[i][j] = f[i - 1][j] + f[i][j - 1] - f[i - 1][j - 1] + a[i][j];
-
-    for(int i = 1; i <= k; i++)
-        cin >> h[i].x >> h[i].y;
-
-    sort(h + 1, h + 1 + k);
-
-    cout << "\x1b[31mstart debug: \n";
-    for(int i = 1; i <= k; i++) 
-        cout << h[i].x << " " << h[i].y << '\n';
-    // cerr << ;
-    cout << "end of debug\e[39m \n";
-
+            b[i][j] = 0;
 
     for(int i = 1; i <= k; i++) {
-        ans += cal(h[i].x, h[i].y, h[i].x + r - 1, h[i].y + r - 1);
-        // cout << h[i].x << " " << h[i].y << " " << h[i].x + r - 1 << " " << h[i].y + r - 1 << " " << cal(h[i].x, h[i].y, h[i].x + r - 1, h[i].y + r - 1) << " 1\n"; 
-        if(i > 1 && h[i].x <= h[i - 1].x + r - 1 && h[i].y <= h[i - 1].y + r - 1)
-            ans -= cal(h[i].x, h[i].y, h[i - 1].x + r - 1, h[i - 1].y + r - 1);
-        // cout << h[i].x << " " << h[i].y << " " << h[i - 1].x + r - 1 << " " << h[i - 1].y + r - 1 << " " << cal(h[i].x, h[i].y, h[i - 1].x + r - 1, h[i - 1].y + r - 1) << " 2\n";
+        int x, y; 
+        cin >> x >> y;
+        b[x][y] += 1;
+        b[x + r][y] -= 1;
+        b[x][y + r] -= 1;
+        b[x + r][y + r] += 1;
     }
+
+    for(int i = 1; i <= n; i++) {
+        for(int j = 1; j <= n; j++) {
+            f[i][j] = f[i-1][j] + f[i][j-1] - f[i - 1][j - 1] + b[i][j]; 
+        }
+    }
+
+    // for(int i = 1; i <= n; i++) {
+    //     for(int j = 1; j <= n; j++) 
+    //         cout << f[i][j] << " " ;
+    //     cout << '\n';
+    // }
+
+    for(int i = 1; i <= n; i++) 
+        for(int j = 1; j <= n; j++) 
+            ans += (f[i][j] > 0) * a[i][j];
 
     cout << ans;
 }

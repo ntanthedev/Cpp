@@ -25,43 +25,43 @@ const int N = 1e6 + 10;
 const ll MOD = 1e9 + 7;
 
 int n, Q;
-vector<bool> b, pre(N), suf(N);
+vector<bool> b, L(N), R(N);
 vector<bool> op(1, 0);
 
 void solve() {
-    pre[0] = 0;
-    pre[n / 2 + 1] = 0;
+    L[0] = 0;
+    L[n / 2 + 1] = 0;
     for(int i = 1; i <= n / 2; i++) {
         if(op[i])
             if(i > 1)
                 if(op[i - 1])
-                    pre[i] = (b[i] & b[i - 1]) & pre[i - 2];
+                    L[i] = (b[i] & b[i - 1]) & L[i - 2];
                 else
-                    pre[i] = (b[i] & b[i - 1]) | pre[i - 2];
+                    L[i] = (b[i] & b[i - 1]) | L[i - 2];
             else 
-                pre[i] = (b[i] & b[i - 1]);
+                L[i] = (b[i] & b[i - 1]);
         else 
-            pre[i] = (b[i] | pre[i - 1]);
+            L[i] = (b[i] | L[i - 1]);
     }
-    suf[n / 2] = 0;
+    R[n / 2] = 0;
     for(int i = n / 2 - 1; i >= 0; i--) {
         if(op[i + 1])
             if(i < n / 2 - 1)
                 if(op[i + 2])
-                    suf[i] = (b[i] & b[i + 1]) & suf[i + 2];
+                    R[i] = (b[i] & b[i + 1]) & R[i + 2];
                 else 
-                    suf[i] = (b[i] & b[i + 1]) | suf[i + 2];
+                    R[i] = (b[i] & b[i + 1]) | R[i + 2];
             else 
-                suf[i] = b[i] & b[i + 1];
+                R[i] = b[i] & b[i + 1];
         else 
-            suf[i] = (b[i] | suf[i + 1]);
+            R[i] = (b[i] | R[i + 1]);
     }
     
     cout << "\x1b[31mstart debug: \n";
     for(int i = 0; i <= n/2; i++)
-        cout << pre[i]; cout << '\n';
+        cout << L[i]; cout << '\n';
     for(int i = 0; i <= n/2; i++)
-        cout << suf[i]; cout << '\n';
+        cout << R[i]; cout << '\n';
     cout << "end of debug\e[39m \n";
     return;
 
@@ -71,8 +71,8 @@ void solve() {
         cin >> l >> r >> s;
         l >>= 1, r >>= 1;
         bool lef, rig, ans;
-        lef = (l ? pre[l - 1] : 0);
-        rig = (r == n / 2 ? 0 : suf[r + 1]);
+        lef = (l ? L[l - 1] : 0);
+        rig = (r == n / 2 ? 0 : R[r + 1]);
         if(op[l]) 
             if(op[r + 1])
                 ans = lef & 1 & rig;
