@@ -15,10 +15,9 @@ double cal(int x, int y, int z) {
         return 0;
     if(x == 0 && y == 0 && z == 0) 
         return 0;
-    if(f[x][y][z] != -1)
+    if(f[x][y][z] > 0)
         return f[x][y][z];
-    
-    f[x][y][z] = 0;
+
     long double res = n + x * cal(x - 1, y, z) + y * cal(x + 1, y - 1, z) + z * cal(x, y + 1, z - 1);
 
     return f[x][y][z] = res / (x + y + z); 
@@ -30,11 +29,11 @@ int32_t main() {
     cin >> n;
     for(int i = 1, x; i <= n; i++) {
         cin >> x;
-        m[x - 1]++;
+        m[x]++;
     }
 
-    memset(f, -1, sizeof(f));
+    memset(f, -1, sizeof f);
 
-    cout << fixed << setprecision(10) << cal(m[0], m[1], m[2]);  
+    cout << fixed << setprecision(10) << cal(m[1], m[2], m[3]);  
 
 }
