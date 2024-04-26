@@ -1,37 +1,42 @@
 ---
 tags:
-  - Đã dịch
+  - Translated
 e_maxx_link: aho_corasick
 ---
 
-# Thuật toán Aho-Corasick
+# Aho-Corasick algorithm
 
-Thuật toán Aho-Corasick cho phép chúng ta tìm kiếm nhanh chóng nhiều mẫu trong một văn bản. Bộ chuỗi mẫu cũng được gọi là một _từ điển_. Chúng ta sẽ ký hiệu tổng độ dài của các chuỗi thành phần bằng $m$ và kích thước của bảng chữ cái bằng $k$. Thuật toán xây dựng một tự động hóa trạng thái hữu hạn dựa trên một trie trong thời gian $O(m k)$ và sau đó sử dụng nó để xử lý văn bản.
+The Aho-Corasick algorithm allows us to quickly search for multiple patterns in a text.
+The set of pattern strings is also called a _dictionary_.
+We will denote the total length of its constituent strings by $m$ and the size of the alphabet by $k$.
+The algorithm constructs a finite state automaton based on a trie in $O(m k)$ time and then uses it to process the text.
 
-Thuật toán được đề xuất bởi Alfred Aho và Margaret Corasick vào năm 1975.
+The algorithm was proposed by Alfred Aho and Margaret Corasick in 1975.
 
-## Xây dựng của trie
+## Construction of the trie
 
 <center>
 <img src="https://upload.wikimedia.org/wikipedia/commons/e/e2/Trie.svg" width="400px">
 <br>
-<i>Một trie dựa trên các từ "Java", "Rad", "Rand", "Rau", "Raum" và "Rose".</i>
+<i>A trie based on words "Java", "Rad", "Rand", "Rau", "Raum" and "Rose".</i>
 <br>
-<i>Hình ảnh bởi [nd](https://de.wikipedia.org/wiki/Benutzer:Nd) được phân phối dưới giấy phép <a href="https://creativecommons.org/licenses/by-sa/3.0/deed.en">CC BY-SA 3.0</a>.</i>
+<i>The <a href="https://commons.wikimedia.org/wiki/File:Trie.svg">image</a> by [nd](https://de.wikipedia.org/wiki/Benutzer:Nd) is distributed under <a href="https://creativecommons.org/licenses/by-sa/3.0/deed.en">CC BY-SA 3.0</a> license.</i>
 </center>
 
-Theo cách chính thức, một trie là một cây có gốc, trong đó mỗi cạnh của cây được gắn nhãn bằng một chữ cái nào đó và các cạnh đi ra từ một đỉnh có nhãn khác nhau.
+Formally, a trie is a rooted tree, where each edge of the tree is labeled with some letter
+and outgoing edges of a vertex have distinct labels.
 
-Chúng ta sẽ xác định mỗi đỉnh trong trie với chuỗi được tạo thành từ các nhãn trên đường đi từ gốc đến đỉnh đó.
+We will identify each vertex in the trie with the string formed by the labels on the path from the root to that vertex.
 
-Mỗi đỉnh cũng sẽ có một cờ $\text{output}$ sẽ được thiết lập nếu đỉnh đó tương ứng với một mẫu trong từ điển.
+Each vertex will also have a flag $\text{output}$ which will be set
+if the vertex corresponds to a pattern in the dictionary.
 
-Tương ứng, một trie cho một tập hợp các chuỗi là một trie sao cho mỗi đỉnh $\text{output}$ tương ứng với một chuỗi từ tập hợp đó, và ngược lại, mỗi chuỗi của tập hợp tương ứng với một đỉnh $\text{output}$.
+Accordingly, a trie for a set of strings is a trie such that each $\text{output}$ vertex corresponds to one string from the set, and conversely, each string of the set corresponds to one $\text{output}$ vertex.
 
-Bây giờ chúng ta sẽ mô tả cách xây dựng một trie cho một tập hợp đã cho các chuỗi trong thời gian tuyến tính so với tổng độ dài của chúng.
+We now describe how to construct a trie for a given set of strings in linear time with respect to their total length.
 
-Chúng ta giới thiệu một cấu trúc cho các đỉnh của cây:
-```cpp
+We introduce a structure for the vertices of the tree:
+```{.cpp file=aho_corasick_trie_definition}
 const int K = 26;
 
 struct Vertex {
@@ -45,11 +50,18 @@ struct Vertex {
 
 vector<Vertex> trie(1);
 ```
-Dưới đây, chúng ta lưu trie dưới dạng một mảng của $\text{Vertex}$. Mỗi $\text{Vertex}$ chứa cờ $\text{output}$ và các cạnh dưới dạng một mảng $\text{next}[]$, trong đó $\text{next}[i]$ là chỉ số của đỉnh mà chúng ta đến bằng cách đi theo ký tự $i$, hoặc $-1$ nếu không có cạnh tương ứng. Ban đầu, trie chỉ bao gồm một đỉnh duy nhất - gốc - có chỉ số $0$.
 
-Bây giờ chúng ta triển khai một hàm để thêm một chuỗi $s$ vào trie. Triển khai là đơn giản: chúng ta bắt đầu tại nút gốc, và trong khi có cạnh tương ứng với các ký tự của $s$ chúng ta đi theo chúng. Nếu không có cạnh cho một ký tự, chúng ta tạo một đỉnh mới và kết nối nó với một cạnh. Cuối cùng của quá trình, chúng ta đánh dấu đỉnh cuối cùng với cờ $\text{output}$.
+Here, we store the trie as an array of $\text{Vertex}$.
+Each $\text{Vertex}$ contains the flag $\text{output}$ and the edges in the form of an array $\text{next}[]$, where $\text{next}[i]$ is the index of the vertex that we reach by following the character $i$, or $-1$ if there is no such edge.
+Initially, the trie consists of only one vertex - the root - with the index $0$.
 
-```cpp
+Now we implement a function that will add a string $s$ to the trie.
+The implementation is simple:
+we start at the root node, and as long as there are edges corresponding to the characters of $s$ we follow them.
+If there is no edge for one character, we generate a new vertex and connect it with an edge.
+At the end of the process we mark the last vertex with the flag $\text{output}$.
+
+```{.cpp file=aho_corasick_trie_add}
 void add_string(string const& s) {
     int v = 0;
     for (char ch : s) {
@@ -63,42 +75,65 @@ void add_string(string const& s) {
     trie[v].output = true;
 }
 ```
-Triển khai này rõ ràng chạy trong thời gian tuyến tính, và vì mỗi đỉnh lưu trữ $k$ liên kết, nó sẽ sử dụng bộ nhớ $O(m k)$.
 
-Có thể giảm tiêu thụ bộ nhớ xuống $O(m)$ bằng cách sử dụng một bản đồ thay vì một mảng trong mỗi đỉnh. Tuy nhiên, điều này sẽ làm tăng độ phức tạp thời gian lên $O(m \log k)$.
+This implementation obviously runs in linear time,
+and since every vertex stores $k$ links, it will use $O(m k)$ memory.
 
-## Xây dựng một tự động hóa
+It is possible to decrease the memory consumption to $O(m)$ by using a map instead of an array in each vertex.
+However, this will increase the time complexity to $O(m \log k)$.
 
-Giả sử chúng ta đã xây dựng một trie cho tập hợp chuỗi đã cho. Bây giờ hãy xem xét nó từ một góc độ khác. Nếu chúng ta nhìn vào bất kỳ đỉnh nào, chuỗi tương ứng với nó là một tiền tố của một hoặc nhiều chuỗi trong tập hợp, do đó mỗi đỉnh của trie có thể được hiểu là một vị trí trong một hoặc nhiều chuỗi từ tập hợp.
+## Construction of an automaton
 
-Trong thực tế, các đỉnh của trie có thể được hiểu là các trạng thái trong một tự động hóa hữu hạn xác định. Từ bất kỳ trạng thái nào, chúng ta có thể chuyển tiếp - sử dụng một chữ cái đầu vào - đến các trạng thái khác, tức là đến một vị trí khác trong tập hợp các chuỗi. Ví dụ, nếu chỉ có một chuỗi $abc$ trong từ điển, và chúng ta đang đứng tại đỉnh $ab$, thì sử dụng chữ cái $c$ chúng ta có thể đi đến đỉnh $abc$.
+Suppose we have built a trie for the given set of strings.
+Now let's look at it from a different side.
+If we look at any vertex,
+the string that corresponds to it is a prefix of one or more strings in the set, thus each vertex of the trie can be interpreted as a position in one or more strings from the set.
 
-Do đó, chúng ta có thể hiểu các cạnh của trie như các chuyển tiếp trong một tự động hóa theo chữ cái tương ứng. Tuy nhiên, trong một tự động hóa, chúng ta cần có các chuyển tiếp cho mọi kết hợp của một trạng thái và một chữ cái. Nếu chúng ta cố gắng thực hiện một chuyển tiếp bằng cách sử dụng một chữ cái, và không có cạnh tương ứng trong trie, thì ta vẫn phải đi vào một trạng thái nào đó.
+In fact, the trie vertices can be interpreted as states in a **finite deterministic automaton**.
+From any state we can transition - using some input letter - to other states, i.e., to another position in the set of strings.
+For example, if there is only one string $abc$ in the dictionary, and we are standing at vertex $ab$, then using the letter $c$ we can go to the vertex $abc$.
 
-Cụ thể hơn, giả sử chúng ta đang ở một trạng thái tương ứng với một chuỗi $t$, và chúng ta muốn chuyển tiếp đến một trạng thái khác bằng cách sử dụng ký tự $c$. Nếu có một cạnh được gán nhãn bằng ký tự này $c$, thì chúng ta có thể đi qua cạnh này một cách đơn giản và nhận được đỉnh tương ứng với $t + c$. Nếu không có cạnh như vậy, vì chúng ta muốn duy trì điều kiện rằng trạng thái hiện tại là kết quả phụ dài nhất trong chuỗi đã được xử lý, chúng ta phải tìm chuỗi dài nhất trong trie mà là tiền tố hợp lệ của chuỗi $t$, và cố gắng thực hiện một chuyển tiếp từ đó.
+Thus we can understand the edges of the trie as transitions in an automaton according to the corresponding letter.
+However, in an automaton we need to have transitions for each combination of a state and a letter.
+If we try to perform a transition using a letter, and there is no corresponding edge in the trie, then we nevertheless must go into some state.
 
-Ví dụ, hãy giả sử trie được xây dựng bởi các chuỗi $ab$ và $bc$, và chúng ta hiện đang ở đỉnh tương ứng với $ab$, cũng là một đỉnh $\text{output}$. Để chuyển tiếp với chữ cái $c$, chúng ta buộc phải đi đến trạng thái tương ứng với chuỗi $b$, và từ đó tiếp tục theo cạnh với chữ cái $c$.
+More precisely, suppose we are in a state corresponding to a string $t$, and we want to transition to a different state using the character $c$.
+If there is an edge labeled with this letter $c$, then we can simply go over this edge, and get the vertex corresponding to $t + c$.
+If there is no such edge, since we want to maintain the invariant that the current state is the longest partial match in the processed string, we must find the longest string in the trie that's a proper suffix of the string $t$, and try to perform a transition from there.
+
+For example, let the trie be constructed by the strings $ab$ and $bc$, and we are currently at the vertex corresponding to $ab$, which is also an $\text{output}$ vertex.
+To transition with the letter $c$, we are forced to go to the state corresponding to the string $b$, and from there follow the edge with the letter $c$.
 
 <center>
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/90/A_diagram_of_the_Aho-Corasick_string_search_algorithm.svg" width="300px">
 <br>
-<i>Một tự động hóa Aho-Corasick dựa trên các từ "a", "ab", "bc", "bca", "c" và "caa".</i>
+<i>An Aho-Corasick automaton based on words "a", "ab", "bc", "bca", "c" and "caa".</i>
 <br>
-<i>Các mũi tên màu xanh lá cây là các liên kết tiền tố, các mũi tên màu xanh lá cây là các liên kết terminal.</i>
+<i>Blue arrows are suffix links, green arrows are terminal links.</i>
 </center>
-Một liên kết tiền tố cho một đỉnh $p$ là một cạnh trỏ vào tiền tố hợp lệ dài nhất của chuỗi tương ứng với đỉnh $p$. Trường hợp đặc biệt duy nhất là gốc của trie, mà liên kết tiền tố sẽ trỏ vào chính nó. Bây giờ chúng ta có thể phát biểu lại về các chuyển tiếp trong tự động hóa như sau: trong khi không có chuyển tiếp từ đỉnh hiện tại của trie bằng cách sử dụng chữ cái hiện tại (hoặc cho đến khi chúng ta đạt được gốc), chúng ta đi theo liên kết tiền tố.
 
-Do đó, chúng ta đã giảm bài toán xây dựng một tự động hóa thành bài toán tìm liên kết tiền tố cho tất cả các đỉnh của trie. Tuy nhiên, chúng ta sẽ xây dựng các liên kết tiền tố này, kỳ lạ thay, bằng cách sử dụng các chuyển tiếp được xây dựng trong tự động hóa.
+A **suffix link** for a vertex $p$ is an edge that points to the longest proper suffix of the string corresponding to the vertex $p$.
+The only special case is the root of the trie, whose suffix link will point to itself.
+Now we can reformulate the statement about the transitions in the automaton like this:
+while there is no transition from the current vertex of the trie using the current letter (or until we reach the root), we follow the suffix link.
 
-Các liên kết tiền tố của đỉnh gốc và tất cả các con trực tiếp của nó trỏ vào đỉnh gốc. Đối với bất kỳ đỉnh $v$ nào sâu hơn trong cây, chúng ta có thể tính toán liên kết tiền tố như sau: nếu $p$ là tổ tiên của $v$ với $c$ là ký tự gán nhãn cho cạnh từ $p$ đến $v$, đi đến $p$, sau đó theo liên kết tiền tố của nó, và thực hiện chuyển tiếp với chữ cái $c$ từ đó.
+Thus we reduced the problem of constructing an automaton to the problem of finding suffix links for all vertices of the trie.
+However, we will build these suffix links, oddly enough, using the transitions constructed in the automaton.
 
-Do đó, bài toán về việc tìm các chuyển tiếp đã được giảm xuống thành bài toán về việc tìm các liên kết tiền tố, và bài toán về việc tìm các liên kết tiền tố đã được giảm xuống thành bài toán về việc tìm một liên kết tiền tố và một chuyển tiếp, ngoại trừ các đỉnh gần gốc. Vì vậy, chúng ta có một phụ thuộc đệ quy mà chúng ta có thể giải quyết trong thời gian tuyến tính.
+The suffix links of the root vertex and all its immediate children point to the root vertex.
+For any vertex $v$ deeper in the tree, we can calculate the suffix link as follows:
+if $p$ is the ancestor of $v$ with $c$ being the letter labeling the edge from $p$ to $v$,
+go to $p$,
+then follow its suffix link, and perform the transition with the letter $c$ from there.
 
-Hãy chuyển sang việc triển khai.
-Chú ý rằng bây giờ chúng ta sẽ lưu tổ tiên $p$ và ký tự $pch$ của cạnh từ $p$ đến $v$ cho mỗi đỉnh $v$.
-Ngoài ra, tại mỗi đỉnh chúng ta sẽ lưu liên kết tiền tố $\text{link}$ (hoặc $-1$ nếu chưa được tính toán), và trong mảng $\text{go}[k]$ các chuyển tiếp trong máy cho mỗi ký tự (lại là $-1$ nếu chưa được tính toán).
+Thus, the problem of finding the transitions has been reduced to the problem of finding suffix links, and the problem of finding suffix links has been reduced to the problem of finding a suffix link and a transition, except for vertices closer to the root.
+So we have a recursive dependence that we can resolve in linear time.
 
-```cpp
+Let's move to the implementation.
+Note that we now will store the ancestor $p$ and the character $pch$ of the edge from $p$ to $v$ for each vertex $v$.
+Also, at each vertex we will store the suffix link $\text{link}$ (or $-1$ if it hasn't been calculated yet), and in the array $\text{go}[k]$ the transitions in the machine for each symbol (again $-1$ if it hasn't been calculated yet).
+
+```{.cpp file=aho_corasick_automaton}
 const int K = 26;
 
 struct Vertex {
@@ -154,82 +189,85 @@ int go(int v, char ch) {
 } 
 ```
 
-Dễ dàng nhận thấy rằng nhờ vào việc ghi nhớ liên kết tiền tố và các chuyển tiếp,
-tổng thời gian để tìm tất cả các liên kết tiền tố và các chuyển tiếp sẽ là tuyến tính.
+It is easy to see that thanks to memoization of the suffix links and transitions,
+the total time for finding all suffix links and transitions will be linear.
 
-Để minh họa về khái niệm này, xem trang 103 của [Stanford slides](http://web.stanford.edu/class/archive/cs/cs166/cs166.1166/lectures/02/Slides02.pdf).
+For an illustration of the concept refer to slide number 103 of the [Stanford slides](http://web.stanford.edu/class/archive/cs/cs166/cs166.1166/lectures/02/Slides02.pdf).
 
-### Xây dựng dựa trên BFS
+### BFS-based construction
 
-Thay vì tính toán các chuyển tiếp và liên kết tiền tố bằng các cuộc gọi đệ quy tới `go` và `get_link`, có thể tính chúng dưới cùng từ gốc.
-(Trong thực tế, khi từ điển chỉ gồm một chuỗi, chúng ta thu được thuật toán Knuth-Morris-Pratt quen thuộc.)
+Instead of computing transitions and suffix links with recursive calls to `go` and `get_link`, it is possible to compute them bottom-up starting from the root.
+(In fact, when the dictionary consists of only one string, we obtain the familiar Knuth-Morris-Pratt algorithm.)
 
-Phương pháp này sẽ có một số ưu điểm so với phương pháp đã mô tả ở trên vì thay vì tổng độ dài $m$, thời gian chạy của nó chỉ phụ thuộc vào số lượng đỉnh $n$ trong trie. Hơn nữa, có thể điều chỉnh nó cho các bảng chữ cái lớn bằng cách sử dụng một cấu trúc dữ liệu mảng không thay đổi, từ đó làm thời gian xây dựng trở thành $O(n \log k)$ thay vì $O(mk)$, điều đó là một cải tiến đáng kể giả định rằng $m$ có thể lên đến $n^2$.
+This approach will have some advantages over the one described above as, instead of the total length $m$, its running time depends only on the number of vertices $n$ in the trie. Moreover, it is possible to adapt it for large alphabets using a persistent array data structure, thus making the construction time $O(n \log k)$ instead of $O(mk)$, which is a significant improvement granted that $m$ may go up to $n^2$.
 
-Chúng ta có thể lập luận theo phương pháp quy nạp sử dụng sự thật rằng BFS từ gốc đi qua các đỉnh theo thứ tự tăng dần chiều dài.
-Chúng ta có thể giả định rằng khi chúng ta đang ở một đỉnh $v$, liên kết tiền tố của nó $u = link[v]$ đã được tính toán thành công, và cho tất cả các đỉnh có độ dài ngắn hơn, các chuyển tiếp từ chúng cũng đã được tính toán hoàn toàn.
+We can reason inductively using the fact that BFS from the root traverses vertices in order of increasing length.
+We may assume that when we're in a vertex $v$, its suffix link $u = link[v]$ is already successfully computed, and for all vertices with shorter length transitions from them are also fully computed.
 
-Giả sử vào thời điểm này chúng ta đang đứng ở một đỉnh $v$ và xem xét một ký tự $c$. Thực ra chúng ta có hai trường hợp:
+Assume that at the moment we stand in a vertex $v$ and consider a character $c$. We essentially have two cases:
 
-1. $go[v][c] = -1$. Trong trường hợp này, chúng ta có thể gán $go[v][c] = go[u][c]$, điều này đã được biết từ giả thuyết quy nạp;
-2. $go[v][c] = w \neq -1$. Trong trường hợp này, chúng ta có thể gán $link[w] = go[u][c]$.
+1. $go[v][c] = -1$. In this case, we may assign $go[v][c] = go[u][c]$, which is already known by the induction hypothesis;
+2. $go[v][c] = w \neq -1$. In this case, we may assign $link[w] = go[u][c]$.
 
-Theo cách này, chúng ta tiêu tốn $O(1)$ thời gian cho mỗi cặp một đỉnh và một ký tự, làm cho thời gian chạy trở thành $O(mk)$. Chi phí chính ở đây là chúng ta sao chép nhiều chuyển tiếp từ $u$ trong trường hợp thứ nhất, trong khi các chuyển tiếp của trường hợp thứ hai tạo thành trie và tổng cộng là $m$ trên tất cả các đỉnh. Để tránh việc sao chép $go[u][c]$, chúng ta có thể sử dụng một cấu trúc dữ liệu mảng không thay đổi, trong đó ban đầu chúng ta sao chép $go[u]$ vào $go[v]$ và sau đó chỉ cập nhật các giá trị cho các ký tự mà chuyển tiếp sẽ khác nhau. Điều này dẫn đến thuật toán $O(m \log k)$.
+In this way, we spend $O(1)$ time per each pair of a vertex and a character, making the running time $O(mk)$. The major overhead here is that we copy a lot of transitions from $u$ in the first case, while the transitions of the second case form the trie and sum up to $m$ over all vertices. To avoid the copying of $go[u][c]$, we may use a persistent array data structure, using which we initially copy $go[u]$ into $go[v]$ and then only update values for characters in which the transition would differ. This leads to the $O(m \log k)$ algorithm.
 
-## Ứng dụng
+## Applications
 
-### Tìm tất cả chuỗi từ một tập hợp đã cho trong một văn bản
+### Find all strings from a given set in a text
 
-Chúng ta được cho một tập hợp các chuỗi và một văn bản.
-Chúng ta phải in tất cả các xuất hiện của tất cả các chuỗi từ tập hợp trong văn bản đã cho trong $O(\text{len} + \text{ans})$, nơi $\text{len}$ là độ dài của văn bản và $\text{ans}$ là kích thước của câu trả lời.
+We are given a set of strings and a text.
+We have to print all occurrences of all strings from the set in the given text in $O(\text{len} + \text{ans})$, where $\text{len}$ is the length of the text and $\text{ans}$ is the size of the answer.
 
-Chúng ta xây dựng một tự động hóa cho tập hợp các chuỗi này.
-Chúng ta sẽ xử lý văn bản từng chữ cái bằng cách sử dụng tự động hóa, bắt đầu từ gốc của trie.
-Nếu vào bất kỳ thời điểm nào chúng ta đang ở trạng thái $v$, và chữ cái tiếp theo là $c$, thì chúng ta chuyển tiếp đến trạng thái tiếp theo với $\text{go}(v, c)$, do đó, tăng độ dài của chuỗi khớp hiện tại lên $1$, hoặc giảm nó bằng cách theo liên kết tiền tố.
+We construct an automaton for this set of strings.
+We will now process the text letter by letter using the automaton,
+starting at the root of the trie.
+If we are at any time at state $v$, and the next letter is $c$, then we transition to the next state with $\text{go}(v, c)$, thereby either increasing the length of the current match substring by $1$, or decreasing it by following a suffix link.
 
-Làm thế nào để tìm ra cho một trạng thái $v$, nếu có bất kỳ sự khớp nào với các chuỗi từ tập hợp?
-Trước hết, rõ ràng rằng nếu chúng ta đứng trên một đỉnh $\text{output}$, thì chuỗi tương ứng với đỉnh kết thúc tại vị trí này trong văn bản.
-Tuy nhiên, điều này chưa chắc đã là trường hợp duy nhất có thể xảy ra của việc khớp:
-nếu chúng ta có thể đạt được một hoặc nhiều đỉnh $\text{output}$ bằng cách di chuyển dọc theo các liên kết tiền tố, thì sẽ cũng có một sự khớp tương ứng với mỗi đỉnh $\text{output}$ được tìm thấy.
-Một ví dụ đơn giản minh họa tình huống này có thể tạo bằng cách sử dụng tập hợp các chuỗi $\{dabce, abc, bc\}$ và văn bản $dabc$.
+How can we find out for a state $v$, if there are any matches with strings for the set?
+First, it is clear that if we stand on a $\text{output}$ vertex, then the string corresponding to the vertex ends at this position in the text.
+However this is by no means the only possible case of achieving a match:
+if we can reach one or more  $\text{output}$ vertices by moving along the suffix links, then there will be also a match corresponding to each found $\text{output}$ vertex.
+A simple example demonstrating this situation can be creating using the set of strings $\{dabce, abc, bc\}$ and the text $dabc$.
 
-Do đó nếu chúng ta lưu trữ trong mỗi đỉnh $\text{output}$ chỉ số của chuỗi tương ứng với nó (hoặc danh sách các chỉ số nếu các chuỗi trùng lặp xuất hiện trong tập hợp), thì chúng ta có thể tìm thấy trong thời gian $O(n)$ các chỉ số của tất cả các chuỗi khớp với trạng thái hiện tại, chỉ bằng cách đi dọc theo các liên kết tiền tố từ đỉnh hiện tại đến gốc.
-Đây không phải là giải pháp hiệu quả nhất, vì điều này dẫn đến tổng phức tạp $O(n ~ \text{len})$ toàn bộ. Tuy nhiên, điều này có thể được tối ưu hóa bằng cách tính toán và lưu trữ đỉnh $\text{output}$ gần nhất có thể tiếp cận được bằng các liên kết tiền tố (đôi khi được gọi là **liên kết thoát**). Giá trị này chúng ta có thể tính toán một cách lười biếng trong thời gian tuyến tính.
-Do đó, đối với mỗi đỉnh chúng ta có thể tiến lên trong $O(1)$ thời gian đến đỉnh đánh dấu tiếp theo trong đường liên kết tiền tố, tức là đến khớp tiếp theo.
-Do đó, đối với mỗi sự khớp chúng ta tiêu tốn $O(1)$ thời gian, và do đó chúng ta đạt được độ phức tạp $O(\text{len} + \text{ans})$.
+Thus if we store in each $\text{output}$ vertex the index of the string corresponding to it (or the list of indices if duplicate strings appear in the set), then we can find in $O(n)$ time the indices of all strings which match the current state, by simply following the suffix links from the current vertex to the root.
+This is not the most efficient solution, since this results in $O(n ~ \text{len})$ complexity overall.
+However, this can be optimized by computing and storing the nearest $\text{output}$ vertex that is reachable using suffix links (this is sometimes called the **exit link**).
+This value we can compute lazily in linear time.
+Thus for each vertex we can advance in $O(1)$ time to the next marked vertex in the suffix link path, i.e. to the next match.
+Thus for each match we spend $O(1)$ time, and therefore we reach the complexity $O(\text{len} + \text{ans})$.
 
-Nếu bạn chỉ muốn đếm số lần xuất hiện và không tìm các chỉ số chính xác, bạn có thể tính toán số đỉnh được đánh dấu trong đường liên kết tiền tố cho mỗi đỉnh $v$.
-Điều này có thể được tính toán trong thời gian tổng cộng $O(n)$.
-Do đó, chúng ta có thể tổng hợp tất cả các sự khớp trong $O(\text{len})$.
+If you only want to count the occurrences and not find the indices themselves, you can calculate the number of marked vertices in the suffix link path for each vertex $v$.
+This can be calculated in $O(n)$ time in total.
+Thus we can sum up all matches in $O(\text{len})$.
 
-### Tìm chuỗi nhỏ nhất theo thứ tự từ điển có độ dài đã cho mà không khớp với bất kỳ chuỗi nào đã cho
+### Finding the lexicographically smallest string of a given length that doesn't match any given strings
 
-Một tập hợp các chuỗi và một độ dài $L$ được cung cấp.
-Chúng ta phải tìm một chuỗi có độ dài $L$, không chứa bất kỳ chuỗi nào từ tập hợp, và tìm ra chuỗi nhỏ nhất theo thứ tự từ điển.
+A set of strings and a length $L$ is given.
+We have to find a string of length $L$, which does not contain any of the strings, and derive the lexicographically smallest of such strings.
 
-Chúng ta có thể xây dựng tự động hóa cho tập hợp các chuỗi.
-Nhớ rằng các đỉnh $\text{output}$ là các trạng thái mà chúng ta có một sự khớp với một chuỗi từ tập hợp.
-Vì trong bài tập này chúng ta phải tránh các sự khớp, nên chúng ta không được phép vào các trạng thái như vậy.
-Mặt khác, chúng ta có thể vào tất cả các đỉnh khác.
-Do đó chúng ta xóa tất cả các đỉnh "xấu" khỏi máy, và trong đồ thị còn lại của tự động hóa chúng ta tìm đường đi nhỏ nhất theo thứ tự từ điển có độ dài $L$.
-Nhiệm vụ này có thể được giải quyết trong $O(L)$ ví dụ bằng [tìm kiếm theo chiều sâu](../graph/depth-first-search.md).
+We can construct the automaton for the set of strings.
+Recall that $\text{output}$ vertices are the states where we have a match with a string from the set.
+Since in this task we have to avoid matches, we are not allowed to enter such states.
+On the other hand we can enter all other vertices.
+Thus we delete all "bad" vertices from the machine, and in the remaining graph of the automaton we find the lexicographically smallest path of length $L$.
+This task can be solved in $O(L)$ for example by [depth first search](../graph/depth-first-search.md).
 
-### Tìm chuỗi ngắn nhất chứa tất cả các chuỗi đã cho
+### Finding the shortest string containing all given strings
 
-Ở đây chúng ta sử dụng những ý tưởng tương tự.
-Đối với mỗi đỉnh chúng ta lưu trữ một mask mà chỉ ra các chuỗi khớp tại trạng thái này.
-Sau đó, vấn đề có thể được biểu diễn lại như sau:
-ban đầu ở trạng thái $(v = \text{root},~ \text{mask} = 0)$, chúng ta muốn đạt được trạng thái $(v,~ \text{mask} = 2^n - 1)$, trong đó $n$ là số chuỗi trong tập hợp.
-Khi chúng ta chuyển từ một trạng thái này sang một trạng thái khác bằng một ký tự, chúng ta cập nhật mask tương ứng.
-Bằng cách chạy một [tìm kiếm theo chiều rộng](../graph/breadth-first-search.md) chúng ta có thể tìm một đường đi đến trạng thái $(v,~ \text{mask} = 2^n - 1)$ có độ dài nhỏ nhất.
+Here we use the same ideas.
+For each vertex we store a mask that denotes the strings which match at this state.
+Then the problem can be reformulated as follows:
+initially being in the state $(v = \text{root},~ \text{mask} = 0)$, we want to reach the state $(v,~ \text{mask} = 2^n - 1)$, where $n$ is the number of strings in the set.
+When we transition from one state to another using a letter, we update the mask accordingly.
+By running a [breadth first search](../graph/breadth-first-search.md) we can find a path to the state $(v,~ \text{mask} = 2^n - 1)$ with the smallest length.
 
-### Tìm chuỗi nhỏ nhất theo thứ tự từ điển có độ dài $L$ chứa $k$ chuỗi {data-toc-label="Tìm chuỗi nhỏ nhất theo thứ tự từ điển có độ dài L chứa k chuỗi"}
+### Finding the lexicographically smallest string of length $L$ containing $k$ strings {data-toc-label="Finding the lexicographically smallest string of length L containing k strings"}
 
-Như trong vấn đề trước, chúng ta tính cho mỗi đỉnh số lượng sự khớp tương ứng với nó (đó là số đỉnh được đánh dấu có thể tiếp cận được bằng các liên kết tiền tố).
-Chúng ta biểu diễn lại vấn đề: trạng thái hiện tại được xác định bởi một bộ ba số $(v,~ \text{len},~ \text{cnt})$, và chúng ta muốn đạt được từ trạng thái $(\text{root},~ 0,~ 0)$ đến trạng thái $(v,~ L,~ k)$, trong đó $v$ có thể là bất kỳ đỉnh nào.
-Do đó, chúng ta có thể tìm được một đường đi như vậy bằng cách sử dụng tìm kiếm theo chiều sâu (và nếu tìm kiếm xem xét các cạnh theo thứ tự tự nhiên của chúng, thì đường đi được tìm thấy sẽ tự động là chuỗi nhỏ nhất theo thứ tự từ điển).
+As in the previous problem, we calculate for each vertex the number of matches that correspond to it (that is the number of marked vertices reachable using suffix links).
+We reformulate the problem: the current state is determined by a triple of numbers $(v,~ \text{len},~ \text{cnt})$, and we want to reach from the state $(\text{root},~ 0,~ 0)$ the state $(v,~ L,~ k)$, where $v$ can be any vertex.
+Thus we can find such a path  using depth first search (and if the search looks at the edges in their natural order, then the found path will automatically be the lexicographically smallest).
 
-## Bài toán
+## Problems
 
 - [UVA #11590 - Prefix Lookup](https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=2637)
 - [UVA #11171 - SMS](https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=2112)
@@ -238,5 +276,5 @@ Do đó, chúng ta có thể tìm được một đường đi như vậy bằng
 - [Codeforces - Frequency of String](http://codeforces.com/problemset/problem/963/D)
 - [CodeChef - TWOSTRS](https://www.codechef.com/MAY20A/problems/TWOSTRS)
 
-## Tham khảo
+## References
 - [Stanford's CS166 - Aho-Corasick Automata](http://web.stanford.edu/class/archive/cs/cs166/cs166.1166/lectures/02/Slides02.pdf) ([Condensed](http://web.stanford.edu/class/archive/cs/cs166/cs166.1166/lectures/02/Small02.pdf))

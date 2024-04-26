@@ -1,28 +1,28 @@
 ---
 tags:
-  - translated
+  - Original
 ---
 # Bit manipulation
 
-## Số nhị phân
+## Binary number
 
-Một **số nhị phân** là một số được biểu diễn trong hệ thống đếm nhị phân hoặc hệ thống số nhị phân, đây là một phương pháp biểu diễn toán học chỉ sử dụng hai ký hiệu: thường là "0" (zero) và "1" (one).
+A **binary number** is a number expressed in the base-2 numeral system or binary numeral system, it is a method of mathematical expression which uses only two symbols: typically "0" (zero) and "1" (one).
 
-Chúng ta nói rằng một bit cụ thể được **đặt**, nếu nó là một, và **xóa** nếu nó là không.
+We say that a certain bit is **set**, if it is one, and **cleared** if it is zero.
 
-Số nhị phân $(a_k a_{k-1} \dots a_1 a_0)_2$ biểu diễn số:
+The binary number $(a_k a_{k-1} \dots a_1 a_0)_2$ represents the number:
 
 $$(a_k a_{k-1} \dots a_1 a_0)_2 = a_k \cdot 2^k + a_{k-1} \cdot 2^{k-1} + \dots + a_1 \cdot 2^1 + a_0 \cdot 2^0.$$
 
-Ví dụ, số nhị phân $1101_2$ biểu diễn số $13$:
+For instance the binary number $1101_2$ represents the number $13$:
 
 $$\begin{align}
 1101_2 &= 1 \cdot 2^3 + 1 \cdot 2^2 + 0 \cdot 2^1 + 1 \cdot 2^0 \\
        &= 1\cdot 8 + 1 \cdot 4 + 0 \cdot 2 + 1 \cdot 1 = 13
 \end{align}$$
 
-Máy tính biểu diễn số nguyên dưới dạng số nhị phân.
-Số nguyên dương (cả có dấu và không dấu) chỉ đơn giản là được biểu diễn bằng các chữ số nhị phân của chúng, và các số âm (có thể là dương và âm) thường được biểu diễn bằng [Bù hai](https://vi.wikipedia.org/wiki/B%C3%B9_hai).
+Computers represent integers as binary numbers.
+Positive integers (both signed and unsigned) are just represented with their binary digits, and negative signed numbers (which can be positive and negative) are usually represented with the [Two's complement](https://en.wikipedia.org/wiki/Two%27s_complement).
 
 ```cpp
 unsigned int unsigned_number = 13;
@@ -35,28 +35,28 @@ int negative_signed_number = -13;
 assert(negative_signed_number == 0b1111'1111'1111'1111'1111'1111'1111'0011);
 ```
 
-CPU rất nhanh chóng thao tác các bit đó với các hoạt động cụ thể.
-Đối với một số vấn đề, chúng ta có thể sử dụng biểu diễn số nhị phân này để tận dụng, và tăng tốc thời gian thực thi.
-Và đối với một số vấn đề (thường là trong tổ hợp hoặc lập trình động) nơi chúng ta muốn theo dõi các đối tượng đã chọn từ một tập hợp đã cho, chúng ta chỉ cần sử dụng một số nguyên đủ lớn trong đó mỗi chữ số đại diện cho một đối tượng và tùy thuộc vào việc chúng ta chọn hoặc bỏ đối tượng chúng ta đặt hoặc xóa chữ số đó.
+CPUs are very fast manipulating those bits with specific operations.
+For some problems we can take these binary number representations to our advantage, and speed up the execution time.
+And for some problems (typically in combinatorics or dynamic programming) where we want to track which objects we already picked from a given set of objects, we can just use an large enough integer where each digit represents an object and depending on if we pick or drop the object we set or clear the digit.
 
-## Toán tử bit
+## Bit operators
 
-Tất cả các toán tử được giới thiệu ở đây đều là ngay lập tức (cùng tốc độ với một phép cộng) trên một CPU cho các số nguyên có độ dài cố định.
+All those introduced operators are instant (same speed as an addition) on a CPU for fixed-length integers.
 
-### Toán tử bit
+### Bitwise operators
 
--   $\&$ : Toán tử AND bit so sánh từng bit của toán hạng đầu tiên của nó với bit tương ứng của toán hạng thứ hai của nó.
-    Nếu cả hai bit đều là 1, bit kết quả tương ứng được đặt thành 1. Ngược lại, bit kết quả tương ứng được đặt thành 0.
+-   $\&$ : The bitwise AND operator compares each bit of its first operand with the corresponding bit of its second operand. 
+    If both bits are 1, the corresponding result bit is set to 1. Otherwise, the corresponding result bit is set to 0.
  	
--   $|$ : Toán tử OR bit bao gồm so sánh từng bit của toán hạng đầu tiên của nó với bit tương ứng của toán hạng thứ hai của nó.
-    Nếu một trong hai bit là 1, bit kết quả tương ứng được đặt thành 1. Ngược lại, bit kết quả tương ứng được đặt thành 0.
+-   $|$ : The bitwise inclusive OR operator compares each bit of its first operand with the corresponding bit of its second operand.
+    If one of the two bits is 1, the corresponding result bit is set to 1. Otherwise, the corresponding result bit is set to 0.
 
--   $\wedge$ : Toán tử XOR bit so sánh từng bit của toán hạng đầu tiên của nó với bit tương ứng của toán hạng thứ hai của nó.
-    Nếu một bit là 0 và bit khác là 1, bit kết quả tương ứng được đặt thành 1. Ngược lại, bit kết quả tương ứng được đặt thành 0.
+-   $\wedge$ : The bitwise exclusive OR (XOR) operator compares each bit of its first operand with the corresponding bit of its second operand.
+    If one bit is 0 and the other bit is 1, the corresponding result bit is set to 1. Otherwise, the corresponding result bit is set to 0.
 
--   $\sim$ : Toán tử NOT bit đảo ngược mỗi bit của một số, nếu một bit được đặt thì toán tử sẽ xóa nó, nếu nó bị xóa thì toán tử sẽ đặt nó.
+-   $\sim$ : The bitwise complement (NOT) operator flips each bit of a number, if a bit is set the operator will clear it, if it is cleared the operator sets it.
 
-Ví dụ:
+Examples:
 
 ```
 n         = 01011000
@@ -85,39 +85,38 @@ n         = 01011000
 ~n        = 10100111
 ```
 
-### Toán tử dịch
+### Shift operators
 
-Có hai toán tử để dịch các bit.
+There are two operators for shifting bits.
 
--   $\gg$ Dịch một số sang phải bằng cách loại bỏ các chữ số nhị phân cuối cùng của số.
-    M
+-   $\gg$ Shifts a number to the right by removing the last few binary digits of the number.
+    Each shift by one represents an integer division by 2, so a right shift by $k$ represents an integer division by $2^k$.
 
-ỗi lần dịch qua một đơn vị tương ứng với một phép chia nguyên cho 2, vì vậy một phép dịch sang phải bởi $k$ đơn vị đại diện cho một phép chia nguyên cho $2^k$.
+    E.g. $5 \gg 2 = 101_2 \gg 2 = 1_2 = 1$ which is the same as $\frac{5}{2^2} = \frac{5}{4} = 1$.
+    For a computer though shifting some bits is a lot faster than doing divisions.
 
-    Ví dụ: $5 \gg 2 = 101_2 \gg 2 = 1_2 = 1$ tương đương với $\frac{5}{2^2} = \frac{5}{4} = 1$.
-    Đối với máy tính, việc dịch một số bit nhanh hơn rất nhiều so với việc thực hiện các phép chia.
+-   $\ll$ Shifts a number to left by appending zero digits.
+    In similar fashion to a right shift by $k$, a left shift by $k$ represents a multiplication by $2^k$.
 
--   $\ll$ Dịch một số sang trái bằng cách thêm các chữ số 0.
-    Tương tự như việc dịch sang phải bởi $k$, một phép dịch sang trái bởi $k$ đại diện cho một phép nhân với $2^k$.
+    E.g. $5 \ll 3 = 101_2 \ll 3 = 101000_2 = 40$ which is the same as $5 \cdot 2^3 = 5 \cdot 8 = 40$.
 
-    Ví dụ: $5 \ll 3 = 101_2 \ll 3 = 101000_2 = 40$ tương đương với $5 \cdot 2^3 = 5 \cdot 8 = 40$.
+    Notice however that for a fixed-length integer that means dropping the most left digits, and if you shift too much you end up with the number $0$.
 
-    Tuy nhiên, lưu ý rằng đối với một số nguyên có độ dài cố định, điều đó có nghĩa là loại bỏ các chữ số ở bên trái nhất, và nếu bạn dịch quá nhiều bạn sẽ kết thúc với số $0$.
 
-## Các thủ thuật hữu ích
+## Useful tricks
 
-### Đặt/chuyển bit/clear bit
+### Set/flip/clear a bit
 
-Sử dụng dịch bit và một số hoạt động bit cơ bản, chúng ta có thể dễ dàng đặt, chuyển hoặc xóa một bit.
-$1 \ll x$ là một số chỉ có bit thứ $x$ được đặt, trong khi $\sim(1 \ll x)$ là một số có tất cả các bit được đặt trừ bit thứ $x$.
+Using bitwise shifts and some basic bitwise operations we can easily set, flip or clear a bit.
+$1 \ll x$ is a number with only the $x$-th bit set, while $\sim(1 \ll x)$ is a number with all bits set except the $x$-th bit.
 
-- $n ~|~ (1 \ll x)$ đặt bit thứ $x$ trong số $n$
-- $n ~\wedge~ (1 \ll x)$ chuyển đổi bit thứ $x$ trong số $n$
-- $n ~\&~ \sim(1 \ll x)$ xóa bit thứ $x$ trong số $n$
+- $n ~|~ (1 \ll x)$ sets the $x$-th bit in the number $n$
+- $n ~\wedge~ (1 \ll x)$ flips the $x$-th bit in the number $n$
+- $n ~\&~ \sim(1 \ll x)$ clears the $x$-th bit in the number $n$
 
-### Kiểm tra một bit có được đặt không
+### Check if a bit is set
 
-Giá trị của bit thứ $x$ có thể được kiểm tra bằng cách dịch số $x$ vị trí sang phải, để bit thứ $x$ nằm ở vị trí đơn vị, sau đó chúng ta có thể trích xuất nó bằng cách thực hiện một phép & bit với 1.
+The value of the $x$-th bit can be checked by shifting the number $x$ positions to the right, so that the $x$-th bit is at the unit place, after which we can extract it by performing a bitwise & with 1.
 
 ``` cpp
 bool is_set(unsigned int number, int x) {
@@ -125,10 +124,10 @@ bool is_set(unsigned int number, int x) {
 }
 ```
 
-### Kiểm tra xem số có chia hết cho một lũy thừa của 2 không
+### Check if the number is divisible by a power of 2
 
-Sử dụng phép AND, chúng ta có thể kiểm tra xem một số $n$ có chẵn không vì $n ~\&~ 1 = 0$ nếu $n$ là số chẵn, và $n ~\&~ 1 = 1$ nếu $n$ là số lẻ.
-Nói chung hơn, $n$ chia hết cho $2^{k}$ chính xác khi $n ~\&~ (2^{k} − 1) = 0$.
+Using the and operation, we can check if a number $n$ is even because $n ~\&~ 1 = 0$ if $n$ is even, and $n ~\&~ 1 = 1$ if $n$ is odd.
+More generally, $n$ is divisible by $2^{k}$ exactly when $n ~\&~ (2^{k} − 1) = 0$.
 
 ``` cpp
 bool isDivisibleByPowerOf2(int n, int k) {
@@ -137,15 +136,15 @@ bool isDivisibleByPowerOf2(int n, int k) {
 }
 ```
 
-Chúng ta có thể tính $2^{k}$ bằng cách dịch trái 1 sang phải $k$ vị trí.
-Thủ thuật này hoạt động vì $2^k - 1$ là một số có chính xác $k$ chữ số 1.
-Và một số chia hết cho $2^k$ phải có các chữ số không trong những vị trí đó.
+We can calculate $2^{k}$ by left shifting 1 by $k$ positions.
+The trick works, because $2^k - 1$ is a number that consists of exactly $k$ ones.
+And a number that is divisible by $2^k$ must have zero digits in those places.
 
-### Kiểm tra xem một số nguyên có phải là một lũy thừa của 2 không
+### Check if an integer is a power of 2
 
-Một lũy thừa của hai là một số chỉ có một bit duy nhất trong đó (ví dụ: $32 = 0010~0000_2$), trong khi số tiền đề của số đó không được đặt và tất cả các chữ số sau nó được đặt ($31 = 0001~1111_2$).
-Vì vậy phép AND bit của một số với số tiền đề của nó luôn luôn là 0, vì họ không có bất kỳ chữ số nào chung được đặt.
-Bạn có thể dễ dàng kiểm tra rằng điều này chỉ xảy ra cho lũy thừa của hai và cho số $0$ có sẵn mà không có chữ số nào được đặt.
+A power of two is a number that has only a single bit in it (e.g. $32 = 0010~0000_2$), while the predecessor of that number has that digit not set and all the digits after it set ($31 = 0001~1111_2$).
+So the bitwise AND of a number with it's predecessor will always be 0, as they don't have any common digits set.
+You can easily check that this only happens for the the power of twos and for the number $0$ which already has no digit set.
 
 ``` cpp
 bool isPowerOfTwo(unsigned int n) {
@@ -153,13 +152,13 @@ bool isPowerOfTwo(unsigned int n) {
 }
 ```
 
-### Xóa bit được đặt ở bên phải nhất
+### Clear the right-most set bit
 
-Biểu thức $n ~\&~ (n-1)$ có thể được sử dụng để tắt bit được đặt ở bên phải nhất của một số $n$.
-Điều này hoạt động bởi vì biểu thức $n-1$ đảo ngược tất cả các bit sau bit được đặt bên phải nhất của $n$, bao gồm cả bit được đặt bên phải nhất.
-Vì vậy, tất cả các chữ số đó đều khác với số gốc, và bằng cách thực hiện một phép AND bit chúng đều được đặt thành 0, đưa ra số gốc $n$ với bit được đặt bên phải nhất bị đảo.
+The expression $n ~\&~ (n-1)$ can be used to turn off the rightmost set bit of a number $n$.
+This works because the expression $n-1$ flips all bits after the rightmost set bit of $n$, including the rightmost set bit.
+So all those digits are different from the original number, and by doing a bitwise AND they are all set to 0, giving you the original number $n$ with the rightmost set bit flipped.
 
-Ví dụ, xem xét số $52 = 0011~0100_2$:
+For example, consider the number $52 = 0011~0100_2$:
 
 ```
 n         = 00110100
@@ -168,11 +167,11 @@ n-1       = 00110011
 n & (n-1) = 00110000
 ```
 
-### Thuật toán của Brian Kernighan
+### Brian Kernighan's algorithm
 
-Chúng ta có thể đếm số bit được đặt bằng biểu thức trên.
+We can count the number of bits set with the above expression.
 
-Ý tưởng là chỉ xem xét các bit được đặt của một số bằng cách tắt bit được đặt bên phải nhất của nó (sau khi đếm nó), vì vậy lần lặp tiếp theo của vòng lặp xem xét Bit Bên phải Kế tiếp.
+The idea is to consider only the set bits of an integer by turning off its rightmost set bit (after counting it), so the next iteration of the loop considers the Next Rightmost bit.
 
 ``` cpp
 int countSetBits(int n)
@@ -187,33 +186,37 @@ int countSetBits(int n)
 }
 ```
 
-### Các thủ thuật bổ sung
+### Additional tricks
 
-- $n ~\&~ (n + 1)$ xóa tất cả các bit cuối: $0011~0111_2 \rightarrow 0011~0000_2$.
-- $n ~|~ (n + 1)$ đặt bit cuối cùng đã bị xóa: $0011~0101_2 \rightarrow 0011~0111_2$.
-- $n ~\&~ -n$ trí
+- $n ~\&~ (n + 1)$ clears all trailing ones: $0011~0111_2 \rightarrow 0011~0000_2$.
+- $n ~|~ (n + 1)$ sets the last cleared bit: $0011~0101_2 \rightarrow 0011~0111_2$.
+- $n ~\&~ -n$ extracts the last set bit: $0011~0100_2 \rightarrow 0000~0100_2$.
 
-ch xuất bit được đặt cuối cùng: $0011~0100_2 \rightarrow 0000~0100_2$.
+Many more can be found in the book [Hacker's Delight](https://en.wikipedia.org/wiki/Hacker%27s_Delight).
 
-Có thể tìm thấy nhiều hơn trong cuốn sách [Hacker's Delight](https://en.wikipedia.org/wiki/Hacker%27s_Delight).
+### Language and compiler support
 
-### Ngôn ngữ và hỗ trợ trình biên dịch
+C++ supports some of those operations since C++20 via the [bit](https://en.cppreference.com/w/cpp/header/bit) standard library:
 
-C++ hỗ trợ một số trong những hoạt động đó kể từ C++20 thông qua thư viện chuẩn [bit](https://en.cppreference.com/w/cpp/header/bit):
+- `has_single_bit`: checks if the number is a power of two
+- `bit_ceil` / `bit_floor`: round up/down to the next power of two
+- `rotl` / `rotr`: rotate the bits in the number
+- `countl_zero` / `countr_zero` / `countl_one` / `countr_one`: count the leading/trailing zeros/ones
+- `popcount`: count the number of set bits
 
-- `has_single_bit`: kiểm tra xem số có phải là lũy thừa của hai không
-- `bit_ceil` / `bit_floor`: làm tròn lên/xuống đến lũy thừa của hai tiếp theo
-- `rotl` / `rotr`: xoay các bit trong số
-- `countl_zero` / `countr_zero` / `countl_one` / `countr_one`: đếm số lượng bit không/được đặt ở đầu/cuối
-- `popcount`: đếm số lượng bit được đặt
+Additionally, there are also predefined functions in some compilers that help working with bits.
+E.g. GCC defines a list at [Built-in Functions Provided by GCC](https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html) that also work in older versions of C++:
 
-Ngoài ra, cũng có các hàm được xác định trước trong một số trình biên dịch giúp làm việc với các bit.
-Ví dụ: GCC xác định một danh sách tại [Các Hàm Tích Hợp Sẵn của GCC](https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html) cũng hoạt động trong các phiên bản cũ hơn của C++:
+- `__builtin_popcount(unsigned int)` returns the number of set bits (`__builtin_popcount(0b0001'0010'1100) == 4`)
+- `__builtin_ffs(int)` finds the index of the first (most right) set bit (`__builtin_ffs(0b0001'0010'1100) == 3`)
+- `__builtin_clz(unsigned int)` the count of leading zeros (`__builtin_clz(0b0001'0010'1100) == 23`)
+- `__builtin_ctz(unsigned int)` the count of trailing zeros (`__builtin_ctz(0b0001'0010'1100) == 2`)
+- ` __builtin_parity(x)` the parity (even or odd) of the number of ones in the bit representation
 
-- `__builtin_popcount(unsigned int)` trả về số lượng bit được đặt (`__builtin_popcount(0b0001'0010'1100) == 4`)
-- `__builtin_ffs(int)` tìm chỉ số của bit đầu tiên (bên phải nhất) được đặt (`__builtin_ffs(0b0001'0010'1100) == 3`)
-- `__builtin_clz(unsigned int)` số lượng số không đứng đầu (`__builtin_clz(0b0001'0010'1100) == 23`)
-- `__builtin_ctz(unsigned int)` số lượng số không cuối cùng (`__builtin_ctz(0b0001'0010'1100) == 2`)
-- ` __builtin_parity(x)` chẵn hay lẻ của số lượng bit một trong biểu diễn bit
+_Note that some of the operations (both the C++20 functions and the Compiler Built-in ones) might be quite slow in GCC if you don't enable a specific compiler target with `#pragma GCC target("popcnt")`._
 
-_Lưu ý rằng một số trong các hoạt động (cả hai hàm C++20 và hàm Trình biên dịch tích hợp) có thể khá chậm trong GCC nếu bạn không kích hoạt một mục tiêu trình biên dịch cụ thể với `#pragma GCC target("popcnt")`._
+## Practice Problems
+
+* [Codeforces - Raising Bacteria](https://codeforces.com/problemset/problem/579/A)
+* [Codeforces - Fedor and New Game](https://codeforces.com/problemset/problem/467/B)
+* [Codeforces - And Then There Were K](https://codeforces.com/problemset/problem/1527/A)

@@ -1,54 +1,21 @@
-//Written by: ntannn_
-//created in 18:27:56 - Wed 24/04/2024
-#include <bits/stdc++.h>
-// #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
-// #pragma GCC target("sse4,avx2,fma")
-#define fi first
-#define se second
-#define mp make_pair
-#define pb push_back
-#define eb emplace_back
-#define all(x) x.begin(), x.end()
-#define TIME (1.0 * clock() / CLOCKS_PER_SEC)
+//problem "a"
+//created in 21:28:41 - Fri 26/04/2024
+
+#include<bits/stdc++.h>
+
+#define int int64_t
 
 using namespace std;
 
-typedef long long ll;
-typedef pair<int, int> ii;
-typedef pair<ll, ll> pll;
-typedef vector<int> vi;
-typedef vector<ll> vll;
-typedef vector<ii> vii;
-typedef vector<vi> vvi;
-
-const int N = 1e6 + 10;
-const ll MOD = 1e9 + 7;
-
-int n, L, R;
-
-void solve() {
+int32_t main() {
+    ios_base::sync_with_stdio(false); cin.tie(NULL);
     
-}
-
-void init() {
-    cin >> n >> L >> R;
-    for(int i = 1; i <= n; i++) 
-        cin >> a[i];
-}
-
-#define task "a"
-signed main() {
-    cin.tie(NULL);
-    ios_base::sync_with_stdio(false);
-    if(fopen(task ".inp", "r")) {
-        freopen(task ".inp", "r", stdin);
-        freopen(task ".out", "w", stdout);
+    int n, x, y, ans = 0;
+    cin >> n >> x;
+    for(int i = 2; i <= n; i++) {
+        cin >> y;
+        ans += (y < x ? x - y : 0);
+        x = y;
     }
-    int test_case = 1;
-    //cin >> test_case;
-    while(test_case--) {
-        init();
-        solve();
-    }
-    // cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
+    cout << ans;
 }

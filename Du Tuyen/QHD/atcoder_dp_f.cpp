@@ -24,7 +24,7 @@ int32_t main() {
             }
             else {
                 dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
-                trace[i][j] = dp[i-1][j] > dp[i][j-1] ? trace[i-1][j] : trace[i][j-1]; 
+                // trace[i][j] = dp[i-1][j] > dp[i][j-1] ? trace[i-1][j] : trace[i][j-1]; 
             }
         }
     }
@@ -45,3 +45,7 @@ int32_t main() {
     reverse(ans.begin(), ans.end());
     cout << ans;    
 }
+
+//nmfngd
+
+//sdkfjsdn
