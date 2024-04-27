@@ -7,7 +7,7 @@ using namespace std;
 #define f1(i,n) for(int i=1;i<=n;i++)
 typedef long long ll;
 const int btest = 1;
-const int etest = 200;
+const int etest = 500;
 
 ll Rand(ll l, ll h)
 {
@@ -29,63 +29,54 @@ const ll T = 10;
 map<ll, ll> M;
 vector<long long> vt;
 
+
 void sub1(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
     ll t, n, l, r, m, a, q, k;
-    n = Rand(1, 30);
-    inp << n << '\n';
-    for(int i = 1; i <= n; i++) {
-        a = Rand(1, K);
-        inp << a << " " ;
-        a = Rand(1, K);
-        inp << a << " " ;
-        a = Rand(1, K);
-        inp << a << " " ;
-        inp << '\n';
+    n = 1;
+    while(M[n]) {
+        n = Rand(1, 5 * N);
     }
+    M[n] = 1;
+    inp << n ;
 }
 
 void sub2(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
     ll t, n, l, r, m, a, q, k;
-    n = Rand(Q, 5*Q);
-    inp << n << '\n';
-    for(int i = 1; i <= n; i++) {
-        l = Rand(1, W);
-        r = Rand(1, K);
-        inp << l << " " << r;
+    n = 1;
+    while(M[n]) {
+        n = Rand(5 * N, 2 * Q);
     }
+    M[n] = 1;
+    inp << n ;
 }
 
 void sub3(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
     ll t, n, l, r, m, a, q, k;
-    n = Rand(1, Q);
-    inp << n << '\n';
-    for(int i = 1; i <= n; i++) {
-        a = Rand(1, K);
-        inp << a << " " ;
-        a = Rand(1, K);
-        inp << a << " " ;
-        a = Rand(1, K);
-        inp << a << " " ;
-        inp << '\n';
+    n = 1;
+    while(M[n]) {
+        n = Rand(2 * W, 3 * W);
     }
+    M[n] = 1;
+    inp << n;
 }
 
 int main(){
     ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
     //srand(time(NULL));
     srand(static_cast<unsigned int>(std::time(nullptr)));
+    M[1] = 1;
     for (int i = btest; i <= etest; i++)
     {
-        if(i <= 100)
+        if(i <= 350)
             sub1(i);
-        // else if(i <= 60)
-        //     sub2(i);
+        else if(i <= 350 + 75)
+            sub2(i);
         else 
             sub3(i);
     }
