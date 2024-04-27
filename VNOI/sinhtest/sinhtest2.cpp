@@ -40,6 +40,14 @@ void sub1(int x) {
     }
     M[n] = 1;
     inp << n ;
+
+    for(int i = 1; i <= n; i++) {
+        if(x <= 150)
+            a = Rand(1, W);
+        else 
+            a = Rand(W, K);
+        inp << a << " ";
+    }
 }
 
 void sub2(int x) {
@@ -48,7 +56,7 @@ void sub2(int x) {
     ll t, n, l, r, m, a, q, k;
     n = 1;
     while(M[n]) {
-        n = Rand(5 * N, 2 * Q);
+        n = Rand(Q, 2 * Q);
     }
     M[n] = 1;
     inp << n ;
@@ -60,12 +68,22 @@ void sub3(int x) {
     ll t, n, l, r, m, a, q, k;
     n = 1;
     while(M[n]) {
-        n = Rand(2 * W, 3 * W);
+        if(x <= 400)
+            n = Rand(Q, 5 * Q);
+        else 
+            n = Rand(5 * Q, W);
     }
     M[n] = 1;
     inp << n;
-}
 
+    for(int i = 1; i <= n; i++) {
+        if(x <= 150)
+            a = Rand(1, W);
+        else 
+            a = Rand(W, K);
+        inp << a << " ";
+    }
+}
 int main(){
     ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
     //srand(time(NULL));
@@ -73,10 +91,10 @@ int main(){
     M[1] = 1;
     for (int i = btest; i <= etest; i++)
     {
-        if(i <= 350)
+        if(i <= 300)
             sub1(i);
-        else if(i <= 350 + 75)
-            sub2(i);
+        // else if(i <= 350 + 75)
+        //     sub2(i);
         else 
             sub3(i);
     }
