@@ -7,7 +7,7 @@ using namespace std;
 #define f1(i,n) for(int i=1;i<=n;i++)
 typedef long long ll;
 const int btest = 1;
-const int etest = 500;
+const int etest = 100;
 
 ll Rand(ll l, ll h)
 {
@@ -34,20 +34,13 @@ void sub1(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
     ll t, n, l, r, m, a, q, k;
+    
     n = 1;
     while(M[n]) {
-        n = Rand(1, 5 * N);
+        n = Rand(1, W);
     }
     M[n] = 1;
-    inp << n ;
-
-    for(int i = 1; i <= n; i++) {
-        if(x <= 150)
-            a = Rand(1, W);
-        else 
-            a = Rand(W, K);
-        inp << a << " ";
-    }
+    inp << n << '\n';
 }
 
 void sub2(int x) {
@@ -56,10 +49,10 @@ void sub2(int x) {
     ll t, n, l, r, m, a, q, k;
     n = 1;
     while(M[n]) {
-        n = Rand(Q, 2 * Q);
+        n = Rand(W, 1e16);
     }
     M[n] = 1;
-    inp << n ;
+    inp << n << '\n';
 }
 
 void sub3(int x) {
@@ -68,21 +61,10 @@ void sub3(int x) {
     ll t, n, l, r, m, a, q, k;
     n = 1;
     while(M[n]) {
-        if(x <= 400)
-            n = Rand(Q, 5 * Q);
-        else 
-            n = Rand(5 * Q, W);
+        n = Rand(W, 1e16);
     }
     M[n] = 1;
-    inp << n;
-
-    for(int i = 1; i <= n; i++) {
-        if(x <= 150)
-            a = Rand(1, W);
-        else 
-            a = Rand(W, K);
-        inp << a << " ";
-    }
+    inp << n << '\n';
 }
 int main(){
     ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
@@ -91,9 +73,9 @@ int main(){
     M[1] = 1;
     for (int i = btest; i <= etest; i++)
     {
-        if(i <= 300)
+        if(i <= 60)
             sub1(i);
-        // else if(i <= 350 + 75)
+        // else if(i <= 80)
         //     sub2(i);
         else 
             sub3(i);

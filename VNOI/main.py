@@ -77,7 +77,7 @@ if __name__ == "__main__":
                 with open(f"{file_name}.out","w") as file:
                     file.close()
                 os.system(f".\code\compile\{file_name}.exe")
-                time.sleep(2)
+                # time.sleep(2)
                 shutil.move(f"{file_name}.inp",f"out/test{_test}/{file_name}.inp")
                 shutil.move(f"{file_name}.out",f"out/test{_test}/{file_name}.out")
         except Exception as error:
