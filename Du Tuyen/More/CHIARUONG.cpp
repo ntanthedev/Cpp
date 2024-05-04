@@ -1,8 +1,8 @@
 //Written by: ntannn_
 //created in 14:13:38 - Sat 04/05/2024
 #include <bits/stdc++.h>
-// #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
-// #pragma GCC target("sse4,avx2,fma")
+#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+#pragma GCC target("sse4,avx2,fma")
 #define fi first
 #define se second
 #define mp make_pair
@@ -24,14 +24,15 @@ typedef vector<vi> vvi;
 const int N = 1e6 + 10;
 const ll MOD = 1e9 + 7;
 
-ll n, s[N], res = 0;
+int n, s[22], res = 0;
 string ans;
 vector<string> as;
 
-void solve(int i = 1, ll a = 0, ll b = 0, ll c = 0) {
+void solve(int i = 1, int a = 0, int b = 0, int c = 0) {
     if(i > n) {
         if(a + b + c == res)
             as.eb(ans);
+        return;
     }
     if(a + s[i] <= res / 3) {
         ans.pb('A');
