@@ -1,33 +1,26 @@
 #include<bits/stdc++.h>
 using namespace std;
-unsigned long long n;
+long long a[1000099], n;
 int main()
 {
-    ios_base::sync_with_stdio(false);
     freopen("code.inp","r",stdin);
     freopen("code.out","w",stdout);
-    cin.tie(NULL);
+    ios::sync_with_stdio(false);
     cin>>n;
-    long long a[n], DD[n];
-    for(int i = 1; i <= n; i++)
-        DD[i] = 0;
-    for(int i = 1; i <= n; i++)
-    {
+    for(int i = 1; i <= n; ++i)
         cin>>a[i];
-        if(a[i] > 0 && a[i] <= n)
-        DD[a[i]] ++;
-    }
-    int res = 0;
-    for(int x = 1; x <= n; x++)
+    long long m = a[1], S;
+    for(int i = 1; i <= n; ++i)
+        if(a[i] < m)
+            m = a[i];
+    for(int i = 1; i <= n; ++i)
     {
-        if(DD[x] > 1 || DD[x]==0)
+        S = 0;
+        for(int j = i; j < n; ++j)
         {
-            res = x;
-            break;
+            S += a[j];
+            m = min(m, S);
         }
     }
-    if(res == 0)
-        cout<<"YES";
-    else
-        cout<<"NO";
+    cout<<m;
 }
