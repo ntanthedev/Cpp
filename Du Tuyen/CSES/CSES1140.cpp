@@ -21,17 +21,33 @@ typedef vector<ll> vll;
 typedef vector<ii> vii;
 typedef vector<vi> vvi;
 
-const int N = 1e6 + 10;
+const int N = 2e5 + 10;
 const ll MOD = 1e9 + 7;
 
+struct pt {
+    ll a, b, p;
+};
 
+pt f[N];
+ll n;
+map<ll, ll> M;
 
 void solve() {
+    int d = 0;
+    for(auto &i : M) 
+        i.se = ++d;
     
+    for(int i = 1; i <= n; i++) {
+        f[i].a = M[f[i].a];
+        f[i].b = M[f[i].b];
+    }
 }
 
 void init() {
-    
+    cin >> n;
+    for(int i = 1; i <= n; i++) 
+        cin >> f[i].a >> f[i].b >> f[i].p,
+        M[f[i].a] = 1, M[f[i].b] = 1;
 }
 
 #define task "1140"
