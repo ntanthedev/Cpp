@@ -15,6 +15,7 @@ bool cmp(MyType s1, MyType s2)
         return true;
     return false;
 }
+
 int main()
 {
     ios_base::sync_with_stdio(false);

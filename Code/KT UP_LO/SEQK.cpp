@@ -4,8 +4,8 @@ long long a[100009], n, k, vt1 = 0, vt2 = 0;
 map<long long, long long>M;
 int main()
 {
-    freopen("SEQK.inp","r",stdin);
-    freopen("SEQK.out","w",stdout);
+    // freopen("SEQK.inp","r",stdin);
+    // freopen("SEQK.out","w",stdout);
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     cin>>n>>k;
@@ -15,6 +15,8 @@ int main()
         if(M[a[i]] == 0)
             M[a[i]] = i;
     }
+    // cout << a[95] << " " << a[39] << " " << a[95] - a[39];
+    // exit(0);
     for(int i = n; i >= 1; i--)
     {
         if(M[a[i] - k] > 0 && M[a[i] - k] != i)

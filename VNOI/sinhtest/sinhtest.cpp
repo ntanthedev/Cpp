@@ -7,7 +7,7 @@ using namespace std;
 #define f1(i,n) for(int i=1;i<=n;i++)
 typedef long long ll;
 const int btest = 1;
-const int etest = 50;
+const int etest = 100;
 
 ll Rand(ll l, ll h)
 {
@@ -28,22 +28,15 @@ const ll W = 1e6;
 const ll T = 10;
 map<ll, ll> M;
 vector<long long> vt;
+mt19937 rd(29052024);
 void sinh(int x)
 {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
     ll t, n, l, r, m, a, b, c, q, k;
-    n = Rand(Q, W);
-    inp << n << '\n';
-    for(int i = 1; i <= n; i++) {
-        vt.push_back(i);
-    }
-    t = Rand(1, n);
-    vt[t - 1] = 2;
-    random_shuffle(all(vt));
-    for(auto i : vt)
-        inp << i << " ";
-    vt.clear();
+    l = Rand(1, N); r = Rand(1, N);
+    b = Rand(Q, W);a = Rand(1, b - Q); 
+    inp << l << " " << r << " " << a << " " << b;
 }
 
 int main(){

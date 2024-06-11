@@ -1,31 +1,48 @@
-//problem "aa"
-//created in 21:18:49 - Tue 30/04/2024
+//problem "a"
+//created in 10:42:24 - Wed 05/06/2024
 
 #include<bits/stdc++.h>
 
-#define TIME (1.0 * clock() / CLOCKS_PER_SEC)
 #define int int64_t
+#define fi first 
+#define se second 
 
 using namespace std;
 
-vector<pair<pair<int, int>, int> > f;
+int n;
+vector<pair<int, int>> a;
+vector<int> tree;
 
-bool check(int x) {
-    int t = sqrt(x);
-    return t * t == x;
+void update() {
+    
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
     
-    for(int i = 1; i <= 1e4; i++) {
-        for(int j = i; j <= 1e4; j++) {
-            if(check(i*i + j*j))
-                f.push_back({{i, j}, sqrt(i * i + j * j)});
-        }
+    cin >> n;
+    a.resize(n + 1);
+    vector<int> b(n + 1);
+    unordered_map<int, int> m;
+    tree.resize(4 * n + 1);
+
+    for(int i = 1; i <= n; i++) {
+        cin >> a[i].fi >> a[i].se;
+        b[i] = a[i].fi;
     }
 
-    cout << f.size();
+    sort(b.begin() + 1, b.end());
 
-    cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
+    b[0] = 0;
+    
+    for(int i = 1; i <= n; i++) {
+        int t = b[i];
+        b[i] = (b[i] != b[i - 1] || i == 1 ? b[i - 1] + 1 : b[i - 1]);
+        m[t] = b[i];
+    }
+
+    for(int i = 1; i <= n; i++) 
+        a[i].fi = m[a[i].fi];
+
+
 }

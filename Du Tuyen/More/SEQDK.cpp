@@ -88,10 +88,6 @@ int main(){
         freopen(xau".inp","r",stdin);
         freopen(xau".out","w",stdout);
     }
-    else{
-        freopen("a.inp","r",stdin);
-        freopen("a.out","w",stdout);
-    }
     cin >> n >> k;
     for(int i = 1; i <= n; i++){
         cin >> a[i];

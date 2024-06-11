@@ -28,7 +28,7 @@ vii a(4);
 
 void solve() {
     sort(all(a));
-    if(a[0].fi == a[1].fi && a[2].fi == a[3].fi && a[0].se == a[2].se && a[1].se == a[3].se)
+    if(a[0].fi == a[1].fi && a[2].fi == a[3].fi && a[0].se == a[2].se && a[1].se == a[3].se && abs(a[0].se - a[1].se) == abs(a[2].se - a[3].se))
         cout << abs(a[0].se - a[1].se) * abs(a[0].se - a[1].se);
     else 
         cout << -1; 
