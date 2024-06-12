@@ -25,22 +25,35 @@ const int N = 2e5 + 10;
 const ll MOD = 1e9 + 7;
 
 struct pt {
-    ll a, b, p;
+    int a, b, p;
 };
 
 pt f[N];
-ll n;
-map<ll, ll> M;
+int n;
+ll dp[2 * N];
+map<int, int> M;
+vector<vector<pair<int, int>>> c;
 
 void solve() {
     int d = 0;
     for(auto &i : M) 
         i.se = ++d;
     
+    c.resize(d + 2, vector<pair<int, int>>());
+
     for(int i = 1; i <= n; i++) {
         f[i].a = M[f[i].a];
         f[i].b = M[f[i].b];
+        c[f[i].b].push_back({f[i].a, f[i].p});
     }
+
+    for(int i = 1; i <= d; i++) {
+        dp[i] = dp[i - 1];
+        for(auto j : c[i]) 
+            dp[i] = max(dp[i], dp[j.fi - 1] + j.se);
+    }
+
+    cout << dp[d];
 }
 
 void init() {

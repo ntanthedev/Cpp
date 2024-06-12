@@ -1,48 +1,55 @@
-//problem "a"
-//created in 10:42:24 - Wed 05/06/2024
-
-#include<bits/stdc++.h>
-
-#define int int64_t
-#define fi first 
-#define se second 
+//Written by: ntannn_
+//created in 10:56:10 - Wed 12/06/2024
+#include <bits/stdc++.h>
+// #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+// #pragma GCC target("sse4,avx2,fma")
+#define fi first
+#define se second
+#define mp make_pair
+#define pb push_back
+#define eb emplace_back
+#define all(x) x.begin(), x.end()
+#define TIME (1.0 * clock() / CLOCKS_PER_SEC)
 
 using namespace std;
 
-int n;
-vector<pair<int, int>> a;
-vector<int> tree;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef pair<ll, ll> pll;
+typedef vector<int> vi;
+typedef vector<ll> vll;
 
-void update() {
-    
+const int N = 1e6 + 10;
+const ll MOD = 1e9 + 7;
+
+ll a, b;
+ll f[20][2];
+
+ll cal(int x) {
+
+} 
+
+void solve() {
+    cout << cal(b) - cal(a - 1);
 }
 
-int32_t main() {
-    ios_base::sync_with_stdio(false); cin.tie(NULL);
-    
-    cin >> n;
-    a.resize(n + 1);
-    vector<int> b(n + 1);
-    unordered_map<int, int> m;
-    tree.resize(4 * n + 1);
+void init() {
+    cin >> a >> b;    
+}
 
-    for(int i = 1; i <= n; i++) {
-        cin >> a[i].fi >> a[i].se;
-        b[i] = a[i].fi;
+#define task "aa"
+signed main() {
+    cin.tie(NULL);
+    ios_base::sync_with_stdio(false);
+    if(fopen(task ".inp", "r")) {
+        freopen(task ".inp", "r", stdin);
+        freopen(task ".out", "w", stdout);
     }
-
-    sort(b.begin() + 1, b.end());
-
-    b[0] = 0;
-    
-    for(int i = 1; i <= n; i++) {
-        int t = b[i];
-        b[i] = (b[i] != b[i - 1] || i == 1 ? b[i - 1] + 1 : b[i - 1]);
-        m[t] = b[i];
+    int test_case = 1;
+    cin >> test_case;
+    while(test_case--) {
+        init();
+        solve();
     }
-
-    for(int i = 1; i <= n; i++) 
-        a[i].fi = m[a[i].fi];
-
-
+    // cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }
