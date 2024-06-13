@@ -25,12 +25,26 @@ const ll MOD = 1e9 + 7;
 ll a, b;
 ll f[20][2];
 
-ll cal(int x) {
+ll cal_c(int i, bool ok) {
+    if(i < 0)
+        return 0;
+    if(f[i][ok] != -1)
+        return f[i][ok];
+    
+}
 
+ll cal(int x) {
+    vector<int> s;
+    while(x > 0) {
+        s.pb(x / 10);
+        x /= 10;
+    }
+    memset(f, -1, sizeof(f));
+    return cal_c(s.size() - 1, 0);
 } 
 
 void solve() {
-    cout << cal(b) - cal(a - 1);
+    cout << cal(b) - cal(a - 1) << '\n';
 }
 
 void init() {
