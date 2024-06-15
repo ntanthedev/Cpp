@@ -20,6 +20,8 @@ int dp(int i, bool ok) {
 }
 
 int cal(int x) {
+    if(x < 0)
+        return 0;
 
     a.clear(); 
 

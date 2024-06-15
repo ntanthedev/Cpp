@@ -16,7 +16,7 @@ struct Edge {
 };
 
 vector<vector<Edge>> f;
-vector<int> D, ans;
+vector<pair<int, int>> D;
 vector<bool> P;
 priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> q;
 
@@ -25,7 +25,8 @@ int32_t main() {
     
     cin >> n >> m >> k;
     f.resize(n + 1, vector<Edge>());
-    D.resize(n + 1, INT_MAX);
+    D.resize(n + 1, {1e18, 0});
+    map<int, int> ans;
     P.resize(n + 1, false);
 
     for(int i = 1, x, y, w; i <= m; i++) {
@@ -34,8 +35,8 @@ int32_t main() {
         f[y].push_back({x, w, i});
     }
 
-    D[1] = 0;
-    q.push({D[1], 1});
+    D[1].fi = 0;
+    q.push({0, 1});
 
     while(!q.empty()) {
         auto u = q.top().se;
@@ -46,10 +47,11 @@ int32_t main() {
 
         P[u] = 1;
         for(auto [v, w, id] : f[u]) {
-            if(D[u] + w < D[v]) {
-                D[v] = D[u] + w;
-                ans.push_back(id);
-                q.push({D[v], v});
+            if(D[u].fi + w < D[v].fi) {
+                D[v].fi = D[u].fi + w;
+                // cout << "check: " << u << " " << v << " " << id << '\n';
+                D[v].se = id;
+                q.push({D[v].fi, v});
             }
         }
     }
@@ -57,8 +59,10 @@ int32_t main() {
     // for(int i = 1; i <= 3; i++) 
     //     cout << D[i] << " ";
 
-    k = min(k, int(ans.size()));
+    k = min(k, n - 1);
     cout << k << '\n';
-    for(int i = 0; i < k; i++) 
-        cout << ans[i] << " ";
+    sort(D.begin() + 1, D.end());
+
+    for(int i = 2; i <= k + 1; i++) 
+        cout << D[i].se << " ";
 }
