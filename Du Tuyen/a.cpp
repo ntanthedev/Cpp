@@ -1,54 +1,50 @@
-//template simple for codeforces by ntannn_
-//created in 22:00:53 - Thu 13/06/2024
-#include <bits/stdc++.h>
-#define int long long
+#include<bits/stdc++.h>
 
 using namespace std;
 
-int f[20][2];
-vector<int> a;
+const int N = 100000 + 5;
 
-int dp(int i, bool ok) {
-    if(i >= a.size())
-        return 0;
-    if(f[i][ok] != -1)
-        return f[i][ok];
-    f[i][ok] = 0;
-    for(int j = 0; j <= (ok ? 9 : a[i]); j++)
-        f[i][ok] += dp(i + 1, (ok || j < a[i])) + j;
-    return f[i][ok];
-}
+int n, m = 0, root = 1;
+int h[N], st[N], en[N], tour[N];
+vector<int> adj[N];
 
-int cal(int x) {
-    if(x < 0)
-        return 0;
+// Trong các giá trị bên trên:
+// h[u] là khoảng cách từ đỉnh gốc đến đỉnh u.
+// st[u] là vị trí đầu tiên của đỉnh u trong mảng tour.
+// en[u] là vị trí cuối cùng của đỉnh u trong mảng tour.
 
-    a.clear(); 
-
-    while(x > 0) {
-        a.push_back(x % 10);
-        x /= 10;
+void input() {
+    cin >> n;
+    for (int i = 1; i < n; ++i) {
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
     }
-
-    reverse(a.begin(), a.end());
-    memset(f, -1, sizeof(f));
-
-    return dp(0, 0);
 }
 
-void solve() {
-    int x, y;
-    cin >> x >> y;
-
-    cout << cal(y) - cal(x - 1);
+void add(int u) {
+    tour[++m] = u;
+    en[u] = m;
 }
 
-int32_t main() {
-    cin.tie(NULL);
-    ios_base::sync_with_stdio(false);
-    int test_case;
-    a.reserve(16);
-    for(cin >> test_case;test_case--;cout << '\n') 
-        solve();
+void dfs(int u, int parent_of_u) {
+    h[u] = h[parent_of_u] + 1;
+    add(u);
+    st[u] = m;
+    for (int v : adj[u]) {
+        if (v != parent_of_u) {
+            dfs(v, u);
+        }
+    }
+    if (u != root) add(parent_of_u);
 }
-//98798
+
+int main() {
+    input();
+    dfs(root, 0);
+
+    for(int i = 1; i <= m; i++) 
+        cout << tour[i] << " ";
+    return 0;
+}

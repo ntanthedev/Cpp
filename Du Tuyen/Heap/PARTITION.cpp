@@ -10,6 +10,14 @@ struct Less {
     bool operator()(ll x, ll y) { return x > y; }
 };
 
+
+// struct pt {
+//     int val, x, y, d;
+//     bool operator<(const pt &other) {
+//         return val < other.val;
+//     }
+// }
+
 priority_queue<ll, vector<ll>, Less> q;
 
 void solve() {
