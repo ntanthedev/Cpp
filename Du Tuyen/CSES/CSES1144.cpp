@@ -10,7 +10,7 @@
 #define eb emplace_back
 #define all(x) x.begin(), x.end()
 #define TIME (1.0 * clock() / CLOCKS_PER_SEC)
-#define int int64_t    
+// #define int int64_t    
 
 using namespace std;
 
@@ -20,10 +20,10 @@ typedef pair<ll, ll> pll;
 typedef vector<int> vi;
 typedef vector<ll> vll;
 
-const int N = 1e6 + 10;
+const int N = 2e5 + 10;
 const ll MOD = 1e9 + 7;
 
-int n, Q, a[N], m = 0, tree[N];
+int n, Q, a[N], m = 0, tree[24 * N];
 vector<int> s;
 map<int, int> pos;
 vector<pair<int, ii>> q;
@@ -45,7 +45,7 @@ void update(int id, int l, int r, int u, int w) {
 
 int query(int id, int l, int r, int u, int v) {
     if(v < l || u > r)
-        return 0;
+        return 0LL;
     if(u <= l && r <= v) 
         return tree[id];
     int mid = (l + r) / 2;
@@ -55,29 +55,13 @@ int query(int id, int l, int r, int u, int v) {
 void solve() {
     sort(all(s));
     s.resize(unique(all(s)) - s.begin());
-    
-    // cerr << "\x1b[31mstart debug: \n";
-    // for(auto i : s) 
-    //     cerr << i << " " ;
-    // cerr << '\n';
-    // cerr << "end of debug\e[39m \n";
-    // exit(0);
 
     for(int i = 0; i < s.size(); i++) 
         pos[s[i]] = i + 1;
-        // s[i] = i + 1;
 
-    // cerr << "\x1b[31mstart debug: \n";
-    // for(auto i : s) 
-    //     cerr << i << " " ;
-    // cerr << '\n';
-    // cerr << "end of debug\e[39m \n";
-    // exit(0);
-    
     m = s.size();
 
     for(int i = 1; i <= n; i++) {
-        // a[i] = pos[a[i]];
         update(1, 1, m, pos[a[i]], 1);
     }
 
@@ -89,9 +73,9 @@ void solve() {
             a[x] = y;
         }
         else {
-            int l = *lower_bound(all(s), x);
-            int r = *--upper_bound(all(s), y);
-            cout << query(1, 1, m, pos[l], pos[r]) << '\n';
+            int l = lower_bound(all(s), x) - s.begin() + 1;
+            int r = upper_bound(all(s), y) - s.begin();
+            cout << query(1, 1, m, l, r) << '\n';
         }
     }
 }
