@@ -1,5 +1,5 @@
 //Written by: ntannn_
-//created in 12:03:14 - Wed 26/06/2024
+//created in 18:54:47 - Tue 25/06/2024
 #include <bits/stdc++.h>
 // #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
 // #pragma GCC target("sse4,avx2,fma")
@@ -19,17 +19,33 @@ typedef pair<ll, ll> pll;
 typedef vector<int> vi;
 typedef vector<ll> vll;
 
-const int N = 1e6 + 10;
+const int N = 5e3 + 10;
 const ll MOD = 1e9 + 7;
 
-
+ll n, a[N], x, ans = 0;
+map<ll, vector<ii>> M;
 
 void solve() {
+
+    for(int i = 1; i <= n; i++) 
+        for(int j = i + 1; j <= n; j++) { 
+            auto it = M.find(x - a[i] - a[j]);
+            if(it != M.end()) {
+                for(auto k : it->se) {
+                    if(k.fi != i && k.fi != j && k.se != i && k.se != j) 
+                        return cout << k.fi << " " << k.se << " " << i << " "  << j, void();
+                }
+            }
+            M[a[i] + a[j]].pb({i, j});
+        }
     
+    cout << "IMPOSSIBLE";
 }
 
 void init() {
-    
+    cin >> n >> x;
+    for(int i = 1; i <= n; i++) 
+        cin >> a[i];
 }
 
 #define task "a"
