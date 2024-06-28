@@ -1,5 +1,5 @@
 //Written by: ntannn_
-//created in 12:03:14 - Wed 26/06/2024
+//created in 18:32:02 - Fri 28/06/2024
 #include <bits/stdc++.h>
 // #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
 // #pragma GCC target("sse4,avx2,fma")
@@ -22,7 +22,7 @@ typedef vector<ll> vll;
 const int N = 1e6 + 10;
 const ll MOD = 1e9 + 7;
 
-
+ll n, a[N];
 
 void solve() {
     
