@@ -71,11 +71,6 @@ void solve() {
 int32_t main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
-    #define task "a"
-    if(fopen(task ".inp", "r")) {
-        freopen(task ".inp", "r", stdin);
-        freopen(task ".out", "w", stdout);
-    }
     int test_case;
     for(cin >> test_case;test_case--;) 
         solve();
