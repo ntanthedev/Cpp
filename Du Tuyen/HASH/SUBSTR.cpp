@@ -55,7 +55,7 @@ void solve() {
     a = ' ' + a;
     b = ' ' + b;
     POW[0] = 1;
-    for(ll i = 1; i <= n; i++) {
+    for(ll i = 1; i <= n + 1; i++) {
         POW[i] = (POW[i-1] * 26) % MOD;
     }
     Hasha[0] = 0;
@@ -73,8 +73,8 @@ void solve() {
 }
 
 void init() {
-    cin >> a;
     cin >> b;
+    cin >> a;
 }
 #define task "SUBSTR"
 int32_t main() {
