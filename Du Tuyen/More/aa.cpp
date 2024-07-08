@@ -1,125 +1,84 @@
-#include<bits/stdc++.h>
-using namespace std;
+// Source: https://ide.usaco.guide/O1BzYb_11ciS4NhGH0B
+//help me debugs this pls :((
+// i don't know what i wrong
+
+#include <bits/stdc++.h>
+
+#define int long long
 #define fi first
-#define se second 
-typedef long long ll;
-vector<ll>f[239],vis(239),dpp(239);
-set<ll>save[239];
-vector<vector<ll>>dp(239,vector<ll>(239));
-void dfs(ll u,vector<ll>&a,ll&ans)
-{
-    vis[u]=1;
-    for(auto v:f[u])
-    {
-        bool o=true;
-        if(save[v].empty())
-        {
-            save[v].insert(u);
-            save[u].insert(v);
-            dpp[u]=dp[u-1][v-1];
-            dpp[v]=dp[v-1][u-1];
-        }
-        else
-        {
-            for(auto i:f[v])
-            {
-                if(i==u) continue;
-                if(!save[u].count(i)) o=false;
-            }
-            if(o)
-            {
-                ll x=dpp[u];
-                for(auto i:f[v])
-                {
-                    x+=dp[i-1][v];
-                }
-                if(x>dpp[v]) 
-                {
-                    dpp[v]=x;
-                    save[v].insert()
-                }
-                for(auto i:f[v])
-                {
-                    if(dpp[i]<x)
-                    {
-                        dpp[i]=x;
-                        st[i]=st[u];
-                    }
-                }
-            }
-        }
+#define se second
+
+using namespace std;
+
+typedef pair<long long, long long> ii;
+
+map<ii, ii> m;
+set<ii> s;
+int n, cnt = 0;
+
+ii find_par(ii x) {
+    return (m[x].fi < 0 ? x : m[x] = find_par(m[x]));
+}
+
+void merge_par(ii a, ii b) {
+    a = find_par(a);
+    b = find_par(b);
+
+    if(a != b) {
+        if(a.fi < b.fi)
+            swap(a, b);
+        --cnt;
+        m[b].fi += m[a].fi;
+        m[a] = b;
     }
 }
-void solve()
-{
-    ll n,m;
-    cin>>n>>m;
-    bool o=true;
-    for(ll i=1;i<=m;i++)
-    {
-         ll x,y,z;
-         cin>>x>>y>>z;
-         dp[x-1][y-1]=z;
-         dp[y-1][x-1]=z;
-         if(z!=1 && z!=(-1e9)) o=false;
-    }
-    if(n<=20)
-    {
-        vector<ll>ans;
-        ll anss=-1e17;
-        for(ll i=0;i<(1<<(n));i++)
-        {
-            vector<ll>save;
-            ll savee=0;
-            for(ll j=0;j<n;j++)
-            {
-                if((1<<j)&i)
-                {
-                    save.push_back(j);
-                }
-            }
-            //for(auto j:save) cout<<j<<" ";
-            //cout<<'\n';
-            for(ll j=0;j<save.size();j++)
-            {
-                for(ll k=j+1;k<save.size();k++)
-                {
-                    savee+=dp[save[j]][save[k]];
-                }
-            }
-            if(savee>anss)
-            {
-                anss=savee;
-                ans=save;
-            }
-        }
-        cout<<ans.size()<<'\n';
-        for(auto i:ans) cout<<i+1<<" ";
-    }
-    else if(o)
-    {
-        for(ll i=1;i<=n;i++)
-        {
-            for(ll j=i+1;j<=n;j++)
-            {
-                if(dp[i-1][j-1]>=0)
-                {
-                    f[i].push_back(j);
-                    f[j].push_back(i);
-                }
-            }
-        }
-        ll anss=0;
-        vector<ll>ans;
-        for(ll i=1;i<=n;i++)
-        {
-            if(!vis[i]) dfs(i,ans,anss);
-        }
-    }
-}
-int main()
-{
+
+signed main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    solve();
+
+    ii x;
+
+    cin >> n;
+    for(int i = 1; i <= n; i++) {
+        cin >> x.fi >> x.se;
+        if(m.count(x)) {
+            cout << cnt << " ";
+            continue;
+        }
+        m[x] = {-1LL, 0LL};
+        ++cnt;
+
+        vector<set<ii>::iterator> vt;
+        auto r = s.lower_bound(x);
+        ii newlr = x;
+        while(r != s.end()) {
+            if(x.se >= r->fi) {
+                merge_par(x, *r);
+                vt.push_back(r);
+            }
+            else 
+                break;
+            ++r;
+        }     
+        newlr.se = vt.back()->se;
+
+        auto l = s.lower_bound(x);
+        while(l != s.begin()) {
+            --l;
+            if(x.fi <= l->se) {
+                merge_par(x, *l);
+                vt.push_back(l);
+            }
+            else 
+                break;
+        }
+        newlr.fi = vt.back()->fi;
+        for(auto it : vt) 
+            s.erase(it);
+
+        cout << cnt << " ";
+        s.insert(newlr);
+    }
+    
 }
