@@ -1,5 +1,5 @@
 // Source: https://ide.usaco.guide/O1BzYb_11ciS4NhGH0B
-//help me debugs this pls :((
+// help me debugs this pls :((
 // i don't know what i wrong
 
 #include <bits/stdc++.h>
@@ -35,7 +35,7 @@ void merge_par(ii a, ii b) {
 
 signed main() {
     ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
+    // cin.tie(NULL);
 
     ii x;
 
@@ -49,33 +49,40 @@ signed main() {
         m[x] = {-1LL, 0LL};
         ++cnt;
 
-        vector<set<ii>::iterator> vt;
+        // vector<set<ii>::iterator> vt;
         auto r = s.lower_bound(x);
+        if(r == s.end())
+            cout << "check: end\n";
+        else 
+            cout << "check: " << r->fi << " " << r->se << '\n';
+        if(i == 3) 
+            exit(0);
         ii newlr = x;
         while(r != s.end()) {
             if(x.se >= r->fi) {
                 merge_par(x, *r);
-                vt.push_back(r);
+                // vt.emplace_back(r);
+                newlr.se = r->se;
+                s.erase(r);
             }
             else 
                 break;
-            ++r;
         }     
-        newlr.se = vt.back()->se;
 
         auto l = s.lower_bound(x);
         while(l != s.begin()) {
             --l;
             if(x.fi <= l->se) {
                 merge_par(x, *l);
-                vt.push_back(l);
+                // vt.emplace_back(l);
+                newlr.fi = l->fi;
+                s.erase(l);
             }
             else 
                 break;
         }
-        newlr.fi = vt.back()->fi;
-        for(auto it : vt) 
-            s.erase(it);
+        // for(auto it : vt) 
+        //     s.erase(it);
 
         cout << cnt << " ";
         s.insert(newlr);
