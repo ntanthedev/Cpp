@@ -1,45 +1,31 @@
-//problem "b"
-//created in 10:44:09 - Tue 09/07/2024
+#include <bits/stdc++.h>
 
-#include<bits/stdc++.h>
-
-#define int int64_t
-#define fi first 
-#define se second
+// #define int int64_t
 
 using namespace std;
 
 int32_t main() {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
-    
-    int n;
-    cin >> n;
-    vector<vector<pair<int, int>>> adj(n + 1, vector<pair<int, int>>());
 
-    for(int i = 1, u, v, k; i < n; i++) {
-        cin >> u >> v >> k;
-        adj[u].emplace_back(v, k);
-        adj[v].emplace_back(u, k);
+    set<pair<int, int>> s;
+
+    for (int i = 1; i <= 10; i++) {
+        s.insert({rand() % 10, rand() % 10});
     }
 
-    function<int(int)> bfs = [&](int x) {
-        vector<int> d(n + 1, -1);
-        queue<int> q;
-        q.push(x);
-        d[x] = 0;
-        while(!q.empty()) {
-            int u = q.front(); q.pop();
-            for(auto [v, k] : adj[u]) {
-                if(d[v] != -1 || d[u] + k >= d[v]) 
-                    continue;
-                d[v] = d[u] + k;
-                q.push(v);
-            }
+    pair<int, int> x = {3, 7};
+    auto r = s.upper_bound(x);
+    cout << r->first << " " << r->second << '\n';
+    while (r != s.end()) {
+        if (x.second >= r->first) {
+            // Lưu giá trị của r trước khi xóa
+            auto temp = r;
+            s.erase(r); 
+            cout << temp->first << " " << temp->second << '\n';  // In giá trị đã lưu
+            r = temp; // Tiếp tục duyệt từ vị trí đã xóa
+        } else {
+            break;
         }
-        return *max_element(d.begin(), d.end());
-    };
-
-    for(int i = 1; i <= n; i++) {
-        cout << bfs(i);
+        r++; // Di chuyển đến phần tử tiếp theo
     }
 }

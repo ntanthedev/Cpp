@@ -1,67 +1,97 @@
-//Written by: ntannn_
-//created in 11:18:11 - Mon 08/07/2024
-#include <bits/stdc++.h>
-// #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
-// #pragma GCC target("sse4,avx2,fma")
-#define fi first
-#define se second
-#define mp make_pair
-#define pb push_back
-#define eb emplace_back
-#define all(x) x.begin(), x.end()
-#define TIME (1.0 * clock() / CLOCKS_PER_SEC)
+//problem "a"
+//created in 17:20:55 - Tue 09/07/2024
+
+#include<bits/stdc++.h>
+
+// #define int int64_t
 
 using namespace std;
 
-typedef long long ll;
-typedef pair<int, int> ii;
-typedef pair<ll, ll> pll;
-typedef vector<int> vi;
-typedef vector<ll> vll;
+void __print(int x) {cerr << x;}
+void __print(long x) {cerr << x;}
+void __print(long long x) {cerr << x;}
+void __print(unsigned x) {cerr << x;}
+void __print(unsigned long x) {cerr << x;}
+void __print(unsigned long long x) {cerr << x;}
+void __print(float x) {cerr << x;}
+void __print(double x) {cerr << x;}
+void __print(long double x) {cerr << x;}
+void __print(char x) {cerr << '\'' << x << '\'';}
+void __print(const char *x) {cerr << '\"' << x << '\"';}
+void __print(const string &x) {cerr << '\"' << x << '\"';}
+void __print(bool x) {cerr << (x ? "true" : "false");}
+ 
+template<typename T, typename V>
+void __print(const pair<T, V> &x) {cerr << '{'; __print(x.first); cerr << ", "; __print(x.second); cerr << '}';}
+template<typename T>
+void __print(const T &x) {int f = 0; cerr << '{'; for (auto &i: x) cerr << (f++ ? ", " : ""), __print(i); cerr << "}";}
+void _print() {cerr << "]\n";}
+template <typename T, typename... V>
+void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v...);}
+#ifndef ONLINE_JUDGE
+#define dbg(x...) cerr << "\e[91m"<<__func__<<":"<<__LINE__<<" [" << #x << "] = ["; _print(x); cerr << "\e[39m" << endl;
+#else
+#define dbg(x...)
+#endif
 
-const int N = 2e5 + 10;
-const ll MOD = 1e9 + 7;
+vector<int> dijkstra(int s, int n, vector<vector<pair<int, int>>> adj) {
 
-ll trie[N * 32][2], cnt = 0;
-vector<bool> End(32 * N, false);
-char c;
-ll k; 
+    vector<int> D(n + 1, INT_MAX);
+    vector<bool> P(n + 1, false);
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> q;
+    D[s] = 0;
 
-void add(ll x) {
-    ll cur = 0;
-    for(int i = __lg(x); i >= 0; i--) {
-        int u = (x >> 1 & 1);
-        // End[cnt] = 0;
-        if(!trie[cur][u])
-            trie[cur][u] = ++cnt;
-        cur = trie[cur][u];
-        // End[cur] = true;
+    q.push({0, s});
+
+    while(!q.empty()) {
+        int u = q.top().second; q.pop();
+
+        if(P[u])
+            continue;
+        
+        P[u] = 1;
+
+        for(auto [v, w] : adj[u]) {
+            if(D[v] > D[u] + w) {
+                D[v] = D[u] + w;
+                q.push({D[v], v});
+            }
+        }
     }
+
+    return D;
 }
 
-void solve() {
-    if(c == '+') {
-
+int32_t main() {
+    ios_base::sync_with_stdio(false); cin.tie(NULL);
+    
+    int n, m;
+    
+    cin >> n >> m;
+    
+    vector<vector<pair<int, int>>> adj(n + 1, vector<pair<int, int>>()), adj2(n + 1, vector<pair<int, int>>());
+    
+    for(int i = 1, u, k, v; i <= m; i++) {
+        cin >> u >> v >> k;
+        adj[u].emplace_back(v, k);
+        adj2[v].emplace_back(u, k);
+        // adj[v].emplace_back(u, k);
     }
-}
 
-void init() {
-    cin >> c >> k;
-}
+    // cout << "hio"; exit(0);
+    vector<int> D_1 = dijkstra(1, n, adj), D_n = dijkstra(n, n, adj2);
 
-#define task "a"
-signed main() {
-    cin.tie(NULL);
-    ios_base::sync_with_stdio(false);
-    if(fopen(task ".inp", "r")) {
-        freopen(task ".inp", "r", stdin);
-        freopen(task ".out", "w", stdout);
+    // dbg(D_1); dbg(D_n);
+
+    int ans = INT_MAX;
+
+    for(int u = 1; u <= n; u++) {
+        for(auto [v, w] : adj[u]) {
+            if(D_1[u] == INT_MAX || D_n[v] == INT_MAX)
+                continue;
+            ans = min(D_1[u] + w/2 + D_n[v], ans);            
+        }
     }
-    int test_case = 1;
-    cin >> test_case;
-    while(test_case--) {
-        init();
-        solve();
-    }
-    // cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
+
+    cout << ans;
 }

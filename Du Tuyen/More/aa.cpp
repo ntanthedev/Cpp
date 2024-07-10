@@ -55,15 +55,17 @@ signed main() {
             cout << "check: end\n";
         else 
             cout << "check: " << r->fi << " " << r->se << '\n';
-        if(i == 3) 
-            exit(0);
+        // if(i == 3) 
+        //     exit(0);
         ii newlr = x;
         while(r != s.end()) {
             if(x.se >= r->fi) {
                 merge_par(x, *r);
                 // vt.emplace_back(r);
                 newlr.se = r->se;
+                auto temp = r;
                 s.erase(r);
+                r = temp;
             }
             else 
                 break;
@@ -76,7 +78,9 @@ signed main() {
                 merge_par(x, *l);
                 // vt.emplace_back(l);
                 newlr.fi = l->fi;
+                auto tmp = l;
                 s.erase(l);
+                l = tmp;
             }
             else 
                 break;
