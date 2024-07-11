@@ -1,67 +1,98 @@
-//problem "CSES1194"
-//created in 20:00:07 - Tue 09/07/2024
-
-#include<bits/stdc++.h>
-
-#define int int64_t
-#define fi first 
-#define se second
-
+// vì quá nhác nên xin bú của idea usaco, idea thì code đc :((
+#include <algorithm>
+#include <climits>
+#include <cstring>
+#include <iostream>
+#include <queue>
+#include <vector>
+#define pii pair<int, int>
+#define mn 1005
 using namespace std;
 
-int dx[] = {1, -1, 0, 0},
-    dy[] = {0, 0, 1, -1};
+int N, M;
+queue<pii> q;
+int paths[mn][mn];
+pii from[mn][mn];
+int oo = INT_MAX;
+pii A;
+string ans;
+bool possible = false;
 
-void bfs(int m, int n, pair<int, int> x, vector<vector<char>> &a, vector<vector<int>> &d, vector<vector<pair<int, int>>> &trace) {
-    queue<pair<int, int>> q;
-    q.push({x});
-    d[x.fi][x.se] = 0;
-    
-    while(!q.empty()) {
-        pair<int, int> u = q.front(); q.pop();
-
-        for(int i = 0; i < 4; ++i) {
-            int nx = u.fi + dx[i],
-                ny = u.se + dy[i];
-            if(nx < 1 || nx > m || ny < 1 || ny > n || a[nx][ny] == '#' || d[nx][ny] <= d[u.fi][u.se] + 1)
-                continue;
-            d[nx][ny] = d[u.fi][u.se] + 1;
-            trace[nx][ny] = {u.fi, u.se};
-            q.push({nx, ny});
-        }
-    }
+void retrace(pii node) {  // retrace from final node, adding direction from
+	                      // previous node to a string. This string will be
+	                      // backwards but will be reversed before output.
+	pii origin = from[node.first][node.second];
+	if (origin == pii(0, 0)) return;
+	if (origin.first == node.first + 1) ans.push_back('U');
+	if (origin.first == node.first - 1) ans.push_back('D');
+	if (origin.second == node.second + 1) ans.push_back('L');
+	if (origin.second == node.second - 1) ans.push_back('R');
+	retrace(origin);
 }
-
-int32_t main() {
-    ios_base::sync_with_stdio(false); cin.tie(NULL);
-    
-    int m, n;
-    cin >> m >> n;
-    vector<vector<char>> a(m + 1, vector<char>(n + 1));
-    pair<int, int> start;
-    vector<pair<int, int>> monster;
-    vector<vector<int>> b(m + 1, vector<int>(n + 1, LLONG_MAX)), c(m + 1, vector<int>(n + 1, LLONG_MAX));
-    vector<vector<pair<int, int>>> tc(m + 1, vector<pair<int, int>>(n + 1, {-1, -1})), tb(m + 1, vector<pair<int, int>>(n + 1, {-1, -1}));
-
-    for(int i = 1; i <= m; i++) 
-        for(int j = 1; j <= n; j++) { 
-            cin >> a[i][j];
-            if(a[i][j] == 'A')
-                start = {i, j};
-            if(a[i][j] == 'M')
-                monster.push_back({i, j});
-        }
-    
-    for(auto i : monster) {
-        bfs(m, n, i, a, b, tb);
-    }
-
-    bfs(m, n, start, a, c, tc);
-
-    for(int i = 1; i <= m; i++) {
-        for(int j = 1; j != n; j = n)
-            if(a[i][j] != '#' && (b[i][j] > c[i][j])) {
-
-            }
-    }
+void check(
+    pii origin,
+    pii dest) {  // check if the considered destination may be traveled to
+	int pl = paths[origin.first][origin.second];
+	if (pl + 1 < paths[dest.first][dest.second]) {
+		paths[dest.first][dest.second] = pl + 1;
+		q.push(dest);
+		from[dest.first][dest.second] = origin;
+	}
+}
+bool mora = false;  // false if bfs for monsters, true if bfs for A
+void bfs() {
+	while (!q.empty()) {
+		pii loc = q.front(), next;
+		q.pop();
+		next = loc;
+		next.first++;
+		check(loc, next);  // go through adjacent locations
+		next = loc;
+		next.first--;
+		check(loc, next);
+		next = loc;
+		next.second++;
+		check(loc, next);
+		next = loc;
+		next.second--;
+		check(loc, next);
+		if (mora && (loc.first == 1 || loc.second == 1 || loc.first == N ||
+		             loc.second == M)) {
+			cout << "YES" << endl;
+			cout << paths[loc.first][loc.second] << endl;
+			retrace(loc);
+			possible = true;
+			return;
+		}
+	}
+}
+int main() {
+	cin >> N >> M;
+	for (int i = 1; i <= N; i++) {
+		string s;
+		cin >> s;
+		for (int j = 1; j <= M; j++) {
+			paths[i][j] = oo;
+			if (s[j - 1] == '#') paths[i][j] = 0;
+			if (s[j - 1] == 'M') {
+				q.push(pii(i, j));
+				paths[i][j] = 0;
+			}
+			if (s[j - 1] == 'A') {
+				A.first = i;
+				A.second = j;
+			}
+		}
+	}
+	bfs();        // monster bfs
+	mora = true;  // change next bfs to A bfs
+	from[A.first][A.second] =
+	    pii(0, 0);  // give the retrace a terminating location
+	paths[A.first][A.second] = 0;
+	q.push(A);  // get ready for next bfs
+	bfs();      // bfs with A
+	if (possible) {
+		reverse(ans.begin(), ans.end());
+		cout << ans << endl;
+	} else cout << "NO" << endl;
 }
