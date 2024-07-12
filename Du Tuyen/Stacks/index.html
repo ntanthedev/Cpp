@@ -1,27 +1,65 @@
-<div>
-    <p>Chúng ta sẽ tạo set <span class="tex-span"><i>comp</i></span>, trong đó chúng ta sẽ lưu trữ tất cả các thành phần
-        từ các đoạn. Mỗi thành phần được đặc trưng bởi điểm đầu tiên của đoạn nằm trong nó và điểm cuối cùng của đoạn
-        nằm trong nó.</p>
-    <p>Bây giờ chúng ta sẽ xử lý các đoạn theo thứ tự thêm vào. Giả sử đoạn hiện tại được xác định bởi cặp <span
-            class="tex-span">(<i>l</i>, <i>r</i>)</span>. Khi đó cần tìm trong set tất cả các thành phần của các đoạn mà
-        nó giao nhau. Để làm điều này, chúng ta sẽ tìm trong <span class="tex-span"><i>comp</i></span> bằng <span
-            class="tex-span"><i>lower</i>_<i>bound</i>(<i>make</i>_<i>pair</i>(<i>l</i>,  - 1))</span> iterator <span
-            class="tex-span"><i>it</i></span>, trỏ vào thành phần có biên trái nhỏ nhất, có thể giao với đoạn hiện tại.
-        Nếu <span class="tex-span"><i>it</i></span> không bằng đầu của <span class="tex-span"><i>comp</i></span> thì
-        giảm nó một đơn vị, vì có thể có thành phần bắt đầu trái hơn <span class="tex-span"><i>l</i></span>, nhưng giao
-        với đoạn hiện tại.</p>
-    <p>Bây giờ chúng ta sẽ tăng <span class="tex-span"><i>it</i></span> cho đến khi nó bằng <span
-            class="tex-span"><i>comp</i>.<i>end</i>()</span> hoặc cho đến khi chúng ta gặp ít nhất hai thành phần không
-        giao nhau với đoạn hiện tại. Chúng ta sẽ gom tất cả các thành phần giao với đoạn hiện tại vào vector <span
-            class="tex-span"><i>inter</i></span>.</p>
-    <p>Sau khi hoàn thành việc duyệt qua <span class="tex-span"><i>comp</i></span> cần xóa khỏi <span
-            class="tex-span"><i>comp</i></span> tất cả các thành phần đã nằm trong vector <span
-            class="tex-span"><i>inter</i></span> (vì đoạn hiện tại đã hợp nhất chúng thành một), và thêm vào <span
-            class="tex-span"><i>comp</i></span> một thành phần mới, biên trái là nhỏ nhất trong tất cả các biên trái của
-        vector <span class="tex-span"><i>inter</i></span> và biên trái của đoạn hiện tại <span
-            class="tex-span"><i>l</i></span>, còn biên phải là lớn nhất trong tất cả các biên phải của vector <span
-            class="tex-span"><i>inter</i></span> và biên phải của đoạn hiện tại <span class="tex-span"><i>r</i></span>.
-    </p>
-    <p>Sau khi xử lý đoạn tiếp theo cần xuất ra kích thước của <span class="tex-span"><i>comp</i></span>, vì đó chính là
-        số lượng thành phần của các đoạn đen cần tìm.</p>
+<div class="ttypography">
+    <div class="problem-statement">
+        <div class="header">
+            <div class="title">A. Chỉ Cộng</div>
+            <div class="time-limit">
+                <div class="property-title">giới hạn thời gian cho mỗi bài kiểm tra</div>1 giây
+            </div>
+            <div class="memory-limit">
+                <div class="property-title">giới hạn bộ nhớ cho mỗi bài kiểm tra</div>256 megabyte
+            </div>
+            <div class="input-file">
+                <div class="property-title">đầu vào</div>standard input
+            </div>
+            <div class="output-file">
+                <div class="property-title">đầu ra</div>standard output
+            </div>
+        </div>
+        <div>
+            <p>Kmes đã viết ba số nguyên $$$a$$$, $$$b$$$ và $$$c$$$ để nhớ rằng anh ta phải đưa Noobish_Monk $$$a
+                \times b \times c$$$ quả chuối.</p>
+            <p>Noobish_Monk đã tìm thấy những số nguyên này và quyết định làm điều sau đây <span
+                    class="tex-font-style-bf">tối đa</span> $$$5$$$ lần:</p>
+            <ul>
+                <li> chọn một trong những số nguyên này; </li>
+                <li> tăng nó lên $$$1$$$. </li>
+            </ul>
+            <p>Ví dụ, nếu $$$a = 2$$$, $$$b = 3$$$ và $$$c = 4$$$, thì có thể tăng $$$a$$$ ba lần và tăng $$$b$$$ hai
+                lần. Sau đó, $$$a = 5$$$, $$$b = 5$$$, $$$c = 4$$$. Tổng số chuối sẽ là $$$5 \times 5 \times 4 = 100$$$.
+            </p>
+            <p>Giá trị lớn nhất của $$$a \times b \times c$$$ mà Noobish_Monk có thể đạt được với những thao tác này là
+                bao nhiêu?</p>
+        </div>
+        <div class="input-specification">
+            <div class="section-title">Đầu vào</div>
+            <p>Mỗi bài kiểm tra chứa nhiều trường hợp. Dòng đầu tiên của đầu vào chứa một số nguyên $$$t$$$ ($$$1 \le t
+                \le 1000$$$) — số lượng bài kiểm tra. Mô tả của các trường hợp kiểm tra tiếp theo.</p>
+            <p>Dòng đầu tiên và duy nhất của mỗi trường hợp kiểm tra chứa ba số nguyên $$$a$$$, $$$b$$$ và $$$c$$$ ($$$1
+                \le a, b, c \le 10$$$) — các số nguyên của Kmes.</p>
+        </div>
+        <div class="output-specification">
+            <div class="section-title">Đầu ra</div>
+            <p>Đối với mỗi trường hợp kiểm tra, xuất ra một số nguyên — số lượng quả chuối lớn nhất mà Noobish_Monk có
+                thể nhận được.</p>
+        </div>
+        <div class="sample-tests">
+            <div class="section-title">Ví dụ</div>
+            <div class="sample-test">
+                <div class="input">
+                    <div class="title">Đầu vào</div>
+                    <pre>
+    <div class="test-example-line test-example-line-even test-example-line-0">2</div><div class="test-example-line test-example-line-odd test-example-line-1">2 3 4</div><div class="test-example-line test-example-line-even test-example-line-2">10 1 10</div></pre>
+                </div>
+                <div class="output">
+                    <div class="title">Đầu ra</div>
+                    <pre>
+    100
+    600
+    </pre>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p> </p>
+</div>
 </div>
