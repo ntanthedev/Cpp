@@ -72,7 +72,7 @@ signed main() {
         }     
 
         auto l = s.lower_bound(x);
-        while(l != s.begin()) {
+        while(l != s.begin() && l != s.end()) {
             --l;
             if(x.fi <= l->se) {
                 merge_par(x, *l);

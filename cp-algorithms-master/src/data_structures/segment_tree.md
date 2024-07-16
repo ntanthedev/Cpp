@@ -1076,7 +1076,7 @@ Dễ dàng nhận thấy rằng Cây phân đoạn như vậy chỉ là hiệu s
 
 Trong triển khai của hàm $\text{find_kth}$, điều này có thể được xử lý bằng cách truyền hai con trỏ đỉnh và tính toán số lượng/tổng của đoạn hiện tại là hiệu số của hai số lượng/tổng của các đỉnh.
 
-Dưới đây là các hàm $\text{build}$, $\text{update}$ và $\text{find_kth}$ đã được sửa đổi
+Dưới đây là các hàm $\text{build}$, $\text{update}$ và $find_kth$ đã được sửa đổi
 
 ```{.cpp file=kth_smallest_persistent_segment_tree}
 Vertex* build(int tl, int tr) {

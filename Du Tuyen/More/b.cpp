@@ -1,51 +1,67 @@
-//problem "b"
-//created in 16:38:47 - Sat 13/07/2024
-
-#include<bits/stdc++.h>
-
-#define int int64_t
+#include <bits/stdc++.h>
+#define all(x) x.begin(), x.end()
 
 using namespace std;
+
 typedef long long ll;
-const int N = 1e5 + 5;
+const int N = 1e6 + 9;
+const ll MOD = 1e9 + 3;
+const ll base = 31;
 
-int n, a[N], tree[4 * N];
+ll ans = 0, n, k, m, POW[N], Hasha[N], Hashb[N];
+string a, b;
 
-void build(int id, int l, int r) { 
-    if(l == r) {
-        tree[id] = a[l];
-    }
-    else {
-        int mid = (l + r) / 2;
-        build(id * 2, l, mid);
-        build(id * 2, mid + 1, r);
-        tree[id] = tree[id * 2] + tree[id * 2 + 1];
-    }
+ll get_hasha(ll i, ll j) {
+    return (Hasha[j] - Hasha[i - 1] * POW[j - i + 1] + MOD * MOD) % MOD;
 }
 
-int get(int id, int l, int r, int u, int v) {
-    if(l > v || r < u) 
-        return 0; 
-    if(u <= l && r <= v) 
-        return tree[id];
-    return get(id * 2, l, (l + r) / 2, u, v) + get(id * 2 + 1, (l + r) / 2 + 1, r, u, v);
+ll get_hashb(ll i, ll j) {
+    return (Hashb[j] - Hashb[i - 1] * POW[j - i + 1] + MOD * MOD) % MOD;
 }
 
-void update(ll id,ll l,ll r,ll x,ll y,ll z)
-{
-    if(l>y || r<x) return;
-    if(l==r) tree[id]+=z;
-    else 
-    {
-        update(id<<1,l,(l+r)>>1,x,y,z);
-        update(id<<1 + 1,(l+r)>>1 + 1,r,x,y,z);
-        tree[id]=tree[id<<1]+tree[id<<1 + 1];
+ll check(ll x) {
+    ans = 0;
+    for(int i = 1; i <= n - x + 1; i++) {
+        ll l = get_hasha(i, i + x - 1);
+        ll r = get_hashb(n - (i + x - 1) + 1, n - i + 1);
+        if(l == r)
+            ans++;
     }
+    return ans;
 }
-int32_t main() {
-    ios_base::sync_with_stdio(false); cin.tie(NULL);
-    
-    // nhap a_n
 
-    build(1, 1, n);
+void solve() {
+    n = a.size();
+    a = ' ' + a;
+    b = ' ' + b;
+    POW[0] = 1;
+    Hasha[0] = 0;
+    Hashb[0] = 0;
+    for(int i = 1; i <= n; i++) {
+        POW[i] = (POW[i - 1] * base) % MOD;
+    }
+    for(int i = 1; i <= n; i++) {
+        Hasha[i] = (Hasha[i - 1] * base + a[i] - 'a' + 1) % MOD;
+    }
+    for(int i = 1; i <= n; i++) {
+        Hashb[i] = (Hashb[i - 1] * base + b[i] - 'a' + 1) % MOD;
+    }
+
+    cout << check(m);
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    #define task "pw"
+    if(fopen(task ".inp", "r")) {
+        freopen(task ".inp", "r", stdin);
+        freopen(task ".out", "w", stdout);
+    }
+    cin >> k >> m;
+    cin >> a;
+    b = a;
+    reverse(all(b));
+
+    solve();
 }
