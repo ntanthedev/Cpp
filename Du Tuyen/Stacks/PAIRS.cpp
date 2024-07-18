@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
 using namespace std;
-#define ll long long
+typedef long long ll;
 #define ld long double 
 const long long MOD = 1e9+7;
 const long long N = 1e6+9;

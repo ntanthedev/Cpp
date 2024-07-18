@@ -54,7 +54,7 @@ signed main() {
         if(r == s.end())
             cout << "check: end\n";
         else 
-            cout << "check: " << r->fi << " " << r->se << '\n';
+            cout << "chec: " << r->fi << " " << r->se << '\n';
         // if(i == 3) 
         //     exit(0);
         ii newlr = x;
