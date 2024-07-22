@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
 
 #define int int64_t
-const int N = 1e6 + 10;
+const int N = 2e6 + 10;
 
 using namespace std;
 
@@ -9,7 +9,7 @@ signed main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
-    #define task "DDH"
+    #define task "DDB"
     if(fopen(task".inp","r")) {
         freopen(task".inp","r",stdin);
         freopen(task".out","w",stdout);
@@ -17,6 +17,7 @@ signed main() {
 
     vector<bool> b(2 * N, 1);
     b[0] = b[1] = 0;
+    int cnt = 0;
 
     for(int i = 2, last = sqrt(2 * N); i <= last; ++i)
         if(b[i])
