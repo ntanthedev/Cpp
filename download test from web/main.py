@@ -1,14 +1,14 @@
 import requests
 
 dir = ""
-for i in range(1,21):
+for i in range(1,100):
     dir = str(i).zfill(2)
-    url = "http://192.168.1.35/contests/test/PALIND7/PALIND7$"+dir+"/"+"PALIND7.inp"
+    url = "http://172.16.16.135/contests/test/XN/test"+dir+"/"+"xn.inp"
     baka = requests.get(url)
     with open("test"+dir+".inp", "wb") as f:
         f.write(baka.content)
     
-    url = "http://192.168.1.35/contests/test/PALIND7/PALIND7$"+dir+"/"+"PALIND7.out"
+    url = "http://172.16.16.135/contests/test/XN/test"+dir+"/"+"xn.out"
     baka = requests.get(url)
     with open("test"+dir+".out", "wb") as f:
         f.write(baka.content)
