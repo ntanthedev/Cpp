@@ -23,6 +23,7 @@ int32_t main() {
         cin >> r >> h;
 
     if(n == 0) {
+        sort(c.begin(), c.end(), greater<pair<int, int>>());
         
     }
 }
