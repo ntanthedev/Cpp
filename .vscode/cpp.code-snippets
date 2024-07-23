@@ -635,4 +635,19 @@
 		],
 		"description": "bignum"
 	  },
+		"": {
+	"prefix": "module_calculation",
+	"body": [
+		"/* Calculation with MODULO*/",
+		"ll dec(ll x, ll y) {return (x-y+MOD)%MOD;}",
+		"ll add(ll x, ll y) {return (x + y) % MOD;}",
+		"ll mul(ll x, ll y) {return ((x%MOD) * (y%MOD)) % MOD;}",
+		"ll bpow(ll x, ll y) {ll res = 1; while (y) {if (y & 1) res = mul(res, x); x = mul(x, x); y >>= 1;} return res;}",
+		"ll ModInverse(ll x) {return bpow(x, MOD - 2);}",
+		"ll Div(ll x, ll y) {return mul(x, ModInverse(y));}",
+		"ll GetBit(ll val, ll num) {return ((val>>num) & 1LL);}",
+		""
+	],
+	"description": ""
+	}, 
 }
