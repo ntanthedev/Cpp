@@ -27,7 +27,7 @@ int32_t main() {
         else if(ans < 0)
             cout << "RIGHT";
         else
-            cout << "TORCH";
+            cout << "TOUCH";
         cout << '\n';
     }
 }
