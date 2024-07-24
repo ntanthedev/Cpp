@@ -1,48 +1,53 @@
-//problem "XH"
-//created in 08:37:23 - Mon 22/07/2024
-
-#include<bits/stdc++.h>
-
-#define int int64_t
-#define fi first 
-#define se second
+#include <bits/stdc++.h>
 
 using namespace std;
 
-int32_t main() {
-    ios_base::sync_with_stdio(false); cin.tie(NULL);
-    
-    #define task "XH"
-    if(fopen(task ".inp", "r")) {
-        freopen(task ".inp", "r", stdin);
-        freopen(task ".out", "w", stdout);
-    }   
+#define TASK "xh"
+#define MAXN 505
+#define INF 1e9
 
-    int n, m;
-    cin >> n >> m;
-    vector<pair<int, int>> c(m);
-    vector<tuple<int, int, int>> s(n);
+typedef long long ll;
 
-    for(auto& [x, y, z] : s)
-        cin >> x >> y >> z;
-    for(auto& [r, h] : c)
-        cin >> r >> h;
+struct rec {
+	ll x, y, z, t;
+	bool operator < (const rec &o) { return x > o.x || (x == o.x && y > o.y); }
+}; 
 
-    if(n == 0) {
-        sort(c.begin(), c.end(), greater<pair<int, int>>());
-        
-        vector<int> dp(m, 0);
-        int ans = 0;
+int n, m;
+ll ans, f[MAXN];
+vector<rec> a;
 
-        for(int i = 0; i < n; ++i) {
-            for(int j = i + 1; j < n; ++j) {
-                if(c[j].fi <= c[i].fi) {
-                    dp[j] = max(dp[j], dp[i] + c[j].se);
-                }
-            }
-            ans = max(ans, dp[i]);
-        }
-
-        cout << ans ;
-    }
+int main()
+{
+	//freopen(TASK".inp", "r", stdin);
+	//freopen(TASK".out", "w", stdout);
+	scanf("%d %d", &n, &m);
+	int b[3];
+	for (int i = 1; i <= n; ++i) {
+		cin >> b[0] >> b[1] >> b[2];
+		sort(b, b + 3);
+		a.emplace_back((rec){b[0], b[1], b[2], 1});
+		a.emplace_back((rec){b[0], b[2], b[1], 1});
+		a.emplace_back((rec){b[1], b[2], b[0], 1});
+	}
+	for (int i = 1; i <= m; ++i) {
+		cin >> b[0] >> b[1];
+		a.emplace_back((rec){2 * b[0], 2 * b[0], b[1], 2});
+	}
+	n = a.size();
+	sort(a.begin(), a.end());
+	f[0] = a[0].z;
+	for (int i = 1; i < n; ++i) {
+		f[i] = a[i].z;
+		for (int j = i - 1; j >= 0; --j) {
+			if (a[i].t == 2 || a[j].t == 1) {
+				if (a[j].x > a[i].x && a[j].y > a[i].y) f[i] = max(f[i], f[j] + a[i].z);
+			} 
+			else if (a[j].x * a[j].x > a[i].x * a[i].x + a[i].y * a[i].y)
+				f[i] = max(f[i], f[j] + a[i].z);
+		}
+		ans = max(ans, f[i]);
+	}
+	cout << ans;
+	return 0;
 }
