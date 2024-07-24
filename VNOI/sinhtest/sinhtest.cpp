@@ -35,7 +35,7 @@ void sinh(int x)
     ofstream inp((to_string(x) + ".inp").c_str());
     ll t, n, l, r, m, a, b, c, q, k;
     
-    int n = Rand(1, 15);
+    n = Rand(1, 15);
 
     for(int i = 1; i <= n; i++) 
         inp << char(Rand('a', 'z'));
@@ -45,7 +45,7 @@ void sinh(int x)
     while(q--) {
         l = Rand(1, n);
         r = Rand(l, n);
-        
+        inp << l << " " << r << '\n';
     }
 }
 
