@@ -12,6 +12,12 @@ using namespace std;
 int32_t main() {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
     
+    #define task "XH"
+    if(fopen(task ".inp", "r")) {
+        freopen(task ".inp", "r", stdin);
+        freopen(task ".out", "w", stdout);
+    }   
+
     int n, m;
     cin >> n >> m;
     vector<pair<int, int>> c(m);
@@ -25,5 +31,18 @@ int32_t main() {
     if(n == 0) {
         sort(c.begin(), c.end(), greater<pair<int, int>>());
         
+        vector<int> dp(m, 0);
+        int ans = 0;
+
+        for(int i = 0; i < n; ++i) {
+            for(int j = i + 1; j < n; ++j) {
+                if(c[j].fi <= c[i].fi) {
+                    dp[j] = max(dp[j], dp[i] + c[j].se);
+                }
+            }
+            ans = max(ans, dp[i]);
+        }
+
+        cout << ans ;
     }
 }
