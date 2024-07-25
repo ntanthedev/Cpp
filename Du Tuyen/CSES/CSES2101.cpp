@@ -27,7 +27,7 @@ int32_t main() {
         int b = find_par(b);
 
         if(a != b) {
-            if(a > b)
+            if(par[a] > par[b])
                 swap(a, b);
             par[a] += par[b];
             par[b] = a;
