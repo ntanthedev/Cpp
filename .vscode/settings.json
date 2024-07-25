@@ -88,7 +88,12 @@
         "typeindex": "cpp",
         "typeinfo": "cpp",
         "valarray": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "format": "cpp",
+        "generator": "cpp",
+        "print": "cpp",
+        "stdfloat": "cpp",
+        "text_encoding": "cpp"
     },
     "CodeGPT.apiKey": "CodeGPT Plus Beta"
 }
