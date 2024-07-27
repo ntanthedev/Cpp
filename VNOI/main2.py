@@ -69,7 +69,7 @@ if __name__ == "__main__":
 
     if mode == 2:
         try:
-            file_name = "test"
+            file_name = "code"
             for _test_file in os.listdir("inp"):
                 _test = _test_file.split(".")[0]
                 os.mkdir(f"out/test{_test}")

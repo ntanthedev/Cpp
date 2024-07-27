@@ -56,7 +56,7 @@ int32_t main() {
         else if(c == 2) {     
             if(a == b) 
                 continue;       
-            for(int i = find_next(next[a]); i <= b; i = find_next(i)) {
+            for(int i = find_next(next[a - 1]); i <= b; i = find_next(i)) {
                 merge_par(i, i - 1);
             }
         }
