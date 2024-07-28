@@ -22,7 +22,7 @@ void pal_check(ll a, ll b){
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    #define task "test"
+    #define task "code"
     if(fopen(task ".inp", "r")) {
         freopen(task ".inp", "r", stdin);
         freopen(task ".out", "w", stdout);

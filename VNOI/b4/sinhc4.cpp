@@ -44,28 +44,26 @@ void sub1(int x) {
     ofstream inp((to_string(x) + ".inp").c_str());
     ll t, n, l, r, m, a, b, q, k;
     n = Rand(1, N);
-    if(x >= cal(50, s1))
-        n = N;
+    if(x >= cal(50, s1)) // giới hạn hơn 50% test có n đạt giá trị giới hạn
+        n = N;           // của sub tasks
     if(x <= s1 / 3)
-        k = Rand(1, 100);
+        k = Rand(1, 100); // 1/3 test đầu của sub1 có k nhỏ (k <= 100)
     else if(x <= 2 * s1 / 3.0)
-        k = Rand(100, n);
+        k = Rand(100, n); // 2/3 test sau có k lớn hơn 
     else 
-        k = Rand(1, N);
+        k = Rand(1, N); // 1/3 test cuối, k đạt giá trị giới hạn đề bài 
     inp << n << " " << k << '\n';
 
-    // M[1] = 1;
-    // vt.resize(N);
     for(int i = 1; i <= N; i++) 
         vt.pb(i);
-    random_shuffle(all(vt));
-    for(int i = 1; i <= n; i++) {
+    random_shuffle(all(vt)); //do mỗi giá trị a chỉ xuất hiện một lần 
+    for(int i = 1; i <= n; i++) { // các bạn có thể sử dụng map + while
         a = vt.back();
         vt.pop_back();
         b = Rand(1, W);
         inp << a << " " << b << '\n';
     }
-    vt.clear();
+    vt.clear(); // do vector mình khai báo là biến toàn cụng nên phải xóa
 }
 
 void sub2(int x) {

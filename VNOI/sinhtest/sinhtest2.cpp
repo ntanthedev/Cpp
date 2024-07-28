@@ -8,10 +8,14 @@ using namespace std;
 #define	f0(i,n) for(int i=0;i<n;i++)
 #define f1(i,n) for(int i=1;i<=n;i++)
 typedef long long ll;
-const int btest = 1;
-const int etest = 100;
-const int s1 = double(etest) / 100.0 * 60.0;
-const int s2 = s1 + double(etest) / 100.0 * 40.0;
+const int btest = 1; 
+const int etest = 100; // so luong test
+const int test_for_sub1 = 30; //% so luong test theo tung sub
+const int test_for_sub2 = 30;
+const int test_for_sub3 = 40;
+const int s1 = double(etest) / 100.0 * test_for_sub1 * 1.0;
+const int s2 = double(etest) / 100.0 * test_for_sub2 * 1.0;
+
 
 ll Rand(ll l, ll h)
 {
