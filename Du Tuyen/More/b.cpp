@@ -1,53 +1,45 @@
-/*
-Problem Name: Bit Problem
-Problem Link: https://cses.fi/problemset/task/1654
-Author: Sachin Srivastava (mrsac7)
-*/
+//Written by: ntannn_
+//created in 14:43:49 - Tue 30/07/2024
 #include <bits/stdc++.h>
+// #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+// #pragma GCC target("sse4,avx2,fma")
+#define fi first
+#define se second
+#define mp make_pair
+#define pb push_back
+#define eb emplace_back
+#define all(x) x.begin(), x.end()
+#define TIME (1.0 * clock() / CLOCKS_PER_SEC)
+
 using namespace std;
 
-#define int long long
-#define endl '\n'
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef pair<ll, ll> pll;
+typedef vector<int> vi;
+typedef vector<ll> vll;
 
-const int mxN = 1 << 21;
-int freq[mxN];
-int dp1[mxN][21], dp2[mxN][21];
+const int N = 1e6 + 10;
+const ll MOD = 1e9 + 7;
+
+
+
+void solve() {
+    
+}
+
+#define task "b"
 signed main() {
+    cin.tie(NULL);
     ios_base::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
-
-    int n;
-    cin >> n;
-    int a[n];
-    for(int i = 0; i < n; i++) {
-        int x;
-        cin >> x;
-        a[i] = x;
-        freq[x]++;
+    if(fopen(task ".inp", "r")) {
+        freopen(task ".inp", "r", stdin);
+        freopen(task ".out", "w", stdout);
     }
-    for(int i = 1; i < mxN >> 1; i++) {
-        dp1[i][0] = freq[i];
-        if(i & 1)
-            dp1[i][0] += freq[i ^ 1];
-        for(int k = 1; k < 21; k++) {
-            dp1[i][k] = dp1[i][k - 1];
-            if(i >> k & 1)
-                dp1[i][k] += dp1[i ^ 1 << k][k - 1];
-        }
+    int test_case = 1;
+    //cin >> test_case;
+    while(test_case--) {
+        solve();
     }
-    for(int i = mxN >> 1; i > 0; i--) {
-        dp2[i][0] = freq[i];
-        if(i & 1 ^ 1)
-            dp2[i][0] += freq[i ^ 1];
-        for(int k = 1; k < 21; k++) {
-            dp2[i][k] = dp2[i][k - 1];
-            if(i >> k & 1 ^ 1)
-                dp2[i][k] += dp2[i ^ 1 << k][k - 1];
-        }
-    }
-
-    for(int i = 0; i < n; i++)
-        cout << dp1[a[i]][20] << ' ' << dp2[a[i]][20] << ' '
-             << n - dp1[a[i] ^ ((mxN >> 1) - 1)][20] << endl;
+    // cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }
