@@ -441,9 +441,11 @@ signed main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
-    #define _ "INFINITY"
-    freopen(_".inp","r",stdin);
-    freopen(_".out","w",stdout);
+	#define task "INFINITY"
+	if(fopen(task ".inp", "r")) {
+		freopen(task ".inp", "r", stdin);
+		freopen(task ".out", "w", stdout);
+	}
 
     int t;
     cin >> t;
