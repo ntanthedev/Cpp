@@ -1,17 +1,38 @@
 //problem "a"
-//created in 20:52:13 - Wed 31/07/2024
+//created in 09:39:54 - Fri 02/08/2024
 
 #include<bits/stdc++.h>
 
-#define int int64_t
-
 using namespace std;
+
+int n;
+string s;
+
+struct pt {
+    int val, pre, suf, ans;
+};
+
+inline void make(pt &x) {
+
+}
+
+void build() {
+    
+}
 
 int32_t main() {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
     
-    string a;
-    if(a == "IMPOSSIBLE") {
-        cout << 0;
-    }
+    cin >> s;
+    n = s.size();
+    s = ' ' + s;
 }
+/*
+    ())(())(())(
+d:  100121012100
+
+*/
+
+/*
+( ())
+*/
