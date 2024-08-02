@@ -9,7 +9,7 @@ int main(int argc, char* argv[]) {
     int n = inf.readInt();
     int m = inf.readInt();
 
-    vector<vector<int, int>> s(n + 1);
+    vector<vector<int>> s(n + 1, vector<int>());
     map<int, bool> M;
     int cnt = 0;
 
@@ -33,8 +33,11 @@ int main(int argc, char* argv[]) {
             quitf(_wa, "So xuat hien nhieu hon 1 lan");
         }
         for(auto y : s[x]) {
-            if(!m[y])
-                quitf(_wa, "");
+            if(!M[y])
+                quitf(_wa, "yeu kem");
         }
+        M[x] = 1;
     }
+
+    quitf(_ok, "good");
 }

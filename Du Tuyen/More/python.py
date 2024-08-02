@@ -1,6 +1,5 @@
-a = []
+import math
 
-s = 0
+x = int(input())
 
-for i in a:
-    s += i
+print(math.sqrt(x))
