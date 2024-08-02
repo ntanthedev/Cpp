@@ -3,29 +3,29 @@
 
 #include<bits/stdc++.h>
 
-#define int int64_t
+#define int long long
 
 using namespace std;
 
-int f[16][11][2];
+int f[21][11][2][2];
 
-int cal(int i, int bf, bool ok, vector<int> s) {
+int cal(int i, int bf, bool ok, bool pre, vector<int> s) {
     if(i == s.size()) {
         return 1;
     }
 
-    if(f[i][bf][ok] != -1)
-        return f[i][bf][ok];
+    if(f[i][bf][ok][pre] != -1)
+        return f[i][bf][ok][pre];
     
-    f[i][bf][ok] = 0;
+    f[i][bf][ok][pre] = 0;
 
     for(int j = 0; j <= (ok ? 9 : s[i]); ++j) {
-        if(j != bf) {
-            f[i][bf][ok] += cal(i + 1, j, (ok | j < s[i]), s);
+        if(j != bf || (j == 0 && !pre)) {
+            f[i][bf][ok][pre] += cal(i + 1, j, (ok || j < s[i]), pre || j != 0, s);
         }
     }
 
-    return f[i][bf][ok];
+    return f[i][bf][ok][pre];
 }
 
 int dem(int x) {
@@ -40,7 +40,7 @@ int dem(int x) {
     reverse(s.begin(), s.end());
     memset(f, -1, sizeof(f));
 
-    return cal(0, 0, 0, s);
+    return cal(0, 0, 0, 0, s);
 }
 
 int32_t main() {
