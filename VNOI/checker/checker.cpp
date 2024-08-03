@@ -6,38 +6,26 @@ using namespace std;
 int main(int argc, char* argv[]) {
     registerTestlibCmd(argc, argv);
 
-    int n = inf.readInt();
-    int m = inf.readInt();
+    long long n = inf.readLong(), l = inf.readLong(), r = inf.readLong(), res = 0;
 
-    vector<vector<int>> s(n + 1, vector<int>());
-    map<int, bool> M;
-    int cnt = 0;
+    vector<long long> a(n + 1);
 
-    for(int i = 1, x, y; i <= m; i++) {
-        x = inf.readInt();
-        y = inf.readInt();
-        s[y].push_back(x);
+    for(int i = 1; i <= n; i++) {
+        a[i] = inf.readLong();
     }
 
-    if (ans.readToken() == "IMPOSSIBLE") {
-        if (ouf.readToken() == "IMPOSSIBLE") {
-            quitf(_ok, "Correct: No solution exists");
-        } else {
-            quitf(_wa, "Wrong answer: Solution exists, but participant claims impossible");
-        }
+    int m = ouf.readInt();
+    vector<int> b(m + 1, 0);
+
+    for(int i = 1; i <= m; i++) {
+        b[i] = ouf.readInt();
+        if(i > 1 && b[i] <= b[i - 1]) 
+            quitf(_wa, "sai thu tu vi tri");
+        res += a[b[i]];
     }
 
-    for(int i = 1, x; i <= n; i++) {
-        x = ouf.readInt();
-        if(M[x]) {
-            quitf(_wa, "So xuat hien nhieu hon 1 lan");
-        }
-        for(auto y : s[x]) {
-            if(!M[y])
-                quitf(_wa, "yeu kem");
-        }
-        M[x] = 1;
-    }
-
-    quitf(_ok, "good");
+    if(l <= res && res <= r)
+        quitf(_ok, "ket qua dung");
+    else 
+        quitf(_wa, "ket qua sai");
 }

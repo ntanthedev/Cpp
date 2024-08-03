@@ -9,9 +9,9 @@ using namespace std;
 #define f1(i,n) for(int i=1;i<=n;i++)
 typedef long long ll;
 const int btest = 1; 
-const int etest = 100; // so luong test
-const int test_for_sub1 = 30; //% so luong test theo tung sub
-const int test_for_sub2 = 30;
+const int etest = 200; // so luong test
+const int test_for_sub1 = 50; //% so luong test theo tung sub
+const int test_for_sub2 = 50;
 const int test_for_sub3 = 40;
 const int s1 = double(etest) / 100.0 * test_for_sub1 * 1.0;
 const int s2 = double(etest) / 100.0 * test_for_sub2 * 1.0;
@@ -37,7 +37,7 @@ const ll W = 1e6;
 const ll T = 10;
 map<ll, ll> M;
 vector<long long> vt;
-mt19937 rd(20092007);
+mt19937 rd(static_cast<unsigned int>(std::time(nullptr)));
 
 int cal(int x, int n) {
     return double(n / 100.0) * x;
@@ -48,94 +48,39 @@ void sub1(int x) {
     ofstream inp((to_string(x) + ".inp").c_str());
     ll t, n, l, r, m, a, b, q, k;
     
-    string s;
-
-    n = Rand(2, N);
-
-    if(x >= cal(75, s1));
-        n = N;
-
-    for(int i = 1; i <= n; i++) {
-        char c = Rand('a', 'z');
-        s.push_back(c);
+    t = Rand(1, Q);
+    if(x >= cal(75, s1))
+        t = Rand(Q - 100, Q);
+    inp << t << '\n';
+    while(t--) {
+        a = Rand(1, Q);
+        ll tt = rd() % 10;
+        if(tt % 3 == 0)
+            a = Rand(1, W);
+        b = Rand(a, W);
+        inp << a << " " << b << '\n';
     }
-
-    char c = Rand('a', 'z');
-    k = Rand(1, 10);
-
-    // int d = 0;
-    
-    for(auto i : s) {
-        if(k == 1) { 
-            t = Rand(1, 10);
-            inp << char(Rand('a', 'z'));
-            // d++;
-        }
-        inp << i;
-    }
-
-
-    for(auto i : s) {
-        if(i != c)
-            inp << i;
-        if(k == 1) { 
-            t = Rand(1, 10);
-            inp << char(Rand('a', 'z'));
-            // d++;
-        }
-    }
-
-    inp << '\n';
-
-    inp << c;
-
 }
 
 void sub2(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
-    ll t, n, l, r, m, a, q, k;
+    ll t, n, l, r, m, a, q, k, b;
     
-    string s;
-
-    n = Rand(5 * N, W);
-
-    if(x >= cal(75, s2));
-        n = W;
-
-    for(int i = 1; i <= n; i++) {
-        char c = Rand('a', 'z');
-        s.push_back(c);
+    t = Rand(1, Q);
+    if(x >= cal(75, s1))
+        t = Rand(Q - 100, Q);
+    inp << t << '\n';
+    while(t--) {
+        a = Rand(1, 1e8);
+        ll tt = rd() % 10;
+        if(tt % 3 == 0)
+            a = Rand(1, K - 100);
+        b = Rand(a, K);
+        if(Rand(1, 20) % 10 == 1) 
+            b = a;
+        inp << a << " " << b << '\n';
     }
-
-    char c = Rand('a', 'z');
-    k = Rand(1, 10);
-
-    // int d = 0;
-    
-    for(auto i : s) {
-        if(k == 1) { 
-            t = Rand(1, 10);
-            inp << char(Rand('a', 'z'));
-            // d++;
-        }
-        inp << i;
-    }
-
-
-    for(auto i : s) {
-        if(i != c)
-            inp << i;
-        if(k == 1) { 
-            t = Rand(1, 10);
-            inp << char(Rand('a', 'z'));
-            // d++;
-        }
-    }
-
-    inp << '\n';
-
-    inp << c;
 
 }
 
