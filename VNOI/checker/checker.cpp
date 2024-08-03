@@ -8,6 +8,9 @@ int main(int argc, char* argv[]) {
 
     long long n = inf.readLong(), l = inf.readLong(), r = inf.readLong(), res = 0;
 
+    if(l > r) 
+        quitf(_wa, "test sai, l > r");
+
     vector<long long> a(n + 1);
 
     for(int i = 1; i <= n; i++) {

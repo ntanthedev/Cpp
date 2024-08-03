@@ -9,7 +9,7 @@ using namespace std;
 #define f1(i,n) for(int i=1;i<=n;i++)
 typedef long long ll;
 const int btest = 1; 
-const int etest = 90; // so luong test
+const int etest = 135; // so luong test
 const int s1 = 15 * 3; //% so luong test theo tung sub
 const int s2 = 30 * 3;
 const int s3 = 45 * 3;
@@ -71,7 +71,9 @@ void sub1(int x) {
             if(i < cal(70, n)) 
                 vt[i] = Rand(1, N);
             else 
-                vt[i] = Rand(1, K);            
+                vt[i] = Rand(1, K);  
+            if(x == s1)
+                vt[i] = Rand(K - W, K);          
         }
     }
 
@@ -84,7 +86,12 @@ void sub1(int x) {
 
     ll lmin = *min_element(all(vt));
 
-    inp << n << " " << max(Rand(0LL, 2 * lmin), res - Rand(1, max(100LL, 2 * lmin))) << " " << res + Rand(1, max(100LL, 2 * lmin)) << '\n';
+    ll l = max(Rand(0LL, lmin), res - Rand(1, max(100LL, 2 * lmin))), r = res + Rand(1, max(100LL, 2 * lmin));
+
+    if(l > r) 
+        swap(l, r);
+
+    inp << n << " " << l << " " << r << '\n';
 
     random_shuffle(all(vt));
     random_shuffle(all(vt));
@@ -122,7 +129,9 @@ void sub2(int x) {
             if(i < cal(70, n)) 
                 vt[i] = Rand(1, N);
             else 
-                vt[i] = Rand(1, K);            
+                vt[i] = Rand(1, K); 
+            if(x == s2)
+                vt[i] = Rand(K - W, K);            
         }
     }
 
@@ -135,7 +144,12 @@ void sub2(int x) {
 
     ll lmin = *min_element(all(vt));
 
-    inp << n << " " << max(Rand(0LL, 2 * lmin), res - Rand(1, max(100LL, 2 * lmin))) << " " << res + Rand(1, max(100LL, 2 * lmin)) << '\n';
+    ll l = max(Rand(0LL, lmin), res - Rand(1, max(100LL, 2 * lmin))), r = res + Rand(1, max(100LL, 2 * lmin));
+
+    if(l > r) 
+        swap(l, r);
+
+    inp << n << " " << l << " " << r << '\n';
 
     random_shuffle(all(vt));
     random_shuffle(all(vt));
@@ -147,8 +161,60 @@ void sub2(int x) {
 void sub3(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
-    ll t, n, l, r, m, a, b, q, k;
 
+    ll res = 0, n;
+    
+    n = (x <= cal(50, s1) ? Rand(50, 80) : Rand(77, 80));
+    vector<long long> vt(n);
+
+    if(x <= cal(50, s1)) {
+        f0(i, n) {
+            if(i <= cal(65, n)) 
+                vt[i] = Rand(1, N);
+            else 
+                vt[i] = Rand(1, Q);            
+        }
+    }
+    else if(x <= cal(75, s1)) {
+        f0(i, n) {
+            if(i < cal(65, n)) 
+                vt[i] = Rand(1, 5 * N);
+            else 
+                vt[i] = Rand(1, Q);            
+        }
+    }
+    else {
+        f0(i, n) {
+            if(i < cal(70, n)) 
+                vt[i] = Rand(1, 5 * N);
+            else 
+                vt[i] = Rand(1, Q); 
+            if(x == s3)
+                vt[i] = Rand(1, Q);            
+        }
+    }
+
+    int lt = Rand(0, n - 1);
+    int rt = Rand(lt, n - 1);
+
+    for(int i = lt; i <= rt; i++) {
+        res += vt[i];
+    }
+
+    while(lt <= rt && res > Q) {
+        res -= vt[rt];
+        rt--;
+    }
+
+    ll lmin = *min_element(all(vt));
+
+    inp << n << " " << max(Rand(0LL, 2 * lmin), res - Rand(1, max(100LL, 2 * lmin))) << " " << min(res + Rand(1, max(100LL, 2 * lmin)), Q) << '\n';
+
+    random_shuffle(all(vt));
+    random_shuffle(all(vt));
+
+    for(auto i : vt) 
+        inp << i << " ";
 }
 
 void sub4(int x) {
@@ -177,12 +243,7 @@ int main(){
     //srand(time(NULL));
     srand(static_cast<unsigned int>(std::time(nullptr)));
 
-    for(int i = 1; i <= 90; i++) 
-        if(i <= s1)
-            sub1(i);
-        else 
-            sub2(i);
-    exit(0);
+    
 
     for (int i = btest; i <= etest; i++)
     {
@@ -192,12 +253,12 @@ int main(){
             sub2(i);
         else if(i <= s3)
             sub3(i);
-        else if(i <= s4)
-            sub4(i);
-        else if(i <= s5)
-            sub5(i);
-        else 
-            sub6(i);
+        // else if(i <= s4)
+        //     sub4(i);
+        // else if(i <= s5)
+        //     sub5(i);
+        // else 
+        //     sub6(i);
     }
     return 0;
 }
