@@ -9,7 +9,7 @@ using namespace std;
 #define f1(i,n) for(int i=1;i<=n;i++)
 typedef long long ll;
 const int btest = 1; 
-const int etest = 135; // so luong test
+const int etest = 180; // so luong test
 const int s1 = 15 * 3; //% so luong test theo tung sub
 const int s2 = 30 * 3;
 const int s3 = 45 * 3;
@@ -220,8 +220,22 @@ void sub3(int x) {
 void sub4(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
-    ll t, n, l, r, m, a, b, q, k;
+    
+    ll res = 0, n;
+    
+    n = (x <= cal(50, s1) ? Rand(1, 2 * Q) : Rand(Q, 2 * Q));
+    vector<long long> vt(n);
 
+    ll w = (x <= cal(50, s4) ? Rand(1, K) : Rand(1e8, K)), cnt = Rand(1, n);
+
+    res = w * cnt;
+
+    ll l = max(0LL, res - Rand(1, Rand(1, 15) * w)), r = min(res + Rand(1, Rand(1, 15) * w), w * n); 
+
+    inp << n << " " << l << " " << r << '\n';
+
+    for(int i = 1; i <= n; i++) 
+        inp << w << " ";
 }
 
 void sub5(int x) {
@@ -253,8 +267,8 @@ int main(){
             sub2(i);
         else if(i <= s3)
             sub3(i);
-        // else if(i <= s4)
-        //     sub4(i);
+        else if(i <= s4)
+            sub4(i);
         // else if(i <= s5)
         //     sub5(i);
         // else 
