@@ -9,13 +9,13 @@ using namespace std;
 #define f1(i,n) for(int i=1;i<=n;i++)
 typedef long long ll;
 const int btest = 1; 
-const int etest = 180; // so luong test
-const int s1 = 15 * 3; //% so luong test theo tung sub
-const int s2 = 30 * 3;
-const int s3 = 45 * 3;
-const int s4 = 60 * 3;
-const int s5 = 75 * 3;
-const int s6 = 90 * 3;
+const int etest = 300; // so luong test
+const int s1 = 50; //% so luong test theo tung sub
+const int s2 = 50 * 2;
+const int s3 = 50 * 3;
+const int s4 = 50 * 4;
+const int s5 = 50 * 5;
+const int s6 = 50 * 6;
 
 
 ll Rand(ll l, ll h)
@@ -29,7 +29,7 @@ ll Rand(ll l, ll h)
 #define maxn 2003
 //#define A 1000000000
 const ll A = 1e18;
-const ll H = 1e12;
+const ll H = 1e15;
 const ll N = 1e3;
 const ll Q = 1e5;
 const ll X = 2e9;
@@ -105,10 +105,10 @@ void sub2(int x) {
     ofstream inp((to_string(x) + ".inp").c_str());
     ll res = 0, n;
     
-    n = (x <= cal(50, s1) ? Rand(20, 40) : Rand(39, 40));
+    n = (x <= cal(50, s2) ? Rand(20, 40) : Rand(39, 40));
     vector<long long> vt(n);
 
-    if(x <= cal(50, s1)) {
+    if(x <= cal(50, s2)) {
         f0(i, n) {
             if(i < cal(65, n)) 
                 vt[i] = Rand(1, 100);
@@ -116,7 +116,7 @@ void sub2(int x) {
                 vt[i] = Rand(1, N);            
         }
     }
-    else if(x <= cal(75, s1)) {
+    else if(x <= cal(75, s2)) {
         f0(i, n) {
             if(i < cal(65, n)) 
                 vt[i] = Rand(1, N);
@@ -164,10 +164,10 @@ void sub3(int x) {
 
     ll res = 0, n;
     
-    n = (x <= cal(50, s1) ? Rand(50, 80) : Rand(77, 80));
+    n = (x <= cal(50, s3) ? Rand(50, 80) : Rand(77, 80));
     vector<long long> vt(n);
 
-    if(x <= cal(50, s1)) {
+    if(x <= cal(50, s3)) {
         f0(i, n) {
             if(i <= cal(65, n)) 
                 vt[i] = Rand(1, N);
@@ -175,7 +175,7 @@ void sub3(int x) {
                 vt[i] = Rand(1, Q);            
         }
     }
-    else if(x <= cal(75, s1)) {
+    else if(x <= cal(75, s3)) {
         f0(i, n) {
             if(i < cal(65, n)) 
                 vt[i] = Rand(1, 5 * N);
@@ -223,7 +223,10 @@ void sub4(int x) {
     
     ll res = 0, n;
     
-    n = (x <= cal(50, s1) ? Rand(1, 2 * Q) : Rand(Q, 2 * Q));
+    n = (x <= cal(50, s4) ? Rand(1, 2 * Q) : Rand(Q, 2 * Q));
+    if(x >= cal(80, s4))
+        n = 2 * Q;
+
     vector<long long> vt(n);
 
     ll w = (x <= cal(50, s4) ? Rand(1, K) : Rand(1e8, K)), cnt = Rand(1, n);
@@ -241,23 +244,99 @@ void sub4(int x) {
 void sub5(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
-    ll t, n, l, r, m, a, b, q, k;
+   
+    ll res = 0, n;
+    const ll max_r = 1e9 + 5e4;
+    
+    n = (x <= cal(50, s5) ? Rand(1, 2 * Q) : Rand(Q, 2 * Q));
+    if(x >= cal(80, s5))
+        n = 2 * Q;
+    vector<long long> vt(n);
 
+    for(int i = 0; i < n; i++) 
+        vt[i] = i + 1;
+
+    random_shuffle(all(vt));
+
+    int lt = Rand(0, n - 1);
+    int rt = Rand(lt, n - 1);
+
+    int tt = rd() % 10;
+
+    for(int i = lt; i <= rt; i++) {
+        res += vt[i];
+    }
+
+    ll lmin = *min_element(all(vt));
+
+    ll l = max(0LL, res - Rand(1, Rand(50, 100))), r = res + Rand(1, Rand(50, 100));
+    
+    if(tt % 5 == 0)
+        l = r = lt;
+
+    inp << n << " " << l << " " << r << '\n';
+
+    sort(all(vt));
+
+    for(auto i : vt) 
+        inp << i << " ";    
 }
 
 void sub6(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
-    ll t, n, l, r, m, a, b, q, k;
+    
+    const ll NMax = 46116860184273;
+    ll res = 0, n;
+    
+    n = (x <= cal(50, s6) ? Rand(1, 2 * Q) : Rand(Q, 2 * Q));
+    if(x >= cal(85, s6))
+        n = 2 * Q;
 
+    vector<long long> vt(n);
+
+    for(int i = 0; i < n; i++) {
+        vt[i] = Rand(1, NMax);
+        if(x <= cal(60, s6)) {
+            if(i < n / 2)
+                vt[i] = Rand(1, K);
+        }
+    }
+    
+    random_shuffle(all(vt));
+
+    ll lmax = *max_element(all(vt)), lmin = *min_element(all(vt));
+    ll range = lmax - lmin;
+    
+    ll lt = Rand(0, n - 1);
+    if(x < cal(50, s6)) 
+        lt = min(lt, Rand(0, min(5 * N, n - 1)));
+    ll rt = Rand(lt, n - 1);
+
+    res = 0;
+    for(int i = lt; i <= rt; i++) {
+        if(res + vt[i] >= H - Rand(1, X)) {
+            rt = i;
+            break;
+        }
+        res += vt[i];
+    }
+
+    ll r = min(H - Rand(0, 100), res + Rand(1, Rand(1, 3) * lmin));
+    ll l = res - range - Rand(1, K);
+
+    inp << n << " " << l << " " << r << '\n';
+
+    random_shuffle(all(vt));
+
+    for(auto i : vt) 
+        inp << i << " ";
 }
 
 int main(){
     ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
     //srand(time(NULL));
-    srand(static_cast<unsigned int>(std::time(nullptr)));
-
-    
+    srand(static_cast<unsigned int>(std::time(nullptr)));    
 
     for (int i = btest; i <= etest; i++)
     {
@@ -269,10 +348,10 @@ int main(){
             sub3(i);
         else if(i <= s4)
             sub4(i);
-        // else if(i <= s5)
-        //     sub5(i);
-        // else 
-        //     sub6(i);
+        else if(i <= s5)
+            sub5(i);
+        else 
+            sub6(i);
     }
     return 0;
 }
