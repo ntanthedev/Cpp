@@ -8,7 +8,7 @@ using namespace std;
 #define	f0(i,n) for(int i=0;i<n;i++)
 #define f1(i,n) for(int i=1;i<=n;i++)
 typedef long long ll;
-const int btest = 1; 
+const int btest = 251; 
 const int etest = 300; // so luong test
 const int s1 = 50; //% so luong test theo tung sub
 const int s2 = 50 * 2;
@@ -105,10 +105,10 @@ void sub2(int x) {
     ofstream inp((to_string(x) + ".inp").c_str());
     ll res = 0, n;
     
-    n = (x <= cal(50, s2) ? Rand(20, 40) : Rand(39, 40));
+    n = (x <= s1 + cal(50, s2 - s1) ? Rand(20, 40) : Rand(39, 40));
     vector<long long> vt(n);
 
-    if(x <= cal(50, s2)) {
+    if(x <= s1 + cal(50, s2 - s1)) {
         f0(i, n) {
             if(i < cal(65, n)) 
                 vt[i] = Rand(1, 100);
@@ -116,7 +116,7 @@ void sub2(int x) {
                 vt[i] = Rand(1, N);            
         }
     }
-    else if(x <= cal(75, s2)) {
+    else if(x <= s1 + cal(75, s2 - s1)) {
         f0(i, n) {
             if(i < cal(65, n)) 
                 vt[i] = Rand(1, N);
@@ -164,10 +164,10 @@ void sub3(int x) {
 
     ll res = 0, n;
     
-    n = (x <= cal(50, s3) ? Rand(50, 80) : Rand(77, 80));
+    n = (x <= s2 + cal(50, s3 - s2) ? Rand(50, 80) : Rand(77, 80));
     vector<long long> vt(n);
 
-    if(x <= cal(50, s3)) {
+    if(x <= s2 + cal(50, s3 - s2)) {
         f0(i, n) {
             if(i <= cal(65, n)) 
                 vt[i] = Rand(1, N);
@@ -175,7 +175,7 @@ void sub3(int x) {
                 vt[i] = Rand(1, Q);            
         }
     }
-    else if(x <= cal(75, s3)) {
+    else if(x <= s2 + cal(75, s3 - s2)) {
         f0(i, n) {
             if(i < cal(65, n)) 
                 vt[i] = Rand(1, 5 * N);
@@ -223,13 +223,13 @@ void sub4(int x) {
     
     ll res = 0, n;
     
-    n = (x <= cal(50, s4) ? Rand(1, 2 * Q) : Rand(Q, 2 * Q));
+    n = (x <= s3 + cal(50, s4 - s3) ? Rand(1, 2 * Q) : Rand(Q, 2 * Q));
     if(x >= cal(80, s4))
         n = 2 * Q;
 
     vector<long long> vt(n);
 
-    ll w = (x <= cal(50, s4) ? Rand(1, K) : Rand(1e8, K)), cnt = Rand(1, n);
+    ll w = (x <= s3 + cal(50, s4 - s3) ? Rand(1, K) : Rand(1e8, K)), cnt = Rand(1, n);
 
     res = w * cnt;
 
@@ -248,8 +248,8 @@ void sub5(int x) {
     ll res = 0, n;
     const ll max_r = 1e9 + 5e4;
     
-    n = (x <= cal(50, s5) ? Rand(1, 2 * Q) : Rand(Q, 2 * Q));
-    if(x >= cal(80, s5))
+    n = (x <= s4 + cal(50, s5 - s4) ? Rand(1, 2 * Q) : Rand(Q, 2 * Q));
+    if(x >= s4 + cal(80, s5 - s4))
         n = 2 * Q;
     vector<long long> vt(n);
 
@@ -289,18 +289,16 @@ void sub6(int x) {
     const ll NMax = 46116860184273;
     ll res = 0, n;
     
-    n = (x <= cal(50, s6) ? Rand(1, 2 * Q) : Rand(Q, 2 * Q));
-    if(x >= cal(85, s6))
+    n = (x <= s5 + cal(50, s6 - s5) ? Rand(1e4, 2 * Q) : Rand(Q, 2 * Q));
+    if(x >= s5 + cal(85, s6 - s5))
         n = 2 * Q;
 
     vector<long long> vt(n);
 
     for(int i = 0; i < n; i++) {
         vt[i] = Rand(1, NMax);
-        if(x <= cal(60, s6)) {
-            if(i < n / 2)
-                vt[i] = Rand(1, K);
-        }
+        if(i < cal(69, n))
+            vt[i] = Rand(1, W);
     }
     
     random_shuffle(all(vt));
@@ -309,21 +307,33 @@ void sub6(int x) {
     ll range = lmax - lmin;
     
     ll lt = Rand(0, n - 1);
-    if(x < cal(50, s6)) 
+    if(x < s5 + cal(50, s6 - s5)) 
         lt = min(lt, Rand(0, min(5 * N, n - 1)));
     ll rt = Rand(lt, n - 1);
 
     res = 0;
     for(int i = lt; i <= rt; i++) {
-        if(res + vt[i] >= H - Rand(1, X)) {
+        if(res + vt[i] >= min(range + Rand(1, 2) * lmin, H - Rand(1, X))) {
             rt = i;
             break;
         }
         res += vt[i];
     }
 
-    ll r = min(H - Rand(0, 100), res + Rand(1, Rand(1, 3) * lmin));
-    ll l = res - range - Rand(1, K);
+    while(res < range) {
+        res += vt[rt];
+        rt++;
+    }
+
+    for(int i = rt, z = Rand(2, 10); i <= rt + z; i++) {
+        if(res + vt[i] > H - Rand(1, X))
+            break;
+        else 
+            res += vt[i];
+    }
+
+    ll r = min(H - Rand(0, 100), res + Rand(1, W));
+    ll l = res - range - Rand(1, 50);
 
     inp << n << " " << l << " " << r << '\n';
 

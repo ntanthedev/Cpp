@@ -17,6 +17,12 @@ int main(int argc, char* argv[]) {
         a[i] = inf.readLong();
     }
 
+    // long long  lmax = *max_element(a.begin() + 1, a.end());
+    // long long lmin = *min_element(a.begin() + 1, a.end());
+
+    // if(lmax - lmin > r - l)
+    //     quitf(_pe, "max - min > r - l");
+
     int m = ouf.readInt();
     vector<int> b(m + 1, 0);
 
