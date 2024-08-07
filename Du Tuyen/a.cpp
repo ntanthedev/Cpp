@@ -1,45 +1,32 @@
-//Written by: ntannn_
-//created in 07:56:38 - Tue 06/08/2024
-#include <bits/stdc++.h>
-// #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
-// #pragma GCC target("sse4,avx2,fma")
-#define fi first
-#define se second
-#define mp make_pair
-#define pb push_back
-#define eb emplace_back
-#define all(x) x.begin(), x.end()
-#define TIME (1.0 * clock() / CLOCKS_PER_SEC)
+//problem "a"
+//created in 10:23:49 - Tue 06/08/2024
+
+#include<bits/stdc++.h>
+
+#define int int64_t
+const int MOD = 1e9 + 7;
 
 using namespace std;
 
-typedef long long ll;
-typedef pair<int, int> ii;
-typedef pair<ll, ll> pll;
-typedef vector<int> vi;
-typedef vector<ll> vll;
-
-const int N = 1e6 + 10;
-const ll MOD = 1e9 + 7;
-
-
-
-void solve() {
+int32_t main() {
+    ios_base::sync_with_stdio(false); cin.tie(NULL);
     
-}
+    int n, m;
+    cin >> n >> m;
+    vector<int> dp(n + 1);
+    vector<int> b(n + 1);
 
-#define task "a"
-signed main() {
-    cin.tie(NULL);
-    ios_base::sync_with_stdio(false);
-    if(fopen(task ".inp", "r")) {
-        freopen(task ".inp", "r", stdin);
-        freopen(task ".out", "w", stdout);
+    for(int i = 1; i <= n; i++) 
+        cin >> b[i];
+
+    dp[1] = 1;
+    int f = b[1];
+    for(int i = 2; i <= n; i++) {
+        for(int j = 1; j <= m; j++) {
+            if(__gcd(j, f) == b[i]) 
+                dp[i] += dp[i - 1];
+            dp[i] %= MOD;
+        }
+        f = __gcd(b[i], f);
     }
-    int test_case = 1;
-    //cin >> test_case;
-    while(test_case--) {
-        solve();
-    }
-    // cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }
