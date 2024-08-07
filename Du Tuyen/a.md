@@ -1,29 +1,21 @@
-Cho $Q$ truy vấn, mỗi truy vấn có dạng một số nguyên $n$, tìm tất cả các ước nguyên tố của $n$.
+Một *chu kỳ* của một chuỗi là một tiền tố có thể được sử dụng để tạo ra toàn bộ chuỗi bằng cách lặp lại tiền tố đó. Lần lặp lại cuối cùng có thể là một phần. Ví dụ, các chu kỳ của `abcabca` là `abc`, `abcabc` và `abcabca`.
 
-## Input:
+Nhiệm vụ của bạn là tìm tất cả độ dài chu kỳ của một chuỗi.
 
-Vào từ tệp văn bản **ERAPRIME.INP** theo cấu trúc:
-- Dòng đầu tiên là số nguyên $Q$ $(1 \leq Q \leq 5 \times 10^5)$
-- $Q$ dòng tiếp theo, mỗi dòng gồm một số nguyên $n$ $(2 \leq n \leq 10^9)$
+## Đầu vào
+Dòng đầu vào duy nhất có một chuỗi có độ dài ~n~ bao gồm các ký tự a–z.
 
-## Ouput:
+## Đầu ra
+In tất cả các độ dài chu kỳ theo thứ tự tăng dần.
 
-Ghi ra file văn bản **ERAPRIME.OUT** gồm $Q$ dòng, dòng thứ $i$ là tổng số lượng các ước nguyên tố của truy vấn thứ $i$.
+## Ràng buộc
+- ~1 \le n \le 10^6~
 
-## Ví dụ
-
-### ERAPRIME.INP
+## Sample input
 ```
-2
-9
-24
+abcabca
 ```
-### ERAPRIME.OUT
+## Sample output
 ```
-3
-2 3
+3 6 7
 ```
-## Ràng buộc:
-- Có 30% số test ứng với 30% số điểm với $Q \leq 10$ và $n \leq 10^9$.
-- Có 40% số test ứng với 40% số điểm với $Q \leq 10^5$ và $n \leq 10^4$.
-- Có 30% số test ứng với 30% số điểm với $Q \leq 5 \times 10^5$ và $n \leq 10^6$.
