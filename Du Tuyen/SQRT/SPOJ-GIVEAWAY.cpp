@@ -2,14 +2,11 @@
 //created in 23:36:20 - Mon 05/08/2024
 
 #include<bits/stdc++.h>
-
-#define int long long
-
 #define all(x) x.begin(), x.end()
 
 using namespace std;
 
-const int N = 5e5 + 5;
+const int N = 5e5 + 9;
 
 int n, a[N];
 vector<int> s[N];
@@ -19,7 +16,7 @@ int32_t main() {
     
     cin >> n;
     int sz = sqrt(n);
-    int m = (n + sz - 1) / sz; 
+    int m = n / (sz - 1) + 1; 
     for(int i = 0; i < n; i++) {
         cin >> a[i];
         s[i / sz].emplace_back(a[i]);
@@ -38,7 +35,7 @@ int32_t main() {
             x--, y--;
             if(x / sz == y / sz) {
                 for(int i = x; i <= y; i++) 
-                    if(a[i] >= c) 
+                    if(a[i] >= z) 
                         cnt++;    
                 cout << cnt << '\n';
                 continue;
@@ -48,27 +45,21 @@ int32_t main() {
                 if(a[i] >= z) 
                     cnt++;
 
-            for(int i = (y / sz) * sz; i <= y; i++) 
+            for(int i = y / sz * sz; i <= y; i++) 
                 if(a[i] >= z) 
                     cnt++;
             
-            for(int i = x / sz + 1; i < y / sz; i++) { 
-                int t = (lower_bound(all(s[i]), z) - s[i].begin());
-                cnt += s[i].size() - t;
-            }
+            for(int i = x / sz + 1; i < y / sz; i++) 
+                cnt += s[i].size() - (lower_bound(all(s[i]), z) - s[i].begin());
             
             cout << cnt << '\n';
         }
         else {
-            x--;
-            for(int i = 0; i < s[x / sz].size(); ++i) {
-                if(s[x / sz][i] == a[x]) {
-                    s[x / sz][i] = y;
-                    a[x] = y;
-                    sort(all(s[x / sz]));
-                    break;
-                }
-            }
+            int t = x / sz;
+            auto it = lower_bound(all(s[t]), a[x]);
+            *it = y;
+            sort(all(s[t]));
+            a[x] = y;
         }
     }
 }
