@@ -25,6 +25,10 @@ ll Rand(ll l, ll h)
                 rand()) % (h - l + 1);
 }
 
+int Randd(int l, int r) {
+    return uniform_int_distribution<int>(l,r) (rd);
+} 
+
 #define maxn 2003
 //#define A 1000000000
 const ll A = 1e18;
