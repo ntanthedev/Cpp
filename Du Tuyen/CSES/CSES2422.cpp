@@ -12,9 +12,9 @@ int n, k;
 bool check(int x) {
     int cnt = 0;
     for(int i = 1; i <= n; i++) {
-        cnt += x / i;
+        cnt += min(n, x / i);
     }
-    cout << cnt;
+    // cout << cnt;
     return (cnt >= k);
 }
 
@@ -24,9 +24,6 @@ int32_t main() {
     cin >> n;
     k = n * n / 2 + 1;
     int l = 1, r = n * n, ans = 0;
-
-    check(3);
-    exit(0);
 
     while(l <= r) {
         int mid = (l + r) / 2;
