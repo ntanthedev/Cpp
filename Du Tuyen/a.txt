@@ -1,26 +1,3 @@
-danh
-bảo
-kiên
-lệ
-tson
-hoàng
-công
-chung
-phương
-thơ
-tminh
-tú
-tân
-nhật 
-sơn
-minh
-tuấn
-đức anh 
-nhật anh
-minh thiên 
-trọng sơn 
-hoàng long
-đình sơn 
-mạnh cường 
-dnhat 
-giao thức
+sub 1
+sub 2
+sub 3

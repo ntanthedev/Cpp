@@ -8,25 +8,26 @@ using namespace std;
 #define	f0(i,n) for(int i=0;i<n;i++)
 #define f1(i,n) for(int i=1;i<=n;i++)
 typedef long long ll;
-const int btest = 1; 
-const int etest = 200; // so luong test
+const int btest = 31; 
+const int etest = 150; // so luong test
 const int test_for_sub1 = 20; //% so luong test theo tung sub
-const int test_for_sub2 = 20;
-const int test_for_sub3 = 60;
+const int test_for_sub2 = 30;
+const int test_for_sub3 = 50;
 const int s1 = double(etest) / 100.0 * test_for_sub1 * 1.0;
 const int s2 = s1 + double(etest) / 100.0 * test_for_sub2 * 1.0;
+const int s3 = etest - s2;
 
 
-ll Rand(ll l, ll h)
-{
-    return l + ((ll)rand() * (RAND_MAX + 1) * (RAND_MAX + 1) * (RAND_MAX + 1) +
-                (ll)rand() * (RAND_MAX + 1) * (RAND_MAX + 1) +
-                (ll)rand() * (RAND_MAX + 1) +
-                rand()) % (h - l + 1);
-}
+// ll Rand(ll l, ll h)
+// {
+//     return l + ((ll)rand() * (RAND_MAX + 1) * (RAND_MAX + 1) * (RAND_MAX + 1) +
+//                 (ll)rand() * (RAND_MAX + 1) * (RAND_MAX + 1) +
+//                 (ll)rand() * (RAND_MAX + 1) +
+//                 rand()) % (h - l + 1);
+// }
 
 mt19937_64 rd(static_cast<unsigned int>(std::time(nullptr)));
-ll Randd(ll l, ll r) {
+ll Rand(ll l, ll r) {
     return uniform_int_distribution<ll>(l,r) (rd);
 } 
 
@@ -50,47 +51,61 @@ int cal(int x, int n) {
 void sub1(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
-    ll t, n, l, r, m, a, b, q, k;
-    
-    t = Rand(1, 30);
-    if(x >= cal(80, s1))
-        t = Rand(20, 30);
-    inp << t << '\n';
-    for(int i = 1; i <= t; i++) {
-        l = Randd(1, A - W);
-        if(i <= cal(60, t))
-            l = Randd(1, W);
-        r = Rand(l, l + W);
-        inp << l << " " << r << '\n';
+
+    int n = Rand(1, 20);
+    int k = Rand(1, n);
+
+    inp << n << " " << k << '\n';
+
+    for(int i = 1; i <= n; i++) {
+        ll a = Rand(-K, K);
+        inp << a << " ";
     }
 }
 
 void sub2(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
-    ll t, n, l, r, m, a, q, k, b;
-    
-    t = Rand(1, 100);
-    if(x >= cal(80, s2))
-        t = Rand(80, 100);
-    inp << t << '\n';
-    for(int i = 1; i <= t; i++) {
-        r = Rand(1, K);
-        l = Randd(1, r - 10 * W);
-        inp << l << " " << r << '\n';
+
+    int n = Rand(100, 2000);
+    int k = Rand(1, n);
+
+    inp << n << " " << k << '\n';
+
+    for(int i = 1; i <= n; i++) {
+        ll a = Rand(-W, W);
+        if(x == 75)
+            a = Rand(-5, 5);
+        inp << a << " ";
     }
 }
 
 void sub3(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
-    ll t, n, l, r, m, a, b, q, k;
-    t = Rand(1, 100);
-    inp << t << '\n';
-    for(int i = 1; i <= t; i++) {
-        r = Rand(1, A);
-        l = Randd(1, r - 5e7);
-        inp << l << " " << r << '\n';
+    
+    int n = Rand(500, 2000);
+    if(x >= cal(60, s3))
+        n = Rand(1800, 2000);
+    int k = Rand(1, n);
+
+    if(x >= 156)
+        k = n - Rand(1, 3);
+
+    inp << n << " " << k << '\n';
+
+    for(int i = 1; i <= n; i++) {
+        ll a = Rand(-K, K);
+        if(x >= 150 && x <= 153) {
+            a = Rand(-K, -K + W);
+        }
+        if(x == 149 || x == 148) {
+            a = K;
+            if(i & 1)
+                a = -K;
+        }
+
+        inp << a << " ";
     }
 }
 int main(){
