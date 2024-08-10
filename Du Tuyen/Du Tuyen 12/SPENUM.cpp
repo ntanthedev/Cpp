@@ -4,7 +4,7 @@
 #include<bits/stdc++.h>
 
 // #define int int64_t
-#define TIME (1.0 * clock() / CLOCKS_PER_SEC)
+// #define TIME (1.0 * clock() / CLOCKS_PER_SEC)
 const int N = 1e6;
 
 using namespace std;
@@ -40,5 +40,5 @@ int main() {
         cout << s[b] - s[a - 1] << '\n';
     }
     
-    cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
+    // cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }

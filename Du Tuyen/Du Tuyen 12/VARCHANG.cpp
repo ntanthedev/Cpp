@@ -2,6 +2,7 @@
 //created in 08:07:41 - Sat 10/08/2024
 
 #include<bits/stdc++.h>
+// #define TIME (1.0 * clock() / CLOCKS_PER_SEC)
 
 const int32_t N = 1e3;
 
@@ -416,7 +417,11 @@ bigint dp[N + 10];
 
 int32_t main() {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
-    
+    #define task "VARCHANG"
+    if(fopen(task ".inp", "r")) {
+        freopen(task ".inp", "r", stdin);
+        freopen(task ".out", "w", stdout);
+    }
     dp[1] = 0;
     bigint res = 0;
     for(int i = 2; i <= N; i++) {
@@ -427,4 +432,5 @@ int32_t main() {
     while(cin >> n) {
         cout << dp[n] << '\n';
     }
+    //  cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }
