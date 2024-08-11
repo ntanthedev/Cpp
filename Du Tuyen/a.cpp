@@ -1,30 +1,32 @@
-//problem "a"
-//created in 00:58:20 - Sun 11/08/2024
-
-#include<bits/stdc++.h>
-
-#define int int64_t
-
+#include <bits/stdc++.h>
+#define ll long long
 using namespace std;
-
-int32_t main() {
-    ios_base::sync_with_stdio(false); cin.tie(NULL);
-    
-    int n, q;
-    cin >> n >> q;
-    vector<int> a(n + 1);
-    for(int i = 1; i <= n; i++) 
-        cin >> a[i];
-    int mmax = *max_element(a.begin() + 1, a.end());
-    vector<vector<int>> s(mmax + 1, vector<int>(n + 1, 0));
+ll n, Q, a[200009];
+map<ll, deque<ll>> D;
+void khai() {
+    cin >> n >> Q;
     for(int i = 1; i <= n; i++) {
-        for(int j = 0; j <= mmax; j++)
-            s[j][i] = s[j][i - 1];
-        s[a[i]][i]++;
+        cin >> a[i];
+        D[a[i]].push_back(i);
     }
-    while(q--) {
+    while(Q--) {
         int l, r, k;
         cin >> l >> r >> k;
-        cout << s[k][r] - s[k][l - 1] << '\n';
+        for(int x: D[k]) {
+            // cout<<x<<" ";
+        }
+        ll Q = upper_bound(D[k].begin(), D[k].end(), r) - D[k].begin();
+        ll E = lower_bound(D[k].begin(), D[k].end(), l) - D[k].begin();
+        cout << Q - E << '\n';
     }
+}
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    if(fopen("a.inp", "r")) {
+        freopen("a.inp", "r", stdin);
+        freopen("a.out", "w", stdout);
+    }
+    khai();
 }
