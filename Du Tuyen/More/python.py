@@ -24,6 +24,6 @@ def generate_random_password(length: int = 12) -> str:
 if __name__ == "__main__":
     
     # password_hash = generate_password_hash(password)
-    for i in range(2, 23):
+    for i in range(2, 24):
         print(generate_random_password())
     # print(f"Generated password hash: {password_hash}")

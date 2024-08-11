@@ -8,11 +8,11 @@ using namespace std;
 #define	f0(i,n) for(int i=0;i<n;i++)
 #define f1(i,n) for(int i=1;i<=n;i++)
 typedef long long ll;
-const int btest = 31; 
-const int etest = 150; // so luong test
-const int test_for_sub1 = 20; //% so luong test theo tung sub
-const int test_for_sub2 = 30;
-const int test_for_sub3 = 50;
+const int btest = 1; 
+const int etest = 50; // so luong test
+const int test_for_sub1 = 0; //% so luong test theo tung sub
+const int test_for_sub2 = 25;
+const int test_for_sub3 = 75;
 const int s1 = double(etest) / 100.0 * test_for_sub1 * 1.0;
 const int s2 = s1 + double(etest) / 100.0 * test_for_sub2 * 1.0;
 const int s3 = etest - s2;
@@ -52,31 +52,29 @@ void sub1(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
 
-    int n = Rand(1, 20);
-    int k = Rand(1, n);
-
-    inp << n << " " << k << '\n';
-
-    for(int i = 1; i <= n; i++) {
-        ll a = Rand(-K, K);
-        inp << a << " ";
-    }
+    
 }
 
 void sub2(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
 
-    int n = Rand(100, 2000);
-    int k = Rand(1, n);
-
-    inp << n << " " << k << '\n';
-
+    int n = Rand(1, N);
+    if(x >= cal(50, s2)) 
+        n = Rand(N - 100, N);
+    int q = Rand(1, Q);
+    if(n >= cal(50, s2)) 
+        q = Rand(1e5 - N, 1e5);
+    vector<int> a(n + 1);
+    inp << n << " "  << q << '\n';
     for(int i = 1; i <= n; i++) {
-        ll a = Rand(-W, W);
-        if(x == 75)
-            a = Rand(-5, 5);
-        inp << a << " ";
+        a[i] = Rand(1, N);
+        inp << a[i] << " ";
+    }
+    for(int i = 1; i <= q; i++) {
+        int l = Rand(1, n), r = Rand(l, n), k = Rand(1, N);
+        int t = Rand(1, 2);
+        inp << l << " " << r << " " << (t & 1 ? a[Rand(l, r)] : Rand(1, N)) <<  '\n';
     }
 }
 
@@ -84,28 +82,39 @@ void sub3(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
     
-    int n = Rand(500, 2000);
-    if(x >= cal(60, s3))
-        n = Rand(1800, 2000);
-    int k = Rand(1, n);
 
-    if(x >= 156)
-        k = n - Rand(1, 3);
-
-    inp << n << " " << k << '\n';
-
+    int n = Rand(5 * N, Q);
+    if(x >= cal(50, s3)) 
+        n = Rand(Q - 100, Q);
+    int q = Rand(1, Q);
+    if(n >= cal(50, s3)) 
+        q = Rand(Q - N, Q);
+    if(x >= 45)
+        q = Q, n = Q;
+    inp << n << " "  << q << '\n';
+    vector<int> a(n + 1);
     for(int i = 1; i <= n; i++) {
-        ll a = Rand(-K, K);
-        if(x >= 150 && x <= 153) {
-            a = Rand(-K, -K + W);
+        a[i] = Rand(1, Q);
+        inp << a[i] << " ";
+    }
+    if(x >= 45) {
+        vector<int> vt;
+        for(int i = 1; i <= n; i++) {
+            vt.push_back(i);
         }
-        if(x == 149 || x == 148) {
-            a = K;
-            if(i & 1)
-                a = -K;
+        sort(all(vt));
+        vt.resize(unique(all(vt)) - vt.begin());
+        random_shuffle(all(vt));
+        for(int i = 1; i <= q; i++) {
+            int l = 1, r = n;
+            inp << l << " " << r << " " << a[Rand(0, vt.size()-1)] << '\n';
         }
-
-        inp << a << " ";
+        return;
+    }
+    for(int i = 1; i <= q; i++) {
+        int l = Rand(1, n), r = Rand(l, n);
+        int t = Rand(1, 2);
+        inp << l << " " << r << " " << (t & 1 ? a[Rand(l, r)] : Rand(1, 1e5))  <<  '\n';
     }
 }
 int main(){

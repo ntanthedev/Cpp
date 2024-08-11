@@ -1,50 +1,41 @@
-#include <cstdio>
-#include <vector>
-#include <algorithm>
+#include<bits/stdc++.h>
 using namespace std;
+#define se second
+#define fi first
+#define int long long
 
-typedef long long ll;
-typedef pair <ll, ll> ii;
+const int Nmax = 1e6 + 5;
+const int LogN = 17;
+const int N = 1e6 + 207;
+const int MOD = 1e18 + 3;
 
-const int Inf = 1000000000;
-const int Maxn = 2005;
+int n , k , h , q;
+int a[Nmax];
+vector <int> idx[Nmax];
 
-int n, k;
-int a[Maxn];
-ii has[Maxn];
-int res;
-
-bool Check(int h)
-{
-	for (int i = 0; i < n; i++)
-		has[i] = ii(ll(i) * ll(h) - ll(a[i]), ll(i) * ll(h) + ll(a[i]));
-	sort(has, has + n);
-	vector <ll> seq;
-	for (int i = 0; i < n; i++) {
-		int ind = upper_bound(seq.begin(), seq.end(), has[i].second) - seq.begin();
-		if (ind == seq.size()) seq.push_back(has[i].second);
-		else seq[ind] = has[i].second;
-	}
-	return seq.size() >= n - k;
-}
-
-int main()
-{
+main(){
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+	
 	#define task "code"
 	if(fopen(task ".inp", "r")) {
 		freopen(task ".inp", "r", stdin);
 		freopen(task ".out", "w", stdout);
 	}
-	scanf("%d %d", &n, &k);
-	if (n <= 1 || abs(n - k) <= 1) { printf("0\n"); return 0; }
-	for (int i = 0; i < n; i++)
-		scanf("%d", &a[i]);
-	ll l = 0, r = 2 * Inf;
-	while (l <= r) {
-		int m = int(l + r >> 1ll);
-		if (Check(m)) { res = m; r = m - 1; }
-		else l = m + 1;
-	}
-	printf("%d\n", res);
-	return 0;
+
+    cin >> n >> q;
+    for (int i = 1 ; i <= n ; i++)
+    {
+        cin >> a[i];
+        idx[a[i]].push_back(i);
+    }
+
+    while(q--)
+    {
+        int l , r , k;
+        cin >> l >> r >> k;
+        int L = lower_bound(idx[k].begin() , idx[k].end() , l) - idx[k].begin();
+        int R = upper_bound(idx[k].begin() , idx[k].end() , r) - idx[k].begin();
+        cout << R - L << '\n';
+    }
 }
