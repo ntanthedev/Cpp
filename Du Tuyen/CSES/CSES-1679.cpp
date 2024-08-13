@@ -15,12 +15,35 @@ int32_t main() {
     cin >> n >> m;
 
     vector<vector<int>> adj(n + 1, vector<int>());
-    vector<bool> b(n + 1);
+    vector<int> b(n + 1, false);
+    vector<int> ans;
+    queue<int> f;
 
     for(int i = 1, u, v; i <= m; i++) {
         cin >> u >> v;
         adj[u].push_back(v);
+        b[v]++;
     }
 
-    
+    for(int i = 1; i <= n; i++) {
+        if(!b[i]) 
+            f.push(i);
+    }
+
+    while(!f.empty()) {
+        int u = f.front(); f.pop();
+        ans.push_back(u);
+        for(auto v : adj[u]) {
+            b[v]--;
+            if(!b[v]) {
+                f.push(v);
+            }
+        }
+    }
+
+    if(ans.size() < n) 
+        cout << "IMPOSSIBLE";
+    else 
+        for(auto i : ans) 
+            cout << i << " ";
 }
