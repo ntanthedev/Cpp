@@ -9,10 +9,10 @@ using namespace std;
 #define f1(i,n) for(int i=1;i<=n;i++)
 typedef long long ll;
 const int btest = 1; 
-const int etest = 50; // so luong test
+const int etest = 20; // so luong test
 const int test_for_sub1 = 0; //% so luong test theo tung sub
-const int test_for_sub2 = 25;
-const int test_for_sub3 = 75;
+const int test_for_sub2 = 50;
+const int test_for_sub3 = 100;
 const int s1 = double(etest) / 100.0 * test_for_sub1 * 1.0;
 const int s2 = s1 + double(etest) / 100.0 * test_for_sub2 * 1.0;
 const int s3 = etest - s2;
@@ -59,63 +59,39 @@ void sub2(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
 
-    int n = Rand(1, N);
-    if(x >= cal(50, s2)) 
-        n = Rand(N - 100, N);
-    int q = Rand(1, Q);
-    if(n >= cal(50, s2)) 
-        q = Rand(1e5 - N, 1e5);
-    vector<int> a(n + 1);
-    inp << n << " "  << q << '\n';
-    for(int i = 1; i <= n; i++) {
-        a[i] = Rand(1, N);
-        inp << a[i] << " ";
+    int n = Rand(1e5, 2e5);
+    n += (n & 1);
+
+    inp << n + 1 << '\n';
+    vector<ll> vt;
+    for(int i = 1; i <= n / 2; i++) {
+        ll t = Rand(1, 1e18);
+        vt.emplace_back(t);
+        vt.emplace_back(t);
     }
-    for(int i = 1; i <= q; i++) {
-        int l = Rand(1, n), r = Rand(l, n), k = Rand(1, N);
-        int t = Rand(1, 2);
-        inp << l << " " << r << " " << (t & 1 ? a[Rand(l, r)] : Rand(1, N)) <<  '\n';
-    }
+    vt.push_back(Rand(1, 1e18));
+    random_shuffle(all(vt));
+    for(auto i : vt) 
+        inp << i << " " ;
 }
 
 void sub3(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
     
+    int n = 1e7;
 
-    int n = Rand(5 * N, Q);
-    if(x >= cal(50, s3)) 
-        n = Rand(Q - 100, Q);
-    int q = Rand(1, Q);
-    if(n >= cal(50, s3)) 
-        q = Rand(Q - N, Q);
-    if(x >= 45)
-        q = Q, n = Q;
-    inp << n << " "  << q << '\n';
-    vector<int> a(n + 1);
-    for(int i = 1; i <= n; i++) {
-        a[i] = Rand(1, Q);
-        inp << a[i] << " ";
+    inp << n + 1 << '\n';
+    vector<ll> vt;
+    for(int i = 1; i <= n / 2; i++) {
+        ll t = Rand(1, 1e18);
+        vt.emplace_back(t);
+        vt.emplace_back(t);
     }
-    if(x >= 45) {
-        vector<int> vt;
-        for(int i = 1; i <= n; i++) {
-            vt.push_back(i);
-        }
-        sort(all(vt));
-        vt.resize(unique(all(vt)) - vt.begin());
-        random_shuffle(all(vt));
-        for(int i = 1; i <= q; i++) {
-            int l = 1, r = n;
-            inp << l << " " << r << " " << a[Rand(0, vt.size()-1)] << '\n';
-        }
-        return;
-    }
-    for(int i = 1; i <= q; i++) {
-        int l = Rand(1, n), r = Rand(l, n);
-        int t = Rand(1, 2);
-        inp << l << " " << r << " " << (t & 1 ? a[Rand(l, r)] : Rand(1, 1e5))  <<  '\n';
-    }
+    vt.push_back(Rand(1, 1e18));
+    random_shuffle(all(vt));
+    for(auto i : vt) 
+        inp << i << " " ;
 }
 int main(){
     ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);

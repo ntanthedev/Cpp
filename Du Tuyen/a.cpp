@@ -17,5 +17,15 @@ int32_t main() {
         cin >> a[i];
         max_bit = max(max_bit, __lg(a[i]));
     }
+    int32_t cnt[64];
+    for(int k = 0; k <= max_bit; k++) {
+        for(int i = 1; i <= n; i++) {
+            if(a[i] >> k & 1)
+                cnt[k]++;
+            if(cnt[k] == 3) 
+                return cout << 3, 0;
+        }
+    }
 
-   for(int i = 1; i <= n; i++) cin >> a[i] }
+    
+}
