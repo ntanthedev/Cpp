@@ -41,8 +41,12 @@ void solve(int u, int v) {
             }
     }
 
+    // cout << "check:" << u << " " << v << '\n';
+
     if(u == v) 
         return cout << ans.second << " " << ans.first << '\n', void();
+
+    // cout <<  "jkh";
 
     for(int i = 17; i >= 0; i--) {
         if(par[u][i] != par[v][i]) {
@@ -53,7 +57,8 @@ void solve(int u, int v) {
         }
     }
 
-    ans = {max({ans.first, maxc[u][0], maxc[v][0]}), min({ans.second, minc[u][0], minc[v][0]})};
+    ans.first = max({ans.first, maxc[u][0], maxc[v][0]}); 
+    ans.second = min({ans.second, minc[u][0], minc[v][0]});
 
     cout << ans.second << " " << ans.first << '\n';
 }
@@ -68,14 +73,14 @@ int32_t main() {
         adj[v].push_back({u, w});
     }
 
-    h[1] = 0;
+    // h[1] = 0;
     dfs(1, 1);
     for(int i = 1; i <= 17; i++) 
         for(int u = 1; u <= n; u++) {
+            maxc[u][i] = max(maxc[u][i - 1], maxc[par[u][i - 1]][i - 1]);
+            minc[u][i] = min(minc[u][i - 1], minc[par[u][i - 1]][i - 1]);
             par[u][i] = par[par[u][i - 1]][i - 1];
-            maxc[u][i] = max(maxc[u][i - 1], maxc[maxc[u][i - 1]][i - 1]);
-            minc[u][i] = min(minc[u][i - 1], minc[minc[u][i - 1]][i - 1]);
-    }
+        }
 
     cin >> Q;
 
