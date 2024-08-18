@@ -1,112 +1,96 @@
-<<<<<<< HEAD
-//Written by: ntannn_
-//created in 23:01:03 - Wed 14/08/2024
-#include <bits/stdc++.h>
-// #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
-// #pragma GCC target("sse4,avx2,fma")
+#include<bits/stdc++.h>
+#pragma GCC optimize("O3,unroll-loops")
+#pragma GCC target("avx2")
 #define fi first
 #define se second
 #define mp make_pair
 #define pb push_back
 #define eb emplace_back
+#define lb lower_bound
+#define ub upper_bound
 #define all(x) x.begin(), x.end()
-#define TIME (1.0 * clock() / CLOCKS_PER_SEC)
 
 using namespace std;
 
-typedef long long ll;
-typedef pair<int, int> ii;
-typedef pair<ll, ll> pll;
-typedef vector<int> vi;
-typedef vector<ll> vll;
-
-const int N = 1e7 + 10;
-const ll MOD = 1e9 + 7;
-
-template<typename T> inline void read(T& x) {
+template <typename T> inline void read (T &x) {
     bool b = 0;
     char c;
-    while(!isdigit(c = getchar()) && c != '-')
-        ;
-    if(c == '-') {
+    while (!isdigit (c = getchar()) && c != '-');
+    if (c == '-') {
         c = getchar();
         b = 1;
     }
     x = c - 48;
-    while(isdigit(c = getchar())) {
+    while (isdigit(c = getchar())) {
         x = (x << 3) + (x << 1) + (c - 48);
     }
-    if(b) {
-        x = -x;
+    if (b) {
+        x=-x;
     }
 }
 
-ll n;
+typedef long double ld;
+typedef long long ll;
+typedef pair<int,int> ii;
+typedef pair<ll,ll> pll;
+typedef vector<int> vi;
+typedef vector<ll> vll;
+typedef vector<vi> vvi;
+typedef vector<vll> vvl;
+typedef vector<ii> vii;
+typedef unordered_map<int, int> umii;
+typedef unordered_map<int, bool> umib;
+typedef unordered_map<ll, ll> umll;
 
-void solve() {
-    read(n);
-    ll x = 0, tmp;
-    for(int i = 1; i <= n; i++) {
-        read(tmp);
-        x ^= tmp;
-    }
-    cout << x;
+const int N = 1e6+10;
+const ll MOD = 1e9+7;
+
+bool is_prime(int x)
+{
+    for(int i = 2 ; i * i <= x ; i++)
+        if(x%i == 0)
+            return 0;
+    return 1;
 }
+//----------------------------
+ll Q, a, b;
 
-#define task "code"
-signed main() {
-    cin.tie(NULL);
-    ios_base::sync_with_stdio(false);
-    if(fopen(task ".inp", "r")) {
-        freopen(task ".inp", "r", stdin);
-        freopen(task ".out", "w", stdout);
-    }
-    int test_case = 1;
-    //cin >> test_case;
-    while(test_case--) {
+//----------------------------
+ll sum(ll x){
+    if(x == 0)
+        return 0;
+    if(x == 1)
+        return 1;
+    return ((x+1)/2)*((x+1)/2) + sum(x/2);
+}
+void solve(){
+    ll res = 0;    
+    ll reso = 0, rese = 0;
+    //reso = ((b+1)/2)*((b+1)/2) - (a/2)*(a/2);
+    rese = sum(b) - sum(a-1);
+    //cout << reso <<" " << rese << " ";
+    cout <<  rese <<'\n';  
+}
+ 
+void init(){
+    cin >> Q;
+    while(Q--){
+        cin >> a >> b;
         solve();
     }
-    // cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }
-=======
-#include <bits/stdc++.h>
-using namespace std;
-
-// Return sum of product of each element
-// with each element after it
-long long findSumofProduct(int arr[], int n)
-{
-    long long suffix_sum = arr[n - 1];
-
-    // Finding product of array elements and
-    // suffix sum.
-    long long res = 0;
-    for (int i = n - 2; i >= 0; i--) {
-
-        res += (suffix_sum * arr[i]);
-
-        // finding suffix sum
-        suffix_sum += arr[i];
+//-----TASK----------
+#define task "code"
+//-------------------
+int32_t main(){
+    //---------------------------------
+    cin.tie(NULL);
+    ios_base::sync_with_stdio(false);
+    if(fopen(task".inp","r")){
+        freopen(task".out","w",stdout);
+        freopen(task".inp","r",stdin);
     }
-
-    return res;
+    //---------------------------------
+    init();
+    //solve();
 }
-
-const int maxN=1000005;
-// Driven Program
-int n, arr[maxN];
-int main()
-{
-    #define task "code"
-    if(fopen(task ".inp", "r")) {
-        freopen(task ".inp", "r", stdin);
-        freopen(task ".out", "w", stdout);
-    }
-    cin >> n;
-    for (int i=0; i<n; i++)
-        cin >> arr[i];
-
-    cout << findSumofProduct(arr, n) << endl;
-    return 0;
-}
->>>>>>> a3d6f1bc661e497ea3816158ccd23fb77f4f1960

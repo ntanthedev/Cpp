@@ -1,63 +1,45 @@
-//problem "a"
-//created in 22:51:50 - Sat 17/08/2024
-
-#include<iostream>
-#include<map>
+//Written by: ntannn_
+//created in 20:54:45 - Sun 18/08/2024
+#include <bits/stdc++.h>
+// #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+// #pragma GCC target("sse4,avx2,fma")
+#define fi first
+#define se second
+#define mp make_pair
+#define pb push_back
+#define eb emplace_back
+#define all(x) x.begin(), x.end()
+#define TIME (1.0 * clock() / CLOCKS_PER_SEC)
 
 using namespace std;
 
-const int N = 1e5 + 5;
 typedef long long ll;
+typedef pair<int, int> ii;
+typedef pair<ll, ll> pll;
+typedef vector<int> vi;
+typedef vector<ll> vll;
 
-int n, m = 0;
-int tree[4 * N], a[N];
-map<long long, int> M;
+const int N = 1e6 + 10;
+const ll MOD = 1e9 + 7;
 
-void update(int id, int l, int r, int v, int w) {
-    if(l > v || r < v)
-        return;
-    if(l == r) 
-        return tree[id] = w, void();
-    int mid = (l + r) / 2;
-    update(id * 2, l, mid, v, w);
-    update(id * 2 + 1, mid + 1, r, v, w);
-    tree[id] = max(tree[id * 2], tree[id * 2 + 1]);
-}
 
-int get(int id, int l, int r, int u, int v) {
-    if(l > v || r < u) 
-        return 0;
-    if(u <= l && r <= v)
-        return tree[id];
-    int mid = (l + r) / 2;
-    return max(get(id * 2, l, mid, u, v), get(id * 2 + 1, mid + 1, r, u, v));
-}
 
-int main() {
-    ios_base::sync_with_stdio(false); cin.tie(NULL);
+void solve() {
     
-    #define task "test"
+}
+
+#define task "a"
+signed main() {
+    cin.tie(NULL);
+    ios_base::sync_with_stdio(false);
     if(fopen(task ".inp", "r")) {
         freopen(task ".inp", "r", stdin);
-        freopen("a.out", "w", stdout);
+        freopen(task ".out", "w", stdout);
     }
-
-    cin >> n;
-    for(int i = 1; i <= n; i++) {
-        cin >> a[i];
-        M[a[i]]++;
-    }    
-    
-    for(auto &it : M) {
-        it.second = ++m;
+    int test_case = 1;
+    //cin >> test_case;
+    while(test_case--) {
+        solve();
     }
-
-    for(int i = 1; i <= n; i++) 
-        a[i] = M[a[i]];
-
-    for(int i = 1; i <= n; i++) {
-        update(1, 0, m, a[i], get(1, 0, m, 0, a[i] - 1) + 1);
-    }
-
-    cout << get(1, 1, m, 1, m);
+    // cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }

@@ -9,7 +9,7 @@ using namespace std;
 #define f1(i,n) for(int i=1;i<=n;i++)
 typedef long long ll;
 const int btest = 1; 
-const int etest = 20; // so luong test
+const int etest = 200; // so luong test
 const int test_for_sub1 = 0; //% so luong test theo tung sub
 const int test_for_sub2 = 50;
 const int test_for_sub3 = 100;
@@ -59,39 +59,37 @@ void sub2(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
 
-    int n = Rand(1e5, 2e5);
-    n += (n & 1);
+    int n = Rand(1, 1e5);
+    if(x >= cal(50, s2))
+        n = 1e5;
 
-    inp << n + 1 << '\n';
-    vector<ll> vt;
-    for(int i = 1; i <= n / 2; i++) {
-        ll t = Rand(1, 1e18);
-        vt.emplace_back(t);
-        vt.emplace_back(t);
+    inp << n << '\n';
+
+    while(n--) {
+        int a = Rand(1, 1e6);
+        int b = Rand(a, 1e6);
+        inp << a << " " << b << '\n';
     }
-    vt.push_back(Rand(1, 1e18));
-    random_shuffle(all(vt));
-    for(auto i : vt) 
-        inp << i << " " ;
 }
 
 void sub3(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
     
-    int n = 1e7;
 
-    inp << n + 1 << '\n';
-    vector<ll> vt;
-    for(int i = 1; i <= n / 2; i++) {
-        ll t = Rand(1, 1e18);
-        vt.emplace_back(t);
-        vt.emplace_back(t);
+    int n = Rand(1, 1e5);
+    if(x >= s2 + cal(50, s3))
+        n = 1e5;
+
+    inp << n << '\n';
+
+    while(n--) {
+        int a = Rand(1, 1e9);
+        if(x >= s2 + cal(50, s3))
+            a = Rand(1e8, 1e9);
+        int b = Rand(a, 1e9);
+        inp << a << " " << b << '\n';
     }
-    vt.push_back(Rand(1, 1e18));
-    random_shuffle(all(vt));
-    for(auto i : vt) 
-        inp << i << " " ;
 }
 int main(){
     ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
