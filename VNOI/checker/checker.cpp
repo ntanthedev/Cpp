@@ -6,35 +6,22 @@ using namespace std;
 int main(int argc, char* argv[]) {
     registerTestlibCmd(argc, argv);
 
-    long long n = inf.readLong(), l = inf.readLong(), r = inf.readLong(), res = 0;
+    long long ans_s = ans.readLong(), out_s = ouf.readLong();
 
-    if(l > r) 
-        quitf(_wa, "test sai, l > r");
+    if(ans_s != out_s) 
+        quitf(_wa, "kich thuoc khong toi uu");
+    
+    long long n = inf.readLong(), aa = inf.readLong(), bb = inf.readLong();
+    long long a = ouf.readLong(), b = ouf.readLong();
 
-    vector<long long> a(n + 1);
+    if(a * b != ans_s)
+        quitf(_wa, "kich thuoc phong chua chinh xac");
 
-    for(int i = 1; i <= n; i++) {
-        a[i] = inf.readLong();
-    }
+    if(a > b) swap(a, b);
+    if(aa > bb) swap(aa, bb);
 
-    // long long  lmax = *max_element(a.begin() + 1, a.end());
-    // long long lmin = *min_element(a.begin() + 1, a.end());
+    if(a < aa || b < bb)
+        quitf(_wa, "kich thuoc mo rong am");
 
-    // if(lmax - lmin > r - l)
-    //     quitf(_pe, "max - min > r - l");
-
-    int m = ouf.readInt();
-    vector<int> b(m + 1, 0);
-
-    for(int i = 1; i <= m; i++) {
-        b[i] = ouf.readInt();
-        if(i > 1 && b[i] <= b[i - 1]) 
-            quitf(_wa, "sai thu tu vi tri");
-        res += a[b[i]];
-    }
-
-    if(l <= res && res <= r)
-        quitf(_ok, "ket qua dung");
-    else 
-        quitf(_wa, "ket qua sai");
+    quitf(_ok, "ket qua dung");
 }
