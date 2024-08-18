@@ -17,7 +17,7 @@ void update(int id, int l, int r, int v, int w) {
     if(l > v || r < v)
         return;
     if(l == r) 
-        return tree[id] += w, void();
+        return tree[id] = w, void();
     int mid = (l + r) / 2;
     update(id * 2, l, mid, v, w);
     update(id * 2 + 1, mid + 1, r, v, w);
@@ -55,11 +55,8 @@ int main() {
     for(int i = 1; i <= n; i++) 
         a[i] = M[a[i]];
 
-    for(int i = 1; i <= n; i++) cerr << a[i] << " "; cerr << '\n';
-
     for(int i = 1; i <= n; i++) {
-        update(1, 1, m, a[i], get(1, 1, m, 1, a[i] - 1) + 1);
-        cerr << i << ": " << get(1, 1, m, 1, a[i]) << '\n';
+        update(1, 0, m, a[i], get(1, 0, m, 0, a[i] - 1) + 1);
     }
 
     cout << get(1, 1, m, 1, m);

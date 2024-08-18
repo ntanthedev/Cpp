@@ -6,14 +6,14 @@
 using namespace std;
 
 typedef long long ll;
-mt19937_64 rd(1);
+mt19937_64 rd(time(nullptr));
 
 ll Rand(ll l, ll r) {
     assert(l <= r);
     return uniform_int_distribution<ll> (l, r) (rd);
 }
 
-const int end_test = 5;
+const int end_test = 50;
 
 int32_t main() {
 
@@ -24,10 +24,10 @@ int32_t main() {
     for(int i = 1; i <= end_test; i++) { 
         ofstream inp("test.inp");
         
-        int n = Rand(1, 10);
+        int n = Rand(1, 100);
         inp << n << '\n';
         for(int i = 1; i <= n; i++) {
-            int a = Rand(1, 10);
+            int a = Rand(1, 100);
             inp << a << " ";
         }
         
