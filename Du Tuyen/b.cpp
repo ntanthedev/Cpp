@@ -1,66 +1,71 @@
+//Written by: Jethro_
+//----------------------
 #include <bits/stdc++.h>
 using namespace std;
 
-int mod = 1e9 + 7;
-long long dp[100005][19][2][2][4][2];
+const int N = 5e5 + 5;
 
-string st;
+int n, m, oo = 1e6;
+int a[N], tree[N * 4], ans[N];
 
-long long cal(int i, int lo, int rem, bool ar1, bool ar2, int ar0, bool ok) {
-    if (i == 0) return !rem;
-    if (lo && dp[i][rem][ar1][ar2][ar0][ok] != -1) return dp[i][rem][ar1][ar2][ar0][ok];
+vector<pair<int, int>> offline[N];
 
-    long long res = 0, limit = (lo ? 9 : (st[st.size() - i] - '0'));
-    for (int d = 0; d <= limit; ++d) {
+map<int, int> M;
 
-        int newa, newb, newc;
-        newa = ar1 || (d % 3 == 1);
-        newb = ar2 || (d % 3 == 2);
-        newc = ar0 + (d % 3 == 0 && (!ok || d != 0));
-
-        if (newa && newb || newc >= 2) continue;
-
-        res += cal(i - 1, lo || (d < limit), (rem * 10 + d) % 19, newa, newb, newc, ok & (d == 0));
-        res %= mod;
+void update(int p, int val, int id = 1, int l = 1, int r = n) {
+    if (p > r || p < l) return;
+    if (l == r) {
+        tree[id] = val;
+        return;
     }
 
-    return (lo ? dp[i][rem][ar1][ar2][ar0][ok] = res : res);
+    int mid = (l + r) / 2;
+    update(p, val, id * 2, l, mid);
+    update(p, val, id * 2 + 1, mid + 1, r);
+    tree[id] = min(tree[id * 2], tree[id * 2 + 1]);
 }
-//1 2
-//3
 
-long long cc() {
+int query(int u, int v, int id = 1, int l = 1, int r = n) {
+    if (u > r || v < l) return oo;
+    if (l >= u && r <= v) return tree[id];
 
-    vector<int> mark(3, 0); long long s = 0;
-    for (int i = 0; i < st.size(); ++i) {
-        mark[1] += ((st[i] - '0') % 3 == 1);
-        mark[2] += ((st[i] - '0') % 3 == 2);
-        mark[0] += ((st[i] - '0') % 3 == 0);
-        s = (s * 10 + (st[i] - '0')) % 19;
-        if (mark[1] && mark[2] || mark[0] >= 2) return 0;
-    }
-
-    return !s;
+    int mid = (l + r) / 2;
+    return min(query(u, v, id * 2, l, mid), query(u, v, id * 2 + 1, mid + 1, r));
 }
+
 void solve() {
+    cin >> n >> m;
 
-    string l, r; cin >> l >> r;
+    for (int i = 1; i <= n; ++i)
+        cin >> a[i];
 
-    st = l;
-    long long a = cal(l.size(), 0, 0, 0, 0, 0, 1), more = cc();
-    st = r;
-    long long b = cal(r.size(), 0, 0, 0, 0, 0, 1);
-    cout << (b - a + more + mod) % mod << '\n';
+    for (int i = 1; i <= m; ++i) {
+        int l, r; cin >> l >> r;
+        offline[r].emplace_back(l, i);
+    }
 
+    for (int i = 1; i <= n * 4; ++i) tree[i] = oo;
+
+    for (int i = 1; i <= n; ++i) {
+
+        if (M[a[i]]) update(M[a[i]], i - M[a[i]]);
+        M[a[i]] = i;
+
+        for (auto [l, j] : offline[i])
+            ans[j] = query(l, i);
+    }
+
+    for (int i = 1; i <= m; ++i)
+        cout << (ans[i] == oo ? -1 : ans[i]) <<'\n';
 }
 int main() {
+
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
-    #define task "b"
-        freopen("test.inp", "r", stdin);
-        freopen(task ".out", "w", stdout);
-    // }
-    memset(dp, -1, sizeof dp);
-    int t; cin >> t;
-    while (t--) solve();
+    if(fopen("test.inp","r")) {
+        freopen("test.inp","r",stdin);
+        freopen("b.out","w",stdout);
+    }
+    solve();
+
 }
