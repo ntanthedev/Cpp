@@ -3,76 +3,76 @@ tags:
   - Original
 ---
 
-# Second Best Minimum Spanning Tree
+# Cây khung nhỏ nhất tốt thứ hai
 
-A Minimum Spanning Tree $T$ is a tree for the given graph $G$ which spans over all vertices of the given graph and has the minimum weight sum of all the edges, from all the possible spanning trees.
-A second best MST $T'$ is a spanning tree, that has the second minimum weight sum of all the edges, from all the possible spanning trees of the graph $G$.
+Cây khung nhỏ nhất $T$ là một cây cho đồ thị $G$ cho trước, trải dài trên tất cả các đỉnh của đồ thị cho trước và có tổng trọng số nhỏ nhất của tất cả các cạnh, từ tất cả các cây khung có thể.
+Cây khung nhỏ nhất tốt thứ hai $T'$ là một cây khung, có tổng trọng số nhỏ thứ hai của tất cả các cạnh, từ tất cả các cây khung có thể của đồ thị $G$.
 
-## Observation
+## Quan sát
 
-Let $T$ be the Minimum Spanning Tree of a graph $G$.
-It can be observed, that the second best Minimum Spanning Tree differs from $T$ by only one edge replacement. (For a proof of this statement refer to problem 23-1 [here](http://www-bcf.usc.edu/~shanghua/teaching/Spring2010/public_html/files/HW2_Solutions_A.pdf)).
+Giả sử $T$ là Cây khung nhỏ nhất của đồ thị $G$.
+Có thể quan sát thấy rằng Cây khung nhỏ nhất tốt thứ hai khác với $T$ chỉ bằng việc thay thế một cạnh. (Để biết bằng chứng về tuyên bố này, hãy tham khảo bài toán 23-1 [tại đây](http://www-bcf.usc.edu/~shanghua/teaching/Spring2010/public_html/files/HW2_Solutions_A.pdf)).
 
-So we need to find an edge $e_{new}$ which is in not in $T$, and replace it with an edge in $T$ (let it be $e_{old}$) such that the new graph $T' = (T \cup \{e_{new}\}) \setminus \{e_{old}\}$ is a spanning tree and the weight difference ($e_{new} - e_{old}$) is minimum.
-
-
-## Using Kruskal's Algorithm
-
-We can use Kruskal's algorithm to find the MST first, and then just try to remove a single edge from it and replace it with another.
-
-1. Sort the edges in $O(E \log E)$, then find a MST using Kruskal in $O(E)$.
-2. For each edge in the MST (we will have $V-1$ edges in it) temporarily exclude it from the edge list so that it cannot be chosen.
-3. Then, again try to find a MST in $O(E)$ using the remaining edges.
-4. Do this for all the edges in MST, and take the best of all.
-
-Note: we don’t need to sort the edges again in for Step 3.
-
-So, the overall time complexity will be $O(E \log V + E + V E)$ = $O(V E)$.
+Vì vậy, chúng ta cần tìm một cạnh $e_{new}$ không nằm trong $T$, và thay thế nó bằng một cạnh trong $T$ (giả sử là $e_{old}$) sao cho đồ thị mới $T' = (T \cup \{e_{new}\}) \setminus \{e_{old}\}$ là một cây khung và hiệu số trọng số ($e_{new} - e_{old}$) là nhỏ nhất.
 
 
-## Modeling into a Lowest Common Ancestor (LCA) problem
+## Sử dụng thuật toán Kruskal
 
-In the previous approach we tried all possibilities of removing one edge of the MST.
-Here we will do the exact opposite.
-We try to add every edge that is not already in the MST.
+Chúng ta có thể sử dụng thuật toán Kruskal để tìm MST trước, và sau đó chỉ cần thử loại bỏ một cạnh duy nhất khỏi nó và thay thế nó bằng một cạnh khác.
 
-1. Sort the edges in $O(E \log E)$, then find a MST using Kruskal in $O(E)$.
-2. For each edge $e$ not already in the MST, temporarily add it to the MST, creating a cycle. The cycle will pass through the LCA.
-3. Find the edge $k$ with maximal weight in the cycle that is not equal to $e$, by following the parents of the nodes of edge $e$, up to the LCA.
-4. Remove $k$ temporarily, creating a new spanning tree.
-5. Compute the weight difference $\delta = weight(e) - weight(k)$, and remember it together with the changed edge.
-6. Repeat step 2 for all other edges, and return the spanning tree with the smallest weight difference to the MST.
+1. Sắp xếp các cạnh trong $O(E \log E)$, sau đó tìm MST bằng Kruskal trong $O(E)$.
+2. Đối với mỗi cạnh trong MST (chúng ta sẽ có $V-1$ cạnh trong đó) tạm thời loại trừ nó khỏi danh sách cạnh để nó không thể được chọn.
+3. Sau đó, một lần nữa thử tìm MST trong $O(E)$ bằng cách sử dụng các cạnh còn lại.
+4. Thực hiện việc này cho tất cả các cạnh trong MST và lấy kết quả tốt nhất trong số đó.
 
-The time complexity of the algorithm depends on how we compute the $k$s, which are the maximum weight edges in step 2 of this algorithm.
-One way to compute them efficiently in $O(E \log V)$ is to transform the problem into a Lowest Common Ancestor (LCA) problem.
+Lưu ý: chúng ta không cần phải sắp xếp lại các cạnh trong Bước 3.
 
-We will preprocess the LCA by rooting the MST and will also compute the maximum edge weights for each node on the paths to their ancestors. 
-This can be done using [Binary Lifting](lca_binary_lifting.md) for LCA.
-
-The final time complexity of this approach is $O(E \log V)$.
-
-For example:
-
-<center>![MST](second_best_mst_1.png) ![Second best MST](second_best_mst_2.png) <br>
-
-*In the image left is the MST and right is the second best MST.*
-</center>
+Vì vậy, độ phức tạp thời gian tổng thể sẽ là $O(E \log V + E + V E)$ = $O(V E)$.
 
 
-In the given graph suppose we root the MST at the blue vertex on the top, and then run our algorithm by start picking the edges not in MST.
-Let the edge picked first be the edge $(u, v)$ with weight 36.
-Adding this edge to the tree forms a cycle 36 - 7 - 2 - 34.
+## Mô hình hóa thành bài toán Tổ tiên chung thấp nhất (LCA)
 
-Now we will find the maximum weight edge in this cycle by finding the $\text{LCA}(u, v) = p$.
-We compute the maximum weight edge on the paths from $u$ to $p$ and from $v$ to $p$.
-Note: the $\text{LCA}(u, v)$ can also be equal to $u$ or $v$ in some case.
-In this example we will get the edge with weight 34 as maximum edge weight in the cycle.
-By removing the edge we get a new spanning tree, that has a weight difference of only 2.
+Trong cách tiếp cận trước, chúng ta đã thử tất cả các khả năng loại bỏ một cạnh của MST.
+Ở đây chúng ta sẽ làm điều ngược lại.
+Chúng ta cố gắng thêm mọi cạnh chưa có trong MST.
 
-After doing this also with all other edges that are not part of the initial MST, we can see that this spanning tree was also the second best spanning tree overall.
-Choosing the edge with weight 14 will increase the weight of the tree by 7, choosing the edge with weight 27 increases it by 14, choosing the edge with weight 28 increases it by 21, and choosing the edge with weight 39 will increase the tree by 5.
+1. Sắp xếp các cạnh trong $O(E \log E)$, sau đó tìm MST bằng Kruskal trong $O(E)$.
+2. Đối với mỗi cạnh $e$ chưa có trong MST, hãy tạm thời thêm nó vào MST, tạo ra một chu trình. Chu trình sẽ đi qua LCA.
+3. Tìm cạnh $k$ có trọng số lớn nhất trong chu trình không bằng $e$, bằng cách theo dõi các nút cha của cạnh $e$, cho đến LCA.
+4. Loại bỏ $k$ tạm thời, tạo ra một cây khung mới.
+5. Tính hiệu số trọng số $\delta = weight(e) - weight(k)$, và ghi nhớ nó cùng với cạnh đã thay đổi.
+6. Lặp lại bước 2 cho tất cả các cạnh khác và trả về cây khung có hiệu số trọng số nhỏ nhất với MST.
 
-## Implementation
+Độ phức tạp thời gian của thuật toán phụ thuộc vào cách chúng ta tính toán các $k$, là các cạnh có trọng số tối đa trong bước 2 của thuật toán này.
+Một cách để tính toán chúng một cách hiệu quả trong $O(E \log V)$ là biến đổi bài toán thành bài toán Tổ tiên chung thấp nhất (LCA).
+
+Chúng ta sẽ tiền xử lý LCA bằng cách tạo gốc cho MST và cũng sẽ tính toán trọng số cạnh tối đa cho mỗi nút trên đường dẫn đến tổ tiên của chúng.
+Điều này có thể được thực hiện bằng cách sử dụng [Binary Lifting](lca_binary_lifting.md) cho LCA.
+
+Độ phức tạp thời gian cuối cùng của phương pháp này là $O(E \log V)$.
+
+Ví dụ:
+
+![MST](second_best_mst_1.png) ![Cây khung nhỏ nhất tốt thứ hai](second_best_mst_2.png) <br>
+
+*Trong hình bên trái là MST và bên phải là Cây khung nhỏ nhất tốt thứ hai.*
+
+
+
+Trong đồ thị đã cho, giả sử chúng ta tạo gốc cho MST tại đỉnh màu xanh lam ở trên cùng, và sau đó chạy thuật toán của chúng ta bằng cách bắt đầu chọn các cạnh không có trong MST.
+Giả sử cạnh được chọn đầu tiên là cạnh $(u, v)$ có trọng số 36.
+Thêm cạnh này vào cây tạo thành một chu trình 36 - 7 - 2 - 34.
+
+Bây giờ chúng ta sẽ tìm cạnh có trọng số lớn nhất trong chu trình này bằng cách tìm $\text{LCA}(u, v) = p$.
+Chúng ta tính toán cạnh có trọng số tối đa trên đường dẫn từ $u$ đến $p$ và từ $v$ đến $p$.
+Lưu ý: $\text{LCA}(u, v)$ cũng có thể bằng $u$ hoặc $v$ trong một số trường hợp.
+Trong ví dụ này, chúng ta sẽ nhận được cạnh có trọng số 34 là trọng số cạnh tối đa trong chu trình.
+Bằng cách loại bỏ cạnh, chúng ta nhận được một cây khung mới, có hiệu số trọng số chỉ là 2.
+
+Sau khi thực hiện việc này với tất cả các cạnh khác không phải là một phần của MST ban đầu, chúng ta có thể thấy rằng cây khung này cũng là cây khung tốt thứ hai về tổng thể.
+Chọn cạnh có trọng số 14 sẽ tăng trọng số của cây lên 7, chọn cạnh có trọng số 27 sẽ tăng nó lên 14, chọn cạnh có trọng số 28 sẽ tăng nó lên 21 và chọn cạnh có trọng số 39 sẽ tăng cây lên 5.
+
+## Triển khai
 ```cpp
 struct edge {
     int s, e, w, id;
@@ -192,10 +192,12 @@ int main(void) {
 }
 ```
 
-## References
+## Tài liệu tham khảo
 
 1. Competitive Programming-3, by Steven Halim
 2. [web.mit.edu](http://web.mit.edu/6.263/www/quiz1-f05-sol.pdf)
 
-## Problems
-* [Codeforces - Minimum spanning tree for each edge](https://codeforces.com/problemset/problem/609/E)
+## Bài tập
+* [Codeforces - Cây khung nhỏ nhất cho mỗi cạnh](https://codeforces.com/problemset/problem/609/E)
+
+

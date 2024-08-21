@@ -3,7 +3,7 @@
 using namespace std;
 
 typedef long long ll;
-mt19937_64 rd(time(NULL));
+mt19937_64 rd(chrono::high_resolution_clock::now().time_since_epoch().count());
 ll end_test = 100;
 
 ll Rand(ll l, ll r) {
@@ -21,17 +21,11 @@ signed main() {
     for(int i = 1; i <= end_test; i++) {
         ofstream inp("test.inp");
 
-        int n = Rand(1, 1000), q = Rand(1, 50);
-        inp << n << " " << q << '\n';
+        int n = Rand(1, 20);
+        inp << n << '\n';
         for(int i = 1; i <= n; i++) {
-            int a = Rand(-100, 100);
+            int a = Rand(1, 20);
             inp << a << " ";
-        }
-        inp << '\n';
-        for(int i = 1; i <= q; i++) {
-            int l = Rand(1, n);
-            int r = Rand(l, n);
-            inp << l << " " << r << '\n';
         }
 
         inp.close();
