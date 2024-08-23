@@ -1,48 +1,51 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 
 using namespace std;
+void solve() {
+    string a, b; cin >> a >> b;
+    int n = a.size(), m = b.size();
+    a = ' ' + a;
+    b = ' ' + b;
 
-typedef long long ll;
-mt19937_64 rd(time(NULL));
-ll end_test = 100;
+    vector<vector<pair<int, int>>> dp(n + 1, vector<pair<int, int>>(m + 1, {0, 0}));
+    vector<vector<vector<char>>> res(n + 1, vector<vector<char>>(m + 1));
+    for (int i = 1; i <= n; ++i) {
+        for (int j = 1; j <= m; ++j) {
 
-ll Rand(ll l, ll r) {
-    assert(l <= r);
-    return uniform_int_distribution<ll> (l, r) (rd);
-}
+            if (a[i] == b[j]) {
+                if (dp[i][j].first == 0) dp[i][j].second = (a[i] - '0');
+                dp[i][j].first = dp[i - 1][j - 1].first + 1;
+                res[i][j] = res[i - 1][j - 1];
+                res[i][j].push_back(a[i]);
+            }else {
 
-signed main() {
-    srand(time(NULL));
+                if (dp[i - 1][j].first > dp[i][j - 1].first) {
+                    res[i][j] = res[i - 1][j];
+                }else if (dp[i - 1][j].first == dp[i][j - 1].first) {
 
-    system("g++ a.cpp -o a.exe");
-    system("g++ b.cpp -o b.exe");
+                    if (dp[i - 1][j].second > dp[i][j - 1].second) {
+                        if (i == 6 &&j == 6) cout << ":D";
+                        res[i][j] = res[i - 1][j];
+                    }else res[i][j] = res[i][j - 1];
+                }else {
 
-
-    for(int i = 1; i <= end_test; i++) {
-        ofstream inp("test.inp");
-
-        int n = Rand(1, 1000), q = Rand(1, 50);
-        inp << n << " " << q << '\n';
-        for(int i = 1; i <= n; i++) {
-            int a = Rand(-100, 100);
-            inp << a << " ";
+                    res[i][j] = res[i][j - 1];
+                }
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+            }
         }
-        inp << '\n';
-        for(int i = 1; i <= q; i++) {
-            int l = Rand(1, n);
-            int r = Rand(l, n);
-            inp << l << " " << r << '\n';
-        }
 
-        inp.close();
-
-        system("a.exe");
-        system("b.exe");
-
-        if(system("fc a.out b.out") != 0) {
-            printf("test %d WA", i);
-            return signed();
-        }
-        printf("test %d AC", i);
     }
+
+    cout << dp[n][m].first <<' ' << dp[6][5].second <<' ' << dp[5][6].second << '\n';
+    for (auto it : res[5][5]) {
+        cout << it;
+    }
+}
+int main() {
+    cin.tie(NULL);
+    ios_base::sync_with_stdio(false);
+    freopen("a.inp", "r", stdin);
+    freopen("a.out", "w", stdout);
+    solve();
 }
