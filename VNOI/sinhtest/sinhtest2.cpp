@@ -8,10 +8,10 @@ using namespace std;
 #define	f0(i,n) for(int i=0;i<n;i++)
 #define f1(i,n) for(int i=1;i<=n;i++)
 typedef long long ll;
-const int btest = 1; 
-const int etest = 200; // so luong test
-const int test_for_sub1 = 0; //% so luong test theo tung sub
-const int test_for_sub2 = 50;
+const int btest = 50; 
+const int etest = 100; // so luong test
+const int test_for_sub1 = 20; //% so luong test theo tung sub
+const int test_for_sub2 = 30;
 const int test_for_sub3 = 100;
 const int s1 = double(etest) / 100.0 * test_for_sub1 * 1.0;
 const int s2 = s1 + double(etest) / 100.0 * test_for_sub2 * 1.0;
@@ -52,23 +52,27 @@ void sub1(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
 
-    
+    int n = Rand(1, 20);
+    int d = Rand(1, 1000);
+
+    inp << n << " " << d << '\n';
+    for(int i = 1; i <= n; i++) {
+        int a = Rand(1, 2000);
+        inp << a << " ";
+    }    
 }
 
 void sub2(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
 
-    int n = Rand(1, 1e5);
-    if(x >= cal(50, s2))
-        n = 1e5;
+    int n = Rand(500, 2000);
+    ll d = Rand(1, 1e9);
 
-    inp << n << '\n';
-
-    while(n--) {
-        int a = Rand(1, 1e6);
-        int b = Rand(a, 1e6);
-        inp << a << " " << b << '\n';
+    inp << n << " " << d << '\n';
+    for(int i = 1; i <= n; i++) {
+        ll a = Rand(1, 1e9);
+        inp << a << " ";
     }
 }
 
@@ -77,18 +81,19 @@ void sub3(int x) {
     ofstream inp((to_string(x) + ".inp").c_str());
     
 
-    int n = Rand(1, 1e5);
-    if(x >= s2 + cal(50, s3))
-        n = 1e5;
+    int n = Rand(Q - 1000, Q);
+    if(x <= cal(30, s3) + s2)
+        n = Rand(5000, Q);
+    ll d = Rand(W, K);
+    if(x <= cal(30, s3) + s2)
+        d = Rand(1, Q);
 
-    inp << n << '\n';
-
-    while(n--) {
-        int a = Rand(1, 1e9);
-        if(x >= s2 + cal(50, s3))
-            a = Rand(1e8, 1e9);
-        int b = Rand(a, 1e9);
-        inp << a << " " << b << '\n';
+    inp << n << " " << d << '\n';
+    for(int i = 1; i <= n; i++) {
+        ll a = Rand(1, 1e15);
+        if(x <= cal(30, s3) + s2)
+            a = Rand(1, 1e9);
+        inp << a << " ";
     }
 }
 int main(){

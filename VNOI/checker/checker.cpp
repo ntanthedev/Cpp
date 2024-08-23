@@ -1,27 +1,44 @@
 #include "testlib.h"
 #include<bits/stdc++.h>
-
 using namespace std;
 
 int main(int argc, char* argv[]) {
     registerTestlibCmd(argc, argv);
 
-    long long ans_s = ans.readLong(), out_s = ouf.readLong();
+    long long n = inf.readInt();
+    long long d = inf.readLong();
+    std::vector<int> h(n + 2);
+    for (int i = 1; i <= n; i++) {
+        h[i] = inf.readLong();
+    }
 
-    if(ans_s != out_s) 
-        quitf(_wa, "kich thuoc khong toi uu");
+    int correct_k = ouf.readInt();
+    int contestant_k = ans.readInt();
+
+    if (contestant_k != correct_k) {
+        quitf(_wa, "Incorrect k value");
+    }
+
+    if(ouf.eof()) 
+        quitp(50, "Correct k, but have no jump sequence");
+
+    std::vector<long long> a;
+    for (int i = 0; i < contestant_k; i++) {
+        a.push_back(ouf.readInt());
+    }
     
-    long long n = inf.readLong(), aa = inf.readLong(), bb = inf.readLong();
-    long long a = ouf.readLong(), b = ouf.readLong();
+    for(auto i : a) {
+        if(1 > i || i > n)
+            quitp(50, "index i have value out of range [1, n]");
+    }
 
-    if(a * b != ans_s)
-        quitf(_wa, "kich thuoc phong chua chinh xac");
-
-    if(a > b) swap(a, b);
-    if(aa > bb) swap(aa, bb);
-
-    if(a < aa || b < bb)
-        quitf(_wa, "kich thuoc mo rong am");
-
-    quitf(_ok, "ket qua dung");
+    bool ok;
+    for(int i = 1; i < contestant_k; i++) {
+        if(abs(h[a[i]] - h[a[i - 1]]) >= d && a[i] > a[i - 1])
+            ok = 1;
+        else 
+            quitp(50, "Correct k, but incorrect jump sequence");
+    }
+    
+    quitf(_ok, "Correct answer");   
 }

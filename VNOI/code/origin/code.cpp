@@ -1,96 +1,100 @@
-#include<bits/stdc++.h>
-#pragma GCC optimize("O3,unroll-loops")
-#pragma GCC target("avx2")
-#define fi first
-#define se second
-#define mp make_pair
-#define pb push_back
-#define eb emplace_back
-#define lb lower_bound
-#define ub upper_bound
-#define all(x) x.begin(), x.end()
-
+//Written by: Jethro_
+//----------------------
+#include <bits/stdc++.h>
 using namespace std;
 
-template <typename T> inline void read (T &x) {
-    bool b = 0;
-    char c;
-    while (!isdigit (c = getchar()) && c != '-');
-    if (c == '-') {
-        c = getchar();
-        b = 1;
-    }
-    x = c - 48;
-    while (isdigit(c = getchar())) {
-        x = (x << 3) + (x << 1) + (c - 48);
-    }
-    if (b) {
-        x=-x;
-    }
-}
+#define int long long
 
-typedef long double ld;
-typedef long long ll;
-typedef pair<int,int> ii;
-typedef pair<ll,ll> pll;
-typedef vector<int> vi;
-typedef vector<ll> vll;
-typedef vector<vi> vvi;
-typedef vector<vll> vvl;
-typedef vector<ii> vii;
-typedef unordered_map<int, int> umii;
-typedef unordered_map<int, bool> umib;
-typedef unordered_map<ll, ll> umll;
+#define fi first
+#define se second
 
-const int N = 1e6+10;
-const ll MOD = 1e9+7;
+const int N = 1e5 + 10;
 
-bool is_prime(int x)
-{
-    for(int i = 2 ; i * i <= x ; i++)
-        if(x%i == 0)
-            return 0;
-    return 1;
-}
-//----------------------------
-ll Q, a, b;
+int n, d, h[N], b[N], pos[N], mx = 0, riel[N];
+pair<int, int> tree[N * 4], dp[N];
+vector<int> ans;
 
-//----------------------------
-ll sum(ll x){
-    if(x == 0)
-        return 0;
-    if(x == 1)
-        return 1;
-    return ((x+1)/2)*((x+1)/2) + sum(x/2);
+void update(int p, int val, int id = 1, int l = 1, int r = n) {
+    if (p > r || p < l) return;
+    if (l == r) {
+        tree[id] = {val, l};
+        return;
+    }
+    int mid = (l + r) / 2;
+    update(p, val, id * 2, l, mid);
+    update(p, val, id * 2 + 1, mid + 1, r);
+    tree[id] = max(tree[id * 2], tree[id * 2 + 1]);
 }
-void solve(){
-    ll res = 0;    
-    ll reso = 0, rese = 0;
-    //reso = ((b+1)/2)*((b+1)/2) - (a/2)*(a/2);
-    rese = sum(b) - sum(a-1);
-    //cout << reso <<" " << rese << " ";
-    cout <<  rese <<'\n';  
+pair<int, int> get(int u, int v, int id = 1, int l = 1, int r = n) {
+    if (u > r || v < l) return {0, 0};
+    if (l >= u && r <= v) return tree[id];
+    int mid = (l + r) / 2;
+    pair<int, int> a = get(u, v, id * 2, l, mid), b = get(u, v, id * 2 + 1, mid + 1, r);
+    return max(a, b);
 }
- 
-void init(){
-    cin >> Q;
-    while(Q--){
-        cin >> a >> b;
-        solve();
+struct pt {
+    int w, i;
+    bool operator<(const pt &other) {
+        return w < other.w;
+    }
+} a[N];
+
+void solve() {
+    cin >> n >> d;
+    for (int i = 1; i <= n; ++i) {
+        cin >> a[i].w;
+        a[i].i = i;
+        b[i] = a[i].w;
+        h[i] = a[i].w;
+    }
+    sort (a + 1, a + n + 1);
+    sort (b + 1, b + n + 1);
+    for (int i = 1; i <= n; ++i) {
+        pos[a[i].i] = i;
+        riel[i] = a[i].i;
+    }
+    for (int i = 1; i <= n; ++i) {
+        int t = upper_bound(b + 1, b + n + 1, h[i] - d) - b, p = lower_bound(b + 1, b + n + 1, h[i] + d) - b;
+        t--;
+        pair<int, int> x = get(1, t), y = get(p, n);
+        if (x.fi > y.fi) {
+            dp[i].fi = x.fi + 1;
+            dp[i].se = x.se;
+        }else {
+            dp[i].fi = y.fi + 1;
+            dp[i].se = y.se;
+        }
+        update(pos[i], dp[i].fi);
+        mx = max(mx, dp[i].fi);
+    }
+    for (int i = 1; i <= n; ++i) {
+        if (dp[i].fi == mx) {
+            ans.push_back(i);
+            int t = dp[i].se;
+            while (t) {
+                ans.push_back(riel[t]);
+                t = dp[riel[t]].se;
+            }
+            break;
+        }
+    }
+    cout << mx << '\n';
+    reverse(ans.begin(), ans.end());
+    for (auto it : ans) {
+        cout << it <<' ';
     }
 }
-//-----TASK----------
-#define task "code"
-//-------------------
-int32_t main(){
-    //---------------------------------
+int32_t main() {
+
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
-    if(fopen(task".inp","r")){
-        freopen(task".out","w",stdout);
-        freopen(task".inp","r",stdin);
+
+    #define task "code"
+    if(fopen(task ".inp", "r")) {
+        freopen(task ".inp", "r", stdin);
+        freopen(task ".out", "w", stdout);
     }
-    //---------------------------------
-    init();
-    //solve();
+    solve();
+
+
 }
