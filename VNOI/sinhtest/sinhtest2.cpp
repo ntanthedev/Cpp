@@ -103,9 +103,12 @@ void sub2(int x) {
     vector<tuple<int, int, int>> vt;
 
     for(int i = 1; i <= n; i++) {
-        w = Rand(1, 100);
-        if(x <= s1 + cal(20, s2))
-            w = Rand(1, 500);
+        int tt = Rand(1, 10);
+        if(tt <= 3) {
+            w = Rand(1, 1e6);
+        }
+        else 
+            w = Rand(-1e6, -1);
 
         int t = Rand(1, 10);
 
@@ -149,9 +152,14 @@ void sub3(int x) {
     vector<tuple<int, int, int>> vt;
 
     for(int i = 1; i <= n; i++) {
-        w = Rand(1, 1e9);
-        if(x <= s2 + cal(20, s3))
-            w = Rand(1, 500);
+        int tt = Rand(1, 10);
+        if(tt <= 3) {
+            w = Rand(1, 10000000);
+        }
+        else 
+            w = Rand(-1e6, -1);
+        if(x == 90) 
+            w = Rand(-1e9, -1);
 
         int t = Rand(1, 10);
 
