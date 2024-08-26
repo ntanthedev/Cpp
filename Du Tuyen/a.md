@@ -18,3 +18,4 @@ Cho các cặp số tự nhiên $L$ và $R$ ($1 \leq L \leq R \leq 10^{18}$), h�
 * Subtask 1 (20% số điểm): $T \leq 30$ và $R - L \leq 10^6$.
 * Subtask 2 (20% số điểm): $T \leq 100$ và $1 \leq L \leq R \leq 10^9$.
 * Subtask 3 (60% số điểm): $T \leq 100$. 
+<------>
