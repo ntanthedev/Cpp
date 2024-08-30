@@ -4,158 +4,151 @@ tags:
 e_maxx_link: strong_connected_components
 ---
 
-# Tìm thành phần liên thông mạnh / Xây dựng đồ thị thu gọn
+# Strongly connected components and the condensation graph
 
-## Định nghĩa
-Bạn được cho một đồ thị có hướng $G$ với các đỉnh $V$ và các cạnh $E$. Có thể có các vòng lặp và nhiều cạnh. Hãy ký hiệu $n$ là số lượng đỉnh và $m$ là số lượng cạnh trong $G$.
+## Definitions
+Let $G=(V,E)$ be a directed graph with vertices $V$ and edges $E \subseteq V \times V$. We denote with $n=|V|$ the number of vertices and with $m=|E|$ the number of edges in $G$. It is easy to extend all definitions in this article to multigraphs, but we will not focus on that.
 
-**Thành phần liên thông mạnh** là một tập hợp con tối đa các đỉnh $C$ sao cho bất kỳ hai đỉnh nào của tập hợp con này đều có thể đến được với nhau, tức là đối với bất kỳ $u, v \in C$:
+A subset of vertices $C \subseteq V$ is called a **strongly connected component** if the following conditions hold:
 
-$$u \mapsto v, v \mapsto u$$
+- for all $u,v\in C$, if $u \neq v$ there exists a path from $u$ to $v$ and a path from $v$ to $u$, and
+- $C$ is maximal, in the sense that no vertex can be added without violating the above condition.
 
-trong đó $\mapsto$ có nghĩa là khả năng tiếp cận, tức là sự tồn tại của đường đi từ đỉnh đầu tiên đến đỉnh thứ hai.
+We denote with $\text{SCC}(G)$ the set of strongly connected components of $G$. These strongly connected components do not intersect with each other, and cover all vertices in the graph. Thus, the set $\text{SCC}(G)$ is a partition of $V$. 
 
-Rõ ràng, các thành phần liên thông mạnh không giao nhau, tức là đây là một phân hoạch của tất cả các đỉnh đồ thị. Do đó, chúng ta có thể đưa ra định nghĩa về đồ thị thu gọn $G^{SCC}$ là một đồ thị chứa mọi thành phần liên thông mạnh như một đỉnh. Mỗi đỉnh của đồ thị thu gọn tương ứng với thành phần liên thông mạnh của đồ thị $G$. Có một cạnh có hướng giữa hai đỉnh $C_i$ và $C_j$ của đồ thị thu gọn nếu và chỉ khi có hai đỉnh $u \in C_i, v \in C_j$ sao cho có một cạnh trong đồ thị ban đầu, tức là $(u, v) \in E$.
+Consider this graph $G_\text{example}$, in which the strongly connected components are highlighted:
 
-Thuộc tính quan trọng nhất của đồ thị thu gọn là nó là **không chu trình**. Thật vậy, giả sử rằng có một cạnh giữa $C$ và $C'$, hãy chứng minh rằng không có cạnh từ $C'$ đến $C$. Giả sử rằng $C' \mapsto C$. Khi đó có hai đỉnh $u' \in C$ và $v' \in C'$ sao cho $v' \mapsto u'$. Nhưng vì $u$ và $u'$ nằm trong cùng một thành phần liên thông mạnh nên có một đường đi giữa chúng; tương tự cho $v$ và $v'$. Kết quả là, nếu chúng ta nối các đường dẫn này, chúng ta có $v \mapsto u$ và đồng thời $u \mapsto v$. Do đó, $u$ và $v$ phải nằm trong cùng một thành phần liên thông mạnh, vì vậy đây là mâu thuẫn. Điều này hoàn thành bằng chứng.
+<center><img src="strongly-connected-components-tikzpicture/graph.svg" alt="drawing" style="width:700px;"/></center>
 
-Thuật toán được mô tả trong phần tiếp theo sẽ trích xuất tất cả các thành phần liên thông mạnh trong một đồ thị nhất định. Sau đó, việc xây dựng một đồ thị thu gọn khá dễ dàng.
+Here we have $\text{SCC}(G_\text{example})=\{\{0,7\},\{1,2,3,5,6\},\{4,9\},\{8\}\}.$ We can confirm that within each strongly connected component, all vertices are reachable from each other.
 
-## Mô tả thuật toán
-Thuật toán được mô tả đã được Kosaraju và Sharir đề xuất độc lập vào năm 1979. Đây là một thuật toán dễ triển khai dựa trên hai chuỗi [tìm kiếm theo chiều sâu](depth-first-search.md) và hoạt động trong thời gian $O(n + m)$.
+We define the **condensation graph** $G^{\text{SCC}}=(V^{\text{SCC}}, E^{\text{SCC}})$ as follows:
 
-**Trong bước đầu tiên** của thuật toán, chúng ta đang thực hiện chuỗi tìm kiếm theo chiều sâu, truy cập toàn bộ đồ thị. Chúng ta bắt đầu tại mỗi đỉnh của đồ thị và chạy tìm kiếm theo chiều sâu từ mọi đỉnh chưa được truy cập. Đối với mỗi đỉnh, chúng ta đang theo dõi **thời gian thoát** $tout[v]$. Những thời gian thoát này có vai trò quan trọng trong một thuật toán và vai trò này được thể hiện trong định lý tiếp theo.
+- the vertices of $G^{\text{SCC}}$ are the strongly connected components of $G$; i.e., $V^{\text{SCC}} = \text{SCC}(G)$, and
+- for all vertices $C_i,C_j$ of the condensation graph, there is an edge from $C_i$ to $C_j$ if and only if $C_i \neq C_j$ and there exist $a\in C_i$ and $b\in C_j$ such that there is an edge from $a$ to $b$ in $G$.
 
-Đầu tiên, hãy đặt ký hiệu: hãy định nghĩa thời gian thoát $tout[C]$ từ thành phần liên thông mạnh $C$ là giá trị lớn nhất của $tout[v]$ bởi tất cả $v \in C$. Bên cạnh đó, trong quá trình chứng minh định lý, chúng ta sẽ đề cập đến thời gian vào $tin[v]$ trong mỗi đỉnh và theo cách tương tự, hãy xem xét $tin[C]$ cho mỗi thành phần liên thông mạnh $C$ là giá trị nhỏ nhất của $tin[v]$ bởi tất cả $v \in C$.
+The condensation graph of $G_\text{example}$ looks as follows:
 
-**Định lý**. Cho $C$ và $C'$ là hai thành phần liên thông mạnh khác nhau và có một cạnh $(C, C')$ trong đồ thị thu gọn giữa hai đỉnh này. Khi đó $tout[C] > tout[C']$.
+<center><img src="strongly-connected-components-tikzpicture/cond_graph.svg" alt="drawing" style="width:600px;"/></center>
 
-Có hai trường hợp chính khác nhau trong bằng chứng tùy thuộc vào thành phần nào sẽ được tìm kiếm theo chiều sâu truy cập trước, tức là tùy thuộc vào sự khác biệt giữa $tin[C]$ và $tin[C']$:
 
-- Thành phần $C$ được tiếp cận trước. Điều đó có nghĩa là tìm kiếm theo chiều sâu đến một đỉnh $v$ của thành phần $C$ tại một thời điểm nào đó, nhưng tất cả các đỉnh khác của thành phần $C$ và $C'$ chưa được truy cập. Theo điều kiện, có một cạnh $(C, C')$ trong đồ thị thu gọn, vì vậy không chỉ toàn bộ thành phần $C$ có thể tiếp cận được từ $v$ mà toàn bộ thành phần $C'$ cũng có thể tiếp cận được. Điều đó có nghĩa là tìm kiếm theo chiều sâu đang chạy từ đỉnh $v$ sẽ truy cập tất cả các đỉnh của thành phần $C$ và $C'$, vì vậy chúng sẽ là con cháu của $v$ trong cây tìm kiếm theo chiều sâu, tức là đối với mỗi đỉnh $u \in C \cup C', u \ne v$ chúng ta có $tout[v] > tout[u]$, như chúng ta đã tuyên bố.
+The most important property of the condensation graph is that it is **acyclic**. Indeed, there are no 'self-loops' in the condensation graph by definition, and if there were a cycle going through two or more vertices (strongly connected components) in the condensation graph, then due to reachability, the union of these strongly connected components would have to be one strongly connected component itself: contradiction.
 
-- Giả sử rằng thành phần $C'$ được truy cập trước. Tương tự, tìm kiếm theo chiều sâu đến một đỉnh $v$ của thành phần $C'$ tại một thời điểm nào đó, nhưng tất cả các đỉnh khác của thành phần $C$ và $C'$ chưa được truy cập. Nhưng theo điều kiện, có một cạnh $(C, C')$ trong đồ thị thu gọn, vì vậy, do tính chất không chu trình của đồ thị thu gọn, không có đường dẫn ngược từ $C'$ đến $C$, tức là tìm kiếm theo chiều sâu từ đỉnh $v$ sẽ không đến được các đỉnh của $C$. Điều đó có nghĩa là các đỉnh của $C$ sẽ được tìm kiếm theo chiều sâu truy cập sau, vì vậy $tout[C] > tout[C']$. Điều này hoàn thành bằng chứng.
+The algorithm described in the next section finds all strongly connected components in a given graph. After that, the condensation graph can be constructed.
 
-Định lý đã được chứng minh là **cơ sở của thuật toán** để tìm các thành phần liên thông mạnh. Theo đó, bất kỳ cạnh $(C, C')$ nào trong đồ thị thu gọn đều xuất phát từ một thành phần có giá trị $tout$ lớn hơn đến thành phần có giá trị nhỏ hơn.
+## Description of the algorithm
+The described algorithm was independently suggested by Kosaraju and Sharir around 1980. It is based on two series of [depth first search](depth-first-search.md), with a runtime of $O(n + m)$.
 
-Nếu chúng ta sắp xếp tất cả các đỉnh $v \in V$ theo thứ tự giảm dần của thời gian thoát $tout[v]$ thì đỉnh đầu tiên $u$ sẽ là đỉnh thuộc thành phần liên thông mạnh "gốc", tức là đỉnh không có cạnh đi vào trong đồ thị thu gọn. Bây giờ chúng ta muốn chạy tìm kiếm như vậy từ đỉnh $u$ này sao cho nó sẽ truy cập tất cả các đỉnh trong thành phần liên thông mạnh này, nhưng không phải các đỉnh khác; làm như vậy, chúng ta có thể dần dần chọn tất cả các thành phần liên thông mạnh: hãy xóa tất cả các đỉnh tương ứng với thành phần được chọn đầu tiên, và sau đó hãy tìm đỉnh có giá trị lớn nhất của $tout$, và chạy tìm kiếm này từ nó, v.v.
+In the first step of the algorithm, we perform a sequence of depth first searches (`dfs`), visiting the entire graph. That is, as long as there are still unvisited vertices, we take one of them, and initiate a depth first search from that vertex. For each vertex, we keep track of the *exit time* $t_\text{out}[v]$. This is the 'timestamp' at which the execution of `dfs` on vertex $v$ finishes, i.e., the moment at which all vertices reachable from $v$ have been visited and the algorithm is back at $v$. The timestamp counter should *not* be reset between consecutive calls to `dfs`. The exit times play a key role in the algorithm, which will become clear when we discuss the following theorem.
 
-Hãy xem xét đồ thị chuyển vị $G^T$, tức là đồ thị nhận được từ $G$ bằng cách đảo ngược hướng của mỗi cạnh.
-Rõ ràng, đồ thị này sẽ có các thành phần liên thông mạnh giống như đồ thị ban đầu.
-Hơn nữa, đồ thị thu gọn $G^{SCC}$ cũng sẽ được chuyển vị.
-Điều đó có nghĩa là sẽ không có cạnh nào từ thành phần "gốc" của chúng ta đến các thành phần khác.
+First, we define the exit time $t_\text{out}[C]$ of a strongly connected component $C$ as the maximum of the values $t_\text{out}[v]$ for all $v \in C.$ Furthermore, in the proof of the theorem, we will mention the *entry time* $t_{\text{in}}[v]$ for each vertex $v\in G$. The number $t_{\text{in}}[v]$ represents the 'timestamp' at which the recursive function `dfs` is called on vertex $v$ in the first step of the algorithm. For a strongly connected component $C$, we define $t_{\text{in}}[C]$ to be the minimum of the values $t_{\text{in}}[v]$ for all $v \in C$.
 
-Do đó, để truy cập toàn bộ thành phần liên thông mạnh "gốc" chứa đỉnh $v$, đủ để chạy tìm kiếm từ đỉnh $v$ trong đồ thị $G^T$. Tìm kiếm này sẽ truy cập tất cả các đỉnh của thành phần liên thông mạnh này và chỉ chúng. Như đã đề cập trước đó, chúng ta có thể xóa các đỉnh này khỏi đồ thị sau đó, và tìm đỉnh tiếp theo có giá trị lớn nhất của $tout[v]$ và chạy tìm kiếm trong đồ thị chuyển vị từ nó, v.v.
+**Theorem**. Let $C$ and $C'$ be two different strongly connected components, and let there be an edge from $C$ to $C'$ in the condensation graph. Then, $t_\text{out}[C] > t_\text{out}[C']$.
 
-Vì vậy, chúng ta đã xây dựng **thuật toán** tiếp theo để chọn các thành phần liên thông mạnh:
+**Proof.** There are two different cases, depending on which component will first be reached by depth first search:
 
-Bước 1. Chạy chuỗi tìm kiếm theo chiều sâu của đồ thị $G$ sẽ trả về các đỉnh với thời gian thoát $tout$ tăng dần, tức là một số danh sách $order$.
+- Case 1: the component $C$ was reached first (i.e., $t_{\text{in}}[C] < t_{\text{in}}[C']$). In this case, depth first search visits some vertex $v \in C$ at some moment at which all other vertices of the components $C$ and $C'$ are not visited yet. Since there is an edge from $C$ to $C'$ in the condensation graph, not only are all other vertices in $C$ reachable from $v$ in $G$, but all vertices in $C'$ are reachable as well. This means that this `dfs` execution, which is running from vertex $v$, will also visit all other vertices of the components $C$ and $C'$ in the future, so these vertices will be descendants of $v$ in the depth first search tree. This implies that for each vertex $u \in (C \cup C')\setminus \{v\},$ we have that $t_\text{out}[v] > t_\text{out}[u]$. Therefore, $t_\text{out}[C] > t_\text{out}[C']$, which completes this case of the proof.
 
-Bước 2. Xây dựng đồ thị chuyển vị $G^T$. Chạy một loạt tìm kiếm theo chiều sâu (hoặc chiều rộng) theo thứ tự được xác định bởi danh sách $order$ (chính xác là theo thứ tự ngược lại, tức là theo thứ tự giảm dần của thời gian thoát). Mỗi tập hợp các đỉnh, đạt được sau khi tìm kiếm tiếp theo, sẽ là thành phần liên thông mạnh tiếp theo.
+- Case 2: the component $C'$ was reached first (i.e., $t_{\text{in}}[C] > t_{\text{in}}[C']$). In this case, depth first search visits some vertex $v \in C'$ at some moment at which all other vertices of the components $C$ and $C'$ are not visited yet. Since there is an edge from $C$ to $C'$ in the condensation graph, $C$ is not reachable from $C'$, by the acyclicity property. Hence, the `dfs` execution that is running from vertex $v$ will not reach any vertices of $C$, but it will visit all vertices of $C'$. The vertices of $C$ will be visited by some `dfs` execution later during this step of the algorithm, so indeed we have $t_\text{out}[C] > t_\text{out}[C']$. This completes the proof.
 
-Độ phức tạp tiệm cận của thuật toán là $O(n + m)$, bởi vì nó chỉ là hai lần tìm kiếm theo chiều sâu (hoặc chiều rộng).
+The proved theorem is very important for finding strongly connected components. It means that any edge in the condensation graph goes from a component with a larger value of $t_\text{out}$ to a component with a smaller value.
 
-Cuối cùng, cần phải đề cập đến [sắp xếp topo](topological-sort.md) ở đây. Trước hết, bước 1 của thuật toán biểu diễn sắp xếp topo ngược của đồ thị $G$ (thực tế đây chính xác là ý nghĩa của việc sắp xếp các đỉnh theo thời gian thoát). Thứ hai, sơ đồ của thuật toán tạo ra các thành phần liên thông mạnh theo thứ tự giảm dần của thời gian thoát của chúng, do đó nó tạo ra các thành phần - các đỉnh của đồ thị thu gọn - theo thứ tự sắp xếp topo.
+If we sort all vertices $v \in V$ in decreasing order of their exit time $t_\text{out}[v]$, then the first vertex $u$ will belong to the "root" strongly connected component, which has no incoming edges in the condensation graph. Now we want to run some type of search from this vertex $u$ so that it will visit all vertices in its strongly connected component, but not other vertices. By repeatedly doing so, we can gradually find all strongly connected components: we remove all vertices belonging to the first found component, then we find the next remaining vertex with the largest value of $t_\text{out}$, and run this search from it, and so on. In the end, we will have found all strongly connected components. In order to find a search method that behaves like we want, we consider the following theorem:
 
-## Triển khai
-```cpp
-vector<vector<int>> adj, adj_rev;
-vector<bool> used;
-vector<int> order, component;
- 
-void dfs1(int v) {
-    used[v] = true;
+**Theorem.** Let $G^T$ denote the *transpose graph* of $G$, obtained by reversing the edge directions in $G$. Then, $\text{SCC}(G)=\text{SCC}(G^T)$. Furthermore, the condensation graph of $G^T$ is the transpose of the condensation graph of $G$.
 
+The proof is omitted (but straightforward). As a consequence of this theorem, there will be no edges from the "root" component to the other components in the condensation graph of $G^T$. Thus, in order to visit the whole "root" strongly connected component, containing vertex $v$, we can just run a depth first search from vertex $v$ in the transpose graph $G^T$! This will visit precisely all vertices of this strongly connected component. As was mentioned before, we can then remove these vertices from the graph. Then, we find the next vertex with a maximal value of $t_\text{out}[v]$, and run the search in the transpose graph starting from that vertex to find the next strongly connected component. Repeating this, we find all strongly connected components.
+
+Thus, in summary, we discussed the following algorithm to find strongly connected components:
+
+ - Step 1. Run a sequence of depth first searches on $G$, which will yield some list (e.g. `order`) of vertices, sorted on increasing exit time $t_\text{out}$.
+
+- Step 2. Build the transpose graph $G^T$, and run a series of depth first searches on the vertices in reverse order (i.e., in decreasing order of exit times). Each depth first search will yield one strongly connected component.
+
+- Step 3 (optional). Build the condensation graph.
+
+The runtime complexity of the algorithm is $O(n + m)$, because depth first search is performed twice. Building the condensation graph is also $O(n+m).$
+
+Finally, it is appropriate to mention [topological sort](topological-sort.md) here. In step 1, we find the vertices in the order of increasing exit time. If $G$ is acyclic, this corresponds to a (reversed) topological sort of $G$. In step 2, the algorithm finds strongly connected components in decreasing order of their exit times. Thus, it finds components - vertices of the condensation graph - in an order corresponding to a topological sort of the condensation graph.
+
+## Implementation
+```{.cpp file=strongly_connected_components}
+vector<bool> visited; // keeps track of which vertices are already visited
+
+// runs depth first search starting at vertex v.
+// each visited vertex is appended to the output vector when dfs leaves it.
+void dfs(int v, vector<vector<int>> const& adj, vector<int> &output) {
+    visited[v] = true;
     for (auto u : adj[v])
-        if (!used[u])
-            dfs1(u);
-
-    order.push_back(v);
+        if (!visited[u])
+            dfs(u, adj, output);
+    output.push_back(v);
 }
- 
-void dfs2(int v) {
-    used[v] = true;
-    component.push_back(v);
 
-    for (auto u : adj_rev[v])
-        if (!used[u])
-            dfs2(u);
-}
- 
-int main() {
-    int n;
-    // ... đọc n ...
+// input: adj -- adjacency list of G
+// output: components -- the strongy connected components in G
+// output: adj_cond -- adjacency list of G^SCC (by root vertices)
+void strongy_connected_components(vector<vector<int>> const& adj,
+                                  vector<vector<int>> &components,
+                                  vector<vector<int>> &adj_cond) {
+    int n = adj.size();
+    components.clear(), adj_cond.clear();
 
-    for (;;) {
-        int a, b;
-        // ... đọc cạnh có hướng tiếp theo (a,b) ...
-        adj[a].push_back(b);
-        adj_rev[b].push_back(a);
-    }
- 
-    used.assign(n, false);
+    vector<int> order; // will be a sorted list of G's vertices by exit time
 
+    visited.assign(n, false);
+
+    // first series of depth first searches
     for (int i = 0; i < n; i++)
-        if (!used[i])
-            dfs1(i);
+        if (!visited[i])
+            dfs(i, adj, order);
 
-    used.assign(n, false);
+    // create adjacency list of G^T
+    vector<vector<int>> adj_rev(n);
+    for (int v = 0; v < n; v++)
+        for (int u : adj[v])
+            adj_rev[u].push_back(v);
+
+    visited.assign(n, false);
     reverse(order.begin(), order.end());
 
+    vector<int> roots(n, 0); // gives the root vertex of a vertex's SCC
+
+    // second series of depth first searches
     for (auto v : order)
-        if (!used[v]) {
-            dfs2 (v);
-
-            // ... xử lý thành phần tiếp theo ...
-
-            component.clear();
+        if (!visited[v]) {
+            std::vector<int> component;
+            dfs(v, adj_rev, component);
+            sort(component.begin(), component.end());
+            components.push_back(component);
+            int root = component.front();
+            for (auto u : component)
+                roots[u] = root;
         }
+
+    // add edges to condensation graph
+    adj_cond.assign(n, {});
+    for (int v = 0; v < n; v++)
+        for (auto u : adj[v])
+            if (roots[v] != roots[u])
+                adj_cond[roots[v]].push_back(roots[u]);
 }
 ```
 
-Ở đây, $g$ là đồ thị, $gr$ là đồ thị chuyển vị. Hàm $dfs1$ triển khai tìm kiếm theo chiều sâu trên đồ thị $G$, hàm $dfs2$ - trên đồ thị chuyển vị $G^T$. Hàm $dfs1$ điền vào danh sách $order$ với các đỉnh theo thứ tự tăng dần của thời gian thoát của chúng (trên thực tế, nó đang thực hiện sắp xếp topo). Hàm $dfs2$ lưu trữ tất cả các đỉnh đã đạt được trong danh sách $component$, danh sách này sẽ lưu trữ thành phần liên thông mạnh tiếp theo sau mỗi lần chạy.
+The function `dfs` implements depth first search. It takes as input an adjacency list and a starting vertex. It also takes a reference to the vector `output`: each visited vertex will be appended to `output` when `dfs` leaves that vertex.
 
-### Triển khai Đồ thị Thu gọn
+Note that we use the function `dfs` both in the first and second step of the algorithm. In the first step, we pass in the adjacency list of $G$, and during consecutive calls to `dfs`, we keep passing in the same 'output vector' `order`, so that eventually we obtain a list of vertices in increasing order of exit times. In the second step, we pass in the adjacency list of $G^T$, and in each call, we pass in an empty 'output vector' `component`, which will give us one strongly connected component at a time.
 
-```cpp
-// tiếp tục từ mã trước
+When building the adjacency list of the condensation graph, we select the *root* of each component as the first vertex in its sorted list of vertices (this is an arbitrary choice). This root vertex represents its entire SCC. For each vertex `v`, the value `roots[v]` indicates the root vertex of the SCC which `v` belongs to.
 
-vector<int> roots(n, 0);
-vector<int> root_nodes;
-vector<vector<int>> adj_scc(n);
+Our condensation graph is now given by the vertices `components` (one strongly connected component corresponds to one vertex in the condensation graph), and the adjacency list is given by `adj_cond`, using only the root vertices of the strongly connected components. Notice that we generate one edge from $C$ to $C'$ in $G^\text{SCC}$ for each edge from some $a\in C$ to some $b\in C'$ in $G$ (if $C\neq C'$). This implies that in our implementation, we can have multiple edges between two components in the condensation graph.
 
-for (auto v : order)
-    if (!used[v]) {
-        dfs2(v);
+## Literature
 
-        int root = component.front();
-        for (auto u : component) roots[u] = root;
-        root_nodes.push_back(root);
+* Thomas Cormen, Charles Leiserson, Ronald Rivest, Clifford Stein. Introduction to Algorithms [2005].
+* M. Sharir. A strong-connectivity algorithm and its applications in data-flow analysis [1979].
 
-        component.clear();
-    }
-
-
-for (int v = 0; v < n; v++)
-    for (auto u : adj[v]) {
-        int root_v = roots[v],
-            root_u = roots[u];
-
-        if (root_u != root_v)
-            adj_scc[root_v].push_back(root_u);
-    }
-```
-
-Ở đây, chúng ta đã chọn nút gốc của mỗi thành phần là nút đầu tiên trong danh sách của nó. Nút này sẽ đại diện cho toàn bộ SCC của nó trong đồ thị thu gọn. `roots[v]` cho biết nút gốc cho SCC mà nút `v` thuộc về. `root_nodes` là danh sách tất cả các nút gốc (một nút cho mỗi thành phần) trong đồ thị thu gọn.
-
-`adj_scc` là danh sách kề của `root_nodes`. Bây giờ chúng ta có thể duyệt trên `adj_scc` như đồ thị thu gọn của chúng ta, chỉ sử dụng những nút thuộc về `root_nodes`.
-
-## Tài liệu tham khảo
-
-* Thomas Cormen, Charles Leiserson, Ronald Rivest, Clifford Stein. Giới thiệu về Thuật toán [2005].
-* M. Sharir. Một thuật toán liên thông mạnh và ứng dụng của nó trong phân tích luồng dữ liệu [1979].
-
-## Bài tập thực hành
+## Practice Problems
 
 * [SPOJ - Good Travels](http://www.spoj.com/problems/GOODA/)
 * [SPOJ - Lego](http://www.spoj.com/problems/LEGO/)
@@ -176,5 +169,5 @@ for (int v = 0; v < n; v++)
 * [SPOJ - Ada and Panels](http://www.spoj.com/problems/ADAPANEL/)
 * [CSES - Flight Routes Check](https://cses.fi/problemset/task/1682)
 * [CSES - Planets and Kingdoms](https://cses.fi/problemset/task/1683)
-* [CSES -Coin Collector](https://cses.fi/problemset/task/1686)
+* [CSES - Coin Collector](https://cses.fi/problemset/task/1686)
 * [Codeforces - Checkposts](https://codeforces.com/problemset/problem/427/C)

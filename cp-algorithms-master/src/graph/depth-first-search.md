@@ -4,83 +4,91 @@ tags:
 e_maxx_link: dfs
 ---
 
-# Tìm kiếm theo chiều sâu (Depth First Search)
+# Depth First Search
 
-Tìm kiếm theo chiều sâu (DFS) là một trong những thuật toán đồ thị chính.
+Depth First Search is one of the main graph algorithms.
 
-DFS tìm đường đi đầu tiên theo thứ tự từ điển trong đồ thị từ một đỉnh nguồn $u$ đến mỗi đỉnh.
-DFS cũng sẽ tìm đường đi ngắn nhất trong một cây (vì chỉ tồn tại một đường đi đơn giản), nhưng trên các đồ thị tổng quát thì điều này không đúng.
+Depth First Search finds the lexicographical first path in the graph from a source vertex $u$ to each vertex.
+Depth First Search will also find the shortest paths in a tree (because there only exists one simple path), but on general graphs this is not the case.
 
-Thuật toán hoạt động trong thời gian $O(m + n)$ trong đó $n$ là số đỉnh và $m$ là số cạnh.
+The algorithm works in $O(m + n)$ time where $n$ is the number of vertices and $m$ is the number of edges.
 
-## Mô tả thuật toán
+## Description of the algorithm
 
-Ý tưởng đằng sau DFS là đi sâu vào đồ thị càng nhiều càng tốt và quay lui khi bạn ở một đỉnh mà không có bất kỳ đỉnh kề chưa được truy cập nào.
+The idea behind DFS is to go as deep into the graph as possible, and backtrack once you are at a vertex without any unvisited adjacent vertices.
 
-Rất dễ dàng để mô tả / triển khai thuật toán một cách đệ quy:
-Chúng ta bắt đầu tìm kiếm tại một đỉnh.
-Sau khi truy cập một đỉnh, chúng ta tiếp tục thực hiện DFS cho mỗi đỉnh kề mà chúng ta chưa truy cập trước đó.
-Bằng cách này, chúng ta truy cập tất cả các đỉnh có thể truy cập được từ đỉnh bắt đầu.
+It is very easy to describe / implement the algorithm recursively:
+We start the search at one vertex.
+After visiting a vertex, we further perform a DFS for each adjacent vertex that we haven't visited before.
+This way we visit all vertices that are reachable from the starting vertex.
 
-Để biết thêm chi tiết, hãy xem phần triển khai.
+For more details check out the implementation.
 
-## Ứng dụng của Tìm kiếm theo chiều sâu
+## Applications of Depth First Search
 
-  * Tìm bất kỳ đường đi nào trong đồ thị từ đỉnh nguồn $u$ đến tất cả các đỉnh.
+  * Find any path in the graph from source vertex $u$ to all vertices.
   
-  * Tìm đường đi đầu tiên theo thứ tự từ điển trong đồ thị từ nguồn $u$ đến tất cả các đỉnh.
+  * Find lexicographical first path in the graph from source $u$ to all vertices.
   
-  * Kiểm tra xem một đỉnh trong cây có phải là tổ tiên của một đỉnh khác hay không:
+  * Check if a vertex in a tree is an ancestor of some other vertex:
   
-    Ở đầu và cuối mỗi lệnh gọi tìm kiếm, chúng ta ghi nhớ "thời gian" vào và ra của mỗi đỉnh.
-    Bây giờ bạn có thể tìm thấy câu trả lời cho bất kỳ cặp đỉnh $(i, j)$ nào trong $O(1)$:
-    đỉnh $i$ là tổ tiên của đỉnh $j$ nếu và chỉ khi $\text{entry}[i] < \text{entry}[j]$ và $\text{exit}[i] > \text{exit}[j]$.
+    At the beginning and end of each search call we remember the entry and exit "time" of each vertex.
+    Now you can find the answer for any pair of vertices $(i, j)$ in $O(1)$:
+    vertex $i$ is an ancestor of vertex $j$ if and only if $\text{entry}[i] < \text{entry}[j]$ and $\text{exit}[i] > \text{exit}[j]$.
   
-  * Tìm tổ tiên chung thấp nhất (LCA) của hai đỉnh.
+  * Find the lowest common ancestor (LCA) of two vertices.
   
-  * Sắp xếp topo:
+  * Topological sorting:
   
-    Chạy một loạt tìm kiếm theo chiều sâu để truy cập mỗi đỉnh chính xác một lần trong thời gian $O(n + m)$.
-    Thứ tự topo cần thiết sẽ là các đỉnh được sắp xếp theo thứ tự giảm dần của thời gian thoát.
+    Run a series of depth first searches so as to visit each vertex exactly once in $O(n + m)$ time.
+    The required topological ordering will be the vertices sorted in descending order of exit time.
   
   
-  * Kiểm tra xem một đồ thị nhất định có phải là không chu trình hay không và tìm chu trình trong đồ thị. (Như đã đề cập ở trên bằng cách đếm các cạnh lùi trong mọi thành phần liên thông).
+  * Check whether a given graph is acyclic and find cycles in a graph. (As mentioned above by counting back edges in every connected components).
   
-  * Tìm các thành phần liên thông mạnh trong một đồ thị có hướng:
+  * Find strongly connected components in a directed graph:
   
-    Đầu tiên thực hiện sắp xếp topo của đồ thị.
-    Sau đó chuyển vị đồ thị và chạy một loạt tìm kiếm theo chiều sâu khác theo thứ tự được xác định bởi sắp xếp topo. Đối với mỗi lệnh gọi DFS, thành phần được tạo bởi nó là một thành phần liên thông mạnh.
+    First do a topological sorting of the graph.
+    Then transpose the graph and run another series of depth first searches in the order defined by the topological sort. For each DFS call the component created by it is a strongly connected component.
   
-  * Tìm cầu nối trong một đồ thị vô hướng:
+  * Find bridges in an undirected graph:
   
-    Trước tiên, hãy chuyển đổi đồ thị đã cho thành một đồ thị có hướng bằng cách chạy một loạt tìm kiếm theo chiều sâu và làm cho mỗi cạnh được hướng khi chúng ta đi qua nó, theo hướng mà chúng ta đã đi. Thứ hai, tìm các thành phần liên thông mạnh trong đồ thị có hướng này. Cầu nối là các cạnh mà các đầu thuộc về các thành phần liên thông mạnh khác nhau.
+    First convert the given graph into a directed graph by running a series of depth first searches and making each edge directed as we go through it, in the direction we went. Second, find the strongly connected components in this directed graph. Bridges are the edges whose ends belong to different strongly connected components.
 
-## Phân loại các cạnh của đồ thị
+## Classification of edges of a graph
 
-Chúng ta có thể phân loại các cạnh bằng cách sử dụng thời gian vào và ra của các nút cuối $u$ và $v$ của các cạnh $(u,v)$.
-Các phân loại này thường được sử dụng cho các bài toán như [tìm cầu nối](bridge-searching.md) và [tìm điểm khớp nối](cutpoints.md).
+We can classify the edges of a graph, $G$, using the entry and exit time of the end nodes $u$ and $v$ of the edges $(u,v)$.
+These classifications are often used for problems like [finding bridges](bridge-searching.md) and [finding articulation points](cutpoints.md).
 
-Chúng ta thực hiện DFS và phân loại các cạnh gặp phải bằng cách sử dụng các quy tắc sau:
+We perform a DFS and classify the encountered edges using the following rules:
 
-Nếu $v$ chưa được truy cập:
+If $v$ is not visited:
 
-* Cạnh cây - Nếu $v$ được truy cập sau $u$ thì cạnh $(u,v)$ được gọi là cạnh cây. Nói cách khác, nếu $v$ được truy cập lần đầu tiên và $u$ hiện đang được truy cập thì $(u,v)$ được gọi là cạnh cây.
-Các cạnh này tạo thành một cây DFS và do đó có tên là cạnh cây.
+* Tree Edge - If $v$ is visited after $u$ then edge $(u,v)$ is called a tree edge. In other words, if $v$ is visited for the first time and $u$ is currently being visited then $(u,v)$ is called tree edge.
+These edges form a DFS tree and hence the name tree edges.
 
-Nếu $v$ được truy cập trước $u$:
+If $v$ is visited before $u$:
 
-* Cạnh lùi - Nếu $v$ là tổ tiên của $u$, thì cạnh $(u,v)$ là cạnh lùi. $v$ là tổ tiên chính xác nếu chúng ta đã vào $v$, nhưng chưa thoát ra. Các cạnh lùi hoàn thành một chu trình vì có một đường dẫn từ tổ tiên $v$ đến con cháu $u$ (trong đệ quy của DFS) và một cạnh từ con cháu $u$ đến tổ tiên $v$ (cạnh lùi), do đó một chu trình được hình thành. Chu trình có thể được phát hiện bằng cách sử dụng các cạnh lùi.
+* Back edges - If $v$ is an ancestor of $u$, then the edge $(u,v)$ is a back edge. $v$ is an ancestor exactly if we already entered $v$, but not exited it yet. Back edges complete a cycle as there is a path from ancestor $v$ to descendant $u$ (in the recursion of DFS) and an edge from descendant $u$ to ancestor $v$ (back edge), thus a cycle is formed. Cycles can be detected using back edges.
 
-* Cạnh tiến - Nếu $v$ là con cháu của $u$, thì cạnh $(u, v)$ là cạnh tiến. Nói cách khác, nếu chúng ta đã truy cập và thoát $v$ và $\text{entry}[u] < \text{entry}[v]$ thì cạnh $(u,v)$ tạo thành cạnh tiến.
-* Cạnh chéo: nếu $v$ không phải là tổ tiên hay con cháu của $u$, thì cạnh $(u, v)$ là cạnh chéo. Nói cách khác, nếu chúng ta đã truy cập và thoát $v$ và $\text{entry}[u] > \text{entry}[v]$ thì $(u,v)$ là cạnh chéo.
+* Forward Edges - If $v$ is a descendant of $u$, then edge $(u, v)$ is a forward edge. In other words, if we already visited and exited $v$ and $\text{entry}[u] < \text{entry}[v]$ then the edge $(u,v)$ forms a forward edge.
+* Cross Edges: if $v$ is neither an ancestor or descendant of $u$, then edge $(u, v)$ is a cross edge. In other words, if we already visited and exited $v$ and $\text{entry}[u] > \text{entry}[v]$ then $(u,v)$ is a cross edge.
 
-Lưu ý: Cạnh tiến và cạnh chéo chỉ tồn tại trong đồ thị có hướng.
+**Theorem**. Let $G$ be an undirected graph. Then, performing a DFS upon $G$ will classify every encountered edge as either a tree edge or back edge, i.e., forward and cross edges only exist in directed graphs.
 
-## Triển khai
+Suppose $(u,v)$ is an arbitrary edge of $G$ and without loss of generality, $u$ is visited before $v$, i.e., $\text{entry}[u] < \text{entry}[v]$. Because the DFS only processes edges once, there are only two ways in which we can process the edge $(u,v)$ and thus classify it: 
+
+* The first time we explore the edge $(u,v)$ is in the direction from $u$ to $v$. Because $\text{entry}[u] < \text{entry}[v]$, the recursive nature of the DFS means that node $v$ will be fully explored and thus exited before we can "move back up the call stack" to exit node $u$. Thus, node $v$ must be unvisited when the DFS first explores the edge $(u,v)$ from $u$ to $v$ because otherwise the search would have explored $(u,v)$ from $v$ to $u$ before exiting node $v$, as nodes $u$ and $v$ are neighbors. Therefore, edge $(u,v)$ is a tree edge.
+
+* The first time we explore the edge $(u,v)$ is in the direction from $v$ to $u$. Because we discovered node $u$ before discovering node $v$, and we only process edges once, the only way that we could explore the edge $(u,v)$ in the direction from $v$ to $u$ is if there's another path from $u$ to $v$ that does not involve the edge $(u,v)$, thus making $u$ an ancestor of $v$. The edge $(u,v)$ thus completes a cycle as it is going from the descendant, $v$, to the ancestor, $u$, which we have not exited yet. Therefore, edge $(u,v)$ is a back edge.
+
+Since there are only two ways to process the edge $(u,v)$, with the two cases and their resulting classifications outlined above, performing a DFS upon $G$ will therefore classify every encountered edge as either a tree edge or back edge, i.e., forward and cross edges only exist in directed graphs. This completes the proof.
+
+## Implementation
 
 ```cpp
-vector<vector<int>> adj; // đồ thị được biểu diễn dưới dạng danh sách kề
-int n; // số đỉnh
+vector<vector<int>> adj; // graph represented as an adjacency list
+int n; // number of vertices
 
 vector<bool> visited;
 
@@ -92,15 +100,15 @@ void dfs(int v) {
     }
 }
 ```
-Đây là triển khai đơn giản nhất của Tìm kiếm theo chiều sâu.
-Như được mô tả trong các ứng dụng, cũng có thể hữu ích khi tính toán thời gian vào và ra và màu đỉnh.
-Chúng ta sẽ tô màu tất cả các đỉnh với màu 0 nếu chúng ta chưa truy cập chúng, với màu 1 nếu chúng ta đã truy cập chúng và với màu 2 nếu chúng ta đã thoát khỏi đỉnh.
+This is the most simple implementation of Depth First Search.
+As described in the applications it might be useful to also compute the entry and exit times and vertex color.
+We will color all vertices with the color 0, if we haven't visited them, with the color 1 if we visited them, and with the color 2, if we already exited the vertex.
 
-Đây là một triển khai chung bổ sung tính toán những điều đó:
+Here is a generic implementation that additionally computes those:
 
 ```cpp
-vector<vector<int>> adj; // đồ thị được biểu diễn dưới dạng danh sách kề
-int n; // số đỉnh
+vector<vector<int>> adj; // graph represented as an adjacency list
+int n; // number of vertices
 
 vector<int> color;
 
@@ -118,7 +126,7 @@ void dfs(int v) {
 }
 ```
 
-## Bài tập thực hành
+## Practice Problems
 
 * [SPOJ: ABCPATH](http://www.spoj.com/problems/ABCPATH/)
 * [SPOJ: EAGLE1](http://www.spoj.com/problems/EAGLE1/)
@@ -159,5 +167,3 @@ void dfs(int v) {
 * [Codeforces - Ant on the Tree](http://codeforces.com/contest/29/problem/D)
 * [SPOJ - Cactus](http://www.spoj.com/problems/CAC/)
 * [SPOJ - Mixing Chemicals](http://www.spoj.com/problems/AMR10J/)
-
-

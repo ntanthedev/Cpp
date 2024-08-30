@@ -1,112 +1,110 @@
---- START OF FILE treap.md ---
-
 ---
 tags:
-  - Đã dịch
+  - Translated
 e_maxx_link: treap
 ---
 
-# Treap (Cây Descartes)
+# Treap (Cartesian tree)
 
-Treap là một cấu trúc dữ liệu kết hợp giữa cây nhị phân và heap nhị phân (do đó có tên: tree + heap $\Rightarrow$ Treap).
+A treap is a data structure which combines binary tree and binary heap (hence the name: tree + heap $\Rightarrow$ Treap).
 
-Cụ thể hơn, treap là một cấu trúc dữ liệu lưu trữ các cặp $(X, Y)$ trong một cây nhị phân sao cho nó là một cây tìm kiếm nhị phân theo $X$ và một heap nhị phân theo $Y$.
-Nếu một nút của cây chứa các giá trị $(X_0, Y_0)$, tất cả các nút trong cây con bên trái có $X \leq X_0$, tất cả các nút trong cây con bên phải có $X_0 \leq X$ và tất cả các nút trong cả cây con bên trái và bên phải đều có $Y \leq Y_0$.
+More specifically, treap is a data structure that stores pairs $(X, Y)$ in a binary tree in such a way that it is a binary search tree by $X$ and a binary heap by $Y$.
+If some node of the tree contains values $(X_0, Y_0)$, all nodes in the left subtree have $X \leq X_0$, all nodes in the right subtree have $X_0 \leq X$, and all nodes in both left and right subtrees have $Y \leq Y_0$.
 
-Treap cũng thường được gọi là "cây Descartes", vì nó dễ dàng được nhúng vào mặt phẳng Descartes:
+A treap is also often referred to as a "cartesian tree", as it is easy to embed it in a Cartesian plane:
 
 <center>
 <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Treap.svg" width="350px"/>
 </center>
 
-Treap đã được đề xuất bởi Raimund Siedel và Cecilia Aragon vào năm 1989.
+Treaps have been proposed by Raimund Siedel and Cecilia Aragon in 1989.
 
-## Ưu điểm của việc tổ chức dữ liệu như vậy
+## Advantages of such data organisation
 
-Trong triển khai như vậy, các giá trị $X$ là các khóa (và đồng thời là các giá trị được lưu trữ trong treap) và các giá trị $Y$ được gọi là **ưu tiên**. Nếu không có ưu tiên, treap sẽ là một cây tìm kiếm nhị phân thông thường theo $X$, và một tập hợp các giá trị $X$ có thể tương ứng với rất nhiều cây khác nhau, một số trong số chúng bị thoái hóa (ví dụ: ở dạng danh sách liên kết), và do đó cực kỳ chậm (các thao tác chính sẽ có độ phức tạp $O(N)$).
+In such implementation, $X$ values are the keys (and at same time the values stored in the treap), and $Y$ values are called **priorities**. Without priorities, the treap would be a regular binary search tree by $X$, and one set of $X$ values could correspond to a lot of different trees, some of them degenerate (for example, in the form of a linked list), and therefore extremely slow (the main operations would have $O(N)$ complexity).
 
-Đồng thời, **ưu tiên** (khi chúng là duy nhất) cho phép **xác định duy nhất** cây sẽ được xây dựng (tất nhiên, nó không phụ thuộc vào thứ tự thêm các giá trị), điều này có thể được chứng minh bằng định lý tương ứng. Rõ ràng, nếu bạn **chọn ưu tiên ngẫu nhiên**, bạn sẽ nhận được các cây không thoái hóa trung bình, điều này sẽ đảm bảo độ phức tạp $O(\log N)$ cho các thao tác chính. Do đó, một tên khác của cấu trúc dữ liệu này - **cây tìm kiếm nhị phân ngẫu nhiên**.
+At the same time, **priorities** (when they're unique) allow to **uniquely** specify the tree that will be constructed (of course, it does not depend on the order in which values are added), which can be proven using corresponding theorem. Obviously, if you **choose the priorities randomly**, you will get non-degenerate trees on average, which will ensure $O(\log N)$ complexity for the main operations. Hence another name of this data structure - **randomized binary search tree**.
 
-## Thao tác
+## Operations
 
-Treap cung cấp các thao tác sau:
+A treap provides the following operations:
 
-- **Chèn (X,Y)** trong $O(\log N)$.  
-  Thêm một nút mới vào cây. Một biến thể có thể là chỉ truyền $X$ và tạo $Y$ ngẫu nhiên bên trong thao tác.
-- **Tìm kiếm (X)** trong $O(\log N)$.  
-  Tìm kiếm một nút có giá trị khóa được chỉ định $X$. Việc triển khai giống như đối với cây tìm kiếm nhị phân thông thường.
-- **Xóa (X)** trong $O(\log N)$.  
-  Tìm kiếm một nút có giá trị khóa được chỉ định $X$ và xóa nó khỏi cây.
-- **Xây dựng ($X_1$, ..., $X_N$)** trong $O(N)$.  
-  Xây dựng một cây từ danh sách các giá trị. Điều này có thể được thực hiện trong thời gian tuyến tính (giả sử rằng $X_1, ..., X_N$ được sắp xếp).
-- **Hợp nhất ($T_1$, $T_2$)** trong $O(M \log (N/M))$.  
-  Hợp nhất hai cây, giả sử rằng tất cả các phần tử đều khác nhau. Có thể đạt được cùng một độ phức tạp nếu các phần tử trùng lặp nên được loại bỏ trong quá trình hợp nhất.
-- **Giao ($T_1$, $T_2$)** trong $O(M \log (N/M))$.  
-  Tìm giao điểm của hai cây (tức là các phần tử chung của chúng). Chúng ta sẽ không xem xét việc triển khai thao tác này ở đây.
+- **Insert (X,Y)** in $O(\log N)$.  
+  Adds a new node to the tree. One possible variant is to pass only $X$ and generate $Y$ randomly inside the operation.
+- **Search (X)** in $O(\log N)$.  
+  Looks for a node with the specified key value $X$. The implementation is the same as for an ordinary binary search tree.
+- **Erase (X)** in $O(\log N)$.  
+  Looks for a node with the specified key value $X$ and removes it from the tree.
+- **Build ($X_1$, ..., $X_N$)** in $O(N)$.  
+  Builds a tree from a list of values. This can be done in linear time (assuming that $X_1, ..., X_N$ are sorted).
+- **Union ($T_1$, $T_2$)** in $O(M \log (N/M))$.  
+  Merges two trees, assuming that all the elements are different. It is possible to achieve the same complexity if duplicate elements should be removed during merge.
+- **Intersect ($T_1$, $T_2$)** in $O(M \log (N/M))$.  
+  Finds the intersection of two trees (i.e. their common elements). We will not consider the implementation of this operation here.
 
-Ngoài ra, do treap là một cây tìm kiếm nhị phân, nó có thể triển khai các thao tác khác, chẳng hạn như tìm phần tử lớn thứ $K$ hoặc tìm chỉ mục của một phần tử.
+In addition, due to the fact that a treap is a binary search tree, it can implement other operations, such as finding the $K$-th largest element or finding the index of an element.
 
-## Mô tả triển khai
+## Implementation Description
 
-Về mặt triển khai, mỗi nút chứa $X$, $Y$ và các con trỏ đến các con bên trái ($L$) và bên phải ($R$).
+In terms of implementation, each node contains $X$, $Y$ and pointers to the left ($L$) and right ($R$) children.
 
-Chúng ta sẽ triển khai tất cả các thao tác cần thiết chỉ bằng hai thao tác phụ trợ: Chia (Split) và Hợp nhất (Merge).
+We will implement all the required operations using just two auxiliary operations: Split and Merge.
 
-### Chia (Split)
+### Split
 
 <center>
 <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/Treap_split.svg" width="450px"/>
 </center>
 
-**Chia ($T$, $X$)** tách cây $T$ thành 2 cây con $L$ và $R$ (là các giá trị trả về của chia) sao cho $L$ chứa tất cả các phần tử có khóa $X_L \le X$ và $R$ chứa tất cả các phần tử có khóa $X_R > X$. Thao tác này có độ phức tạp $O (\log N)$ và được triển khai bằng cách sử dụng đệ quy:
+**Split ($T$, $X$)** separates tree $T$ in 2 subtrees $L$ and $R$ trees (which are the return values of split) so that $L$ contains all elements with key $X_L \le X$, and $R$ contains all elements with key $X_R > X$. This operation has $O (\log N)$ complexity and is implemented using a clean recursion:
 
-1. Nếu giá trị của nút gốc (R) là $\le X$, thì `L` ít nhất sẽ bao gồm `R->L` và `R`. Sau đó, chúng ta gọi chia trên `R->R` và ghi lại kết quả chia của nó là `L'` và `R'`. Cuối cùng, `L` cũng sẽ chứa `L'`, trong khi `R = R'`.
-2. Nếu giá trị của nút gốc (R) là $> X$, thì `R` ít nhất sẽ bao gồm `R` và `R->R`. Sau đó, chúng ta gọi chia trên `R->L` và ghi lại kết quả chia của nó là `L'` và `R'`. Cuối cùng, `L=L'`, trong khi `R` cũng sẽ chứa `R'`.
+1. If the value of the root node (R) is $\le X$, then `L` would at least consist of `R->L` and `R`. We then call split on `R->R`, and note its split result as `L'` and `R'`. Finally, `L` would also contain `L'`, whereas `R = R'`.
+2. If the value of the root node (R) is $> X$, then `R` would at least consist of `R` and `R->R`. We then call split on `R->L`, and note its split result as `L'` and `R'`. Finally, `L=L'`, whereas `R` would also contain `R'`.
 
-Do đó, thuật toán chia là:
+Thus, the split algorithm is:
 
-1. quyết định nút gốc sẽ thuộc về cây con nào (trái hay phải)
-2. gọi đệ quy chia trên một trong các con của nó
-3. tạo kết quả cuối cùng bằng cách sử dụng lại kết quả của cuộc gọi chia đệ quy.
+1. decide which subtree the root node would belong to (left or right)
+2. recursively call split on one of its children
+3. create the final result by reusing the recursive split call.
 
-### Hợp nhất (Merge)
+### Merge
 
 <center>
 <img src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Treap_merge.svg" width="500px"/>
 </center>
 
-**Hợp nhất ($T_1$, $T_2$)** kết hợp hai cây con $T_1$ và $T_2$ và trả về cây mới. Thao tác này cũng có độ phức tạp $O (\log N)$. Nó hoạt động với giả định rằng $T_1$ và $T_2$ được sắp xếp (tất cả các khóa $X$ trong $T_1$ đều nhỏ hơn các khóa trong $T_2$). Do đó, chúng ta cần kết hợp các cây này mà không vi phạm thứ tự ưu tiên $Y$. Để làm điều này, chúng ta chọn làm gốc cây có ưu tiên $Y$ cao hơn trong nút gốc và gọi đệ quy Hợp nhất cho cây kia và cây con tương ứng của nút gốc đã chọn.
+**Merge ($T_1$, $T_2$)** combines two subtrees $T_1$ and $T_2$ and returns the new tree. This operation also has $O (\log N)$ complexity. It works under the assumption that $T_1$ and $T_2$ are ordered (all keys $X$ in $T_1$ are smaller than keys in $T_2$). Thus, we need to combine these trees without violating the order of priorities $Y$. To do this, we choose as the root the tree which has higher priority $Y$ in the root node, and recursively call Merge for the other tree and the corresponding subtree of the selected root node.
 
-### Chèn (Insert)
+### Insert
 
 <center>
 <img src="https://upload.wikimedia.org/wikipedia/commons/3/35/Treap_insert.svg" width="500px"/>
 </center>
 
-Bây giờ việc triển khai **Chèn ($X$, $Y$)** trở nên rõ ràng. Đầu tiên, chúng ta đi xuống cây (như trong một cây tìm kiếm nhị phân thông thường theo X) và dừng lại ở nút đầu tiên mà giá trị ưu tiên nhỏ hơn $Y$. Chúng ta đã tìm thấy vị trí mà chúng ta sẽ chèn phần tử mới. Tiếp theo, chúng ta gọi **Chia (T, X)** trên cây con bắt đầu từ nút đã tìm và sử dụng các cây con được trả về $L$ và $R$ làm con trái và con phải của nút mới.
+Now implementation of **Insert ($X$, $Y$)** becomes obvious. First we descend in the tree (as in a regular binary search tree by X), and stop at the first node in which the priority value is less than $Y$. We have found the place where we will insert the new element. Next, we call **Split (T, X)** on the subtree starting at the found node, and use returned subtrees $L$ and $R$ as left and right children of the new node.
 
-Ngoài ra, có thể thực hiện chèn bằng cách chia treap ban đầu trên $X$ và thực hiện $2$ lần hợp nhất với nút mới (xem hình).
+Alternatively, insert can be done by splitting the initial treap on $X$ and doing $2$ merges with the new node (see the picture).
 
 
-### Xóa (Erase)
+### Erase
 
 <center>
 <img src="https://upload.wikimedia.org/wikipedia/commons/6/62/Treap_erase.svg" width="500px"/>
 </center>
 
-Việc triển khai **Xóa ($X$)** cũng rõ ràng. Đầu tiên, chúng ta đi xuống cây (như trong một cây tìm kiếm nhị phân thông thường theo $X$), tìm kiếm phần tử chúng ta muốn xóa. Khi tìm thấy nút, chúng ta gọi **Hợp nhất** trên các con của nó và đặt giá trị trả về của thao tác vào vị trí của phần tử chúng ta đang xóa.
+Implementation of **Erase ($X$)** is also clear. First we descend in the tree (as in a regular binary search tree by $X$), looking for the element we want to delete. Once the node is found, we call **Merge** on it children and put the return value of the operation in the place of the element we're deleting.
 
-Ngoài ra, chúng ta có thể phân tách cây con chứa $X$ bằng $2$ thao tác chia và hợp nhất các treap còn lại (xem hình).
+Alternatively, we can factor out the subtree holding $X$ with $2$ split operations and merge the remaining treaps (see the picture).
 
-### Xây dựng (Build)
+### Build
 
-Chúng ta triển khai thao tác **Xây dựng** với độ phức tạp $O (N \log N)$ bằng cách sử dụng $N$ lệnh gọi **Chèn**.
+We implement **Build** operation with $O (N \log N)$ complexity using $N$ **Insert** calls.
 
-### Hợp nhất (Union)
+### Union
 
-**Hợp nhất ($T_1$, $T_2$)** có độ phức tạp lý thuyết là $O (M \log (N / M))$, nhưng trong thực tế nó hoạt động rất tốt, có lẽ với một hằng số ẩn rất nhỏ. Giả sử không mất tính tổng quát rằng $T_1 \rightarrow Y > T_2 \rightarrow Y$, tức là gốc của $T_1$ sẽ là gốc của kết quả. Để có được kết quả, chúng ta cần hợp nhất các cây $T_1 \rightarrow L$, $T_1 \rightarrow R$ và $T_2$ thành hai cây có thể là con của gốc $T_1$. Để làm điều này, chúng ta gọi Chia ($T_2$, $T_1\rightarrow X$), do đó chia $T_2$ thành hai phần L và R, sau đó chúng ta kết hợp đệ quy với các con của $T_1$: Hợp nhất ($T_1 \rightarrow L$, $L$) và Hợp nhất ($T_1 \rightarrow R$, $R$), do đó nhận được cây con bên trái và bên phải của kết quả.
+**Union ($T_1$, $T_2$)** has theoretical complexity $O (M \log (N / M))$, but in practice it works very well, probably with a very small hidden constant. Let's assume without loss of generality that $T_1 \rightarrow Y > T_2 \rightarrow Y$, i. e. root of $T_1$ will be the root of the result. To get the result, we need to merge trees $T_1 \rightarrow L$, $T_1 \rightarrow R$ and $T_2$ in two trees which could be children of $T_1$ root. To do this, we call Split ($T_2$, $T_1\rightarrow X$), thus splitting $T_2$ in two parts L and R, which we then recursively combine with children of $T_1$: Union ($T_1 \rightarrow L$, $L$) and Union ($T_1 \rightarrow R$, $R$), thus getting left and right subtrees of the result.
 
-## Triển khai
+## Implementation
 
 ```cpp
 struct item {
@@ -119,7 +117,7 @@ struct item {
 typedef item* pitem;
 ```
 
-Đây là định nghĩa mục của chúng ta. Lưu ý rằng có hai con trỏ con, một khóa số nguyên (cho BST) và một ưu tiên số nguyên (cho heap). Ưu tiên được gán bằng cách sử dụng trình tạo số ngẫu nhiên.
+This is our item defintion. Note there are two child pointers, and an integer key (for the BST) and an integer priority (for the heap). The priority is assigned using a random number generator.
 
 ```cpp
 void split (pitem t, int key, pitem & l, pitem & r) {
@@ -132,21 +130,21 @@ void split (pitem t, int key, pitem & l, pitem & r) {
 }
 ```
 
-`t` là treap để chia và `key` là giá trị BST để chia. Lưu ý rằng chúng ta không `return` các giá trị kết quả ở bất cứ đâu, thay vào đó, chúng ta chỉ sử dụng chúng như sau:
+`t` is the treap to split, and `key` is the BST value by which to split. Note that we do not `return` the result values anywhere, instead, we just use them like so:
 
 ```cpp
 pitem l = nullptr, r = nullptr;
 split(t, 5, l, r);
-if (l) cout << "Kích thước cây con bên trái: " << (l->size) << endl;
-if (r) cout << "Kích thước cây con bên phải: " << (r->size) << endl;
+if (l) cout << "Left subtree size: " << (l->size) << endl;
+if (r) cout << "Right subtree size: " << (r->size) << endl;
 ```
 
-Hàm `split` này có thể khó hiểu, vì nó có cả con trỏ (`pitem`) cũng như tham chiếu đến các con trỏ đó (`pitem &l`). Hãy hiểu bằng lời những gì ý định của lệnh gọi hàm `split(t, k, l, r)`: "chia treap `t` theo giá trị `k` thành hai treap, và lưu trữ các treap bên trái trong `l` và treap bên phải trong `r`". Tuyệt vời! Bây giờ, hãy áp dụng định nghĩa này cho hai lệnh gọi đệ quy, sử dụng trường hợp chúng ta đã phân tích trong phần trước: (Điều kiện if đầu tiên là trường hợp cơ sở tầm thường cho một treap trống)
+This `split` function can be tricky to understand, as it has both pointers (`pitem`) as well as reference to those pointers (`pitem &l`). Let us understand in words what the function call `split(t, k, l, r)` intends: "split treap `t` by value `k` into two treaps, and store the left treaps in `l` and right treap in `r`". Great! Now, let us apply this definition to the two recursive calls, using the case work we analyzed in the previous section: (The first if condition is a trivial base case for an empty treap)
 
-1. Khi giá trị nút gốc là $\le$ key, chúng ta gọi `split (t->r, key, t->r, r)`, có nghĩa là: "chia treap `t->r` (cây con bên phải của `t`) theo giá trị `key` và lưu trữ cây con bên trái trong `t->r` và cây con bên phải trong `r`". Sau đó, chúng ta đặt `l = t`. Lưu ý bây giờ rằng giá trị kết quả `l` chứa `t->l`, `t` cũng như `t->r` (là kết quả của lệnh gọi đệ quy mà chúng ta đã thực hiện) tất cả đều đã được hợp nhất theo đúng thứ tự! Bạn nên tạm dừng để đảm bảo rằng kết quả này của `l` và `r` tương ứng chính xác với những gì chúng ta đã thảo luận trước đó trong Mô tả Triển khai.
-2. Khi giá trị nút gốc lớn hơn key, chúng ta gọi `split (t->l, key, l, t->l)`, có nghĩa là: "chia treap `t->l` (cây con bên trái của `t`) theo giá trị `key` và lưu trữ cây con bên trái trong `l` và cây con bên phải trong `t->l`". Sau đó, chúng ta đặt `r = t`. Lưu ý bây giờ rằng giá trị kết quả `r` chứa `t->l` (là kết quả của lệnh gọi đệ quy mà chúng ta đã thực hiện), `t` cũng như `t->r`, tất cả đều đã được hợp nhất theo đúng thứ tự! Bạn nên tạm dừng để đảm bảo rằng kết quả này của `l` và `r` tương ứng chính xác với những gì chúng ta đã thảo luận trước đó trong Mô tả Triển khai.
+1. When the root node value is $\le$ key, we call `split (t->r, key, t->r, r)`, which means: "split treap `t->r` (right subtree of `t`) by value `key` and store the left subtree in `t->r` and right subtree in `r`". After that, we set `l = t`. Note now that the `l` result value contains `t->l`, `t` as well as `t->r` (which is the result of the recursive call we made) all already merged in the correct order! You should pause to ensure that this result of `l` and `r` corresponds exactly with what we discussed earlier in Implementation Description.
+2. When the root node value is greater than key, we call `split (t->l, key, l, t->l)`, which means: "split treap `t->l` (left subtree of `t`) by value `key` and store the left subtree in `l` and right subtree in `t->l`". After that, we set `r = t`. Note now that the `r` result value contains `t->l` (which is the result of the recursive call we made), `t` as well as `t->r`, all already merged in the correct order! You should pause to ensure that this result of `l` and `r` corresponds exactly with what we discussed earlier in Implementation Description.
 
-Nếu bạn vẫn gặp khó khăn trong việc hiểu triển khai, bạn nên xem xét nó một cách _quy nạp_, nghĩa là: *không* cố gắng chia nhỏ các lệnh gọi đệ quy hết lần này đến lần khác. Giả sử triển khai chia hoạt động chính xác trên treap trống, sau đó thử chạy nó cho một treap nút đơn, sau đó là một treap hai nút, v.v., mỗi lần sử dụng lại kiến ​​thức của bạn rằng chia trên các treap nhỏ hơn hoạt động.
+If you're still having trouble understanding the implementation, you should look at it _inductively_, that is: do *not* try to break down the recursive calls over and over again. Assume the split implementation works correct on empty treap, then try to run it for a single node treap, then a two node treap, and so on, each time reusing your knowledge that split on smaller treaps works.
 
 ```cpp
 void insert (pitem & t, pitem it) {
@@ -188,11 +186,11 @@ pitem unite (pitem l, pitem r) {
 }
 ```
 
-## Duy trì kích thước của cây con
+## Maintaining the sizes of subtrees
 
-Để mở rộng chức năng của treap, thường cần phải lưu trữ số lượng nút trong cây con của mỗi nút - trường `int cnt` trong cấu trúc `item`. Ví dụ: nó có thể được sử dụng để tìm phần tử lớn thứ K của cây trong $O (\log N)$ hoặc để tìm chỉ mục của phần tử trong danh sách đã sắp xếp với cùng độ phức tạp. Việc triển khai các thao tác này sẽ giống như đối với cây tìm kiếm nhị phân thông thường.
+To extend the functionality of the treap, it is often necessary to store the number of nodes in subtree of each node - field `int cnt` in the `item` structure. For example, it can be used to find K-th largest element of tree in $O (\log N)$, or to find the index of the element in the sorted list with the same complexity. The implementation of these operations will be the same as for the regular binary search tree.
 
-Khi một cây thay đổi (các nút được thêm hoặc xóa, v.v.), `cnt` của một số nút sẽ được cập nhật cho phù hợp. Chúng ta sẽ tạo hai hàm: `cnt()` sẽ trả về giá trị hiện tại của `cnt` hoặc 0 nếu nút không tồn tại và `upd_cnt()` sẽ cập nhật giá trị của `cnt` cho nút này giả sử rằng đối với các con L và R của nó, các giá trị của `cnt` đã được cập nhật. Rõ ràng là việc thêm các lệnh gọi `upd_cnt()` vào cuối `insert`, `erase`, `split` và `merge` là đủ để giữ cho các giá trị `cnt` được cập nhật.
+When a tree changes (nodes are added or removed etc.), `cnt` of some nodes should be updated accordingly. We'll create two functions: `cnt()` will return the current value of `cnt` or 0 if the node does not exist, and `upd_cnt()` will update the value of `cnt` for this node assuming that for its children L and R the values of `cnt` have already been updated. Evidently it's sufficient to add calls of `upd_cnt()` to the end of `insert`, `erase`, `split` and `merge` to keep `cnt` values up-to-date.
 
 ```cpp
 int cnt (pitem t) {
@@ -205,9 +203,9 @@ void upd_cnt (pitem t) {
 }
 ```
 
-## Xây dựng Treap trong $O (N)$ ở chế độ ngoại tuyến {data-toc-label="Xây dựng Treap trong O(N) ở chế độ ngoại tuyến"}
+## Building a Treap in $O (N)$ in offline mode {data-toc-label="Building a Treap in O(N) in offline mode"}
 
-Cho một danh sách các khóa được sắp xếp, có thể xây dựng một treap nhanh hơn là chèn từng khóa một, mất $O(N \log N)$. Vì các khóa được sắp xếp, nên một cây tìm kiếm nhị phân cân bằng có thể dễ dàng được xây dựng trong thời gian tuyến tính. Các giá trị heap $Y$ được khởi tạo ngẫu nhiên và sau đó có thể được heapified độc lập với các khóa $X$ để [xây dựng heap](https://en.wikipedia.org/wiki/Binary_heap#Building_a_heap) trong $O(N)$.
+Given a sorted list of keys, it is possible to construct a treap faster than by inserting the keys one at a time which takes $O(N \log N)$. Since the keys are sorted, a balanced binary search tree can be easily constructed in linear time. The heap values $Y$ are initialized randomly and then can be heapified independent of the keys $X$ to [build the heap](https://en.wikipedia.org/wiki/Binary_heap#Building_a_heap) in $O(N)$.
 
 ```cpp
 void heapify (pitem t) {
@@ -224,7 +222,7 @@ void heapify (pitem t) {
 }
 
 pitem build (int * a, int n) {
-	// Xây dựng treap trên các giá trị {a[0], a[1], ..., a[n - 1]}
+	// Construct a treap on values {a[0], a[1], ..., a[n - 1]}
 	if (n == 0) return NULL;
 	int mid = n / 2;
 	pitem t = new item (a[mid], rand ());
@@ -236,18 +234,18 @@ pitem build (int * a, int n) {
 }
 ```
 
-Lưu ý: chỉ cần gọi `upd_cnt(t)` nếu bạn cần kích thước cây con.
+Note: calling `upd_cnt(t)` is only necessary if you need the subtree sizes.
 
-Cách tiếp cận ở trên luôn cung cấp một cây cân bằng hoàn hảo, thường tốt cho mục đích thực tế, nhưng với cái giá là không giữ được các ưu tiên ban đầu được gán cho mỗi nút. Do đó, cách tiếp cận này không khả thi để giải quyết bài toán sau:
+The approach above always provides a perfectly balanced tree, which is generally good for practical purposes, but at the cost of not preserving the priorities that were initially assigned to each node. Thus, this approach is not feasible to solve the following problem:
 
-!!! example "[acmsguru - Cây Descartes](https://codeforces.com/problemsets/acmsguru/problem/99999/155)"
-    Cho một dãy các cặp $(x_i, y_i)$, hãy xây dựng một cây Descartes trên chúng. Tất cả $x_i$ và tất cả $y_i$ đều là duy nhất.
+!!! example "[acmsguru - Cartesian Tree](https://codeforces.com/problemsets/acmsguru/problem/99999/155)"
+    Given a sequence of pairs $(x_i, y_i)$, construct a cartesian tree on them. All $x_i$ and all $y_i$ are unique.
 
-Lưu ý rằng trong bài toán này, các ưu tiên không phải là ngẫu nhiên, do đó chỉ cần chèn các đỉnh một cách đơn giản có thể cung cấp một giải pháp bậc hai.
+Note that in this problem priorities are not random, hence just inserting vertices one by one could provide a quadratic solution.
 
-Một trong những giải pháp khả thi ở đây là tìm cho mỗi phần tử các phần tử gần nhất bên trái và bên phải có ưu tiên nhỏ hơn phần tử này. Trong số hai phần tử này, phần tử có ưu tiên lớn hơn phải là cha của phần tử hiện tại.
+One of possible solutions here is to find for each element the closest elements to the left and to the right which have a smaller priority than this element. Among these two elements, the one with the larger priority must be the parent of the current element.
 
-Bài toán này có thể giải quyết được bằng cách sửa đổi [ngăn xếp tối thiểu](./stack_queue_modification_vi.md) trong thời gian tuyến tính:
+This problem is solvable with a [minimum stack](./stack_queue_modification.md) modification in linear time:
 
 ```cpp
 void connect(auto from, auto to) {
@@ -285,24 +283,24 @@ pitem build(int *x, int *y, int n) {
 }
 ```
 
-## Treap ngầm (Implicit Treaps)
+## Implicit Treaps
 
-Treap ngầm là một sửa đổi đơn giản của treap thông thường, là một cấu trúc dữ liệu rất mạnh mẽ. Trên thực tế, treap ngầm có thể được coi là một mảng với các thủ tục sau được triển khai (tất cả đều trong $O (\log N)$ ở chế độ trực tuyến):
+Implicit treap is a simple modification of the regular treap which is a very powerful data structure. In fact, implicit treap can be considered as an array with the following procedures implemented (all in $O (\log N)$ in the online mode):
 
-- Chèn một phần tử vào mảng ở bất kỳ vị trí nào
-- Xóa một phần tử tùy ý
-- Tìm tổng, phần tử nhỏ nhất / lớn nhất, v.v. trên một khoảng tùy ý
-- Cộng, tô màu trên một khoảng tùy ý
-- Đảo ngược các phần tử trên một khoảng tùy ý
+- Inserting an element in the array in any location
+- Removal of an arbitrary element
+- Finding sum, minimum / maximum element etc. on an arbitrary interval
+- Addition, painting on an arbitrary interval
+- Reversing elements on an arbitrary interval
 
-Ý tưởng là các khóa phải là **chỉ số** dựa trên null của các phần tử trong mảng. Nhưng chúng ta sẽ không lưu trữ các giá trị này một cách rõ ràng (nếu không, ví dụ, việc chèn một phần tử sẽ gây ra thay đổi của khóa trong $O (N)$ nút của cây).
+The idea is that the keys should be null-based **indices** of the elements in the array. But we will not store these values explicitly (otherwise, for example, inserting an element would cause changes of the key in $O (N)$ nodes of the tree).
 
-Lưu ý rằng khóa của một nút là số lượng nút nhỏ hơn nó (các nút như vậy có thể có mặt không chỉ trong cây con bên trái của nó mà còn trong cây con bên trái của tổ tiên của nó).
-Cụ thể hơn, **khóa ngầm** cho một số nút T là số lượng đỉnh $cnt (T \rightarrow L)$ trong cây con bên trái của nút này cộng với các giá trị tương tự $cnt (P \rightarrow L) + 1$ cho mỗi tổ tiên P của nút T, nếu T nằm trong cây con bên phải của P.
+Note that the key of a node is the number of nodes less than it (such nodes can be present not only in its left subtree but also in left subtrees of its ancestors). 
+More specifically, the **implicit key** for some node T is the number of vertices $cnt (T \rightarrow L)$ in the left subtree of this node plus similar values $cnt (P \rightarrow L) + 1$ for each ancestor P of the node T, if T is in the right subtree of P.
 
-Bây giờ đã rõ cách tính khóa ngầm của nút hiện tại một cách nhanh chóng. Vì trong tất cả các thao tác, chúng ta đến bất kỳ nút nào bằng cách đi xuống cây, chúng ta chỉ có thể tích lũy tổng này và chuyển nó cho hàm. Nếu chúng ta đi đến cây con bên trái, tổng tích lũy không thay đổi, nếu chúng ta đi đến cây con bên phải, nó tăng lên $cnt (T \rightarrow L) +1$.
+Now it's clear how to calculate the implicit key of current node quickly. Since in all operations we arrive to any node by descending in the tree, we can just accumulate this sum and pass it to the function. If we go to the left subtree, the accumulated sum does not change, if we go to the right subtree it increases by $cnt (T \rightarrow L) +1$.
 
-Dưới đây là các triển khai mới của **Chia** và **Hợp nhất**:
+Here are the new implementations of **Split** and **Merge**:
 
 ```cpp
 void merge (pitem & t, pitem l, pitem r) {
@@ -318,7 +316,7 @@ void merge (pitem & t, pitem l, pitem r) {
 void split (pitem t, pitem & l, pitem & r, int key, int add = 0) {
 	if (!t)
 		return void( l = r = 0 );
-	int cur_key = add + cnt(t->l); // khóa ngầm
+	int cur_key = add + cnt(t->l); //implicit key
 	if (key <= cur_key)
 		split (t->l, l, t->l, key, add),  r = t;
 	else
@@ -327,24 +325,24 @@ void split (pitem t, pitem & l, pitem & r, int key, int add = 0) {
 }
 ```
 
-Trong triển khai ở trên, sau khi gọi $split(T, T_1, T_2, k)$, cây $T_1$ sẽ bao gồm $k$ phần tử đầu tiên của $T$ (nghĩa là các phần tử có khóa ngầm nhỏ hơn $k$) và $T_2$ sẽ bao gồm tất cả phần còn lại.
+In the implementation above, after the call of $split(T, T_1, T_2, k)$, the tree $T_1$ will consist of first $k$ elements of $T$ (that is, of elements having their implicit key less than $k$) and $T_2$ will consist of all the rest.
 
-Bây giờ hãy xem xét việc triển khai các thao tác khác nhau trên treap ngầm:
+Now let's consider the implementation of various operations on implicit treaps:
 
-- **Chèn phần tử**.  
-  Giả sử chúng ta cần chèn một phần tử ở vị trí $pos$. Chúng ta chia treap thành hai phần, tương ứng với các mảng $[0..pos-1]$ và $[pos..sz]$; để làm điều này, chúng ta gọi $split(T, T_1, T_2, pos)$. Sau đó, chúng ta có thể kết hợp cây $T_1$ với đỉnh mới bằng cách gọi $merge(T_1, T_1, \text{new item})$ (dễ dàng nhận thấy rằng tất cả các điều kiện tiên quyết đều được đáp ứng). Cuối cùng, chúng ta kết hợp các cây $T_1$ và $T_2$ trở lại thành $T$ bằng cách gọi $merge(T, T_1, T_2)$.
-- **Xóa phần tử**.  
-  Thao tác này thậm chí còn dễ dàng hơn: tìm phần tử cần xóa $T$, thực hiện hợp nhất các con của nó $L$ và $R$ và thay thế phần tử $T$ bằng kết quả của hợp nhất. Trên thực tế, việc xóa phần tử trong treap ngầm hoàn toàn giống như trong treap thông thường.
-- Tìm **tổng / giá trị nhỏ nhất**, v.v. trên khoảng.  
-  Đầu tiên, tạo một trường bổ sung $F$ trong cấu trúc `item` để lưu trữ giá trị của hàm mục tiêu cho cây con của nút này. Trường này rất dễ duy trì tương tự như duy trì kích thước của cây con: tạo một hàm tính toán giá trị này cho một nút dựa trên các giá trị cho các con của nó và thêm các lệnh gọi của hàm này vào cuối tất cả các hàm sửa đổi cây.  
-  Thứ hai, chúng ta cần biết cách xử lý một truy vấn cho một khoảng tùy ý $[A; B]$.  
-  Để có được một phần của cây tương ứng với khoảng $[A; B]$, chúng ta cần gọi $split(T, T_2, T_3, B+1)$, và sau đó $split(T_2, T_1, T_2, A)$: sau đó $T_2$ sẽ bao gồm tất cả các phần tử trong khoảng $[A; B]$, và chỉ những phần tử đó. Do đó, phản hồi cho truy vấn sẽ được lưu trữ trong trường $F$ của gốc $T_2$. Sau khi truy vấn được trả lời, cây phải được khôi phục bằng cách gọi $merge(T, T_1, T_2)$ và $merge(T, T, T_3)$.
-- **Cộng / tô màu** trên khoảng.  
-  Chúng ta hành động tương tự như đoạn trước, nhưng thay vì trường F, chúng ta sẽ lưu trữ một trường `add` sẽ chứa giá trị được thêm vào cho cây con (hoặc giá trị mà cây con được tô màu). Trước khi thực hiện bất kỳ thao tác nào, chúng ta phải "đẩy" giá trị này một cách chính xác - tức là thay đổi $T \rightarrow L \rightarrow add$ và $T \rightarrow R \rightarrow add$, và dọn dẹp `add` trong nút cha. Bằng cách này, sau bất kỳ thay đổi nào đối với cây, thông tin sẽ không bị mất.
-- **Đảo ngược** trên khoảng.  
-  Điều này một lần nữa tương tự như thao tác trước đó: chúng ta phải thêm cờ boolean `rev` và đặt nó thành true khi cây con của nút hiện tại phải được đảo ngược. "Đẩy" giá trị này hơi phức tạp - chúng ta hoán đổi các con của nút này và đặt cờ này thành true cho chúng.
+- **Insert element**.  
+  Suppose we need to insert an element at position $pos$. We divide the treap into two parts, which correspond to arrays $[0..pos-1]$ and $[pos..sz]$; to do this we call $split(T, T_1, T_2, pos)$. Then we can combine tree $T_1$ with the new vertex by calling $merge(T_1, T_1, \text{new item})$ (it is easy to see that all preconditions are met). Finally, we combine trees $T_1$ and $T_2$ back into $T$ by calling $merge(T, T_1, T_2)$.
+- **Delete element**.  
+ This operation is even easier: find the element to be deleted $T$, perform merge of its children $L$ and $R$, and replace the element $T$ with the result of merge. In fact, element deletion in the implicit treap is exactly the same as in the regular treap.
+- Find **sum / minimum**, etc. on the interval.  
+ First, create an additional field $F$ in the `item` structure to store the value of the target function for this node's subtree. This field is easy to maintain similarly to maintaining sizes of subtrees: create a function which calculates this value for a node based on values for its children and add calls of this function in the end of all functions which modify the tree.  
+ Second, we need to know how to process a query for an arbitrary interval $[A; B]$.  
+ To get a part of tree which corresponds to the interval $[A; B]$, we need to call $split(T, T_2, T_3, B+1)$, and then $split(T_2, T_1, T_2, A)$: after this $T_2$ will consist of all the elements in the interval $[A; B]$, and only of them. Therefore, the response to the query will be stored in the field $F$ of the root of $T_2$. After the query is answered, the tree has to be restored by calling $merge(T, T_1, T_2)$ and $merge(T, T, T_3)$.
+- **Addition / painting** on the interval.  
+ We act similarly to the previous paragraph, but instead of the field F we will store a field `add` which will contain the added value for the subtree (or the value to which the subtree is painted). Before performing any operation we have to "push" this value correctly - i.e. change $T \rightarrow L \rightarrow add$ and $T \rightarrow R \rightarrow add$, and to clean up `add` in the parent node. This way after any changes to the tree the information will not be lost.
+- **Reverse** on the interval.  
+ This is again similar to the previous operation: we have to add boolean flag `rev` and set it to true when the subtree of the current node has to be reversed. "Pushing" this value is a bit complicated - we swap children of this node and set this flag to true for them.
 
-Dưới đây là một ví dụ triển khai treap ngầm với đảo ngược trên khoảng. Đối với mỗi nút, chúng ta lưu trữ trường được gọi là `value`, là giá trị thực của phần tử mảng ở vị trí hiện tại. Chúng ta cũng cung cấp triển khai của hàm `output()`, xuất ra một mảng tương ứng với trạng thái hiện tại của treap ngầm.
+Here is an example implementation of the implicit treap with reverse on the interval. For each node we store field called `value` which is the actual value of the array element at current position. We also provide implementation of the function `output()`, which outputs an array that corresponds to the current state of the implicit treap.
 
 ```cpp
 typedef struct item * pitem;
@@ -414,11 +412,11 @@ void output (pitem t) {
 }
 ```
 
-## Tài liệu tham khảo
+## Literature
 
 * [Blelloch, Reid-Miller "Fast Set Operations Using Treaps"](https://www.cs.cmu.edu/~scandal/papers/treaps-spaa98.pdf)
 
-## Bài tập thực hành
+## Practice Problems
 
 * [SPOJ - Ada and Aphids](http://www.spoj.com/problems/ADAAPHID/)
 * [SPOJ - Ada and Harvest](http://www.spoj.com/problems/ADACROP/)
@@ -435,7 +433,3 @@ void output (pitem t) {
 * [Codeforces - T-Shirts](https://codeforces.com/contest/702/problem/F)
 * [Codeforces - Wizards and Roads](https://codeforces.com/problemset/problem/167/D)
 * [Codeforces - Yaroslav and Points](https://codeforces.com/contest/295/problem/E)
-
-
-
-

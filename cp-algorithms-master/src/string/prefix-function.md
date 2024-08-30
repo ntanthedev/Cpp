@@ -1,29 +1,27 @@
---- START OF FILE prefix-function.md ---
-
 ---
 tags:
-  - Dịch
+  - Translated
 e_maxx_link: prefix_function
 ---
 
-# Hàm tiền tố. Thuật toán Knuth–Morris–Pratt
+# Prefix function. Knuth–Morris–Pratt algorithm
 
-## Định nghĩa hàm tiền tố
+## Prefix function definition
 
-Cho một chuỗi $s$ có độ dài $n$.
-**Hàm tiền tố** cho chuỗi này được định nghĩa là một mảng $\pi$ có độ dài $n$, trong đó $\pi[i]$ là độ dài của tiền tố thực sự dài nhất của chuỗi con $s[0 \dots i]$ cũng là hậu tố của chuỗi con này.
-Tiền tố thực sự của một chuỗi là một tiền tố không bằng chính chuỗi đó.
-Theo định nghĩa, $\pi[0] = 0$.
+You are given a string $s$ of length $n$.
+The **prefix function** for this string is defined as an array $\pi$ of length $n$, where $\pi[i]$ is the length of the longest proper prefix of the substring $s[0 \dots i]$ which is also a suffix of this substring.
+A proper prefix of a string is a prefix that is not equal to the string itself.
+By definition, $\pi[0] = 0$.
 
-Về mặt toán học, định nghĩa của hàm tiền tố có thể được viết như sau:
+Mathematically the definition of the prefix function can be written as follows:
 
 $$\pi[i] = \max_ {k = 0 \dots i} \{k : s[0 \dots k-1] = s[i-(k-1) \dots i] \}$$
 
-Ví dụ, hàm tiền tố của chuỗi "abcabcd" là $[0, 0, 0, 1, 2, 3, 0]$, và hàm tiền tố của chuỗi "aabaaab" là $[0, 1, 0, 1, 2, 2, 3]$.
+For example, prefix function of string "abcabcd" is $[0, 0, 0, 1, 2, 3, 0]$, and prefix function of string "aabaaab" is $[0, 1, 0, 1, 2, 2, 3]$.
 
-## Thuật toán đơn giản
+## Trivial Algorithm
 
-Thuật toán sau đây tuân theo chính xác định nghĩa của hàm tiền tố:
+An algorithm which follows the definition of prefix function exactly is the following:
 
 ```{.cpp file=prefix_slow}
 vector<int> prefix_function(string s) {
@@ -37,77 +35,77 @@ vector<int> prefix_function(string s) {
 }
 ```
 
-Dễ dàng nhận thấy rằng độ phức tạp của nó là $O(n^3)$, điều này có thể cải thiện được.
+It is easy to see that its complexity is $O(n^3)$, which has room for improvement.
 
-## Thuật toán hiệu quả
+## Efficient Algorithm
 
-Thuật toán này được đề xuất bởi Knuth và Pratt và độc lập với họ bởi Morris vào năm 1977. 
-Nó được sử dụng như là hàm chính của thuật toán tìm kiếm chuỗi con.
+This algorithm was proposed by Knuth and Pratt and independently from them by Morris in 1977. 
+It was used as the main function of a substring search algorithm.
 
-### Tối ưu hóa đầu tiên
+### First optimization
 
-Quan sát quan trọng đầu tiên là, giá trị của hàm tiền tố chỉ có thể tăng tối đa một.
+The first important observation is, that the values of the prefix function can only increase by at most one.
 
-Thật vậy, nếu không, nếu $\pi[i + 1] \gt \pi[i] + 1$, thì chúng ta có thể lấy hậu tố kết thúc ở vị trí $i + 1$ với độ dài $\pi[i + 1]$ và xóa ký tự cuối cùng khỏi nó.
-Chúng ta kết thúc với một hậu tố kết thúc ở vị trí $i$ với độ dài $\pi[i + 1] - 1$, tốt hơn $\pi[i]$, tức là chúng ta nhận được một sự mâu thuẫn.
+Indeed, otherwise, if $\pi[i + 1] \gt \pi[i] + 1$, then we can take this suffix ending in position $i + 1$ with the length $\pi[i + 1]$ and remove the last character from it.
+We end up with a suffix ending in position $i$ with the length $\pi[i + 1] - 1$, which is better than $\pi[i]$, i.e. we get a contradiction.
 
-Hình ảnh minh họa sau đây cho thấy sự mâu thuẫn này.
-Hậu tố thực sự dài nhất ở vị trí $i$ cũng là tiền tố có độ dài $2$, và ở vị trí $i+1$ là $4$.
-Do đó chuỗi $s_0 ~ s_1 ~ s_2 ~ s_3$ bằng với chuỗi $s_{i-2} ~ s_{i-1} ~ s_i ~ s_{i+1}$, điều đó có nghĩa là chuỗi $s_0 ~ s_1 ~ s_2$ và $s_{i-2} ~ s_{i-1} ~ s_i$ cũng bằng nhau, do đó $\pi[i]$ phải bằng $3$.
+The following illustration shows this contradiction.
+The longest proper suffix at position $i$ that also is a prefix is of length $2$, and at position $i+1$ it is of length $4$.
+Therefore the string $s_0 ~ s_1 ~ s_2 ~ s_3$ is equal to the string $s_{i-2} ~ s_{i-1} ~ s_i ~ s_{i+1}$, which means that also the strings $s_0 ~ s_1 ~ s_2$ and $s_{i-2} ~ s_{i-1} ~ s_i$ are equal, therefore $\pi[i]$ has to be $3$.
 
 $$\underbrace{\overbrace{s_0 ~ s_1}^{\pi[i] = 2} ~ s_2 ~ s_3}_{\pi[i+1] = 4} ~ \dots ~ \underbrace{s_{i-2} ~ \overbrace{s_{i-1} ~ s_{i}}^{\pi[i] = 2} ~ s_{i+1}}_{\pi[i+1] = 4}$$
 
-Do đó, khi chuyển sang vị trí tiếp theo, giá trị của hàm tiền tố có thể tăng thêm một, giữ nguyên hoặc giảm đi một lượng nào đó.
-Sự thật này đã cho phép chúng ta giảm độ phức tạp của thuật toán xuống $O(n^2)$, bởi vì trong một bước, hàm tiền tố có thể tăng tối đa một.
-Tổng cộng, hàm có thể tăng tối đa $n$ bước, và do đó cũng chỉ có thể giảm tổng cộng $n$ bước.
-Điều này có nghĩa là chúng ta chỉ phải thực hiện $O(n)$ so sánh chuỗi và đạt được độ phức tạp $O(n^2)$.
+Thus when moving to the next position, the value of the prefix function can either increase by one, stay the same, or decrease by some amount.
+This fact already allows us to reduce the complexity of the algorithm to $O(n^2)$, because in one step the prefix function can grow at most by one.
+In total the function can grow at most $n$ steps, and therefore also only can decrease a total of $n$ steps.
+This means we only have to perform $O(n)$ string comparisons, and reach the complexity $O(n^2)$.
 
-### Tối ưu hóa thứ hai
+### Second optimization
 
-Hãy đi xa hơn, chúng ta muốn loại bỏ việc so sánh chuỗi.
-Để thực hiện được điều này, chúng ta phải sử dụng tất cả thông tin được tính toán trong các bước trước đó.
+Let's go further, we want to get rid of the string comparisons.
+To accomplish this, we have to use all the information computed in the previous steps.
 
-Vì vậy, chúng ta hãy tính toán giá trị của hàm tiền tố $\pi$ cho $i + 1$.
-Nếu $s[i+1] = s[\pi[i]]$, thì chúng ta có thể chắc chắn rằng $\pi[i+1] = \pi[i] + 1$, vì chúng ta đã biết rằng hậu tố ở vị trí $i$ có độ dài $\pi[i]$ bằng với tiền tố có độ dài $\pi[i]$.
-Điều này được minh họa lại bằng một ví dụ.
+So let us compute the value of the prefix function $\pi$ for $i + 1$.
+If $s[i+1] = s[\pi[i]]$, then we can say with certainty that $\pi[i+1] = \pi[i] + 1$, since we already know that the suffix at position $i$ of length $\pi[i]$ is equal to the prefix of length $\pi[i]$.
+This is illustrated again with an example.
 
 $$\underbrace{\overbrace{s_0 ~ s_1 ~ s_2}^{\pi[i]} ~ \overbrace{s_3}^{s_3 = s_{i+1}}}_{\pi[i+1] = \pi[i] + 1} ~ \dots ~ \underbrace{\overbrace{s_{i-2} ~ s_{i-1} ~ s_{i}}^{\pi[i]} ~ \overbrace{s_{i+1}}^{s_3 = s_{i + 1}}}_{\pi[i+1] = \pi[i] + 1}$$
 
-Nếu không phải như vậy, $s[i+1] \neq s[\pi[i]]$, thì chúng ta cần thử một chuỗi ngắn hơn.
-Để tăng tốc độ, chúng ta muốn chuyển ngay đến độ dài lớn nhất $j \lt \pi[i]$, sao cho thuộc tính tiền tố ở vị trí $i$ được giữ nguyên, tức là $s[0 \dots j-1] = s[i-j+1 \dots i]$:
+If this is not the case, $s[i+1] \neq s[\pi[i]]$, then we need to try a shorter string.
+In order to speed things up, we would like to immediately move to the longest length $j \lt \pi[i]$, such that the prefix property in the position $i$ holds, i.e. $s[0 \dots j-1] = s[i-j+1 \dots i]$:
 
 $$\overbrace{\underbrace{s_0 ~ s_1}_j ~ s_2 ~ s_3}^{\pi[i]} ~ \dots ~ \overbrace{s_{i-3} ~ s_{i-2} ~ \underbrace{s_{i-1} ~ s_{i}}_j}^{\pi[i]} ~ s_{i+1}$$
 
-Thật vậy, nếu chúng ta tìm thấy độ dài $j$ như vậy, thì chúng ta lại chỉ cần so sánh các ký tự $s[i+1]$ và $s[j]$.
-Nếu chúng bằng nhau, thì chúng ta có thể gán $\pi[i+1] = j + 1$.
-Nếu không, chúng ta sẽ cần tìm giá trị lớn nhất nhỏ hơn $j$, mà thuộc tính tiền tố được giữ nguyên, v.v.
-Có thể xảy ra trường hợp này cho đến khi $j = 0$.
-Nếu sau đó $s[i+1] = s[0]$, chúng ta gán $\pi[i+1] = 1$, và $\pi[i+1] = 0$ trong trường hợp khác.
+Indeed, if we find such a length $j$, then we again only need to compare the characters $s[i+1]$ and $s[j]$.
+If they are equal, then we can assign $\pi[i+1] = j + 1$.
+Otherwise we will need to find the largest value smaller than $j$, for which the prefix property holds, and so on.
+It can happen that this goes until $j = 0$.
+If then $s[i+1] = s[0]$, we assign $\pi[i+1] = 1$, and $\pi[i+1] = 0$ otherwise.
 
-Vì vậy, chúng ta đã có một lược đồ chung của thuật toán.
-Câu hỏi duy nhất còn lại là làm thế nào để chúng ta tìm thấy độ dài cho $j$ một cách hiệu quả.
-Hãy tóm tắt lại:
-cho độ dài hiện tại $j$ ở vị trí $i$ mà thuộc tính tiền tố được giữ nguyên, tức là $s[0 \dots j-1] = s[i-j+1 \dots i]$, chúng ta muốn tìm $k \lt j$ lớn nhất, mà thuộc tính tiền tố được giữ nguyên.
+So we already have a general scheme of the algorithm.
+The only question left is how do we effectively find the lengths for $j$.
+Let's recap:
+for the current length $j$ at the position $i$ for which the prefix property holds, i.e. $s[0 \dots j-1] = s[i-j+1 \dots i]$, we want to find the greatest $k \lt j$, for which the prefix property holds.
 
 $$\overbrace{\underbrace{s_0 ~ s_1}_k ~ s_2 ~ s_3}^j ~ \dots ~ \overbrace{s_{i-3} ~ s_{i-2} ~ \underbrace{s_{i-1} ~ s_{i}}_k}^j ~s_{i+1}$$
 
-Hình minh họa cho thấy, đây phải là giá trị của $\pi[j-1]$, mà chúng ta đã tính toán trước đó.
+The illustration shows, that this has to be the value of $\pi[j-1]$, which we already calculated earlier.
 
-### Thuật toán cuối cùng
+### Final algorithm
 
-Vì vậy, cuối cùng chúng ta có thể xây dựng một thuật toán không thực hiện bất kỳ so sánh chuỗi nào và chỉ thực hiện $O(n)$ hành động.
+So we finally can build an algorithm that doesn't perform any string comparisons and only performs $O(n)$ actions.
 
-Đây là quy trình cuối cùng:
+Here is the final procedure:
 
-- Chúng ta tính toán các giá trị tiền tố $\pi[i]$ trong một vòng lặp bằng cách lặp từ $i = 1$ đến $i = n-1$ ($\pi[0]$ chỉ được gán bằng $0$).
-- Để tính toán giá trị hiện tại $\pi[i]$, chúng ta đặt biến $j$ biểu thị độ dài của hậu tố tốt nhất cho $i-1$. Ban đầu $j = \pi[i-1]$.
-- Kiểm tra xem hậu tố có độ dài $j+1$ có phải là tiền tố hay không bằng cách so sánh $s[j]$ và $s[i]$.
-Nếu chúng bằng nhau thì chúng ta gán $\pi[i] = j + 1$, ngược lại chúng ta giảm $j$ xuống $\pi[j-1]$ và lặp lại bước này.
-- Nếu chúng ta đã đạt đến độ dài $j = 0$ và vẫn không có kết quả khớp, thì chúng ta gán $\pi[i] = 0$ và chuyển sang chỉ mục tiếp theo $i + 1$.
+- We compute the prefix values $\pi[i]$ in a loop by iterating from $i = 1$ to $i = n-1$ ($\pi[0]$ just gets assigned with $0$).
+- To calculate the current value $\pi[i]$ we set the variable $j$ denoting the length of the best suffix for $i-1$. Initially $j = \pi[i-1]$.
+- Test if the suffix of length $j+1$ is also a prefix by comparing $s[j]$ and $s[i]$.
+If they are equal then we assign $\pi[i] = j + 1$, otherwise we reduce $j$ to $\pi[j-1]$ and repeat this step.
+- If we have reached the length $j = 0$ and still don't have a match, then we assign $\pi[i] = 0$ and go to the next index $i + 1$.
 
-### Thực hiện
+### Implementation
 
-Việc thực hiện hóa ra lại ngắn gọn và biểu cảm một cách đáng ngạc nhiên.
+The implementation ends up being surprisingly short and expressive.
 
 ```{.cpp file=prefix_fast}
 vector<int> prefix_function(string s) {
@@ -125,51 +123,51 @@ vector<int> prefix_function(string s) {
 }
 ```
 
-Đây là một thuật toán **trực tuyến**, tức là nó xử lý dữ liệu khi nó đến - ví dụ, bạn có thể đọc các ký tự chuỗi từng ký tự một và xử lý chúng ngay lập tức, tìm giá trị của hàm tiền tố cho mỗi ký tự tiếp theo.
-Thuật toán vẫn yêu cầu lưu trữ chính chuỗi đó và các giá trị đã tính toán trước đó của hàm tiền tố, nhưng nếu chúng ta biết trước giá trị tối đa $M$ mà hàm tiền tố có thể nhận trên chuỗi, chúng ta có thể lưu trữ chỉ $M+1$ ký tự đầu tiên của chuỗi và cùng số lượng giá trị của hàm tiền tố.
+This is an **online** algorithm, i.e. it processes the data as it arrives - for example, you can read the string characters one by one and process them immediately, finding the value of prefix function for each next character.
+The algorithm still requires storing the string itself and the previously calculated values of prefix function, but if we know beforehand the maximum value $M$ the prefix function can take on the string, we can store only $M+1$ first characters of the string and the same number of values of the prefix function.
 
-## Ứng dụng
+## Applications
 
-### Tìm kiếm một chuỗi con trong một chuỗi. Thuật toán Knuth-Morris-Pratt
+### Search for a substring in a string. The Knuth-Morris-Pratt algorithm
 
-Bài toán là ứng dụng cổ điển của hàm tiền tố.
+The task is the classical application of the prefix function.
 
-Cho một văn bản $t$ và một chuỗi $s$, chúng ta muốn tìm và hiển thị vị trí của tất cả các lần xuất hiện của chuỗi $s$ trong văn bản $t$.
+Given a text $t$ and a string $s$, we want to find and display the positions of all occurrences of the string $s$ in the text $t$.
 
-Để thuận tiện, chúng ta ký hiệu $n$ là độ dài của chuỗi $s$ và $m$ là độ dài của văn bản $t$.
+For convenience we denote with $n$ the length of the string s and with $m$ the length of the text $t$.
 
-Chúng ta tạo chuỗi $s + \# + t$, trong đó $\#$ là ký tự phân cách không xuất hiện trong cả $s$ và $t$.
-Hãy tính toán hàm tiền tố cho chuỗi này.
-Bây giờ hãy suy nghĩ về ý nghĩa của các giá trị của hàm tiền tố, ngoại trừ $n + 1$ phần tử đầu tiên (thuộc về chuỗi $s$ và ký tự phân cách).
-Theo định nghĩa, giá trị $\pi[i]$ cho biết độ dài lớn nhất của một chuỗi con kết thúc ở vị trí $i$ trùng với tiền tố.
-Nhưng trong trường hợp của chúng ta, đây không gì khác hơn là khối lớn nhất trùng với $s$ và kết thúc ở vị trí $i$.
-Độ dài này không thể lớn hơn $n$ do ký tự phân cách.
-Nhưng nếu đạt được đẳng thức $\pi[i] = n$, thì có nghĩa là chuỗi $s$ xuất hiện hoàn toàn ở vị trí này, tức là nó kết thúc ở vị trí $i$.
-Chỉ cần đừng quên rằng các vị trí được lập chỉ mục trong chuỗi $s + \# + t$.
+We generate the string $s + \# + t$, where $\#$ is a separator that appears neither in $s$ nor in $t$.
+Let us calculate the prefix function for this string.
+Now think about the meaning of the values of the prefix function, except for the first $n + 1$ entries (which belong to the string $s$ and the separator).
+By definition the value $\pi[i]$ shows the longest length of a substring ending in position $i$ that coincides with the prefix.
+But in our case this is nothing more than the largest block that coincides with $s$ and ends at position $i$.
+This length cannot be bigger than $n$ due to the separator.
+But if equality $\pi[i] = n$ is achieved, then it means that the string $s$ appears completely in at this position, i.e. it ends at position $i$.
+Just do not forget that the positions are indexed in the string $s + \# + t$.
 
-Do đó, nếu tại một số vị trí $i$ nào đó chúng ta có $\pi[i] = n$, thì ở vị trí $i - (n + 1) - n + 1 = i - 2n$ trong chuỗi $t$, chuỗi $s$ sẽ xuất hiện.
+Thus if at some position $i$ we have $\pi[i] = n$, then at the position $i - (n + 1) - n + 1 = i - 2n$ in the string $t$ the string $s$ appears.
 
-Như đã đề cập trong phần mô tả về tính toán hàm tiền tố, nếu chúng ta biết rằng các giá trị tiền tố không bao giờ vượt quá một giá trị nhất định, thì chúng ta không cần phải lưu trữ toàn bộ chuỗi và toàn bộ hàm, mà chỉ cần lưu trữ phần đầu của nó.
-Trong trường hợp của chúng ta, điều này có nghĩa là chúng ta chỉ cần lưu trữ chuỗi $s + \#$ và các giá trị của hàm tiền tố cho nó.
-Chúng ta có thể đọc từng ký tự một của chuỗi $t$ và tính toán giá trị hiện tại của hàm tiền tố.
+As already mentioned in the description of the prefix function computation, if we know that the prefix values never exceed a certain value, then we do not need to store the entire string and the entire function, but only its beginning.
+In our case this means that we only need to store the string $s + \#$ and the values of the prefix function for it.
+We can read one character at a time of the string $t$ and calculate the current value of the prefix function.
 
-Do đó, thuật toán Knuth-Morris-Pratt giải quyết bài toán trong thời gian $O(n + m)$ và bộ nhớ $O(n)$.
+Thus the Knuth-Morris-Pratt algorithm solves the problem in $O(n + m)$ time and $O(n)$ memory.
 
-### Đếm số lần xuất hiện của mỗi tiền tố
+### Counting the number of occurrences of each prefix
 
-Ở đây chúng ta thảo luận về hai bài toán cùng một lúc.
-Cho một chuỗi $s$ có độ dài $n$.
-Trong biến thể đầu tiên của bài toán, chúng ta muốn đếm số lần xuất hiện của mỗi tiền tố $s[0 \dots i]$ trong cùng một chuỗi.
-Trong biến thể thứ hai của bài toán, một chuỗi khác $t$ được cho và chúng ta muốn đếm số lần xuất hiện của mỗi tiền tố $s[0 \dots i]$ trong $t$.
+Here we discuss two problems at once.
+Given a string $s$ of length $n$.
+In the first variation of the problem we want to count the number of appearances of each prefix $s[0 \dots i]$ in the same string.
+In the second variation of the problem another string $t$ is given and we want to count the number of appearances of each prefix $s[0 \dots i]$ in $t$.
 
-Đầu tiên chúng ta giải quyết bài toán đầu tiên.
-Xét giá trị của hàm tiền tố $\pi[i]$ tại vị trí $i$.
-Theo định nghĩa, điều đó có nghĩa là tiền tố có độ dài $\pi[i]$ của chuỗi $s$ xuất hiện và kết thúc ở vị trí $i$, và không có tiền tố nào dài hơn tuân theo định nghĩa này.
-Đồng thời, các tiền tố ngắn hơn có thể kết thúc ở vị trí này.
-Không khó để nhận thấy, chúng ta có cùng một câu hỏi mà chúng ta đã trả lời khi chúng ta tính toán chính hàm tiền tố:
-Cho một tiền tố có độ dài $j$ là một hậu tố kết thúc ở vị trí $i$, tiền tố nhỏ hơn tiếp theo $\lt j$ cũng là hậu tố kết thúc ở vị trí $i$ là gì.
-Do đó, ở vị trí $i$ kết thúc tiền tố có độ dài $\pi[i]$, tiền tố có độ dài $\pi[\pi[i] - 1]$, tiền tố $\pi[\pi[\pi[i] - 1] - 1]$, v.v., cho đến khi chỉ mục bằng không.
-Như vậy chúng ta có thể tính toán câu trả lời theo cách sau.
+First we solve the first problem.
+Consider the value of the prefix function $\pi[i]$ at a position $i$.
+By definition it means that the prefix of length $\pi[i]$ of the string $s$ occurs and ends at position $i$, and there is no longer prefix that follows this definition.
+At the same time shorter prefixes can end at this position.
+It is not difficult to see, that we have the same question that we already answered when we computed the prefix function itself:
+Given a prefix of length $j$ that is a suffix ending at position $i$, what is the next smaller prefix $\lt j$ that is also a suffix ending at position $i$.
+Thus at the position $i$ ends the prefix of length $\pi[i]$, the prefix of length $\pi[\pi[i] - 1]$, the prefix $\pi[\pi[\pi[i] - 1] - 1]$, and so on, until the index becomes zero.
+Thus we can compute the answer in the following way.
 
 ```{.cpp file=prefix_count_each_prefix}
 vector<int> ans(n + 1);
@@ -181,71 +179,71 @@ for (int i = 0; i <= n; i++)
     ans[i]++;
 ```
 
-Ở đây, đối với mỗi giá trị của hàm tiền tố, trước tiên chúng ta đếm xem nó xuất hiện bao nhiêu lần trong mảng $\pi$, và sau đó tính toán câu trả lời cuối cùng:
-nếu chúng ta biết rằng tiền tố có độ dài $i$ xuất hiện chính xác $\text{ans}[i]$ lần, thì số này phải được cộng vào số lần xuất hiện của hậu tố dài nhất của nó cũng là một tiền tố.
-Cuối cùng, chúng ta cần cộng $1$ vào mỗi kết quả, vì chúng ta cũng cần đếm các tiền tố ban đầu.
+Here for each value of the prefix function we first count how many times it occurs in the array $\pi$, and then compute the final answers:
+if we know that the length prefix $i$ appears exactly $\text{ans}[i]$ times, then this number must be added to the number of occurrences of its longest suffix that is also a prefix.
+At the end we need to add $1$ to each result, since we also need to count the original prefixes also.
 
-Bây giờ chúng ta hãy xem xét bài toán thứ hai.
-Chúng ta áp dụng mẹo từ Knuth-Morris-Pratt:
-chúng ta tạo chuỗi $s + \# + t$ và tính toán hàm tiền tố của nó.
-Điểm khác biệt duy nhất so với bài toán đầu tiên là chúng ta chỉ quan tâm đến các giá trị tiền tố liên quan đến chuỗi $t$, tức là $\pi[i]$ cho $i \ge n + 1$.
-Với những giá trị đó, chúng ta có thể thực hiện chính xác các phép tính tương tự như trong bài toán đầu tiên.
+Now let us consider the second problem.
+We apply the trick from Knuth-Morris-Pratt:
+we create the string $s + \# + t$ and compute its prefix function.
+The only differences to the first task is, that we are only interested in the prefix values that relate to the string $t$, i.e. $\pi[i]$ for $i \ge n + 1$.
+With those values we can perform the exact same computations as in the first task.
 
-### Số lượng chuỗi con khác nhau trong một chuỗi
+### The number of different substring in a string
 
-Cho một chuỗi $s$ có độ dài $n$.
-Chúng ta muốn tính toán số lượng chuỗi con khác nhau xuất hiện trong đó.
+Given a string $s$ of length $n$.
+We want to compute the number of different substrings appearing in it.
 
-Chúng ta sẽ giải quyết vấn đề này một cách lặp đi lặp lại.
-Cụ thể là chúng ta sẽ học, biết được số lượng chuỗi con khác nhau hiện tại, cách tính toán lại số lượng này bằng cách thêm một ký tự vào cuối.
+We will solve this problem iteratively.
+Namely we will learn, knowing the current number of different substrings, how to recompute this count by adding a character to the end.
 
-Vì vậy, hãy để $k$ là số lượng chuỗi con khác nhau hiện tại trong $s$, và chúng ta thêm ký tự $c$ vào cuối $s$.
-Rõ ràng là một số chuỗi con mới kết thúc bằng $c$ sẽ xuất hiện.
-Chúng ta muốn đếm những chuỗi con mới này mà trước đây chưa xuất hiện.
+So let $k$ be the current number of different substrings in $s$, and we add the character $c$ to the end of $s$.
+Obviously some new substrings ending in $c$ will appear.
+We want to count these new substrings that didn't appear before.
 
-Chúng ta lấy chuỗi $t = s + c$ và đảo ngược nó.
-Bây giờ bài toán được chuyển thành tính toán xem có bao nhiêu tiền tố không xuất hiện ở bất kỳ đâu khác.
-Nếu chúng ta tính toán giá trị tối đa của hàm tiền tố $\pi_{\text{max}}$ của chuỗi đảo ngược $t$, thì tiền tố dài nhất xuất hiện trong $s$ có độ dài là $\pi_{\text{max}}$.
-Rõ ràng là tất cả các tiền tố có độ dài nhỏ hơn cũng xuất hiện trong đó.
+We take the string $t = s + c$ and reverse it.
+Now the task is transformed into computing how many prefixes there are that don't appear anywhere else.
+If we compute the maximal value of the prefix function $\pi_{\text{max}}$ of the reversed string $t$, then the longest prefix that appears in $s$ is $\pi_{\text{max}}$ long.
+Clearly also all prefixes of smaller length appear in it.
 
-Do đó, số lượng chuỗi con mới xuất hiện khi chúng ta thêm một ký tự $c$ mới là $|s| + 1 - \pi_{\text{max}}$.
+Therefore the number of new substrings appearing when we add a new character $c$ is $|s| + 1 - \pi_{\text{max}}$.
 
-Vì vậy, đối với mỗi ký tự được nối thêm, chúng ta có thể tính toán số lượng chuỗi con mới trong thời gian $O(n)$, điều này cho tổng độ phức tạp về thời gian là $O(n^2)$.
+So for each character appended we can compute the number of new substrings in $O(n)$ times, which gives a time complexity of $O(n^2)$ in total.
 
-Điều đáng chú ý là chúng ta cũng có thể tính toán số lượng chuỗi con khác nhau bằng cách nối thêm các ký tự ở đầu hoặc bằng cách xóa các ký tự từ đầu hoặc cuối.
+It is worth noting, that we can also compute the number of different substrings by appending the characters at the beginning, or by deleting characters from the beginning or the end.
 
-### Nén một chuỗi
+### Compressing a string
 
-Cho một chuỗi $s$ có độ dài $n$.
-Chúng ta muốn tìm biểu diễn "nén" ngắn nhất của chuỗi, tức là chúng ta muốn tìm một chuỗi $t$ có độ dài nhỏ nhất sao cho $s$ có thể được biểu diễn dưới dạng nối của một hoặc nhiều bản sao của $t$.
+Given a string $s$ of length $n$.
+We want to find the shortest "compressed" representation of the string, i.e. we want to find a string $t$ of smallest length such that $s$ can be represented as a concatenation of one or more copies of $t$.
 
-Rõ ràng là chúng ta chỉ cần tìm độ dài của $t$. Biết được độ dài, câu trả lời cho bài toán sẽ là tiền tố của $s$ với độ dài này.
+It is clear, that we only need to find the length of $t$. Knowing the length, the answer to the problem will be the prefix of $s$ with this length.
 
-Chúng ta hãy tính toán hàm tiền tố cho $s$.
-Sử dụng giá trị cuối cùng của nó, chúng ta định nghĩa giá trị $k = n - \pi[n - 1]$.
-Chúng ta sẽ chỉ ra rằng nếu $k$ chia hết cho $n$, thì $k$ sẽ là câu trả lời, nếu không thì không có nén hiệu quả và câu trả lời là $n$.
+Let us compute the prefix function for $s$.
+Using the last value of it we define the value $k = n - \pi[n - 1]$.
+We will show, that if $k$ divides $n$, then $k$ will be the answer, otherwise there is no effective compression and the answer is $n$.
 
-Hãy để $n$ chia hết cho $k$.
-Khi đó chuỗi có thể được phân hoạch thành các khối có độ dài $k$.
-Theo định nghĩa của hàm tiền tố, tiền tố có độ dài $n - k$ sẽ bằng với hậu tố của nó.
-Nhưng điều này có nghĩa là khối cuối cùng bằng với khối trước đó.
-Và khối trước đó phải bằng với khối trước nó.
-Và cứ thế.
-Kết quả là, hóa ra tất cả các khối đều bằng nhau, do đó chúng ta có thể nén chuỗi $s$ thành độ dài $k$.
+Let $n$ be divisible by $k$.
+Then the string can be partitioned into blocks of the length $k$.
+By definition of the prefix function, the prefix of length $n - k$ will be equal with its suffix.
+But this means that the last block is equal to the block before.
+And the block before has to be equal to the block before it.
+And so on.
+As a result, it turns out that all blocks are equal, therefore we can compress the string $s$ to length $k$.
 
-Tất nhiên, chúng ta vẫn cần phải chỉ ra rằng đây thực sự là tối ưu.
-Thật vậy, nếu có một nén nhỏ hơn $k$, thì hàm tiền tố ở cuối sẽ lớn hơn $n - k$.
-Do đó $k$ thực sự là câu trả lời.
+Of course we still need to show that this is actually the optimum.
+Indeed, if there was a smaller compression than $k$, than the prefix function at the end would be greater than $n - k$.
+Therefore $k$ is really the answer.
 
-Bây giờ, chúng ta hãy giả sử rằng $n$ không chia hết cho $k$.
-Chúng ta chỉ ra rằng điều này ngụ ý rằng độ dài của câu trả lời là $n$.
-Chúng ta chứng minh điều đó bằng cách phản chứng.
-Giả sử tồn tại một câu trả lời và nén có độ dài $p$ ($p$ chia hết cho $n$).
-Khi đó giá trị cuối cùng của hàm tiền tố phải lớn hơn $n - p$, tức là hậu tố sẽ bao phủ một phần khối đầu tiên.
-Bây giờ hãy xem xét khối thứ hai của chuỗi.
-Vì tiền tố bằng với hậu tố, và cả tiền tố và hậu tố đều bao phủ khối này và độ dịch chuyển của chúng so với nhau $k$ không chia hết cho độ dài khối $p$ (nếu không thì $k$ chia hết cho $n$), thì tất cả các ký tự của khối phải giống hệt nhau.
-Nhưng sau đó, chuỗi chỉ bao gồm một ký tự được lặp đi lặp lại, do đó chúng ta có thể nén nó thành một chuỗi có kích thước $1$, điều này cho $k = 1$ và $k$ chia hết cho $n$.
-Mâu thuẫn.
+Now let us assume that $n$ is not divisible by $k$.
+We show that this implies that the length of the answer is $n$.
+We prove it by contradiction.
+Assuming there exists an answer, and the compression has length $p$ ($p$ divides $n$).
+Then the last value of the prefix function has to be greater than $n - p$, i.e. the suffix will partially cover the first block.
+Now consider the second block of the string.
+Since the prefix is equal with the suffix, and both the prefix and the suffix cover this block and their displacement relative to each other $k$ does not divide the block length $p$ (otherwise $k$ divides $n$), then all the characters of the block have to be identical.
+But then the string consists of only one character repeated over and over, hence we can compress it to a string of size $1$, which gives $k = 1$, and $k$ divides $n$.
+Contradiction.
 
 $$\overbrace{s_0 ~ s_1 ~ s_2 ~ s_3}^p ~ \overbrace{s_4 ~ s_5 ~ s_6 ~ s_7}^p$$
 
@@ -253,19 +251,19 @@ $$s_0 ~ s_1 ~ s_2 ~ \underbrace{\overbrace{s_3 ~ s_4 ~ s_5 ~ s_6}^p ~ s_7}_{\pi[
 
 $$s_4 = s_3, ~ s_5 = s_4, ~ s_6 = s_5, ~ s_7 = s_6 ~ \Rightarrow ~ s_0 = s_1 = s_2 = s_3$$
 
-### Xây dựng một máy tự động theo hàm tiền tố
+### Building an automaton according to the prefix function
 
-Hãy quay trở lại với việc nối hai chuỗi thông qua một ký tự phân cách, tức là đối với các chuỗi $s$ và $t$, chúng ta tính toán hàm tiền tố cho chuỗi $s + \# + t$.
-Rõ ràng, vì $\#$ là ký tự phân cách, giá trị của hàm tiền tố sẽ không bao giờ vượt quá $|s|$.
-Theo đó, chúng ta chỉ cần lưu trữ chuỗi $s + \#$ và các giá trị của hàm tiền tố cho nó, và chúng ta có thể tính toán hàm tiền tố cho tất cả các ký tự tiếp theo một cách nhanh chóng:
+Let's return to the concatenation to the two strings through a separator, i.e. for the strings $s$ and $t$ we compute the prefix function for the string $s + \# + t$.
+Obviously, since $\#$ is a separator, the value of the prefix function will never exceed $|s|$.
+It follows, that it is sufficient to only store the string $s + \#$ and the values of the prefix function for it, and we can compute the prefix function for all subsequent character on the fly:
 
-$$\underbrace{s_0 ~ s_1 ~ \dots ~ s_{n-1} ~ \#}_{\text{cần lưu trữ}} ~ \underbrace{t_0 ~ t_1 ~ \dots ~ t_{m-1}}_{\text{không cần lưu trữ}}$$
+$$\underbrace{s_0 ~ s_1 ~ \dots ~ s_{n-1} ~ \#}_{\text{need to store}} ~ \underbrace{t_0 ~ t_1 ~ \dots ~ t_{m-1}}_{\text{do not need to store}}$$
 
-Thật vậy, trong tình huống như vậy, việc biết ký tự tiếp theo $c \in t$ và giá trị của hàm tiền tố của vị trí trước đó là đủ thông tin để tính toán giá trị tiếp theo của hàm tiền tố, mà không cần sử dụng bất kỳ ký tự nào trước đó của chuỗi $t$ và giá trị của hàm tiền tố trong chúng.
+Indeed, in such a situation, knowing the next character $c \in t$ and the value of the prefix function of the previous position is enough information to compute the next value of the prefix function, without using any previous characters of the string $t$ and the value of the prefix function in them.
 
-Nói cách khác, chúng ta có thể xây dựng một **máy tự động** (máy trạng thái hữu hạn): trạng thái trong đó là giá trị hiện tại của hàm tiền tố, và việc chuyển đổi từ trạng thái này sang trạng thái khác sẽ được thực hiện thông qua ký tự tiếp theo.
+In other words, we can construct an **automaton** (a finite state machine): the state in it is the current value of the prefix function, and the transition from one state to another will be performed via the next character.
 
-Do đó, ngay cả khi không có chuỗi $t$, chúng ta vẫn có thể xây dựng bảng chuyển đổi $(\text{old}_\pi, c) \rightarrow \text{new}_\pi$ bằng cách sử dụng cùng một thuật toán như để tính toán bảng chuyển đổi:
+Thus, even without having the string $t$, we can construct such a transition table $(\text{old}_\pi, c) \rightarrow \text{new}_\pi$ using the same algorithm as for calculating the transition table:
 
 ```{.cpp file=prefix_automaton_slow}
 void compute_automaton(string s, vector<vector<int>>& aut) {
@@ -286,9 +284,9 @@ void compute_automaton(string s, vector<vector<int>>& aut) {
 }
 ```
 
-Tuy nhiên, ở dạng này, thuật toán chạy trong thời gian $O(n^2 26)$ cho các chữ cái thường của bảng chữ cái.
-Lưu ý rằng chúng ta có thể áp dụng quy hoạch động và sử dụng các phần đã tính toán của bảng.
-Bất cứ khi nào chúng ta đi từ giá trị $j$ đến giá trị $\pi[j-1]$, chúng ta thực sự muốn nói rằng quá trình chuyển đổi $(j, c)$ dẫn đến cùng một trạng thái như quá trình chuyển đổi như $(\pi[j-1], c)$, và câu trả lời này đã được tính toán chính xác.
+However in this form the algorithm runs in $O(n^2 26)$ time for the lowercase letters of the alphabet.
+Note that we can apply dynamic programming and use the already calculated parts of the table.
+Whenever we go from the value $j$ to the value $\pi[j-1]$, we actually mean that the transition $(j, c)$ leads to the same state as the transition as $(\pi[j-1], c)$, and this answer is already accurately computed.
 
 ```{.cpp file=prefix_automaton_fast}
 void compute_automaton(string s, vector<vector<int>>& aut) {
@@ -307,23 +305,23 @@ void compute_automaton(string s, vector<vector<int>>& aut) {
 }
 ```
 
-Kết quả là chúng ta xây dựng được máy tự động trong thời gian $O(26 n)$.
+As a result we construct the automaton in $O(26 n)$ time.
 
-Khi nào thì máy tự động như vậy hữu ích? 
-Trước hết, hãy nhớ rằng chúng ta sử dụng hàm tiền tố cho chuỗi $s + \# + t$ và các giá trị của nó chủ yếu cho một mục đích duy nhất: tìm tất cả các lần xuất hiện của chuỗi $s$ trong chuỗi $t$.
+When is such a automaton useful?
+To begin with, remember that we use the prefix function for the string $s + \# + t$ and its values mostly for a single purpose: find all occurrences of the string $s$ in the string $t$.
 
-Do đó, lợi ích rõ ràng nhất của máy tự động này là **tăng tốc độ tính toán hàm tiền tố** cho chuỗi $s + \# + t$.
-Bằng cách xây dựng máy tự động cho $s + \#$, chúng ta không cần phải lưu trữ chuỗi $s$ hoặc các giá trị của hàm tiền tố trong đó. 
-Tất cả các chuyển đổi đã được tính toán trong bảng.
+Therefore the most obvious benefit of this automaton is the **acceleration of calculating the prefix function** for the string $s + \# + t$.
+By building the automaton for $s + \#$, we no longer need to store the string $s$ or the values of the prefix function in it.
+All transitions are already computed in the table.
 
-Nhưng có một ứng dụng thứ hai, ít rõ ràng hơn.
-Chúng ta có thể sử dụng máy tự động khi chuỗi $t$ là một **chuỗi khổng lồ được xây dựng bằng một số quy tắc**.
-Ví dụ, đây có thể là các chuỗi Gray, hoặc một chuỗi được hình thành bằng cách kết hợp đệ quy một số chuỗi ngắn từ đầu vào.
+But there is a second, less obvious, application.
+We can use the automaton when the string $t$ is a **gigantic string constructed using some rules**.
+This can for instance be the Gray strings, or a string formed by a recursive combination of several short strings from the input.
 
-Để đầy đủ, chúng ta sẽ giải quyết một bài toán như vậy:
-cho một số $k \le 10^5$ và một chuỗi $s$ có độ dài $\le 10^5$.
-Chúng ta phải tính toán số lần xuất hiện của $s$ trong chuỗi Gray thứ $k$. 
-Nhớ lại rằng các chuỗi Gray được định nghĩa theo cách sau:
+For completeness we will solve such a problem:
+given a number $k \le 10^5$ and a string $s$ of length $\le 10^5$.
+We have to compute the number of occurrences of $s$ in the $k$-th Gray string.
+Recall that Gray's strings are define in the following way:
 
 $$\begin{align}
 g_1 &= \text{"a"}\\
@@ -332,34 +330,34 @@ g_3 &= \text{"abacaba"}\\
 g_4 &= \text{"abacabadabacaba"}
 \end{align}$$
 
-Trong những trường hợp như vậy, ngay cả việc xây dựng chuỗi $t$ cũng là bất khả thi, vì độ dài khổng lồ của nó.
-Chuỗi Gray thứ $k$ có độ dài $2^k-1$ ký tự. 
-Tuy nhiên, chúng ta có thể tính toán hiệu quả giá trị của hàm tiền tố ở cuối chuỗi, chỉ bằng cách biết giá trị của hàm tiền tố ở đầu.
+In such cases even constructing the string $t$ will be impossible, because of its astronomical length.
+The $k$-th Gray string is $2^k-1$ characters long.
+However we can calculate the value of the prefix function at the end of the string effectively, by only knowing the value of the prefix function at the start.
 
-Ngoài bản thân máy tự động, chúng ta cũng tính toán các giá trị $G[i][j]$ - giá trị của máy tự động sau khi xử lý chuỗi $g_i$ bắt đầu bằng trạng thái $j$. 
-Và thêm vào đó, chúng ta tính toán các giá trị $K[i][j]$ - số lần xuất hiện của $s$ trong $g_i$, trước khi xử lý $g_i$ bắt đầu bằng trạng thái $j$. 
-Thực ra $K[i][j]$ là số lần hàm tiền tố nhận giá trị $|s|$ trong khi thực hiện các thao tác. 
-Câu trả lời cho bài toán sau đó sẽ là $K[k][0]$.
+In addition to the automaton itself, we also compute values $G[i][j]$ - the value of the automaton after processing the string $g_i$ starting with the state $j$.
+And additionally we compute values $K[i][j]$ - the number of occurrences of $s$ in $g_i$, before during the processing of $g_i$ starting with the state $j$.
+Actually $K[i][j]$ is the number of times that the prefix function took the value $|s|$ while performing the operations.
+The answer to the problem will then be $K[k][0]$.
 
-Làm thế nào chúng ta có thể tính toán những giá trị này?
-Đầu tiên, các giá trị cơ bản là $G[0][j] = j$ và $K[0][j] = 0$. 
-Và tất cả các giá trị tiếp theo có thể được tính toán từ các giá trị trước đó và sử dụng máy tự động. 
-Để tính toán giá trị cho một số $i$ nào đó, chúng ta nhớ rằng chuỗi $g_i$ bao gồm $g_{i-1}$, ký tự thứ $i$ của bảng chữ cái và $g_{i-1}$.
-Do đó, máy tự động sẽ chuyển sang trạng thái:
+How can we compute these values?
+First the basic values are $G[0][j] = j$ and $K[0][j] = 0$.
+And all subsequent values can be calculated from the previous values and using the automaton.
+To calculate the value for some $i$ we remember that the string $g_i$ consists of $g_{i-1}$, the $i$ character of the alphabet, and $g_{i-1}$.
+Thus the automaton will go into the state:
 
 $$\text{mid} = \text{aut}[G[i-1][j]][i]$$
 
 $$G[i][j] = G[i-1][\text{mid}]$$
 
-Các giá trị cho $K[i][j]$ cũng có thể được tính toán dễ dàng.
+The values for $K[i][j]$ can also be easily counted.
 
 $$K[i][j] = K[i-1][j] + (\text{mid} == |s|) + K[i-1][\text{mid}]$$
 
-Vì vậy, chúng ta có thể giải quyết bài toán cho chuỗi Gray, và tương tự như vậy cũng có rất nhiều bài toán tương tự khác. 
-Ví dụ, phương pháp chính xác tương tự cũng giải quyết được bài toán sau:
-chúng ta được cho một chuỗi $s$ và một số mẫu $t_i$, mỗi mẫu được chỉ định như sau:
-nó là một chuỗi các ký tự thông thường, và có thể có một số lần chèn đệ quy của các chuỗi trước đó ở dạng $t_k^{\text{cnt}}$, có nghĩa là ở vị trí này chúng ta phải chèn chuỗi $t_k$ $\text{cnt}$ lần.
-Một ví dụ về các mẫu như vậy:
+So we can solve the problem for Gray strings, and similarly also a huge number of other similar problems.
+For example the exact same method also solves the following problem:
+we are given a string $s$ and some patterns $t_i$, each of which is specified as follows:
+it is a string of ordinary characters, and there might be some recursive insertions of the previous strings of the form $t_k^{\text{cnt}}$, which means that at this place we have to insert the string $t_k$ $\text{cnt}$ times.
+An example of such patterns:
 
 $$\begin{align}
 t_1 &= \text{"abdeca"}\\
@@ -368,13 +366,13 @@ t_3 &= t_2^{50} + t_1^{100}\\
 t_4 &= t_2^{10} + t_3^{100}
 \end{align}$$
 
-Các phép thế đệ quy làm cho chuỗi tăng lên, do đó độ dài của chúng có thể đạt đến bậc $100^{100}$.
+The recursive substitutions blow the string up, so that their lengths can reach the order of $100^{100}$.
 
-Chúng ta phải tìm số lần xuất hiện của chuỗi $s$ trong mỗi chuỗi.
+We have to find the number of times the string $s$ appears in each of the strings.
 
-Bài toán có thể được giải quyết theo cách tương tự bằng cách xây dựng máy tự động của hàm tiền tố, và sau đó chúng ta tính toán các chuyển đổi cho mỗi mẫu bằng cách sử dụng các kết quả trước đó.
+The problem can be solved in the same way by constructing the automaton of the prefix function, and then we calculate the transitions in for each pattern by using the previous results.
 
-## Bài tập luyện tập
+## Practice Problems
 
 * [UVA # 455 "Periodic Strings"](http://uva.onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=396)
 * [UVA # 11022 "String Factoring"](http://uva.onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=1963)
@@ -386,4 +384,4 @@ Bài toán có thể được giải quyết theo cách tương tự bằng các
 * [SPOJ - A Needle in the Haystack](https://www.spoj.com/problems/NHAY/)
 * [Codeforces - Anthem of Berland](http://codeforces.com/contest/808/problem/G)
 * [Codeforces - MUH and Cube Walls](http://codeforces.com/problemset/problem/471/D)
-* [Codeforces - Prefixes and Suffixes](https://codeforces.com/contest/432/problem/D) 
+* [Codeforces - Prefixes and Suffixes](https://codeforces.com/contest/432/problem/D)

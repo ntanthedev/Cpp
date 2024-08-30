@@ -4,42 +4,42 @@ tags:
 e_maxx_link: mst_kruskal
 ---
 
-# Cây khung nhỏ nhất - Thuật toán Kruskal
+# Minimum spanning tree - Kruskal's algorithm
 
-Cho một đồ thị vô hướng có trọng số.
-Chúng ta muốn tìm một cây con của đồ thị này kết nối tất cả các đỉnh (tức là nó là một cây khung) và có trọng số nhỏ nhất (tức là tổng trọng số của tất cả các cạnh là nhỏ nhất) trong số tất cả các cây khung có thể.
-Cây khung này được gọi là cây khung nhỏ nhất.
+Given a weighted undirected graph.
+We want to find a subtree of this graph which connects all vertices (i.e. it is a spanning tree) and has the least weight (i.e. the sum of weights of all the edges is minimum) of all possible spanning trees.
+This spanning tree is called a minimum spanning tree.
 
-Trong hình bên trái, bạn có thể thấy một đồ thị vô hướng có trọng số, và trong hình bên phải, bạn có thể thấy cây khung nhỏ nhất tương ứng.
+In the left image you can see a weighted undirected graph, and in the right image you can see the corresponding minimum spanning tree.
 
 ![Random graph](MST_before.png) ![MST of this graph](MST_after.png)
 
-Bài viết này sẽ thảo luận về một số sự thật quan trọng liên quan đến cây khung nhỏ nhất, và sau đó sẽ đưa ra cách triển khai đơn giản nhất của thuật toán Kruskal để tìm cây khung nhỏ nhất.
+This article will discuss few important facts associated with minimum spanning trees, and then will give the simplest implementation of Kruskal's algorithm for finding minimum spanning tree.
 
-## Thuộc tính của cây khung nhỏ nhất
+## Properties of the minimum spanning tree
 
-* Cây khung nhỏ nhất của một đồ thị là duy nhất, nếu trọng số của tất cả các cạnh là khác biệt. Nếu không, có thể có nhiều cây khung nhỏ nhất.
-  (Các thuật toán cụ thể thường xuất ra một trong các cây khung nhỏ nhất có thể).
-* Cây khung nhỏ nhất cũng là cây có tích trọng số của các cạnh là nhỏ nhất.
-  (Điều này có thể được chứng minh dễ dàng bằng cách thay thế trọng số của tất cả các cạnh bằng logarit của chúng)
-* Trong một cây khung nhỏ nhất của một đồ thị, trọng số lớn nhất của một cạnh là nhỏ nhất có thể từ tất cả các cây khung có thể của đồ thị đó.
-  (Điều này xuất phát từ tính hợp lệ của thuật toán Kruskal).
-* Cây khung lớn nhất (cây khung có tổng trọng số của các cạnh là lớn nhất) của một đồ thị có thể được thu được tương tự như cây khung nhỏ nhất, bằng cách thay đổi dấu của trọng số của tất cả các cạnh thành ngược lại và sau đó áp dụng bất kỳ thuật toán cây khung nhỏ nhất nào.
+* A minimum spanning tree of a graph is unique, if the weight of all the edges are distinct. Otherwise, there may be multiple minimum spanning trees.
+  (Specific algorithms typically output one of the possible minimum spanning trees).
+* Minimum spanning tree is also the tree with minimum product of weights of edges.
+  (It can be easily proved by replacing the weights of all edges with their logarithms)
+* In a minimum spanning tree of a graph, the maximum weight of an edge is the minimum possible from all possible spanning trees of that graph.
+  (This follows from the validity of Kruskal's algorithm).
+* The maximum spanning tree (spanning tree with the sum of weights of edges being maximum) of a graph can be obtained similarly to that of the minimum spanning tree, by changing the signs of the weights of all the edges to their opposite and then applying any of the minimum spanning tree algorithm.
 
-## Thuật toán Kruskal
+## Kruskal's algorithm
 
-Thuật toán này được mô tả bởi Joseph Bernard Kruskal, Jr. vào năm 1956.
+This algorithm was described by Joseph Bernard Kruskal, Jr. in 1956.
 
-Thuật toán Kruskal ban đầu đặt tất cả các nút của đồ thị ban đầu cách ly với nhau, để tạo thành một rừng cây nút đơn, và sau đó dần dần hợp nhất các cây này, kết hợp tại mỗi lần lặp bất kỳ hai trong số tất cả các cây với một số cạnh của đồ thị ban đầu. Trước khi thực hiện thuật toán, tất cả các cạnh được sắp xếp theo trọng số (theo thứ tự không giảm dần). Sau đó bắt đầu quá trình hợp nhất: chọn tất cả các cạnh từ đầu đến cuối (theo thứ tự đã sắp xếp), và nếu các đầu của cạnh được chọn hiện tại thuộc về các cây con khác nhau, các cây con này được kết hợp và cạnh được thêm vào câu trả lời. Sau khi lặp qua tất cả các cạnh, tất cả các đỉnh sẽ thuộc về cùng một cây con và chúng ta sẽ nhận được câu trả lời.
+Kruskal's algorithm initially places all the nodes of the original graph isolated from each other, to form a forest of single node trees, and then gradually merges these trees, combining at each iteration any two of all the trees with some edge of the original graph. Before the execution of the algorithm, all edges are sorted by weight (in non-decreasing order). Then begins the process of unification: pick all edges from the first to the last (in sorted order), and if the ends of the currently picked edge belong to different subtrees, these subtrees are combined, and the edge is added to the answer. After iterating through all the edges, all the vertices will belong to the same sub-tree, and we will get the answer.
 
-## Triển khai đơn giản nhất
+## The simplest implementation
 
-Mã sau đây trực tiếp triển khai thuật toán được mô tả ở trên và có độ phức tạp thời gian là $O(M \log M + N^2)$.
-Việc sắp xếp các cạnh yêu cầu $O(M \log N)$ (giống như $O(M \log M)$) thao tác.
-Thông tin liên quan đến cây con mà một đỉnh thuộc về được duy trì với sự trợ giúp của một mảng `tree_id[]` - đối với mỗi đỉnh `v`, `tree_id[v]` lưu trữ số của cây mà `v` thuộc về.
-Đối với mỗi cạnh, liệu nó có thuộc về các đầu của các cây khác nhau hay không, có thể được xác định trong $O(1)$.
-Cuối cùng, việc hợp nhất hai cây được thực hiện trong $O(N)$ bằng một lần duyệt đơn giản qua mảng `tree_id[]`.
-Cho rằng tổng số thao tác hợp nhất là $N-1$, chúng ta thu được hành vi tiệm cận của $O(M \log N + N^2)$.
+The following code directly implements the algorithm described above, and is having $O(M \log M + N^2)$ time complexity.
+Sorting edges requires $O(M \log N)$ (which is the same as $O(M \log M)$) operations.
+Information regarding the subtree to which a vertex belongs is maintained with the help of an array `tree_id[]` - for each vertex `v`, `tree_id[v]` stores the number of the tree , to which `v` belongs.
+For each edge, whether it belongs to the ends of different trees, can be determined in $O(1)$.
+Finally, the union of the two trees is carried out in $O(N)$ by a simple pass through `tree_id[]` array.
+Given that the total number of merge operations is $N-1$, we obtain the asymptotic behavior of $O(M \log N + N^2)$.
 
 ```cpp
 struct Edge {
@@ -74,44 +74,44 @@ for (Edge e : edges) {
 }
 ```
 
-## Chứng minh tính đúng đắn
+## Proof of correctness
 
-Tại sao thuật toán Kruskal lại cho chúng ta kết quả chính xác?
+Why does Kruskal's algorithm give us the correct result?
 
-Nếu đồ thị ban đầu được kết nối, thì đồ thị kết quả cũng sẽ được kết nối.
-Bởi vì nếu không sẽ có hai thành phần có thể được kết nối với ít nhất một cạnh. Điều này là không thể, bởi vì Kruskal sẽ chọn một trong những cạnh này, vì id của các thành phần là khác nhau.
-Ngoài ra, đồ thị kết quả không chứa bất kỳ chu trình nào, vì chúng tôi cấm điều này một cách rõ ràng trong thuật toán.
-Do đó, thuật toán tạo ra một cây khung.
+If the original graph was connected, then also the resulting graph will be connected.
+Because otherwise there would be two components that could be connected with at least one edge. Though this is impossible, because Kruskal would have chosen one of these edges, since the ids of the components are different.
+Also the resulting graph doesn't contain any cycles, since we forbid this explicitly in the algorithm.
+Therefore the algorithm generates a spanning tree.
 
-Vậy tại sao thuật toán này lại cho chúng ta một cây khung nhỏ nhất?
+So why does this algorithm give us a minimum spanning tree?
 
-Chúng ta có thể chỉ ra đề xuất "nếu $F$ là một tập hợp các cạnh được chọn bởi thuật toán tại bất kỳ giai đoạn nào trong thuật toán, thì tồn tại một MST chứa tất cả các cạnh của $F$" bằng cách sử dụng quy nạp.
+We can show the proposal "if $F$ is a set of edges chosen by the algorithm at any stage in the algorithm, then there exists a MST that contains all edges of $F$" using induction.
 
-Đề xuất rõ ràng là đúng lúc ban đầu, tập hợp rỗng là một tập con của bất kỳ MST nào.
+The proposal is obviously true at the beginning, the empty set is a subset of any MST.
 
-Bây giờ, giả sử $F$ là một tập hợp cạnh nào đó tại bất kỳ giai đoạn nào của thuật toán, $T$ là một MST chứa $F$ và $e$ là cạnh mới mà chúng ta muốn thêm bằng Kruskal.
+Now let's assume $F$ is some edge set at any stage of the algorithm, $T$ is a MST containing $F$ and $e$ is the new edge we want to add using Kruskal.
 
-Nếu $e$ tạo ra một chu trình, thì chúng ta không thêm nó, và do đó đề xuất vẫn đúng sau bước này.
+If $e$ generates a cycle, then we don't add it, and so the proposal is still true after this step.
 
-Trong trường hợp $T$ đã chứa $e$, đề xuất cũng đúng sau bước này.
+In case that $T$ already contains $e$, the proposal is also true after this step.
 
-Trong trường hợp $T$ không chứa cạnh $e$, thì $T + e$ sẽ chứa một chu trình $C$.
-Chu trình này sẽ chứa ít nhất một cạnh $f$, không nằm trong $F$.
-Tập hợp các cạnh $T - f + e$ cũng sẽ là một cây khung.
-Lưu ý rằng trọng số của $f$ không thể nhỏ hơn trọng số của $e$, bởi vì nếu không Kruskal sẽ chọn $f$ trước đó.
-Nó cũng không thể có trọng số lớn hơn, vì điều đó sẽ làm cho tổng trọng số của $T - f + e$ nhỏ hơn tổng trọng số của $T$, điều này là không thể vì $T$ đã là một MST.
-Điều này có nghĩa là trọng số của $e$ phải bằng với trọng số của $f$.
-Do đó, $T - f + e$ cũng là một MST và nó chứa tất cả các cạnh từ $F + e$.
-Vì vậy, ở đây đề xuất vẫn được thực hiện sau bước này.
+In case $T$ doesn't contain the edge $e$, then $T + e$ will contain a cycle $C$.
+This cycle will contain at least one edge $f$, that is not in $F$.
+The set of edges $T - f + e$ will also be a spanning tree. 
+Notice that the weight of $f$ cannot be smaller than the weight of $e$, because otherwise Kruskal would have chosen $f$ earlier.
+It also cannot have a bigger weight, since that would make the total weight of $T - f + e$ smaller than the total weight of $T$, which is impossible since $T$ is already a MST.
+This means that the weight of $e$ has to be the same as the weight of $f$.
+Therefore $T - f + e$ is also a MST, and it contains all edges from $F + e$.
+So also here the proposal is still fulfilled after the step.
 
-Điều này chứng minh đề xuất.
-Điều này có nghĩa là sau khi lặp qua tất cả các cạnh, tập hợp cạnh kết quả sẽ được kết nối và sẽ được chứa trong một MST, điều này có nghĩa là nó phải là một MST.
+This proves the proposal.
+Which means that after iterating over all edges the resulting edge set will be connected, and will be contained in a MST, which means that it has to be a MST already.
 
-## Triển khai cải tiến
+## Improved implementation
 
-Chúng ta có thể sử dụng cấu trúc dữ liệu [**Disjoint Set Union** (DSU)](../data_structures/disjoint_set_union.md) để viết một triển khai nhanh hơn của thuật toán Kruskal với độ phức tạp thời gian khoảng $O(M \log N)$. [Bài viết này](mst_kruskal_with_dsu.md) trình bày chi tiết cách tiếp cận như vậy.
+We can use the [**Disjoint Set Union** (DSU)](../data_structures/disjoint_set_union.md) data structure to write a faster implementation of the Kruskal's algorithm with the time complexity of about $O(M \log N)$. [This article](mst_kruskal_with_dsu.md) details such an approach.
 
-## Bài tập thực hành
+## Practice Problems
 
 * [SPOJ - Koicost](http://www.spoj.com/problems/KOICOST/)
 * [SPOJ - MaryBMW](http://www.spoj.com/problems/MARYBMW/)
