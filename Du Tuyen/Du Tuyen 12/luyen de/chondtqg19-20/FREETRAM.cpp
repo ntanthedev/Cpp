@@ -1,25 +1,38 @@
+//created in 2024-08-31-14.37.03 in Code::Blocks 20.03
 #include<bits/stdc++.h>
 
 using namespace std;
 
 const int N = 1e5 + 5;
+typedef pair<long long, int> ii;
 typedef long long ll;
-typedef pair<int, ll> ii;
 
-int n, m, k, be, ed;
-
+int n, m, be, ed, k;
+ll dp[N][6];
 vector<ii> adj[N];
-vector<int> s[N];
-vector<tuple<int, int, ll> > Edge;
-vector<bool> b(N, false);
 
-vector<ll> dijkstra(int x) {
-    vector<ll> D;
-    priority_queue<ii, vector<ii>, greater<ii>> q;
-    D.resize(n + 2, INT_MAX);
+signed main() {
+    ios_base::sync_with_stdio(false); cin.tie(NULL);
+
+    cin >> n >> m >> k >> be >> ed;
+
+    for(int i = 1, u, v, w; i <= m; i++) {
+        cin >> u >> v >> w;
+        adj[u].push_back({v, w});
+        adj[v].push_back({u, w});
+    }
+
+    vector<ll> D(n + 2, LLONG_MAX);
     vector<bool> P(n + 2, false);
-    D[x] = 0;
-    q.push({0, x});
+    priority_queue<ii, vector<ii>, greater<ii>> q;
+    for(int i = 1; i <= n + 2; i++)
+        for(int j = 0; j <= k; j++)
+            dp[i][j] = 1e18;
+
+    q.push({0, be});
+    D[be] = 0;
+    dp[be][0] = 0;
+
     while(!q.empty()) {
         int u = q.top().second;
         q.pop();
@@ -30,42 +43,19 @@ vector<ll> dijkstra(int x) {
         P[u] = 1;
 
         for(auto [v, w] : adj[u]) {
-//            cout << "check: " << u << " " << v << " " << w << '\n';
             if(D[v] > D[u] + w) {
                 D[v] = D[u] + w;
                 q.push({D[v], v});
-//                s[v] = s[u];
-//                s[v].push_back(w);
-//                sort(s[v].begin(), s[v].end());
-//                while(s[v].size() > k)
-//                    s[v].pop_back();
+                dp[v][0] = dp[u][0] + w;
+                for(int i = 1; i <= k; i++) {
+                    dp[v][i] = min({dp[v][i], dp[u][i - 1], dp[u][i] + w});
+                }
             }
         }
     }
-    return D;
-}
-
-signed main() {
-    ios_base::sync_with_stdio(false); cin.tie(NULL);
-
-
-    cin >> n >> m >> k >> be >> ed;
-
-    for(int i = 1, u, v, w; i <= m; i++) {
-        cin >> u >> v >> w;
-        adj[u].push_back({v, w});
-        adj[v].push_back({u, w});
-        Edge.push_back({u, v, w});
-    }
-
-    vector<ll> xuoi = dijkstra(be), nguoc = dijkstra(ed);
 
     ll ans = LLONG_MAX;
-
-    for(auto [u, v, w] : Edge) {
-        ans = min(ans, min(xuoi[u] + nguoc[v], nguoc[u] + xuoi[v]));
-    }
-
+    for(int i = 0; i <= k; i++)
+        ans = min(ans, dp[ed][i]);
     cout << ans;
 }
-
