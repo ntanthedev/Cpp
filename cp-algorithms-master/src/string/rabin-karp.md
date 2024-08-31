@@ -1,24 +1,26 @@
+# Thuật toán Rabin-Karp cho so khớp chuỗi (string matching)
+
 ---
 tags:
-  - Translated
+  - Dịch
 e_maxx_link: rabin_karp
 ---
 
-# Rabin-Karp Algorithm for string matching
+# Thuật toán Rabin-Karp cho so khớp chuỗi (string matching)
 
-This algorithm is based on the concept of hashing, so if you are not familiar with string hashing, refer to the [string hashing](string-hashing.md) article.
- 
-This algorithm was authored by Rabin and Karp in 1987.
+Thuật toán này dựa trên khái niệm băm (hashing), vì vậy nếu bạn chưa quen với băm chuỗi, hãy tham khảo bài viết về [băm chuỗi](string-hashing.md).
 
-Problem: Given two strings - a pattern $s$ and a text $t$, determine if the pattern appears in the text and if it does, enumerate all its occurrences in $O(|s| + |t|)$ time.
+Thuật toán này được Rabin và Karp tạo ra vào năm 1987.
 
-Algorithm: Calculate the hash for the pattern $s$.
-Calculate hash values for all the prefixes of the text $t$.
-Now, we can compare a substring of length $|s|$ with $s$ in constant time using the calculated hashes.
-So, compare each substring of length $|s|$ with the pattern. This will take a total of $O(|t|)$ time.
-Hence the final complexity of the algorithm is $O(|t| + |s|)$: $O(|s|)$ is required for calculating the hash of the pattern and $O(|t|)$ for comparing each substring of length $|s|$ with the pattern.
+Bài toán: Cho hai chuỗi - một mẫu $s$ và một văn bản $t$, hãy xác định xem mẫu có xuất hiện trong văn bản hay không và nếu có, hãy liệt kê tất cả các lần xuất hiện của nó trong thời gian $O(|s| + |t|)$.
 
-## Implementation
+Thuật toán: Tính toán giá trị băm cho mẫu $s$.
+Tính toán giá trị băm cho tất cả các tiền tố của văn bản $t$.
+Bây giờ, chúng ta có thể so sánh một chuỗi con có độ dài $|s|$ với $s$ trong thời gian không đổi bằng cách sử dụng các giá trị băm đã tính toán.
+Vì vậy, hãy so sánh từng chuỗi con có độ dài $|s|$ với mẫu. Điều này sẽ mất tổng cộng thời gian $O(|t|)$.
+Do đó, độ phức tạp cuối cùng của thuật toán là $O(|t| + |s|)$: $O(|s|)$ được yêu cầu để tính toán giá trị băm của mẫu và $O(|t|)$ để so sánh từng chuỗi con có độ dài $|s|$ với mẫu.
+
+## Triển khai
 ```{.cpp file=rabin_karp}
 vector<int> rabin_karp(string const& s, string const& t) {
     const int p = 31; 
@@ -47,10 +49,12 @@ vector<int> rabin_karp(string const& s, string const& t) {
 }
 ```
 
-## Practice Problems
+## Bài tập thực hành
 
 * [SPOJ - Pattern Find](http://www.spoj.com/problems/NAJPF/)
 * [Codeforces - Good Substrings](http://codeforces.com/problemset/problem/271/D)
 * [Codeforces - Palindromic characteristics](https://codeforces.com/problemset/problem/835/D)
 * [Leetcode - Longest Duplicate Substring](https://leetcode.com/problems/longest-duplicate-substring/)
 
+
+---

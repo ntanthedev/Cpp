@@ -1,17 +1,12 @@
----
-tags:
-  - Original
----
+# Hình học cơ bản
 
-# Basic Geometry
+Trong bài viết này, chúng ta sẽ xem xét các phép toán cơ bản trên các điểm trong không gian Euclid, là nền tảng của toàn bộ hình học giải tích.
+Chúng ta sẽ xem xét cho mỗi điểm $\mathbf r$ là vectơ $\vec{\mathbf r}$ hướng từ $\mathbf 0$ đến $\mathbf r$.
+Sau đó, chúng ta sẽ không phân biệt giữa $\mathbf r$ và $\vec{\mathbf r}$ và sử dụng thuật ngữ **điểm** như một từ đồng nghĩa với **vectơ**.
 
-In this article we will consider basic operations on points in Euclidean space which maintains the foundation of the whole analytical geometry.
-We will consider for each point $\mathbf r$ the vector $\vec{\mathbf r}$ directed from $\mathbf 0$ to $\mathbf r$.
-Later we will not distinguish between $\mathbf r$ and $\vec{\mathbf r}$ and use the term **point** as a synonym for **vector**.
+## Phép toán tuyến tính
 
-## Linear operations
-
-Both 2D and 3D points maintain linear space, which means that for them sum of points and multiplication of point by some number are defined. Here are those basic implementations for 2D:
+Cả điểm 2D và 3D đều duy trì không gian tuyến tính, có nghĩa là tổng các điểm và phép nhân điểm với một số nào đó được xác định. Dưới đây là những triển khai cơ bản cho 2D:
 
 ```{.cpp file=point2d}
 struct point2d {
@@ -55,7 +50,7 @@ point2d operator*(ftype a, point2d b) {
     return b * a;
 }
 ```
-And 3D points:
+Và điểm 3D:
 ```{.cpp file=point3d}
 struct point3d {
     ftype x, y, z;
@@ -103,40 +98,40 @@ point3d operator*(ftype a, point3d b) {
 }
 ```
 
-Here `ftype` is some type used for coordinates, usually `int`, `double` or `long long`.
+Ở đây, `ftype` là một số loại được sử dụng cho tọa độ, thường là `int`, `double` hoặc `long long`.
 
-## Dot product
+## Tích vô hướng (Dot product)
 
-### Definition
-The dot (or scalar) product $\mathbf a \cdot \mathbf b$ for vectors $\mathbf a$ and $\mathbf b$ can be defined in two identical ways.
-Geometrically it is product of the length of the first vector by the length of the projection of the second vector onto the first one.
-As you may see from the image below this projection is nothing but $|\mathbf a| \cos \theta$ where $\theta$ is the angle between $\mathbf a$ and $\mathbf b$. Thus $\mathbf a\cdot  \mathbf b = |\mathbf a| \cos \theta \cdot |\mathbf b|$.
+### Định nghĩa
+Tích vô hướng (hoặc tích scalar) $\mathbf a \cdot \mathbf b$ cho các vectơ $\mathbf a$ và $\mathbf b$ có thể được định nghĩa theo hai cách giống hệt nhau.
+Về mặt hình học, nó là tích của độ dài của vectơ thứ nhất với độ dài hình chiếu của vectơ thứ hai lên vectơ thứ nhất.
+Như bạn có thể thấy từ hình ảnh bên dưới, hình chiếu này không gì khác ngoài $|\mathbf a| \cos \theta$ trong đó $\theta$ là góc giữa $\mathbf a$ và $\mathbf b$. Do đó, $\mathbf a\cdot  \mathbf b = |\mathbf a| \cos \theta \cdot |\mathbf b|$.
 
 <center>![](https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Dot_Product.svg/300px-Dot_Product.svg.png)</center>
 
-The dot product holds some notable properties:
+Tích vô hướng có một số thuộc tính đáng chú ý:
 
 1. $\mathbf a \cdot \mathbf b = \mathbf b \cdot \mathbf a$
 2. $(\alpha \cdot \mathbf a)\cdot \mathbf b = \alpha \cdot (\mathbf a \cdot \mathbf b)$
 3. $(\mathbf a + \mathbf b)\cdot \mathbf c = \mathbf a \cdot \mathbf c + \mathbf b \cdot \mathbf c$
 
-I.e. it is a commutative function which is linear with respect to both arguments.
-Let's denote the unit vectors as
+Tức là nó là một hàm giao hoán tuyến tính đối với cả hai đối số.
+Hãy ký hiệu các vectơ đơn vị là
 
 $$\mathbf e_x = \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix}, \mathbf e_y = \begin{pmatrix} 0 \\ 1 \\ 0 \end{pmatrix}, \mathbf e_z = \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}.$$
 
-With this notation we can write the vector $\mathbf r = (x;y;z)$ as $r = x \cdot \mathbf e_x + y \cdot \mathbf e_y + z \cdot \mathbf e_z$.
-And since for unit vectors 
+Với ký hiệu này, chúng ta có thể viết vectơ $\mathbf r = (x;y;z)$ là $r = x \cdot \mathbf e_x + y \cdot \mathbf e_y + z \cdot \mathbf e_z$.
+Và kể từ khi đối với các vectơ đơn vị
 
 $$\mathbf e_x\cdot \mathbf e_x = \mathbf e_y\cdot \mathbf e_y = \mathbf e_z\cdot \mathbf e_z = 1,\\
 \mathbf e_x\cdot \mathbf e_y = \mathbf e_y\cdot \mathbf e_z = \mathbf e_z\cdot \mathbf e_x = 0$$
 
-we can see that in terms of coordinates for $\mathbf a = (x_1;y_1;z_1)$ and $\mathbf b = (x_2;y_2;z_2)$ holds
+chúng ta có thể thấy rằng về mặt tọa độ cho $\mathbf a = (x_1;y_1;z_1)$ và $\mathbf b = (x_2;y_2;z_2)$ thì
 
 $$\mathbf a\cdot \mathbf b = (x_1 \cdot \mathbf e_x + y_1 \cdot\mathbf e_y + z_1 \cdot\mathbf e_z)\cdot( x_2 \cdot\mathbf e_x + y_2 \cdot\mathbf e_y + z_2 \cdot\mathbf e_z) = x_1 x_2 + y_1 y_2 + z_1 z_2$$
 
-That is also the algebraic definition of the dot product.
-From this we can write functions which calculate it.
+Đó cũng là định nghĩa đại số của tích vô hướng.
+Từ đây chúng ta có thể viết các hàm tính toán nó.
 
 ```{.cpp file=dotproduct}
 ftype dot(point2d a, point2d b) {
@@ -147,20 +142,20 @@ ftype dot(point3d a, point3d b) {
 }
 ```
 
-When solving problems one should use algebraic definition to calculate dot products, but keep in mind geometric definition and properties to use it.
+Khi giải quyết các bài toán, người ta nên sử dụng định nghĩa đại số để tính tích vô hướng, nhưng hãy nhớ định nghĩa và thuộc tính hình học để sử dụng nó.
 
-### Properties
+### Thuộc tính
 
-We can define many geometrical properties via the dot product.
-For example 
+Chúng ta có thể định nghĩa nhiều thuộc tính hình học thông qua tích vô hướng.
+Ví dụ
 
-1. Norm of $\mathbf a$ (squared length): $|\mathbf a|^2 = \mathbf a\cdot \mathbf a$
-2. Length of $\mathbf a$: $|\mathbf a| = \sqrt{\mathbf a\cdot \mathbf a}$
-3. Projection of $\mathbf a$ onto $\mathbf b$: $\dfrac{\mathbf a\cdot\mathbf b}{|\mathbf b|}$
-4. Angle between vectors: $\arccos \left(\dfrac{\mathbf a\cdot \mathbf b}{|\mathbf a| \cdot |\mathbf b|}\right)$
-5. From the previous point we may see that the dot product is positive if the angle between them is acute, negative if it is obtuse and it equals zero if they are orthogonal, i.e. they form a right angle.
+1. Chuẩn của $\mathbf a$ (độ dài bình phương): $|\mathbf a|^2 = \mathbf a\cdot \mathbf a$
+2. Độ dài của $\mathbf a$: $|\mathbf a| = \sqrt{\mathbf a\cdot \mathbf a}$
+3. Hình chiếu của $\mathbf a$ lên $\mathbf b$: $\dfrac{\mathbf a\cdot\mathbf b}{|\mathbf b|}$
+4. Góc giữa các vectơ: $\arccos \left(\dfrac{\mathbf a\cdot \mathbf b}{|\mathbf a| \cdot |\mathbf b|}\right)$
+5. Từ điểm trước đó, chúng ta có thể thấy rằng tích vô hướng là dương nếu góc giữa chúng là góc nhọn, âm nếu nó là góc tù và nó bằng 0 nếu chúng là trực giao, tức là chúng tạo thành một góc vuông.
 
-Note that all these functions do not depend on the number of dimensions, hence they will be the same for the 2D and 3D case:
+Lưu ý rằng tất cả các hàm này không phụ thuộc vào số chiều, do đó chúng sẽ giống nhau cho trường hợp 2D và 3D:
 
 ```{.cpp file=dotproperties}
 ftype norm(point2d a) {
@@ -177,74 +172,74 @@ double angle(point2d a, point2d b) {
 }
 ```
 
-To see the next important property we should take a look at the set of points $\mathbf r$ for which $\mathbf r\cdot \mathbf a = C$ for some fixed constant $C$.
-You can see that this set of points is exactly the set of points for which the projection onto $\mathbf a$ is the point $C \cdot \dfrac{\mathbf a}{|\mathbf a|}$ and they form a hyperplane orthogonal to $\mathbf a$.
-You can see the vector $\mathbf a$ alongside with several such vectors having same dot product with it in 2D on the picture below:
+Để xem thuộc tính quan trọng tiếp theo, chúng ta nên xem xét tập hợp các điểm $\mathbf r$ mà $\mathbf r\cdot \mathbf a = C$ cho một số hằng số cố định $C$.
+Bạn có thể thấy rằng tập hợp các điểm này chính xác là tập hợp các điểm mà hình chiếu lên $\mathbf a$ là điểm $C \cdot \dfrac{\mathbf a}{|\mathbf a|}$ và chúng tạo thành siêu phẳng trực giao với $\mathbf a$.
+Bạn có thể thấy vectơ $\mathbf a$ cùng với một số vectơ như vậy có cùng tích vô hướng với nó trong 2D trên hình bên dưới:
 
-<center>![Vectors having same dot product with a](https://i.imgur.com/eyO7St4.png)</center>
+<center>![Các vectơ có cùng tích vô hướng với a](https://i.imgur.com/eyO7St4.png)</center>
 
-In 2D these vectors will form a line, in 3D they will form a plane.
-Note that this result allows us to define a line in 2D as $\mathbf r\cdot \mathbf n=C$ or $(\mathbf r - \mathbf r_0)\cdot \mathbf n=0$ where $\mathbf n$ is vector orthogonal to the line and $\mathbf r_0$ is any vector already present on the line and $C = \mathbf r_0\cdot \mathbf n$.
-In the same manner a plane can be defined in 3D.
+Trong 2D, các vectơ này sẽ tạo thành một đường thẳng, trong 3D, chúng sẽ tạo thành một mặt phẳng.
+Lưu ý rằng kết quả này cho phép chúng ta định nghĩa một đường thẳng trong 2D là $\mathbf r\cdot \mathbf n=C$ hoặc $(\mathbf r - \mathbf r_0)\cdot \mathbf n=0$ trong đó $\mathbf n$ là vectơ trực giao với đường thẳng và $\mathbf r_0$ là bất kỳ vectơ nào đã có trên đường thẳng và $C = \mathbf r_0\cdot \mathbf n$.
+Theo cách tương tự, một mặt phẳng có thể được định nghĩa trong 3D.
 
-## Cross product
+## Tích có hướng (Cross product)
 
-### Definition
+### Định nghĩa
 
-Assume you have three vectors $\mathbf a$, $\mathbf b$ and $\mathbf c$ in 3D space joined in a parallelepiped as in the picture below:
-<center>![Three vectors](https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Parallelepiped_volume.svg/240px-Parallelepiped_volume.svg.png)</center>
+Giả sử bạn có ba vectơ $\mathbf a$, $\mathbf b$ và $\mathbf c$ trong không gian 3D được nối trong một hình hộp như trong hình bên dưới:
+<center>![Ba vectơ](https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Parallelepiped_volume.svg/240px-Parallelepiped_volume.svg.png)</center>
 
-How would you calculate its volume?
-From school we know that we should multiply the area of the base with the height, which is projection of $\mathbf a$ onto direction orthogonal to base.
-That means that if we define $\mathbf b \times \mathbf c$ as the vector which is orthogonal to both $\mathbf b$ and $\mathbf c$ and which length is equal to the area of the parallelogram formed by $\mathbf b$ and $\mathbf c$ then $|\mathbf a\cdot (\mathbf b\times\mathbf c)|$ will be equal to the volume of the parallelepiped.
-For integrity we will say that $\mathbf b\times \mathbf c$ will be always directed in such way that the rotation from the vector $\mathbf b$ to the vector $\mathbf c$ from the point of $\mathbf b\times \mathbf c$ is always counter-clockwise (see the picture below).
+Bạn sẽ tính thể tích của nó như thế nào?
+Từ trường học, chúng ta biết rằng chúng ta nên nhân diện tích của đáy với chiều cao, đó là hình chiếu của $\mathbf a$ lên hướng trực giao với đáy.
+Điều đó có nghĩa là nếu chúng ta định nghĩa $\mathbf b \times \mathbf c$ là vectơ trực giao với cả $\mathbf b$ và $\mathbf c$ và độ dài của nó bằng với diện tích của hình bình hành được tạo bởi $\mathbf b$ và $\mathbf c$ thì $|\mathbf a\cdot (\mathbf b\times\mathbf c)|$ sẽ bằng thể tích của hình hộp.
+Để toàn vẹn, chúng ta sẽ nói rằng $\mathbf b\times \mathbf c$ sẽ luôn được hướng theo cách sao cho phép quay từ vectơ $\mathbf b$ đến vectơ $\mathbf c$ từ điểm của $\mathbf b\times \mathbf c$ luôn ngược chiều kim đồng hồ (xem hình bên dưới).
 
-<center>![cross product](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Cross_product_vector.svg/250px-Cross_product_vector.svg.png)</center>
+<center>![tích có hướng](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Cross_product_vector.svg/250px-Cross_product_vector.svg.png)</center>
 
-This defines the cross (or vector) product $\mathbf b\times \mathbf c$ of the vectors $\mathbf b$ and $\mathbf c$ and the triple product $\mathbf a\cdot(\mathbf b\times \mathbf c)$ of the vectors $\mathbf a$, $\mathbf b$ and $\mathbf c$.
+Điều này định nghĩa tích có hướng (hoặc tích vectơ) $\mathbf b\times \mathbf c$ của các vectơ $\mathbf b$ và $\mathbf c$ và tích hỗn hợp (triple product) $\mathbf a\cdot(\mathbf b\times \mathbf c)$ của các vectơ $\mathbf a$, $\mathbf b$ và $\mathbf c$.
 
-Some notable properties of cross and triple products:
+Một số thuộc tính đáng chú ý của tích có hướng và tích hỗn hợp:
 
 1.  $\mathbf a\times \mathbf b = -\mathbf b\times \mathbf a$
 2.  $(\alpha \cdot \mathbf a)\times \mathbf b = \alpha \cdot (\mathbf a\times \mathbf b)$
-3.  For any $\mathbf b$ and $\mathbf c$ there is exactly one vector $\mathbf r$ such that $\mathbf a\cdot (\mathbf b\times \mathbf c) = \mathbf a\cdot\mathbf r$ for any vector $\mathbf a$. <br>Indeed if there are two such vectors $\mathbf r_1$ and $\mathbf r_2$ then $\mathbf a\cdot (\mathbf r_1 - \mathbf r_2)=0$ for all vectors $\mathbf a$ which is possible only when $\mathbf r_1 = \mathbf r_2$.
+3.  Đối với bất kỳ $\mathbf b$ và $\mathbf c$ nào, tồn tại chính xác một vectơ $\mathbf r$ sao cho $\mathbf a\cdot (\mathbf b\times \mathbf c) = \mathbf a\cdot\mathbf r$ cho bất kỳ vectơ $\mathbf a$ nào. <br> Thật vậy, nếu có hai vectơ như vậy $\mathbf r_1$ và $\mathbf r_2$ thì $\mathbf a\cdot (\mathbf r_1 - \mathbf r_2)=0$ cho tất cả các vectơ $\mathbf a$ mà điều này chỉ có thể xảy ra khi $\mathbf r_1 = \mathbf r_2$.
 4.  $\mathbf a\cdot (\mathbf b\times \mathbf c) = \mathbf b\cdot (\mathbf c\times \mathbf a) = -\mathbf a\cdot( \mathbf c\times \mathbf b)$
 5.  $(\mathbf a + \mathbf b)\times \mathbf c = \mathbf a\times \mathbf c + \mathbf b\times \mathbf c$.
-    Indeed for all vectors $\mathbf r$ the chain of equations holds:
+    Thật vậy đối với mọi vectơ $\mathbf r$ chuỗi phương trình đều đúng:
 
     \[\mathbf r\cdot( (\mathbf a + \mathbf b)\times \mathbf c) = (\mathbf a + \mathbf b) \cdot (\mathbf c\times \mathbf r) =  \mathbf a \cdot(\mathbf c\times \mathbf r) + \mathbf b\cdot(\mathbf c\times \mathbf r) = \mathbf r\cdot (\mathbf a\times \mathbf c) + \mathbf r\cdot(\mathbf b\times \mathbf c) = \mathbf r\cdot(\mathbf a\times \mathbf c + \mathbf b\times \mathbf c)\]
 
-    Which proves $(\mathbf a + \mathbf b)\times \mathbf c = \mathbf a\times \mathbf c + \mathbf b\times \mathbf c$ due to point 3.
+    Điều này chứng minh $(\mathbf a + \mathbf b)\times \mathbf c = \mathbf a\times \mathbf c + \mathbf b\times \mathbf c$ do điểm 3.
 
-6.  $|\mathbf a\times \mathbf b|=|\mathbf a| \cdot |\mathbf b| \sin \theta$ where $\theta$ is angle between $\mathbf a$ and $\mathbf b$, since $|\mathbf a\times \mathbf b|$ equals to the area of the parallelogram formed by $\mathbf a$ and $\mathbf b$. 
+6.  $|\mathbf a\times \mathbf b|=|\mathbf a| \cdot |\mathbf b| \sin \theta$ trong đó $\theta$ là góc giữa $\mathbf a$ và $\mathbf b$, vì $|\mathbf a\times \mathbf b|$ bằng với diện tích của hình bình hành được tạo bởi $\mathbf a$ và $\mathbf b$.
 
-Given all this and that the following equation holds for the unit vectors
+Với tất cả những điều này và phương trình sau đúng với các vectơ đơn vị
 
 $$\mathbf e_x\times \mathbf e_x = \mathbf e_y\times \mathbf e_y = \mathbf e_z\times \mathbf e_z = \mathbf 0,\\
 \mathbf e_x\times \mathbf e_y = \mathbf e_z,~\mathbf e_y\times \mathbf e_z = \mathbf e_x,~\mathbf e_z\times \mathbf e_x = \mathbf e_y$$
 
-we can calculate the cross product of $\mathbf a = (x_1;y_1;z_1)$ and $\mathbf b = (x_2;y_2;z_2)$ in coordinate form:
+chúng ta có thể tính tích có hướng của $\mathbf a = (x_1;y_1;z_1)$ và $\mathbf b = (x_2;y_2;z_2)$ ở dạng tọa độ:
 
 $$\mathbf a\times \mathbf b = (x_1 \cdot \mathbf e_x + y_1 \cdot \mathbf e_y + z_1 \cdot \mathbf e_z)\times (x_2 \cdot \mathbf e_x + y_2 \cdot \mathbf e_y + z_2 \cdot \mathbf e_z) =$$
 
 $$(y_1 z_2 - z_1 y_2)\mathbf e_x  + (z_1 x_2 - x_1 z_2)\mathbf e_y + (x_1 y_2 - y_1 x_2)$$
 
-Which also can be written in the more elegant form:
+Cũng có thể được viết ở dạng gọn hơn:
 
 $$\mathbf a\times \mathbf b = \begin{vmatrix}\mathbf e_x & \mathbf e_y & \mathbf e_z \\ x_1 & y_1 & z_1 \\ x_2 & y_2 & z_2 \end{vmatrix},~a\cdot(b\times c) = \begin{vmatrix} x_1 & y_1 & z_1 \\ x_2 & y_2 & z_2 \\ x_3 & y_3 & z_3 \end{vmatrix}$$
 
-Here $| \cdot |$ stands for the determinant of a matrix. 
+Ở đây, $| \cdot |$ là viết tắt của định thức của ma trận.
 
-Some kind of cross product (namely the pseudo-scalar product) can also be implemented in the 2D case.
-If we would like to calculate the area of parallelogram formed by vectors $\mathbf a$ and $\mathbf b$ we would compute $|\mathbf e_z\cdot(\mathbf a\times \mathbf b)| = |x_1 y_2 - y_1 x_2|$.
-Another way to obtain the same result is to multiply $|\mathbf a|$ (base of parallelogram) with the height, which is the projection of vector $\mathbf b$ onto vector $\mathbf a$ rotated by $90^\circ$ which in turn is $\widehat{\mathbf a}=(-y_1;x_1)$.
-That is, to calculate $|\widehat{\mathbf a}\cdot\mathbf b|=|x_1y_2 - y_1 x_2|$. 
+Một số loại tích có hướng (cụ thể là tích giả vô hướng) cũng có thể được triển khai trong trường hợp 2D.
+Nếu chúng ta muốn tính diện tích hình bình hành được tạo bởi các vectơ $\mathbf a$ và $\mathbf b$, chúng ta sẽ tính $|\mathbf e_z\cdot(\mathbf a\times \mathbf b)| = |x_1 y_2 - y_1 x_2|$.
+Một cách khác để thu được kết quả tương tự là nhân $|\mathbf a|$ (đáy của hình bình hành) với chiều cao, là hình chiếu của vectơ $\mathbf b$ lên vectơ $\mathbf a$ được quay $90^\circ$ lần lượt là $\widehat{\mathbf a}=(-y_1;x_1)$.
+Tức là để tính $|\widehat{\mathbf a}\cdot\mathbf b|=|x_1y_2 - y_1 x_2|$.
 
-If we will take the sign into consideration then the area will be positive if the rotation from $\mathbf a$ to $\mathbf b$ (i.e. from the view of the point of $\mathbf e_z$) is performed counter-clockwise and negative otherwise.
-That defines the pseudo-scalar product.
-Note that it also equals $|\mathbf a| \cdot |\mathbf b| \sin \theta$ where $\theta$ is angle from $\mathbf a$ to $\mathbf b$ count counter-clockwise (and negative if rotation is clockwise).
+Nếu chúng ta xem xét dấu thì diện tích sẽ dương nếu phép quay từ $\mathbf a$ sang $\mathbf b$ (tức là từ góc nhìn của điểm $\mathbf e_z$) được thực hiện ngược chiều kim đồng hồ và âm ngược lại.
+Điều đó định nghĩa tích giả vô hướng.
+Lưu ý rằng nó cũng bằng $|\mathbf a| \cdot |\mathbf b| \sin \theta$ trong đó $\theta$ là góc từ $\mathbf a$ đến $\mathbf b$ tính ngược chiều kim đồng hồ (và âm nếu phép quay là theo chiều kim đồng hồ).
 
-Let's implement all this stuff!
+Hãy triển khai tất cả những thứ này!
 
 ```{.cpp file=crossproduct}
 point3d cross(point3d a, point3d b) {
@@ -260,32 +255,32 @@ ftype cross(point2d a, point2d b) {
 }
 ```
 
-### Properties
+### Thuộc tính
 
-As for the cross product, it equals to the zero vector iff the vectors $\mathbf a$ and $\mathbf b$ are collinear (they form a common line, i.e. they are parallel).
-The same thing holds for the triple product, it is equal to zero iff the vectors $\mathbf a$, $\mathbf b$ and $\mathbf c$ are coplanar (they form a common plane).
+Đối với tích có hướng, nó bằng với vectơ 0 nếu và chỉ khi các vectơ $\mathbf a$ và $\mathbf b$ là đồng tuyến (chúng tạo thành một đường thẳng chung, tức là chúng song song).
+Điều tương tự cũng xảy ra đối với tích hỗn hợp, nó bằng 0 nếu và chỉ khi các vectơ $\mathbf a$, $\mathbf b$ và $\mathbf c$ là đồng phẳng (chúng tạo thành một mặt phẳng chung).
 
-From this we can obtain universal equations defining lines and planes.
-A line can be defined via its direction vector $\mathbf d$ and an initial point $\mathbf r_0$ or by two points $\mathbf a$ and $\mathbf b$.
-It is defined as $(\mathbf r - \mathbf r_0)\times\mathbf d=0$ or as $(\mathbf r - \mathbf a)\times (\mathbf b - \mathbf a) = 0$.
-As for planes, it can be defined by three points $\mathbf a$, $\mathbf b$ and $\mathbf c$ as $(\mathbf r - \mathbf a)\cdot((\mathbf b - \mathbf a)\times (\mathbf c - \mathbf a))=0$ or by initial point $\mathbf r_0$ and two direction vectors lying in this plane $\mathbf d_1$ and $\mathbf d_2$: $(\mathbf r - \mathbf r_0)\cdot(\mathbf d_1\times \mathbf d_2)=0$.
+Từ đây, chúng ta có thể thu được các phương trình phổ quát xác định đường thẳng và mặt phẳng.
+Một đường thẳng có thể được định nghĩa thông qua vectơ hướng $\mathbf d$ của nó và một điểm ban đầu $\mathbf r_0$ hoặc bằng hai điểm $\mathbf a$ và $\mathbf b$.
+Nó được định nghĩa là $(\mathbf r - \mathbf r_0)\times\mathbf d=0$ hoặc là $(\mathbf r - \mathbf a)\times (\mathbf b - \mathbf a) = 0$.
+Đối với mặt phẳng, nó có thể được định nghĩa bởi ba điểm $\mathbf a$, $\mathbf b$ và $\mathbf c$ là $(\mathbf r - \mathbf a)\cdot((\mathbf b - \mathbf a)\times (\mathbf c - \mathbf a))=0$ hoặc bởi điểm ban đầu $\mathbf r_0$ và hai vectơ hướng nằm trong mặt phẳng này $\mathbf d_1$ và $\mathbf d_2$: $(\mathbf r - \mathbf r_0)\cdot(\mathbf d_1\times \mathbf d_2)=0$.
 
-In 2D the pseudo-scalar product also may be used to check the orientation between two vectors because it is positive if the rotation from the first to the second vector is clockwise and negative otherwise.
-And, of course, it can be used to calculate areas of polygons, which is described in a different article.
-A triple product can be used for the same purpose in 3D space.
+Trong 2D, tích giả vô hướng cũng có thể được sử dụng để kiểm tra hướng giữa hai vectơ vì nó là dương nếu phép quay từ vectơ thứ nhất sang vectơ thứ hai là theo chiều kim đồng hồ và âm ngược lại.
+Và tất nhiên, nó có thể được sử dụng để tính diện tích của đa giác, được mô tả trong một bài viết khác.
+Tích hỗn hợp có thể được sử dụng cho cùng một mục đích trong không gian 3D.
 
-## Exercises
+## Bài tập
 
-### Line intersection
+### Giao điểm của đường thẳng
 
-There are many possible ways to define a line in 2D and you shouldn't hesitate to combine them.
-For example we have two lines and we want to find their intersection points.
-We can say that all points from first line can be parameterized as $\mathbf r = \mathbf a_1 + t \cdot \mathbf d_1$ where $\mathbf a_1$ is initial point, $\mathbf d_1$ is direction and $t$ is some real parameter.
-As for second line all its points must satisfy $(\mathbf r - \mathbf a_2)\times \mathbf d_2=0$. From this we can easily find parameter $t$:
+Có nhiều cách có thể để xác định một đường thẳng trong 2D và bạn không nên ngần ngại kết hợp chúng.
+Ví dụ: chúng ta có hai đường thẳng và chúng ta muốn tìm điểm giao nhau của chúng.
+Chúng ta có thể nói rằng tất cả các điểm từ đường thẳng thứ nhất có thể được tham số hóa là $\mathbf r = \mathbf a_1 + t \cdot \mathbf d_1$ trong đó $\mathbf a_1$ là điểm ban đầu, $\mathbf d_1$ là hướng và $t$ là một số tham số thực.
+Đối với đường thẳng thứ hai, tất cả các điểm của nó phải thỏa mãn $(\mathbf r - \mathbf a_2)\times \mathbf d_2=0$. Từ đây, chúng ta có thể dễ dàng tìm tham số $t$:
 
 $$(\mathbf a_1 + t \cdot \mathbf d_1 - \mathbf a_2)\times \mathbf d_2=0 \quad\Rightarrow\quad t = \dfrac{(\mathbf a_2 - \mathbf a_1)\times\mathbf d_2}{\mathbf d_1\times \mathbf d_2}$$
 
-Let's implement function to intersect two lines.
+Hãy triển khai hàm để giao nhau hai đường thẳng.
 
 ```{.cpp file=basic_line_intersection}
 point2d intersect(point2d a1, point2d d1, point2d a2, point2d d2) {
@@ -293,16 +288,16 @@ point2d intersect(point2d a1, point2d d1, point2d a2, point2d d2) {
 }
 ```
 
-### Planes intersection
+### Giao điểm của mặt phẳng
 
-However sometimes it might be hard to use some geometric insights.
-For example, you're given three planes defined by initial points $\mathbf a_i$ and directions $\mathbf d_i$ and you want to find their intersection point.
-You may note that you just have to solve the system of equations:
+Tuy nhiên, đôi khi có thể khó sử dụng một số hiểu biết hình học.
+Ví dụ: bạn được cung cấp ba mặt phẳng được xác định bởi các điểm ban đầu $\mathbf a_i$ và các hướng $\mathbf d_i$ và bạn muốn tìm điểm giao nhau của chúng.
+Bạn có thể lưu ý rằng bạn chỉ cần giải hệ phương trình:
 
 $$\begin{cases}\mathbf r\cdot \mathbf n_1 = \mathbf a_1\cdot \mathbf n_1, \\ \mathbf r\cdot \mathbf n_2 = \mathbf a_2\cdot \mathbf n_2, \\ \mathbf r\cdot \mathbf n_3 = \mathbf a_3\cdot \mathbf n_3\end{cases}$$
 
-Instead of thinking on geometric approach, you can work out an algebraic one which can be obtained immediately.
-For example, given that you already implemented a point class, it will be easy for you to solve this system using Cramer's rule because the triple product is simply the determinant of the matrix obtained from the vectors being its columns:
+Thay vì suy nghĩ về cách tiếp cận hình học, bạn có thể tìm ra cách tiếp cận đại số có thể thu được ngay lập tức.
+Ví dụ: cho rằng bạn đã triển khai lớp điểm, bạn sẽ dễ dàng giải hệ thống này bằng cách sử dụng quy tắc Cramer vì tích hỗn hợp chỉ đơn giản là định thức của ma trận thu được từ các vectơ là cột của nó:
 
 ```{.cpp file=plane_intersection}
 point3d intersect(point3d a1, point3d n1, point3d a2, point3d n2, point3d a3, point3d n3) {
@@ -316,4 +311,4 @@ point3d intersect(point3d a1, point3d n1, point3d a2, point3d n2, point3d a3, po
 }
 ```
 
-Now you may try to find out approaches for common geometric operations yourself to get used to all this stuff.
+Bây giờ bạn có thể tự mình thử tìm ra các cách tiếp cận cho các phép toán hình học phổ biến để làm quen với tất cả những thứ này.

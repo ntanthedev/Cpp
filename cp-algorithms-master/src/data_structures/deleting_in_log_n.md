@@ -1,35 +1,37 @@
+# Xóa khỏi cấu trúc dữ liệu trong $O(T(n) \log n)$
+
 ---
-title: Deleting from a data structure in O(T(n) log n)
 tags:
-  - Original
+  - Bản gốc
 ---
-# Deleting from a data structure in $O(T(n)\log n)$
 
-Suppose you have a data structure which allows adding elements in **true** $O(T(n))$.
-This article will describe a technique that allows deletion in $O(T(n)\log n)$ offline.
+# Xóa khỏi cấu trúc dữ liệu trong $O(T(n) \log n)$
 
-## Algorithm
+Giả sử bạn có một cấu trúc dữ liệu cho phép thêm các phần tử trong **thực sự** $O(T(n))$.
+Bài viết này sẽ mô tả một kỹ thuật cho phép xóa trong $O(T(n) \log n)$ ngoại tuyến (offline).
 
-Each element lives in the data structure for some segments of time between additions and deletions.
-Let's build a segment tree over the queries.
-Each segment when some element is alive splits into $O(\log n)$ nodes of the tree.
-Let's put each query when we want to know something about the structure into the corresponding leaf.
-Now to process all queries we will run a DFS on the segment tree.
-When entering the node we will add all the elements that are inside this node.
-Then we will go further to the children of this node or answer the queries (if the node is a leaf).
-When leaving the node, we must undo the additions.
-Note that if we change the structure in $O(T(n))$ we can roll back the changes in $O(T(n))$ by keeping a stack of changes.
-Note that rollbacks break amortized complexity.
+## Thuật toán
 
-## Notes
+Mỗi phần tử tồn tại trong cấu trúc dữ liệu trong một số đoạn thời gian giữa các lần thêm và xóa.
+Hãy xây dựng một cây phân đoạn (segment tree) trên các truy vấn.
+Mỗi đoạn khi một số phần tử còn tồn tại sẽ được chia thành $O(\log n)$ nút của cây.
+Hãy đặt mỗi truy vấn khi chúng ta muốn biết điều gì đó về cấu trúc vào lá tương ứng.
+Bây giờ để xử lý tất cả các truy vấn, chúng ta sẽ chạy DFS trên cây phân đoạn.
+Khi vào một nút, chúng ta sẽ thêm tất cả các phần tử nằm bên trong nút này.
+Sau đó, chúng ta sẽ đi xa hơn đến các con của nút này hoặc trả lời các truy vấn (nếu nút là lá).
+Khi rời khỏi nút, chúng ta phải hoàn tác các phép thêm.
+Lưu ý rằng nếu chúng ta thay đổi cấu trúc trong $O(T(n))$ thì chúng ta có thể khôi phục các thay đổi trong $O(T(n))$ bằng cách giữ một _stack_ (ngăn xếp) các thay đổi.
+Lưu ý rằng việc khôi phục phá vỡ độ phức tạp khấu hao (amortized complexity).
 
-The idea of creating a segment tree over segments when something is alive may be used not only for data structure problems.
-See some problems below.
+## Ghi chú
 
-## Implementation
+Ý tưởng tạo một cây phân đoạn trên các đoạn khi một thứ gì đó còn tồn tại có thể được sử dụng không chỉ cho các bài toán về cấu trúc dữ liệu.
+Xem một số bài toán bên dưới.
 
-This implementation is for the [dynamic connectivity](https://en.wikipedia.org/wiki/Dynamic_connectivity) problem.
-It can add edges, remove edges and count the number of connected components.
+## Triển khai
+
+Cách triển khai này dành cho bài toán [kết nối động](https://en.wikipedia.org/wiki/Dynamic_connectivity).
+Nó có thể thêm cạnh, xóa cạnh và đếm số lượng thành phần được kết nối.
 
 ```{.cpp file=dynamic-conn}
 struct dsu_save {
@@ -150,8 +152,12 @@ struct QueryTree {
 };
 ```
 
-## Problems
+## Bài tập
 
 - [Codeforces - Connect and Disconnect](https://codeforces.com/gym/100551/problem/A)
 - [Codeforces - Addition on Segments](https://codeforces.com/contest/981/problem/E)
 - [Codeforces - Extending Set of Points](https://codeforces.com/contest/1140/problem/F)
+
+
+
+--- 

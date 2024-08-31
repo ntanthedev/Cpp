@@ -1,57 +1,59 @@
+# Phân tích biểu thức (Expression parsing)
+
 ---
 tags:
-  - Translated
+  - Dịch
 e_maxx_link: expressions_parsing
 ---
 
-# Expression parsing
+# Phân tích biểu thức (Expression parsing)
 
-A string containing a mathematical expression containing numbers and various operators is given.
-We have to compute the value of it in $O(n)$, where $n$ is the length of the string.
+Cho một chuỗi chứa một biểu thức toán học chứa các số và các toán tử khác nhau.
+Chúng ta phải tính toán giá trị của nó trong $O(n)$, trong đó $n$ là độ dài của chuỗi.
 
-The algorithm discussed here translates an expression into the so-called **reverse Polish notation** (explicitly or implicitly), and evaluates this expression.
+Thuật toán được thảo luận ở đây dịch một biểu thức sang cái gọi là **ký hiệu Ba Lan nghịch đảo** (reverse Polish notation) (một cách rõ ràng hoặc ngầm định), và đánh giá biểu thức này.
 
-## Reverse Polish notation
+## Ký hiệu Ba Lan nghịch đảo
 
-The reverse Polish notation is a form of writing mathematical expressions, in which the operators are located after their operands.
-For example the following expression
+Ký hiệu Ba Lan nghịch đảo là một dạng viết các biểu thức toán học, trong đó các toán tử nằm sau các toán hạng của chúng.
+Ví dụ: biểu thức sau
 
 $$a + b * c * d + (e - f) * (g * h + i)$$
 
-can be written in reverse Polish notation in the following way:
+có thể được viết bằng ký hiệu Ba Lan nghịch đảo theo cách sau:
 
 $$a b c * d * + e f - g h * i + * +$$
 
-The reverse Polish notation was developed by the Australian philosopher and computer science specialist Charles Hamblin in the mid 1950s on the basis of the Polish notation, which was proposed in 1920 by the Polish mathematician Jan Łukasiewicz.
+Ký hiệu Ba Lan nghịch đảo được phát triển bởi nhà triết học và chuyên gia khoa học máy tính người Úc Charles Hamblin vào giữa những năm 1950 dựa trên ký hiệu Ba Lan, được đề xuất vào năm 1920 bởi nhà toán học người Ba Lan Jan Łukasiewicz.
 
-The convenience of the reverse Polish notation is, that expressions in this form are very **easy to evaluate** in linear time.
-We use a stack, which is initially empty.
-We will iterate over the operands and operators of the expression in reverse Polish notation.
-If the current element is a number, then we put the value on top of the stack, if the current element is an operator, then we get the top two elements from the stack, perform the operation, and put the result back on top of the stack.
-In the end there will be exactly one element left in the stack, which will be the value of the expression.
+Sự tiện lợi của ký hiệu Ba Lan nghịch đảo là các biểu thức ở dạng này rất **dễ đánh giá** trong thời gian tuyến tính.
+Chúng ta sử dụng một _stack_ (ngăn xếp), ban đầu trống.
+Chúng ta sẽ lặp qua các toán hạng và toán tử của biểu thức trong ký hiệu Ba Lan nghịch đảo.
+Nếu phần tử hiện tại là một số, thì chúng ta đặt giá trị lên trên cùng của _stack_, nếu phần tử hiện tại là một toán tử, thì chúng ta lấy hai phần tử trên cùng từ _stack_, thực hiện phép toán và đặt kết quả trở lại trên cùng của _stack_.
+Cuối cùng, sẽ chỉ còn chính xác một phần tử trong _stack_, đó sẽ là giá trị của biểu thức.
 
-Obviously this simple evaluation runs in $O(n)$ time.
+Rõ ràng, việc đánh giá đơn giản này chạy trong thời gian $O(n)$.
 
-## Parsing of simple expressions
+## Phân tích các biểu thức đơn giản
 
-For the time being we only consider a simplified problem:
-we assume that all operators are **binary** (i.e. they take two arguments), and all are **left-associative** (if the priorities are equal, they get executed from left to right).
-Parentheses are allowed.
+Hiện tại, chúng ta chỉ xem xét một bài toán đơn giản hóa:
+chúng ta giả sử rằng tất cả các toán tử là **nhị phân** (tức là chúng nhận hai đối số) và tất cả đều **kết hợp trái** (nếu các ưu tiên bằng nhau, chúng sẽ được thực thi từ trái sang phải).
+Dấu ngoặc đơn được phép.
 
-We will set up two stacks: one for numbers, and one for operators and parentheses.
-Initially both stacks are empty.
-For the second stack we will maintain the condition that all operations are ordered by strict descending priority.
-If there are parenthesis on the stack, than each block of operators (corresponding to one pair of parenthesis) is ordered, and the entire stack is not necessarily ordered.
+Chúng ta sẽ thiết lập hai _stack_: một cho số và một cho toán tử và dấu ngoặc đơn.
+Ban đầu cả hai _stack_ đều trống.
+Đối với _stack_ thứ hai, chúng ta sẽ duy trì điều kiện là tất cả các phép toán được sắp xếp theo thứ tự ưu tiên giảm dần nghiêm ngặt.
+Nếu có dấu ngoặc đơn trên _stack_, thì mỗi khối toán tử (tương ứng với một cặp dấu ngoặc đơn) được sắp xếp và toàn bộ _stack_ không nhất thiết phải được sắp xếp.
 
-We will iterate over the characters of the expression from left to right.
-If the current character is a digit, then we put the value of this number on the stack.
-If the current character is an opening parenthesis, then we put it on the stack.
-If the current character is a closing parenthesis, the we execute all operators on the stack until we reach the opening bracket (in other words we perform all operations inside the parenthesis).
-Finally if the current character is an operator, then while the top of the stack has an operator with the same or higher priority, we will execute this operation, and put the new operation on the stack.
+Chúng ta sẽ lặp qua các ký tự của biểu thức từ trái sang phải.
+Nếu ký tự hiện tại là một chữ số, thì chúng ta đặt giá trị của số này lên _stack_.
+Nếu ký tự hiện tại là dấu ngoặc đơn mở, thì chúng ta đặt nó lên _stack_.
+Nếu ký tự hiện tại là dấu ngoặc đơn đóng, thì chúng ta thực thi tất cả các toán tử trên _stack_ cho đến khi chúng ta đến dấu ngoặc đơn mở (nói cách khác, chúng ta thực hiện tất cả các phép toán bên trong dấu ngoặc đơn).
+Cuối cùng, nếu ký tự hiện tại là một toán tử, thì trong khi đầu _stack_ có một toán tử có cùng hoặc cao hơn mức ưu tiên, chúng ta sẽ thực thi toán tử này và đặt toán tử mới lên _stack_.
 
-After we processed the entire string, some operators might still be in the stack, so we execute them.
+Sau khi chúng ta đã xử lý toàn bộ chuỗi, một số toán tử có thể vẫn còn trong _stack_, vì vậy chúng ta thực thi chúng.
 
-Here is the implementation of this method for the four operators $+$ $-$ $*$ $/$:
+Đây là cách triển khai phương pháp này cho bốn toán tử $+$ $-$ $*$ $/$:
 
 ```{.cpp file=expression_parsing_simple}
 bool delim(char c) {
@@ -120,50 +122,50 @@ int evaluate(string& s) {
 }
 ```
 
-Thus we learned how to calculate the value of an expression in $O(n)$, at the same time we implicitly used the reverse Polish notation.
-By slightly modifying the above implementation it is also possible to obtain the expression in reverse Polish notation in an explicit form.
+Như vậy, chúng ta đã học cách tính giá trị của một biểu thức trong $O(n)$, đồng thời chúng ta đã sử dụng ngầm định ký hiệu Ba Lan nghịch đảo.
+Bằng cách sửa đổi một chút cách triển khai ở trên, cũng có thể thu được biểu thức trong ký hiệu Ba Lan nghịch đảo ở dạng rõ ràng.
 
-## Unary operators
+## Toán tử đơn nhất
 
-Now suppose that the expression also contains **unary** operators (operators that take one argument).
-The unary plus and unary minus are common examples of such operators.
+Bây giờ giả sử rằng biểu thức cũng chứa các toán tử **đơn nhất** (toán tử nhận một đối số).
+Phép cộng đơn nhất và phép trừ đơn nhất là những ví dụ phổ biến về các toán tử như vậy.
 
-One of the differences in this case, is that we need to determine whether the current operator is a unary or a binary one.
+Một trong những điểm khác biệt trong trường hợp này là chúng ta cần xác định xem toán tử hiện tại là toán tử đơn nhất hay toán tử nhị phân.
 
-You can notice, that before an unary operator, there always is another operator or an opening parenthesis, or nothing at all (if it is at the very beginning of the expression).
-On the contrary before a binary operator there will always be an operand (number) or a closing parenthesis.
-Thus it is easy to flag whether the next operator can be unary or not. 
+Bạn có thể nhận thấy rằng trước toán tử đơn nhất, luôn có một toán tử khác hoặc dấu ngoặc đơn mở hoặc không có gì cả (nếu nó ở ngay đầu biểu thức).
+Ngược lại, trước toán tử nhị phân sẽ luôn có một toán hạng (số) hoặc dấu ngoặc đơn đóng.
+Vì vậy, rất dễ dàng để gắn cờ cho biết toán tử tiếp theo có thể là toán tử đơn nhất hay không.
 
-Additionally we need to execute a unary and a binary operator differently.
-And we need to chose the priority of a unary operator higher than all of the binary operators.
+Ngoài ra, chúng ta cần thực thi toán tử đơn nhất và toán tử nhị phân khác nhau.
+Và chúng ta cần chọn mức ưu tiên của toán tử đơn nhất cao hơn tất cả các toán tử nhị phân.
 
-In addition it should be noted, that some unary operators (e.g. unary plus and unary minus) are actually **right-associative**.
+Ngoài ra, cần lưu ý rằng một số toán tử đơn nhất (ví dụ: phép cộng đơn nhất và phép trừ đơn nhất) thực sự là **kết hợp phải**.
 
-## Right-associativity
+## Kết hợp phải
 
-Right-associative means, that whenever the priorities are equal, the operators must be evaluated from right to left.
+Kết hợp phải có nghĩa là, bất cứ khi nào các mức ưu tiên bằng nhau, các toán tử phải được đánh giá từ phải sang trái.
 
-As noted above, unary operators are usually right-associative.
-Another example for an right-associative operator is the exponentiation operator ($a \wedge b \wedge c$ is usually perceived as $a^{b^c}$ and not as $(a^b)^c$).
+Như đã lưu ý ở trên, các toán tử đơn nhất thường kết hợp phải.
+Một ví dụ khác cho toán tử kết hợp phải là toán tử lũy thừa ($a \wedge b \wedge c$ thường được hiểu là $a^{b^c}$ chứ không phải là $(a^b)^c$).
 
-What difference do we need to make in order to correctly handle right-associative operators?
-It turns out that the changes are very minimal.
-The only difference will be, if the priorities are equal we will postpone the execution of the right-associative operation.
+Chúng ta cần thực hiện sự khác biệt nào để xử lý chính xác các toán tử kết hợp phải?
+Hóa ra những thay đổi là rất nhỏ.
+Sự khác biệt duy nhất sẽ là, nếu các mức ưu tiên bằng nhau, chúng ta sẽ hoãn việc thực thi phép toán kết hợp phải.
 
-The only line that needs to be replaced is
+Dòng duy nhất cần được thay thế là
 ```cpp
 while (!op.empty() && priority(op.top()) >= priority(cur_op))
 ```
-with
+với
 ```cpp
 while (!op.empty() && (
         (left_assoc(cur_op) && priority(op.top()) >= priority(cur_op)) ||
         (!left_assoc(cur_op) && priority(op.top()) > priority(cur_op))
     ))
 ```
-where `left_assoc` is a function that decides if an operator is left_associative or not.
+trong đó `left_assoc` là một hàm quyết định xem một toán tử có kết hợp trái hay không.
 
-Here is an implementation for the binary operators $+$ $-$ $*$ $/$ and the unary  operators $+$ and $-$.
+Dưới đây là cách triển khai cho các toán tử nhị phân $+$ $-$ $*$ $/$ và các toán tử đơn nhất $+$ và $-$.
 
 ```{.cpp file=expression_parsing_unary}
 bool delim(char c) {
@@ -179,7 +181,7 @@ bool is_unary(char c) {
 }
 
 int priority (char op) {
-    if (op < 0) // unary operator
+    if (op < 0) // toán tử đơn nhất
         return 3;
     if (op == '+' || op == '-')
         return 1;
@@ -255,4 +257,6 @@ int evaluate(string& s) {
     return st.top();
 }
 ```
+
+
 

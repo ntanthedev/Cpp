@@ -1,66 +1,68 @@
+# Hợp nhất tập hợp rời rạc (Disjoint Set Union)
+
 ---
 tags:
-  - Translated
+  - Dịch
 e_maxx_link: dsu
 ---
 
-# Disjoint Set Union
+# Hợp nhất tập hợp rời rạc (Disjoint Set Union)
 
-This article discusses the data structure **Disjoint Set Union** or **DSU**.
-Often it is also called **Union Find** because of its two main operations.
+Bài viết này thảo luận về cấu trúc dữ liệu **Hợp nhất tập hợp rời rạc** (Disjoint Set Union) hay **DSU**.
+Nó thường được gọi là **Union Find** (Hợp nhất và Tìm kiếm) vì hai thao tác chính của nó.
 
-This data structure provides the following capabilities.
-We are given several elements, each of which is a separate set.
-A DSU will have an operation to combine any two sets, and it will be able to tell in which set a specific element is.
-The classical version also introduces a third operation, it can create a set from a new element.
+Cấu trúc dữ liệu này cung cấp các khả năng sau.
+Chúng ta được cho một số phần tử, mỗi phần tử là một tập hợp riêng biệt.
+DSU sẽ có một thao tác để kết hợp bất kỳ hai tập hợp nào và nó sẽ có thể cho biết một phần tử cụ thể nằm trong tập hợp nào.
+Phiên bản cổ điển cũng giới thiệu một thao tác thứ ba, nó có thể tạo một tập hợp từ một phần tử mới.
 
-Thus the basic interface of this data structure consists of only three operations:
+Do đó, giao diện cơ bản của cấu trúc dữ liệu này chỉ bao gồm ba thao tác:
 
-- `make_set(v)` - creates a new set consisting of the new element `v`
-- `union_sets(a, b)` - merges the two specified sets (the set in which the element `a` is located, and the set in which the element `b` is located)
-- `find_set(v)` - returns the representative (also called leader) of the set that contains the element `v`.
-This representative is an element of its corresponding set.
-It is selected in each set by the data structure itself (and can change over time, namely after `union_sets` calls).
-This representative can be used to check if two elements are part of the same set or not.
-`a` and `b` are exactly in the same set, if `find_set(a) == find_set(b)`.
-Otherwise they are in different sets.
+- `make_set(v)` - tạo một tập hợp mới bao gồm phần tử mới `v`
+- `union_sets(a, b)` - hợp nhất hai tập hợp được chỉ định (tập hợp chứa phần tử `a` và tập hợp chứa phần tử `b`)
+- `find_set(v)` - trả về đại diện (còn được gọi là phần tử dẫn đầu) của tập hợp chứa phần tử `v`.
+Đại diện này là một phần tử của tập hợp tương ứng của nó.
+Nó được chọn trong mỗi tập hợp bởi chính cấu trúc dữ liệu (và có thể thay đổi theo thời gian, cụ thể là sau các lệnh gọi `union_sets`).
+Đại diện này có thể được sử dụng để kiểm tra xem hai phần tử có thuộc cùng một tập hợp hay không.
+`a` và `b` chính xác nằm trong cùng một tập hợp, nếu `find_set(a) == find_set(b)`.
+Nếu không, chúng nằm trong các tập hợp khác nhau.
 
-As described in more detail later, the data structure allows you to do each of these operations in almost $O(1)$ time on average.
+Như được mô tả chi tiết hơn sau đó, cấu trúc dữ liệu cho phép bạn thực hiện từng thao tác này trong thời gian trung bình gần như $O(1)$.
 
-Also in one of the subsections an alternative structure of a DSU is explained, which achieves a slower average complexity of $O(\log n)$, but can be more powerful than the regular DSU structure.
+Ngoài ra, trong một trong các tiểu mục, cấu trúc thay thế của DSU được giải thích, đạt được độ phức tạp trung bình chậm hơn là $O(\log n)$, nhưng có thể mạnh hơn cấu trúc DSU thông thường.
 
-## Build an efficient data structure
+## Xây dựng một cấu trúc dữ liệu hiệu quả
 
-We will store the sets in the form of **trees**: each tree will correspond to one set.
-And the root of the tree will be the representative/leader of the set.
+Chúng ta sẽ lưu trữ các tập hợp dưới dạng **cây**: mỗi cây sẽ tương ứng với một tập hợp.
+Và gốc của cây sẽ là đại diện/phần tử dẫn đầu của tập hợp.
 
-In the following image you can see the representation of such trees.
+Trong hình ảnh sau đây, bạn có thể thấy biểu diễn của các cây như vậy.
 
-![Example-image of the set representation with trees](DSU_example.png)
+![Hình ảnh ví dụ về biểu diễn tập hợp với cây](DSU_example.png)
 
-In the beginning, every element starts as a single set, therefore each vertex is its own tree.
-Then we combine the set containing the element 1 and the set containing the element 2.
-Then we combine the set containing the element 3 and the set containing the element 4.
-And in the last step, we combine the set containing the element 1 and the set containing the element 3.
+Ban đầu, mọi phần tử bắt đầu như một tập hợp duy nhất, do đó mỗi đỉnh là cây của riêng nó.
+Sau đó, chúng ta kết hợp tập hợp chứa phần tử 1 và tập hợp chứa phần tử 2.
+Sau đó, chúng ta kết hợp tập hợp chứa phần tử 3 và tập hợp chứa phần tử 4.
+Và trong bước cuối cùng, chúng ta kết hợp tập hợp chứa phần tử 1 và tập hợp chứa phần tử 3.
 
-For the implementation this means that we will have to maintain an array `parent` that stores a reference to its immediate ancestor in the tree.
+Đối với việc triển khai, điều này có nghĩa là chúng ta sẽ phải duy trì một mảng `parent` lưu trữ tham chiếu đến tổ tiên trực tiếp của nó trong cây.
 
-### Naive implementation
+### Triển khai ngây thơ
 
-We can already write the first implementation of the Disjoint Set Union data structure.
-It will be pretty inefficient at first, but later we can improve it using two optimizations, so that it will take nearly constant time for each function call.
+Chúng ta đã có thể viết triển khai đầu tiên của cấu trúc dữ liệu Hợp nhất tập hợp rời rạc.
+Nó sẽ khá kém hiệu quả lúc đầu, nhưng sau đó chúng ta có thể cải thiện nó bằng cách sử dụng hai tối ưu hóa, sao cho mỗi lần gọi hàm sẽ mất gần như thời gian không đổi.
 
-As we said, all the information about the sets of elements will be kept in an array `parent`.
+Như chúng ta đã nói, tất cả thông tin về tập hợp các phần tử sẽ được lưu giữ trong một mảng `parent`.
 
-To create a new set (operation `make_set(v)`), we simply create a tree with root in the vertex `v`, meaning that it is its own ancestor.
+Để tạo một tập hợp mới (thao tác `make_set(v)`), chúng ta chỉ cần tạo một cây có gốc là đỉnh `v`, nghĩa là nó là tổ tiên của chính nó.
 
-To combine two sets (operation `union_sets(a, b)`), we first find the representative of the set in which `a` is located, and the representative of the set in which `b` is located.
-If the representatives are identical, that we have nothing to do, the sets are already merged.
-Otherwise, we can simply specify that one of the representatives is the parent of the other representative - thereby combining the two trees.
+Để kết hợp hai tập hợp (thao tác `union_sets(a, b)`), trước tiên chúng ta tìm đại diện của tập hợp chứa `a` và đại diện của tập hợp chứa `b`.
+Nếu các đại diện giống hệt nhau, thì chúng ta không phải làm gì cả, các tập hợp đã được hợp nhất.
+Nếu không, chúng ta có thể chỉ cần chỉ định rằng một trong các đại diện là cha của đại diện kia - do đó kết hợp hai cây.
 
-Finally the implementation of the find representative function (operation `find_set(v)`):
-we simply climb the ancestors of the vertex `v` until we reach the root, i.e. a vertex such that the reference to the ancestor leads to itself.
-This operation is easily implemented recursively.
+Cuối cùng là việc triển khai hàm tìm đại diện (thao tác `find_set(v)`):
+chúng ta chỉ cần leo lên các tổ tiên của đỉnh `v` cho đến khi chúng ta đến gốc, tức là một đỉnh sao cho tham chiếu đến tổ tiên dẫn đến chính nó.
+Thao tác này được triển khai dễ dàng theo đệ quy.
 
 ```cpp
 void make_set(int v) {
@@ -81,26 +83,26 @@ void union_sets(int a, int b) {
 }
 ```
 
-However this implementation is inefficient.
-It is easy to construct an example, so that the trees degenerate into long chains.
-In that case each call `find_set(v)` can take $O(n)$ time.
+Tuy nhiên, cách triển khai này kém hiệu quả.
+Rất dễ dàng để xây dựng một ví dụ, sao cho các cây thoái hóa thành chuỗi dài.
+Trong trường hợp đó, mỗi lần gọi `find_set(v)` có thể mất thời gian $O(n)$.
 
-This is far away from the complexity that we want to have (nearly constant time).
-Therefore we will consider two optimizations that will allow to significantly accelerate the work.
+Điều này khác xa so với độ phức tạp mà chúng ta muốn có (gần như thời gian không đổi).
+Do đó, chúng ta sẽ xem xét hai tối ưu hóa cho phép tăng tốc đáng kể công việc.
 
-### Path compression optimization
+### Tối ưu hóa nén đường dẫn (Path compression)
 
-This optimization is designed for speeding up `find_set`.
+Tối ưu hóa này được thiết kế để tăng tốc `find_set`.
 
-If we call `find_set(v)` for some vertex `v`, we actually find the representative `p` for all vertices that we visit on the path between `v` and the actual representative `p`.
-The trick is to make the paths for all those nodes shorter, by setting the parent of each visited vertex directly to `p`.
+Nếu chúng ta gọi `find_set(v)` cho một số đỉnh `v`, chúng ta thực sự tìm thấy đại diện `p` cho tất cả các đỉnh mà chúng ta truy cập trên đường dẫn giữa `v` và đại diện thực tế `p`.
+Mẹo là làm cho đường dẫn cho tất cả các nút đó ngắn hơn, bằng cách đặt cha của mỗi đỉnh đã truy cập trực tiếp thành `p`.
 
-You can see the operation in the following image.
-On the left there is a tree, and on the right side there is the compressed tree after calling `find_set(7)`, which shortens the paths for the visited nodes 7, 5, 3 and 2.
+Bạn có thể thấy hoạt động trong hình ảnh sau.
+Bên trái là một cây, và bên phải là cây được nén sau khi gọi `find_set(7)`, rút ​​ngắn đường dẫn cho các nút đã truy cập 7, 5, 3 và 2.
 
-![Path compression of call `find_set(7)`](DSU_path_compression.png)
+![Nén đường dẫn của lệnh gọi `find_set(7)`](DSU_path_compression.png)
 
-The new implementation of `find_set` is as follows:
+Cách triển khai mới của `find_set` như sau:
 
 ```cpp
 int find_set(int v) {
@@ -110,26 +112,26 @@ int find_set(int v) {
 }
 ```
 
-The simple implementation does what was intended:
-first find the representative of the set (root vertex), and then in the process of stack unwinding the visited nodes are attached directly to the representative.
+Cách triển khai đơn giản thực hiện những gì đã định:
+đầu tiên tìm đại diện của tập hợp (đỉnh gốc), sau đó trong quá trình giải phóng _stack_, các nút đã truy cập được gắn trực tiếp vào đại diện.
 
-This simple modification of the operation already achieves the time complexity $O(\log n)$ per call on average (here without proof).
-There is a second modification, that will make it even faster.
+Sửa đổi đơn giản này của thao tác đã đạt được độ phức tạp thời gian trung bình là $O(\log n)$ cho mỗi lần gọi (ở đây không có bằng chứng).
+Có một sửa đổi thứ hai, sẽ làm cho nó thậm chí còn nhanh hơn.
 
-### Union by size / rank
-In this optimization we will change the `union_set` operation.
-To be precise, we will change which tree gets attached to the other one.
-In the naive implementation the second tree always got attached to the first one.
-In practice that can lead to trees containing chains of length $O(n)$.
-With this optimization we will avoid this by choosing very carefully which tree gets attached.
+### Hợp nhất theo kích thước / bậc (Union by size / rank)
+Trong tối ưu hóa này, chúng ta sẽ thay đổi thao tác `union_set`.
+Để chính xác, chúng ta sẽ thay đổi cây nào được gắn vào cây kia.
+Trong cách triển khai ngây thơ, cây thứ hai luôn được gắn vào cây thứ nhất.
+Trong thực tế, điều đó có thể dẫn đến các cây chứa chuỗi có độ dài $O(n)$.
+Với tối ưu hóa này, chúng ta sẽ tránh điều này bằng cách chọn rất cẩn thận cây nào được gắn vào.
 
-There are many possible heuristics that can be used.
-Most popular are the following two approaches:
-In the first approach we use the size of the trees as rank, and in the second one we use the depth of the tree (more precisely, the upper bound on the tree depth, because the depth will get smaller when applying path compression).
+Có nhiều phương pháp phỏng đoán có thể được sử dụng.
+Phổ biến nhất là hai cách tiếp cận sau:
+Trong cách tiếp cận đầu tiên, chúng ta sử dụng kích thước của cây làm bậc, và trong cách tiếp cận thứ hai, chúng ta sử dụng độ sâu của cây (chính xác hơn là giới hạn trên của độ sâu cây, bởi vì độ sâu sẽ nhỏ hơn khi áp dụng nén đường dẫn).
 
-In both approaches the essence of the optimization is the same: we attach the tree with the lower rank to the one with the bigger rank.
+Trong cả hai cách tiếp cận, bản chất của việc tối ưu hóa là như nhau: chúng ta gắn cây có bậc thấp hơn vào cây có bậc lớn hơn.
 
-Here is the implementation of union by size:
+Đây là cách triển khai hợp nhất theo kích thước:
 
 ```cpp
 void make_set(int v) {
@@ -149,7 +151,7 @@ void union_sets(int a, int b) {
 }
 ```
 
-And here is the implementation of union by rank based on the depth of the trees:
+Và đây là cách triển khai hợp nhất theo bậc dựa trên độ sâu của cây:
 
 ```cpp
 void make_set(int v) {
@@ -169,33 +171,33 @@ void union_sets(int a, int b) {
     }
 }
 ```
-Both optimizations are equivalent in terms of time and space complexity. So in practice you can use any of them.
+Cả hai tối ưu hóa đều tương đương về độ phức tạp thời gian và không gian. Vì vậy, trong thực tế, bạn có thể sử dụng bất kỳ cái nào trong số chúng.
 
-### Time complexity
+### Độ phức tạp thời gian
 
-As mentioned before, if we combine both optimizations - path compression with union by size / rank - we will reach nearly constant time queries.
-It turns out, that the final amortized time complexity is $O(\alpha(n))$, where $\alpha(n)$ is the inverse Ackermann function, which grows very slowly.
-In fact it grows so slowly, that it doesn't exceed $4$ for all reasonable $n$ (approximately $n < 10^{600}$).
+Như đã đề cập trước đó, nếu chúng ta kết hợp cả hai tối ưu hóa - nén đường dẫn với hợp nhất theo kích thước / bậc - chúng ta sẽ đạt được các truy vấn gần như thời gian không đổi.
+Hóa ra, độ phức tạp thời gian khấu hao cuối cùng là $O(\alpha(n))$, trong đó $\alpha(n)$ là hàm Ackermann nghịch đảo, phát triển rất chậm.
+Trên thực tế, nó phát triển rất chậm, đến nỗi nó không vượt quá $4$ đối với tất cả $n$ hợp lý (xấp xỉ $n < 10^{600}$).
 
-Amortized complexity is the total time per operation, evaluated over a sequence of multiple operations.
-The idea is to guarantee the total time of the entire sequence, while allowing single operations to be much slower then the amortized time.
-E.g. in our case a single call might take $O(\log n)$ in the worst case, but if we do $m$ such calls back to back we will end up with an average time of $O(\alpha(n))$.
+Độ phức tạp khấu hao (amortized complexity) là tổng thời gian cho mỗi thao tác, được đánh giá trên một chuỗi nhiều thao tác.
+Ý tưởng là để đảm bảo tổng thời gian của toàn bộ chuỗi, trong khi cho phép các thao tác đơn lẻ chậm hơn nhiều so với thời gian khấu hao.
+Ví dụ: trong trường hợp của chúng ta, một cuộc gọi duy nhất có thể mất $O(\log n)$ trong trường hợp xấu nhất, nhưng nếu chúng ta thực hiện $m$ cuộc gọi như vậy liên tiếp, chúng ta sẽ kết thúc với thời gian trung bình là $O(\alpha(n))$.
 
-We will also not present a proof for this time complexity, since it is quite long and complicated.
+Chúng ta cũng sẽ không trình bày bằng chứng cho độ phức tạp thời gian này, vì nó khá dài và phức tạp.
 
-Also, it's worth mentioning that DSU with union by size / rank, but without path compression works in $O(\log n)$ time per query.
+Ngoài ra, điều đáng nói là DSU với hợp nhất theo kích thước / bậc, nhưng không có nén đường dẫn hoạt động trong thời gian $O(\log n)$ cho mỗi truy vấn.
 
-### Linking by index / coin-flip linking
+### Liên kết theo chỉ mục / liên kết lật đồng xu
 
-Both union by rank and union by size require that you store additional data for each set, and maintain these values during each union operation.
-There exist also a randomized algorithm, that simplifies the union operation a little bit: linking by index.
+Cả hợp nhất theo bậc và hợp nhất theo kích thước đều yêu cầu bạn lưu trữ dữ liệu bổ sung cho mỗi tập hợp và duy trì các giá trị này trong mỗi thao tác hợp nhất.
+Cũng tồn tại một thuật toán ngẫu nhiên, đơn giản hóa thao tác hợp nhất một chút: liên kết theo chỉ mục.
 
-We assign each set a random value called the index, and we attach the set with the smaller index to the one with the larger one.
-It is likely that a bigger set will have a bigger index than the smaller set, therefore this operation is closely related to union by size.
-In fact it can be proven, that this operation has the same time complexity as union by size.
-However in practice it is slightly slower than union by size.
+Chúng ta gán cho mỗi tập hợp một giá trị ngẫu nhiên được gọi là chỉ mục và chúng ta gắn tập hợp có chỉ mục nhỏ hơn vào tập hợp có chỉ mục lớn hơn.
+Rất có thể một tập hợp lớn hơn sẽ có chỉ mục lớn hơn tập hợp nhỏ hơn, do đó thao tác này có liên quan mật thiết đến hợp nhất theo kích thước.
+Trên thực tế, có thể chứng minh rằng thao tác này có cùng độ phức tạp thời gian như hợp nhất theo kích thước.
+Tuy nhiên, trong thực tế, nó chậm hơn một chút so với hợp nhất theo kích thước.
 
-You can find a proof of the complexity and even more union techniques [here](http://www.cis.upenn.edu/~sanjeev/papers/soda14_disjoint_set_union.pdf).
+Bạn có thể tìm thấy bằng chứng về độ phức tạp và thậm chí nhiều kỹ thuật hợp nhất hơn [tại đây](http://www.cis.upenn.edu/~sanjeev/papers/soda14_disjoint_set_union.pdf).
 
 ```cpp
 void make_set(int v) {
@@ -214,10 +216,10 @@ void union_sets(int a, int b) {
 }
 ```
 
-It's a common misconception that just flipping a coin, to decide which set we attach to the other, has the same complexity.
-However that's not true.
-The paper linked above conjectures that coin-flip linking combined with path compression has complexity $\Omega\left(n \frac{\log n}{\log \log n}\right)$.
-And in benchmarks it performs a lot worse than union by size/rank or linking by index.
+Có một quan niệm sai lầm phổ biến rằng chỉ cần lật một đồng xu để quyết định tập hợp nào chúng ta gắn vào tập hợp kia thì sẽ có cùng độ phức tạp.
+Tuy nhiên, điều đó là không đúng sự thật.
+Bài báo được liên kết ở trên phỏng đoán rằng liên kết lật đồng xu kết hợp với nén đường dẫn có độ phức tạp $\Omega\left(n \frac{\log n}{\log \log n}\right)$.
+Và trong các điểm chuẩn, nó hoạt động kém hơn nhiều so với hợp nhất theo kích thước/bậc hoặc liên kết theo chỉ mục.
 
 ```cpp
 void union_sets(int a, int b) {
@@ -231,72 +233,72 @@ void union_sets(int a, int b) {
 }
 ```
 
-## Applications and various improvements
+## Ứng dụng và các cải tiến khác nhau
 
-In this section we consider several applications of the data structure, both the trivial uses and some improvements to the data structure.
+Trong phần này, chúng ta xem xét một số ứng dụng của cấu trúc dữ liệu, cả cách sử dụng tầm thường và một số cải tiến đối với cấu trúc dữ liệu.
 
-### Connected components in a graph
+### Các thành phần được kết nối trong đồ thị
 
-This is one of the obvious applications of DSU.
+Đây là một trong những ứng dụng rõ ràng của DSU.
 
-Formally the problem is defined in the following way:
-Initially we have an empty graph.
-We have to add vertices and undirected edges, and answer queries of the form $(a, b)$ - "are the vertices $a$ and $b$ in the same connected component of the graph?"
+Về mặt hình thức, bài toán được định nghĩa theo cách sau:
+Ban đầu, chúng ta có một đồ thị rỗng.
+Chúng ta phải thêm các đỉnh và cạnh không có hướng và trả lời các truy vấn có dạng $(a, b)$ - "các đỉnh $a$ và $b$ có nằm trong cùng một thành phần được kết nối của đồ thị không?"
 
-Here we can directly apply the data structure, and get a solution that handles an addition of a vertex or an edge and a query in nearly constant time on average.
+Ở đây, chúng ta có thể trực tiếp áp dụng cấu trúc dữ liệu và nhận được một giải pháp xử lý việc thêm một đỉnh hoặc một cạnh và truy vấn trong thời gian trung bình gần như không đổi.
 
-This application is quite important, because nearly the same problem appears in [Kruskal's algorithm for finding a minimum spanning tree](../graph/mst_kruskal.md).
-Using DSU we can [improve](../graph/mst_kruskal_with_dsu.md) the $O(m \log n + n^2)$ complexity to $O(m \log n)$.
+Ứng dụng này khá quan trọng, bởi vì gần như cùng một bài toán xuất hiện trong [thuật toán Kruskal để tìm cây bao trùm nhỏ nhất](../graph/mst_kruskal.md).
+Sử dụng DSU, chúng ta có thể [cải thiện](../graph/mst_kruskal_with_dsu.md) độ phức tạp $O(m \log n + n^2)$ thành $O(m \log n)$.
 
-### Search for connected components in an image
+### Tìm kiếm các thành phần được kết nối trong hình ảnh
 
-One of the applications of DSU is the following task:
-there is an image of $n \times m$ pixels.
-Originally all are white, but then a few black pixels are drawn.
-You want to determine the size of each white connected component in the final image.
+Một trong những ứng dụng của DSU là nhiệm vụ sau:
+có một hình ảnh có $n \times m$ pixel.
+Ban đầu, tất cả đều có màu trắng, nhưng sau đó một vài pixel màu đen được vẽ.
+Bạn muốn xác định kích thước của mỗi thành phần được kết nối màu trắng trong hình ảnh cuối cùng.
 
-For the solution we simply iterate over all white pixels in the image, for each cell iterate over its four neighbors, and if the neighbor is white call `union_sets`.
-Thus we will have a DSU with $n m$ nodes corresponding to image pixels.
-The resulting trees in the DSU are the desired connected components.
+Đối với giải pháp, chúng ta chỉ cần lặp qua tất cả các pixel màu trắng trong hình ảnh, đối với mỗi ô, lặp qua bốn lân cận của nó và nếu lân cận là màu trắng, hãy gọi `union_sets`.
+Do đó, chúng ta sẽ có DSU với $n m$ nút tương ứng với các pixel hình ảnh.
+Các cây kết quả trong DSU là các thành phần được kết nối mong muốn.
 
-The problem can also be solved by [DFS](../graph/depth-first-search.md) or [BFS](../graph/breadth-first-search.md), but the method described here has an advantage:
-it can process the matrix row by row (i.e. to process a row we only need the previous and the current row, and only need a DSU built for the elements of one row) in $O(\min(n, m))$ memory.
+Bài toán cũng có thể được giải quyết bằng [DFS](../graph/depth-first-search.md) hoặc [BFS](../graph/breadth-first-search.md), nhưng phương pháp được mô tả ở đây có một ưu điểm:
+nó có thể xử lý ma trận theo từng hàng (tức là để xử lý một hàng, chúng ta chỉ cần hàng trước đó và hàng hiện tại, và chỉ cần DSU được xây dựng cho các phần tử của một hàng) trong bộ nhớ $O(\min(n, m))$.
 
-### Store additional information for each set
+### Lưu trữ thông tin bổ sung cho mỗi tập hợp
 
-DSU allows you to easily store additional information in the sets.
+DSU cho phép bạn dễ dàng lưu trữ thông tin bổ sung trong các tập hợp.
 
-A simple example is the size of the sets:
-storing the sizes was already described in the Union by size section (the information was stored by the current representative of the set).
+Một ví dụ đơn giản là kích thước của tập hợp:
+việc lưu trữ kích thước đã được mô tả trong phần Union by size (thông tin được lưu trữ bởi đại diện hiện tại của tập hợp).
 
-In the same way - by storing it at the representative nodes - you can also store any other information about the sets.
+Theo cách tương tự - bằng cách lưu trữ nó tại các nút đại diện - bạn cũng có thể lưu trữ bất kỳ thông tin nào khác về tập hợp.
 
-### Compress jumps along a segment / Painting subarrays offline
+### Nén bước nhảy dọc theo một đoạn / Tô màu mảng con ngoại tuyến
 
-One common application of the DSU is the following:
-There is a set of vertices, and each vertex has an outgoing edge to another vertex.
-With DSU you can find the end point, to which we get after following all edges from a given starting point, in almost constant time.
+Một ứng dụng phổ biến của DSU là như sau:
+Có một tập hợp các đỉnh, và mỗi đỉnh có một cạnh đi ra đến một đỉnh khác.
+Với DSU, bạn có thể tìm thấy điểm cuối, mà chúng ta nhận được sau khi theo tất cả các cạnh từ một điểm bắt đầu nhất định, trong thời gian gần như không đổi.
 
-A good example of this application is the **problem of painting subarrays**.
-We have a segment of length $L$, each element initially has the color 0.
-We have to repaint the subarray $[l, r]$ with the color $c$ for each query $(l, r, c)$.
-At the end we want to find the final color of each cell.
-We assume that we know all the queries in advance, i.e. the task is offline.
+Một ví dụ điển hình về ứng dụng này là **bài toán tô màu mảng con**.
+Chúng ta có một đoạn có độ dài $L$, mỗi phần tử ban đầu có màu 0.
+Chúng ta phải sơn lại mảng con $[l, r]$ bằng màu $c$ cho mỗi truy vấn $(l, r, c)$.
+Cuối cùng, chúng ta muốn tìm màu cuối cùng của mỗi ô.
+Chúng ta giả sử rằng chúng ta biết trước tất cả các truy vấn, tức là nhiệm vụ là ngoại tuyến.
 
-For the solution we can make a DSU, which for each cell stores a link to the next unpainted cell.
-Thus initially each cell points to itself.
-After painting one requested repaint of a segment, all cells from that segment will point to the cell after the segment.
+Đối với giải pháp, chúng ta có thể tạo DSU, trong đó mỗi ô lưu trữ một liên kết đến ô tiếp theo chưa được tô màu.
+Như vậy ban đầu mỗi ô trỏ đến chính nó.
+Sau khi sơn một yêu cầu sơn lại một đoạn, tất cả các ô từ đoạn đó sẽ trỏ đến ô sau đoạn.
 
-Now to solve this problem, we consider the queries **in the reverse order**: from last to first.
-This way when we execute a query, we only have to paint exactly the unpainted cells in the subarray $[l, r]$.
-All other cells already contain their final color.
-To quickly iterate over all unpainted cells, we use the DSU.
-We find the left-most unpainted cell inside of a segment, repaint it, and with the pointer we move to the next empty cell to the right.
+Bây giờ để giải quyết bài toán này, chúng ta xem xét các truy vấn **theo thứ tự ngược lại**: từ cuối đến đầu.
+Bằng cách này, khi chúng ta thực thi một truy vấn, chúng ta chỉ phải sơn chính xác các ô chưa được sơn trong mảng con $[l, r]$.
+Tất cả các ô khác đã chứa màu cuối cùng của chúng.
+Để nhanh chóng lặp qua tất cả các ô chưa được tô màu, chúng ta sử dụng DSU.
+Chúng ta tìm ô chưa được tô màu ngoài cùng bên trái bên trong một đoạn, sơn lại nó và với con trỏ, chúng ta di chuyển đến ô trống tiếp theo ở bên phải.
 
-Here we can use the DSU with path compression, but we cannot use union by rank / size (because it is important who becomes the leader after the merge).
-Therefore the complexity will be $O(\log n)$ per union (which is also quite fast).
+Ở đây, chúng ta có thể sử dụng DSU với nén đường dẫn, nhưng chúng ta không thể sử dụng hợp nhất theo bậc / kích thước (vì điều quan trọng là ai sẽ trở thành người dẫn đầu sau khi hợp nhất).
+Do đó, độ phức tạp sẽ là $O(\log n)$ cho mỗi phép hợp nhất (cũng khá nhanh).
 
-Implementation:
+Triển khai:
 
 ```cpp
 for (int i = 0; i <= L; i++) {
@@ -314,20 +316,20 @@ for (int i = m-1; i >= 0; i--) {
 }
 ```
 
-There is one optimization:
-We can use **union by rank**, if we store the next unpainted cell in an additional array `end[]`.
-Then we can merge two sets into one ranked according to their heuristics, and we obtain the solution in $O(\alpha(n))$.
+Có một tối ưu hóa:
+Chúng ta có thể sử dụng **hợp nhất theo bậc**, nếu chúng ta lưu trữ ô tiếp theo chưa được tô màu trong một mảng bổ sung `end[]`.
+Sau đó, chúng ta có thể hợp nhất hai tập hợp thành một tập hợp được xếp hạng theo phương pháp phỏng đoán của chúng và chúng ta thu được giải pháp trong $O(\alpha(n))$.
 
-### Support distances up to representative
+### Hỗ trợ khoảng cách đến đại diện
 
-Sometimes in specific applications of the DSU you need to maintain the distance between a vertex and the representative of its set (i.e. the path length in the tree from the current node to the root of the tree).
+Đôi khi trong các ứng dụng cụ thể của DSU, bạn cần duy trì khoảng cách giữa một đỉnh và đại diện của tập hợp của nó (tức là độ dài đường dẫn trong cây từ nút hiện tại đến gốc của cây).
 
-If we don't use path compression, the distance is just the number of recursive calls.
-But this will be inefficient.
+Nếu chúng ta không sử dụng nén đường dẫn, khoảng cách chỉ là số lượng cuộc gọi đệ quy.
+Nhưng điều này sẽ kém hiệu quả.
 
-However it is possible to do path compression, if we store the **distance to the parent** as additional information for each node.
+Tuy nhiên, có thể thực hiện nén đường dẫn, nếu chúng ta lưu trữ **khoảng cách đến cha** làm thông tin bổ sung cho mỗi nút.
 
-In the implementation it is convenient to use an array of pairs for `parent[]` and the function `find_set` now returns two numbers: the representative of the set, and the distance to it.
+Trong cách triển khai, sẽ thuận tiện hơn khi sử dụng một mảng các cặp cho `parent[]` và hàm `find_set` bây giờ trả về hai số: đại diện của tập hợp và khoảng cách đến nó.
 
 ```cpp
 void make_set(int v) {
@@ -357,33 +359,33 @@ void union_sets(int a, int b) {
 }
 ```
 
-### Support the parity of the path length / Checking bipartiteness online
+### Hỗ trợ tính chẵn lẻ của độ dài đường dẫn / Kiểm tra tính hai phía trực tuyến
 
-In the same way as computing the path length to the leader, it is possible to maintain the parity of the length of the path before him.
-Why is this application in a separate paragraph?
+Tương tự như cách tính độ dài đường dẫn đến phần tử dẫn đầu, có thể duy trì tính chẵn lẻ của độ dài đường dẫn trước nó.
+Tại sao ứng dụng này lại nằm trong một đoạn riêng?
 
-The unusual requirement of storing the parity of the path comes up in the following task:
-initially we are given an empty graph, it can be added edges, and we have to answer queries of the form "is the connected component containing this vertex **bipartite**?".
+Yêu cầu bất thường về việc lưu trữ tính chẵn lẻ của đường dẫn xuất hiện trong nhiệm vụ sau:
+ban đầu chúng ta được cung cấp một đồ thị rỗng, nó có thể được thêm các cạnh và chúng ta phải trả lời các truy vấn có dạng "thành phần được kết nối chứa đỉnh này có phải là **hai phía** không?".
 
-To solve this problem, we make a DSU for storing of the components and store the parity of the path up to the representative for each vertex.
-Thus we can quickly check if adding an edge leads to a violation of the bipartiteness or not:
-namely if the ends of the edge lie in the same connected component and have the same parity length to the leader, then adding this edge will produce a cycle of odd length, and the component will lose the bipartiteness property.
+Để giải quyết bài toán này, chúng ta tạo DSU để lưu trữ các thành phần và lưu trữ tính chẵn lẻ của đường dẫn đến đại diện cho mỗi đỉnh.
+Do đó, chúng ta có thể nhanh chóng kiểm tra xem việc thêm một cạnh có dẫn đến vi phạm tính hai phía hay không:
+cụ thể là nếu các đầu của cạnh nằm trong cùng một thành phần được kết nối và có cùng độ dài chẵn lẻ với phần tử dẫn đầu, thì việc thêm cạnh này sẽ tạo ra một chu trình có độ dài lẻ, và thành phần sẽ mất thuộc tính hai phía.
 
-The only difficulty that we face is to compute the parity in the `union_find` method.
+Khó khăn duy nhất mà chúng ta gặp phải là tính toán tính chẵn lẻ trong phương thức `union_find`.
 
-If we add an edge $(a, b)$ that connects two connected components into one, then when you attach one tree to another we need to adjust the parity.
+Nếu chúng ta thêm một cạnh $(a, b)$ kết nối hai thành phần được kết nối thành một, thì khi bạn gắn một cây vào cây kia, chúng ta cần điều chỉnh tính chẵn lẻ.
 
-Let's derive a formula, which computes the parity issued to the leader of the set that will get attached to another set.
-Let $x$ be the parity of the path length from vertex $a$ up to its leader $A$, and $y$ as the parity of the path length from vertex $b$ up to its leader $B$, and $t$ the desired parity that we have to assign to $B$ after the merge.
-The path consists of the three parts:
-from $B$ to $b$, from $b$ to $a$, which is connected by one edge and therefore has parity $1$, and from $a$ to $A$.
-Therefore we receive the formula ($\oplus$ denotes the XOR operation):
+Hãy suy ra một công thức, tính toán tính chẵn lẻ được cấp cho phần tử dẫn đầu của tập hợp sẽ được gắn vào một tập hợp khác.
+Cho $x$ là tính chẵn lẻ của độ dài đường dẫn từ đỉnh $a$ đến phần tử dẫn đầu $A$ của nó và $y$ là tính chẵn lẻ của độ dài đường dẫn từ đỉnh $b$ đến phần tử dẫn đầu $B$ của nó và $t$ là tính chẵn lẻ mong muốn mà chúng ta phải gán cho $B$ sau khi hợp nhất.
+Đường dẫn bao gồm ba phần:
+từ $B$ đến $b$, từ $b$ đến $a$, được kết nối bởi một cạnh và do đó có tính chẵn lẻ $1$, và từ $a$ đến $A$.
+Do đó, chúng ta nhận được công thức ($\oplus$ biểu thị phép toán XOR):
 
 $$t = x \oplus y \oplus 1$$
 
-Thus regardless of how many joins we perform, the parity of the edges is carried from one leader to another.
+Do đó, bất kể chúng ta thực hiện bao nhiêu lần hợp nhất, tính chẵn lẻ của các cạnh được mang từ người dẫn đầu này sang người dẫn đầu khác.
 
-We give the implementation of the DSU that supports parity. As in the previous section we use a pair to store the ancestor and the parity. In addition for each set we store in the array `bipartite[]` whether it is still bipartite or not.
+Chúng ta đưa ra cách triển khai DSU hỗ trợ tính chẵn lẻ. Như trong phần trước, chúng ta sử dụng một cặp để lưu trữ tổ tiên và tính chẵn lẻ. Ngoài ra, đối với mỗi tập hợp, chúng ta lưu trữ trong mảng `bipartite[]` xem nó có còn là hai phía hay không.
 
 ```cpp
 void make_set(int v) {
@@ -428,19 +430,19 @@ bool is_bipartite(int v) {
 }
 ```
 
-### Offline RMQ (range minimum query) in $O(\alpha(n))$ on average / Arpa's trick { #arpa data-toc-label="Offline RMQ / Arpa's trick"}
+### RMQ (truy vấn nhỏ nhất trong phạm vi) ngoại tuyến trong $O(\alpha(n))$ trung bình / Mẹo của Arpa { #arpa data-toc-label="Offline RMQ / Mẹo của Arpa"}
 
-We are given an array `a[]` and we have to compute some minima in given segments of the array.
+Chúng ta được cho một mảng `a[]` và chúng ta phải tính toán một số giá trị nhỏ nhất trong các đoạn nhất định của mảng.
 
-The idea to solve this problem with DSU is the following:
-We will iterate over the array and when we are at the `i`th element we will answer all queries `(L, R)` with `R == i`.
-To do this efficiently we will keep a DSU using the first `i` elements with the following structure: the parent of an element is the next smaller element to the right of it.
-Then using this structure the answer to a query will be the `a[find_set(L)]`, the smallest number to the right of `L`.
+Ý tưởng để giải quyết bài toán này với DSU như sau:
+Chúng ta sẽ lặp lại mảng và khi chúng ta ở phần tử thứ `i`, chúng ta sẽ trả lời tất cả các truy vấn `(L, R)` với `R == i`.
+Để thực hiện việc này một cách hiệu quả, chúng ta sẽ giữ một DSU bằng cách sử dụng `i` phần tử đầu tiên với cấu trúc sau: cha của một phần tử là phần tử nhỏ hơn tiếp theo ở bên phải của nó.
+Sau đó, sử dụng cấu trúc này, câu trả lời cho một truy vấn sẽ là `a[find_set(L)]`, số nhỏ nhất ở bên phải của `L`.
 
-This approach obviously only works offline, i.e. if we know all queries beforehand.
+Cách tiếp cận này rõ ràng chỉ hoạt động ngoại tuyến, tức là nếu chúng ta biết trước tất cả các truy vấn.
 
-It is easy to see that we can apply path compression.
-And we can also use Union by rank, if we store the actual leader in an separate array.
+Dễ dàng nhận thấy rằng chúng ta có thể áp dụng nén đường dẫn.
+Và chúng ta cũng có thể sử dụng Hợp nhất theo bậc, nếu chúng ta lưu trữ phần tử dẫn đầu thực tế trong một mảng riêng biệt.
 
 ```cpp
 struct Query {
@@ -451,7 +453,7 @@ vector<int> answer;
 vector<vector<Query>> container;
 ```
 
-`container[i]` contains all queries with `R == i`.
+`container[i]` chứa tất cả các truy vấn với `R == i`.
 
 ```cpp
 stack<int> s;
@@ -467,39 +469,39 @@ for (int i = 0; i < n; i++) {
 }
 ```
 
-Nowadays this algorithm is known as Arpa's trick.
-It is named after AmirReza Poorakhavan, who independently discovered and popularized this technique.
-Although this algorithm existed already before his discovery.
+Ngày nay, thuật toán này được gọi là mẹo của Arpa.
+Nó được đặt theo tên của AmirReza Poorakhavan, người đã độc lập phát hiện ra và phổ biến kỹ thuật này.
+Mặc dù thuật toán này đã tồn tại trước khi ông phát hiện ra nó.
 
-### Offline LCA (lowest common ancestor in a tree) in $O(\alpha(n))$ on average {data-toc-label="Offline LCA"}
+### LCA (tổ tiên chung thấp nhất trong cây) ngoại tuyến trong $O(\alpha(n))$ trung bình {data-toc-label="Offline LCA"}
 
-The algorithm for finding the LCA is discussed in the article [Lowest Common Ancestor - Tarjan's off-line algorithm](../graph/lca_tarjan.md).
-This algorithm compares favorable with other algorithms for finding the LCA due to its simplicity (especially compared to an optimal algorithm like the one from [Farach-Colton and Bender](../graph/lca_farachcoltonbender.md)).
+Thuật toán để tìm LCA được thảo luận trong bài viết [Tổ tiên chung thấp nhất - Thuật toán ngoại tuyến của Tarjan](../graph/lca_tarjan.md).
+Thuật toán này so sánh thuận lợi với các thuật toán khác để tìm LCA do tính đơn giản của nó (đặc biệt là so với thuật toán tối ưu như thuật toán từ [Farach-Colton and Bender](../graph/lca_farachcoltonbender.md)).
 
-### Storing the DSU explicitly in a set list / Applications of this idea when merging various data structures
+### Lưu trữ DSU một cách rõ ràng trong danh sách tập hợp / Ứng dụng của ý tưởng này khi hợp nhất các cấu trúc dữ liệu khác nhau
 
-One of the alternative ways of storing the DSU is the preservation of each set in the form of an **explicitly stored list of its elements**.
-At the same time each element also stores the reference to the representative of his set.
+Một trong những cách thay thế để lưu trữ DSU là bảo toàn mỗi tập hợp dưới dạng **danh sách các phần tử của nó được lưu trữ một cách rõ ràng**.
+Đồng thời, mỗi phần tử cũng lưu trữ tham chiếu đến đại diện của tập hợp của nó.
 
-At first glance this looks like an inefficient data structure:
-by combining two sets we will have to add one list to the end of another and have to update the leadership in all elements of one of the lists.
+Thoạt nhìn, điều này trông giống như một cấu trúc dữ liệu kém hiệu quả:
+bằng cách kết hợp hai tập hợp, chúng ta sẽ phải thêm một danh sách vào cuối danh sách khác và phải cập nhật quyền lãnh đạo trong tất cả các phần tử của một trong các danh sách.
 
-However it turns out, the use of a **weighting heuristic** (similar to Union by size) can significantly reduce the asymptotic complexity:
-$O(m + n \log n)$ to perform $m$ queries on the $n$ elements.
+Tuy nhiên, hóa ra, việc sử dụng **phương pháp phỏng đoán trọng số** (tương tự như Union by size) có thể làm giảm đáng kể độ phức tạp tiệm cận:
+$O(m + n \log n)$ để thực hiện $m$ truy vấn trên $n$ phần tử.
 
-Under weighting heuristic we mean, that we will always **add the smaller of the two sets to the bigger set**.
-Adding one set to another is easy to implement in `union_sets` and will take time proportional to the size of the added set.
-And the search for the leader in `find_set` will take $O(1)$ with this method of storing.
+Theo phương pháp phỏng đoán trọng số, chúng ta muốn nói rằng chúng ta sẽ luôn **thêm tập hợp nhỏ hơn trong hai tập hợp vào tập hợp lớn hơn**.
+Việc thêm một tập hợp vào một tập hợp khác rất dễ triển khai trong `union_sets` và sẽ mất thời gian tỷ lệ thuận với kích thước của tập hợp được thêm vào.
+Và việc tìm kiếm phần tử dẫn đầu trong `find_set` sẽ mất $O(1)$ với phương pháp lưu trữ này.
 
-Let us prove the **time complexity** $O(m + n \log n)$ for the execution of $m$ queries.
-We will fix an arbitrary element $x$ and count how often it was touched in the merge operation `union_sets`.
-When the element $x$ gets touched the first time, the size of the new set will be at least $2$.
-When it gets touched the second time, the resulting set will have size of at least $4$, because the smaller set gets added to the bigger one.
-And so on.
-This means, that $x$ can only be moved in at most $\log n$ merge operations.
-Thus the sum over all vertices gives $O(n \log n)$ plus $O(1)$ for each request.
+Chúng ta hãy chứng minh **độ phức tạp thời gian** $O(m + n \log n)$ để thực hiện $m$ truy vấn.
+Chúng ta sẽ sửa một phần tử tùy ý $x$ và đếm xem nó đã được chạm bao nhiêu lần trong thao tác hợp nhất `union_sets`.
+Khi phần tử $x$ được chạm lần đầu tiên, kích thước của tập hợp mới sẽ ít nhất là $2$.
+Khi nó được chạm lần thứ hai, tập hợp kết quả sẽ có kích thước ít nhất là $4$, bởi vì tập hợp nhỏ hơn được thêm vào tập hợp lớn hơn.
+Và như vậy.
+Điều này có nghĩa là $x$ chỉ có thể được di chuyển trong tối đa $\log n$ thao tác hợp nhất.
+Do đó, tổng trên tất cả các đỉnh cho $O(n \log n)$ cộng với $O(1)$ cho mỗi yêu cầu.
 
-Here is an implementation:
+Đây là cách triển khai:
 
 ```cpp
 vector<int> lst[MAXN];
@@ -530,55 +532,55 @@ void union_sets(int a, int b) {
 }
 ```
 
-This idea of adding the smaller part to a bigger part can also be used in a lot of solutions that have nothing to do with DSU.
+Ý tưởng thêm phần nhỏ hơn vào phần lớn hơn này cũng có thể được sử dụng trong rất nhiều giải pháp không liên quan gì đến DSU.
 
-For example consider the following **problem**:
-we are given a tree, each leaf has a number assigned (same number can appear multiple times on different leaves).
-We want to compute the number of different numbers in the subtree for every node of the tree.
+Ví dụ, hãy xem xét **bài toán** sau:
+chúng ta được cho một cây, mỗi lá có một số được gán (cùng một số có thể xuất hiện nhiều lần trên các lá khác nhau).
+Chúng ta muốn tính toán số lượng số khác nhau trong cây con cho mọi nút của cây.
 
-Applying to this task the same idea it is possible to obtain this solution:
-we can implement a [DFS](../graph/depth-first-search.md), which will return a pointer to a set of integers - the list of numbers in that subtree.
-Then to get the answer for the current node (unless of course it is a leaf), we call DFS for all children of that node, and merge all the received sets together.
-The size of the resulting set will be the answer for the current node.
-To efficiently combine multiple sets we just apply the above-described recipe:
-we merge the sets by simply adding smaller ones to larger.
-In the end we get a $O(n \log^2 n)$ solution, because one number will only added to a set at most $O(\log n)$ times.
+Áp dụng ý tưởng tương tự cho nhiệm vụ này, có thể thu được giải pháp này:
+chúng ta có thể triển khai [DFS](../graph/depth-first-search.md), nó sẽ trả về con trỏ đến tập hợp các số nguyên - danh sách các số trong cây con đó.
+Sau đó, để nhận được câu trả lời cho nút hiện tại (tất nhiên trừ khi nó là lá), chúng ta gọi DFS cho tất cả các con của nút đó và hợp nhất tất cả các tập hợp nhận được với nhau.
+Kích thước của tập hợp kết quả sẽ là câu trả lời cho nút hiện tại.
+Để kết hợp hiệu quả nhiều tập hợp, chúng ta chỉ cần áp dụng công thức được mô tả ở trên:
+chúng ta hợp nhất các tập hợp bằng cách chỉ cần thêm các tập hợp nhỏ hơn vào tập hợp lớn hơn.
+Cuối cùng, chúng ta nhận được giải pháp $O(n \log^2 n)$, bởi vì một số sẽ chỉ được thêm vào một tập hợp nhiều nhất $O(\log n)$ lần.
 
-### Storing the DSU by maintaining a clear tree structure / Online bridge finding in $O(\alpha(n))$ on average  {data-toc-label="Storing the DSU by maintaining a clear tree structure / Online bridge finding"}
+### Lưu trữ DSU bằng cách duy trì cấu trúc cây rõ ràng / Tìm cầu trực tuyến trong $O(\alpha(n))$ trung bình  {data-toc-label="Lưu trữ DSU bằng cách duy trì cấu trúc cây rõ ràng / Tìm cầu trực tuyến"}
 
-One of the most powerful applications of DSU is that it allows you to store both as **compressed and uncompressed trees**.
-The compressed form can be used for merging of trees and for the verification if two vertices are in the same tree, and the uncompressed form can be used - for example - to search for paths between two given vertices, or other traversals of the tree structure.
+Một trong những ứng dụng mạnh mẽ nhất của DSU là nó cho phép bạn lưu trữ cả **cây được nén và cây chưa được nén**.
+Dạng nén có thể được sử dụng để hợp nhất các cây và để xác minh xem hai đỉnh có nằm trong cùng một cây hay không, và dạng chưa được nén có thể được sử dụng - ví dụ - để tìm kiếm đường dẫn giữa hai đỉnh nhất định hoặc các lần duyệt khác của cây.
 
-In the implementation this means that in addition to the compressed ancestor array `parent[]` we will need to keep the array of uncompressed ancestors `real_parent[]`.
-It is trivial that maintaining this additional array will not worsen the complexity:
-changes in it only occur when we merge two trees, and only in one element.
+Trong cách triển khai, điều này có nghĩa là ngoài mảng tổ tiên được nén `parent[]`, chúng ta sẽ cần giữ mảng tổ tiên chưa được nén `real_parent[]`.
+Rõ ràng việc duy trì mảng bổ sung này sẽ không làm xấu đi độ phức tạp:
+những thay đổi trong đó chỉ xảy ra khi chúng ta hợp nhất hai cây và chỉ ở một phần tử.
 
-On the other hand when applied in practice, we often need to connect trees using a specified edge other that using the two root nodes.
-This means that we have no other choice but to re-root one of the trees (make the ends of the edge the new root of the tree).
+Mặt khác, khi được áp dụng trong thực tế, chúng ta thường cần kết nối các cây bằng cách sử dụng một cạnh được chỉ định khác với việc sử dụng hai nút gốc.
+Điều này có nghĩa là chúng ta không có lựa chọn nào khác ngoài việc tạo lại gốc cho một trong các cây (làm cho các đầu của cạnh trở thành gốc mới của cây).
 
-At first glance it seems that this re-rooting is very costly and will greatly worsen the time complexity.
-Indeed, for rooting a tree at vertex $v$ we must go from the vertex to the old root and change directions in `parent[]` and `real_parent[]` for all nodes on that path.
+Thoạt nhìn, có vẻ như việc tạo lại gốc này rất tốn kém và sẽ làm xấu đi độ phức tạp thời gian.
+Thật vậy, để tạo lại gốc cho một cây ở đỉnh $v$, chúng ta phải đi từ đỉnh đến gốc cũ và thay đổi hướng trong `parent[]` và `real_parent[]` cho tất cả các nút trên đường dẫn đó.
 
-However in reality it isn't so bad, we can just re-root the smaller of the two trees similar to the ideas in the previous sections, and get $O(\log n)$ on average.
+Tuy nhiên, trong thực tế, nó không quá tệ, chúng ta có thể chỉ cần tạo lại gốc cho cây nhỏ hơn trong hai cây tương tự như các ý tưởng trong phần trước, và nhận được $O(\log n)$ trung bình.
 
-More details (including proof of the time complexity) can be found in the article [Finding Bridges Online](../graph/bridge-searching-online.md).
+Thêm chi tiết (bao gồm bằng chứng về độ phức tạp thời gian) có thể được tìm thấy trong bài viết [Tìm cầu trực tuyến](../graph/bridge-searching-online.md).
 
-## Historical retrospective
+## Hồi tưởng lịch sử
 
-The data structure DSU has been known for a long time.
+Cấu trúc dữ liệu DSU đã được biết đến từ lâu.
 
-This way of storing this structure in the form **of a forest of trees** was apparently first described by Galler and Fisher in 1964 (Galler, Fisher, "An Improved Equivalence Algorithm), however the complete analysis of the time complexity was conducted much later.
+Cách lưu trữ cấu trúc này dưới dạng **rừng cây** dường như được Galler và Fisher mô tả lần đầu tiên vào năm 1964 (Galler, Fisher, "An Improved Equivalence Algorithm"), tuy nhiên, phân tích đầy đủ về độ phức tạp thời gian đã được thực hiện muộn hơn nhiều.
 
-The optimizations path compression and Union by rank has been developed by McIlroy and Morris, and independently of them also by Tritter.
+Các tối ưu hóa nén đường dẫn và Hợp nhất theo bậc đã được phát triển bởi McIlroy và Morris, và độc lập với họ cũng bởi Tritter.
 
-Hopcroft and Ullman showed in 1973 the time complexity $O(\log^\star n)$ (Hopcroft, Ullman "Set-merging algorithms") - here $\log^\star$ is the **iterated logarithm** (this is a slow-growing function, but still not as slow as the inverse Ackermann function).
+Hopcroft và Ullman đã chỉ ra vào năm 1973 độ phức tạp thời gian $O(\log^\star n)$ (Hopcroft, Ullman "Set-merging algorithms") - ở đây $\log^\star$ là **logarit lặp** (đây là một hàm phát triển chậm, nhưng vẫn không chậm như hàm Ackermann nghịch đảo).
 
-For the first time the evaluation of $O(\alpha(n))$ was shown in 1975 (Tarjan "Efficiency of a Good But Not Linear Set Union Algorithm").
-Later in 1985 he, along with Leeuwen, published multiple complexity analyses for several different rank heuristics and ways of compressing the path (Tarjan, Leeuwen "Worst-case Analysis of Set Union Algorithms").
+Lần đầu tiên đánh giá $O(\alpha(n))$ được thể hiện vào năm 1975 (Tarjan "Efficiency of a Good But Not Linear Set Union Algorithm").
+Sau đó vào năm 1985, ông cùng với Leeuwen đã xuất bản nhiều phân tích độ phức tạp cho một số phương pháp phỏng đoán bậc và cách nén đường dẫn khác nhau (Tarjan, Leeuwen "Worst-case Analysis of Set Union Algorithms").
 
-Finally in 1989 Fredman and Sachs proved that in the adopted model of computation **any** algorithm for the disjoint set union problem has to work in at least $O(\alpha(n))$ time on average (Fredman, Saks, "The cell probe complexity of dynamic data structures").
+Cuối cùng, vào năm 1989, Fredman và Sachs đã chứng minh rằng trong mô hình tính toán được áp dụng, **bất kỳ** thuật toán nào cho bài toán hợp nhất tập hợp rời rạc đều phải hoạt động trong ít nhất $O(\alpha(n))$ thời gian trung bình (Fredman, Saks, "The cell probe complexity of dynamic data structures").
 
-## Problems
+## Bài tập
 
 * [TIMUS - Anansi's Cobweb](http://acm.timus.ru/problem.aspx?space=1&num=1671)
 * [Codeforces - Roads not only in Berland](http://codeforces.com/contest/25/problem/D)
@@ -590,3 +592,6 @@ Finally in 1989 Fredman and Sachs proved that in the adopted model of computatio
 * [HackerEarth - Lexicographically minimal string](https://www.hackerearth.com/practice/data-structures/disjoint-data-strutures/basics-of-disjoint-data-structures/practice-problems/algorithm/lexicographically-minimal-string-6edc1406/description/)
 * [HackerEarth - Fight in Ninja World](https://www.hackerearth.com/practice/algorithms/graphs/breadth-first-search/practice-problems/algorithm/containers-of-choclates-1/)
 
+
+
+--- 
