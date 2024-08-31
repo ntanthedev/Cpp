@@ -1,80 +1,83 @@
+# Tìm kiếm cặp điểm gần nhất
+
 ---
 tags:
-  - Translated
+  - Dịch
 e_maxx_link: nearest_points
 ---
 
-# Finding the nearest pair of points
+# Tìm kiếm cặp điểm gần nhất
 
-## Problem statement
+## Bài toán
 
-Given $n$ points on the plane. Each point $p_i$ is defined by its coordinates $(x_i,y_i)$. It is required to find among them two such points, such that the distance between them is minimal:
+Cho $n$ điểm trên mặt phẳng. Mỗi điểm $p_i$ được xác định bởi tọa độ của nó $(x_i,y_i)$. Yêu cầu tìm trong số chúng hai điểm sao cho khoảng cách giữa chúng là nhỏ nhất:
 
 $$ \min_{\scriptstyle i, j=0 \ldots n-1,\atop \scriptstyle i \neq j } \rho (p_i, p_j). $$
 
-We take the usual Euclidean distances:
+Chúng ta lấy khoảng cách Euclide thông thường:
 
 $$ \rho (p_i,p_j) = \sqrt{(x_i-x_j)^2 + (y_i-y_j)^2} .$$
 
-The trivial algorithm - iterating over all pairs and calculating the distance for each — works in $O(n^2)$. 
+Thuật toán tầm thường - lặp qua tất cả các cặp và tính toán khoảng cách cho mỗi cặp - hoạt động trong $O(n^2)$.
 
-The algorithm running in time $O(n \log n)$ is described below. This algorithm was proposed by Shamos and Hoey in 1975. (Source: Ch. 5 Notes of _Algorithm Design_ by Kleinberg & Tardos, also see [here](https://ieeexplore.ieee.org/abstract/document/4567872)) Preparata and Shamos also showed that this algorithm is optimal in the decision tree model.
+Thuật toán chạy trong thời gian $O(n \log n)$ được mô tả bên dưới. Thuật toán này được đề xuất bởi Shamos và Hoey vào năm 1975. (Nguồn: Chương 5 Ghi chú của _Thiết kế Thuật toán_ của Kleinberg & Tardos, cũng xem [tại đây](https://ieeexplore.ieee.org/abstract/document/4567872)) Preparata và Shamos cũng chỉ ra rằng thuật toán này là tối ưu trong mô hình cây quyết định.
 
-## Algorithm
-We construct an algorithm according to the general scheme of **divide-and-conquer** algorithms: the algorithm is designed as a recursive function, to which we pass a set of points; this recursive function splits this set in half, calls itself recursively on each half, and then performs some operations to combine the answers. The operation of combining consist of  detecting the cases when one point of the optimal solution fell into one half, and the other point into the other (in this case, recursive calls from each of the halves cannot detect this pair separately). The main difficulty, as always in case of divide and conquer algorithms, lies in the effective implementation of the merging stage. If a set of $n$ points is passed to the recursive function, then the merge stage should work no more than $O(n)$, then the asymptotics of the whole algorithm $T(n)$ will be found from the equation:
+## Thuật toán
 
-$$T(n) = 2T(n/2) + O(n).$$ 
+Chúng ta xây dựng một thuật toán theo sơ đồ chung của thuật toán **chia để trị**: thuật toán được thiết kế như một hàm đệ quy, mà chúng ta truyền một tập hợp các điểm; hàm đệ quy này chia tập hợp này thành hai nửa, tự gọi đệ quy trên mỗi nửa và sau đó thực hiện một số thao tác để kết hợp các câu trả lời. Thao tác kết hợp bao gồm việc phát hiện các trường hợp khi một điểm của giải pháp tối ưu rơi vào một nửa và điểm kia rơi vào nửa kia (trong trường hợp này, các lệnh gọi đệ quy từ mỗi nửa không thể phát hiện riêng cặp này). Khó khăn chính, như mọi khi trong trường hợp thuật toán chia để trị, nằm ở việc triển khai hiệu quả giai đoạn hợp nhất. Nếu một tập hợp $n$ điểm được truyền cho hàm đệ quy, thì giai đoạn hợp nhất sẽ hoạt động không quá $O(n)$, thì tiệm cận của toàn bộ thuật toán $T(n)$ sẽ được tìm thấy từ phương trình:
 
-The solution to this equation, as is known, is $T(n) = O(n \log n).$
+$$T(n) = 2T(n/2) + O(n).$$
 
-So, we proceed on to the construction of the algorithm. In order to come to an effective implementation of the merge stage in the future, we will divide the set of points into two subsets, according to their $x$-coordinates: In fact, we draw some vertical line dividing the set of points into two subsets of approximately the same size. It is convenient to make such a partition as follows: We sort the points in the standard way as pairs of numbers, ie.:
+Giải pháp cho phương trình này, như đã biết, là $T(n) = O(n \log n).$
+
+Vì vậy, chúng ta tiến hành xây dựng thuật toán. Để đi đến một cách triển khai hiệu quả của giai đoạn hợp nhất trong tương lai, chúng ta sẽ chia tập hợp các điểm thành hai tập hợp con, theo tọa độ $x$ của chúng: Trên thực tế, chúng ta vẽ một số đường thẳng đứng chia tập hợp các điểm thành hai tập hợp con có kích thước xấp xỉ bằng nhau. Thật tiện lợi khi thực hiện phân vùng như sau: Chúng ta sắp xếp các điểm theo cách tiêu chuẩn dưới dạng cặp số, ví dụ:
 
 $$p_i < p_j \Longleftrightarrow (x_i < x_j) \lor \Big(\left(x_i = x_j\right) \wedge \left(y_i < y_j \right) \Big) $$
 
-Then take the middle point after sorting $p_m (m = \lfloor n/2 \rfloor)$, and all the points before it and the $p_m$ itself are assigned to the first half, and all the points after it - to the second half:
+Sau đó lấy điểm giữa sau khi sắp xếp $p_m (m = \lfloor n/2 \rfloor)$, và tất cả các điểm trước nó và chính $p_m$ được gán cho nửa đầu tiên, và tất cả các điểm sau nó - cho nửa thứ hai:
 
 $$A_1 = \{p_i \ | \ i = 0 \ldots m \}$$
 
-$$A_2 = \{p_i \ | \ i = m + 1 \ldots n-1 \}.$$ 
+$$A_2 = \{p_i \ | \ i = m + 1 \ldots n-1 \}.$$
 
-Now, calling recursively on each of the sets $A_1$ and $A_2$, we will find the answers $h_1$ and $h_2$ for each of the halves. And take the best of them: $h = \min(h_1, h_2)$.
+Bây giờ, gọi đệ quy trên mỗi tập hợp $A_1$ và $A_2$, chúng ta sẽ tìm thấy câu trả lời $h_1$ và $h_2$ cho mỗi nửa. Và lấy cái tốt nhất trong số chúng: $h = \min(h_1, h_2)$.
 
-Now we need to make a **merge stage**, i.e. we try to find such pairs of points, for which the distance between which is less than $h$ and one point is lying in $A_1$ and the other in $A_2$.
-It is obvious that it is sufficient to consider only those points that are separated from the vertical line by a distance less than $h$, i.e. the set $B$ of the points considered at this stage is equal to:
+Bây giờ chúng ta cần thực hiện **giai đoạn hợp nhất**, tức là chúng ta cố gắng tìm các cặp điểm như vậy, mà khoảng cách giữa chúng nhỏ hơn $h$ và một điểm nằm trong $A_1$ và điểm kia nằm trong $A_2$.
+Rõ ràng là chỉ cần xem xét những điểm cách đường thẳng đứng một khoảng cách nhỏ hơn $h$, tức là tập $B$ của các điểm được xét ở giai đoạn này bằng:
 
-$$B = \{ p_i\ | \ | x_i - x_m\ | < h \}.$$ 
+$$B = \{ p_i\ | \ | x_i - x_m\ | < h \}.$$
 
-For each point in the set $B$, we try to find the points that are closer to it than $h$. For example, it is sufficient to consider only those points whose $y$-coordinate differs by no more than $h$. Moreover, it makes no sense to consider those points whose $y$-coordinate is greater than the $y$-coordinate of the current point. Thus, for each point $p_i$ we define the set of considered points $C(p_i)$ as follows:
+Đối với mỗi điểm trong tập hợp $B$, chúng ta cố gắng tìm các điểm gần nó hơn $h$. Ví dụ: chỉ cần xem xét những điểm có tọa độ $y$ khác nhau không quá $h$. Hơn nữa, việc xem xét những điểm có tọa độ $y$ lớn hơn tọa độ $y$ của điểm hiện tại là vô nghĩa. Như vậy, đối với mỗi điểm $p_i$, chúng ta xác định tập hợp các điểm được xét $C(p_i)$ như sau:
 
 $$C(p_i) = \{ p_j\ |\ p_j \in B,\ \ y_i - h < y_j \le y_i \}.$$
 
-If we sort the points of the set $B$ by $y$-coordinate, it will be very easy to find $C(p_i)$: these are several points in a row ahead to the point $p_i$.
+Nếu chúng ta sắp xếp các điểm của tập hợp $B$ theo tọa độ $y$, thì việc tìm $C(p_i)$ sẽ rất dễ dàng: đây là một số điểm liên tiếp trước điểm $p_i$.
 
-So, in the new notation, the **merging stage** looks like this: build a set $B$, sort the points in it by $y$-coordinate, then for each point $p_i \in B$ consider all points $p_j \in C(p_i)$, and for each pair $(p_i,p_j)$ calculate the distance and compare with the current best distance.
+Vì vậy, trong ký hiệu mới, **giai đoạn hợp nhất** trông như thế này: xây dựng một tập hợp $B$, sắp xếp các điểm trong đó theo tọa độ $y$, sau đó đối với mỗi điểm $p_i \in B$, hãy xem xét tất cả các điểm $p_j \in C(p_i)$ và đối với mỗi cặp $(p_i,p_j)$, hãy tính toán khoảng cách và so sánh với khoảng cách tốt nhất hiện tại.
 
-At first glance, this is still a non-optimal algorithm: it seems that the sizes of sets $C(p_i)$ will be of order $n$, and the required asymptotics will not work. However, surprisingly, it can be proved that the size of each of the sets $C(p_i)$ is a quantity $O(1)$, i.e. it does not exceed some small constant regardless of the points themselves. Proof of this fact is given in the next section.
+Thoạt nhìn, đây vẫn là một thuật toán không tối ưu: có vẻ như kích thước của tập hợp $C(p_i)$ sẽ theo thứ tự $n$, và tiệm cận cần thiết sẽ không hoạt động. Tuy nhiên, thật ngạc nhiên, có thể chứng minh rằng kích thước của mỗi tập hợp $C(p_i)$ là một đại lượng $O(1)$, tức là nó không vượt quá một số hằng số nhỏ bất kể bản thân các điểm. Bằng chứng về thực tế này được đưa ra trong phần tiếp theo.
 
-Finally, we pay attention to the sorting, which the above algorithm contains: first,sorting by pairs $(x, y)$, and then second, sorting the elements of the set $B$ by $y$. In fact, both of these sorts inside the recursive function can be eliminated (otherwise we would not reach the $O(n)$ estimate for the **merging stage**, and the general asymptotics of the algorithm would be $O(n \log^2 n)$). It is easy to get rid of the first sort — it is enough to perform this sort before starting the recursion: after all, the elements themselves do not change inside the recursion, so there is no need to sort again. With the second sorting a little more difficult to perform, performing it previously will not work. But, remembering the merge sort, which also works on the principle of divide-and-conquer, we can simply embed this sort in our recursion. Let recursion, taking some set of points (as we remember,ordered by pairs $(x, y)$), return the same set, but sorted by the $y$-coordinate. To do this, simply merge (in $O(n)$) the two results returned by recursive calls. This will result in a set sorted by $y$-coordinate.
+Cuối cùng, chúng ta chú ý đến việc sắp xếp mà thuật toán trên chứa: thứ nhất, sắp xếp theo cặp $(x, y)$, và thứ hai, sắp xếp các phần tử của tập hợp $B$ theo $y$. Trên thực tế, cả hai loại sắp xếp này bên trong hàm đệ quy đều có thể bị loại bỏ (nếu không, chúng ta sẽ không đạt được ước tính $O(n)$ cho **giai đoạn hợp nhất** và tiệm cận chung của thuật toán sẽ là $O(n \log^2 n)$). Việc loại bỏ kiểu sắp xếp đầu tiên rất dễ dàng - chỉ cần thực hiện kiểu sắp xếp này trước khi bắt đầu đệ quy: sau tất cả, bản thân các phần tử không thay đổi bên trong đệ quy, vì vậy không cần phải sắp xếp lại. Với kiểu sắp xếp thứ hai, khó thực hiện hơn một chút, việc thực hiện nó trước đó sẽ không hiệu quả. Nhưng, nhớ lại sắp xếp trộn (merge sort), cũng hoạt động theo nguyên tắc chia để trị, chúng ta có thể chỉ cần nhúng kiểu sắp xếp này vào đệ quy của mình. Cho phép đệ quy, lấy một số tập hợp điểm (như chúng ta nhớ, được sắp xếp theo cặp $(x, y)$), trả về cùng một tập hợp, nhưng được sắp xếp theo tọa độ $y$. Để làm điều này, chỉ cần hợp nhất (trong $O(n)$) hai kết quả được trả về bởi các lệnh gọi đệ quy. Điều này sẽ dẫn đến một tập hợp được sắp xếp theo tọa độ $y$.
 
-## Evaluation of the asymptotics
+## Đánh giá tiệm cận
 
-To show that the above algorithm is actually executed in $O(n \log n)$, we need to prove the following fact: $|C(p_i)| = O(1)$.
+Để chứng minh rằng thuật toán trên thực sự được thực thi trong $O(n \log n)$, chúng ta cần chứng minh sự kiện sau: $|C(p_i)| = O(1)$.
 
-So, let us consider some point $p_i$; recall that the set $C(p_i)$ is a set of points whose $y$-coordinate lies in the segment $[y_i-h; y_i]$, and, moreover, along the $x$ coordinate, the point $p_i$ itself, and all the points of the set $C(p_i)$ lie in the band width $2h$. In other words, the points we are considering $p_i$ and $C(p_i)$ lie in a rectangle of size $2h \times h$.
+Vì vậy, chúng ta hãy xem xét một số điểm $p_i$; nhớ lại rằng tập hợp $C(p_i)$ là tập hợp các điểm có tọa độ $y$ nằm trong đoạn $[y_i-h; y_i]$, và hơn nữa, dọc theo tọa độ $x$, chính điểm $p_i$ và tất cả các điểm của tập hợp $C(p_i)$ nằm trong dải có độ rộng $2h$. Nói cách khác, các điểm chúng ta đang xem xét $p_i$ và $C(p_i)$ nằm trong một hình chữ nhật có kích thước $2h \times h$.
 
-Our task is to estimate the maximum number of points that can lie in this rectangle $2h \times h$; thus, we estimate the maximum size of the set $C(p_i)$. At the same time, when evaluating, we must not forget that there may be repeated points.
+Nhiệm vụ của chúng ta là ước tính số lượng điểm tối đa có thể nằm trong hình chữ nhật $2h \times h$ này; do đó, chúng ta ước tính kích thước tối đa của tập hợp $C(p_i)$. Đồng thời, khi đánh giá, chúng ta không được quên rằng có thể có các điểm lặp lại.
 
-Remember that $h$ was obtained from the results of two recursive calls — on sets $A_1$ and $A_2$, and $A_1$ contains points to the left of the partition line and partially on it, $A_2$ contains the remaining points of the partition line and points to the right of it. For any pair of points from $A_1$, as well as from $A_2$, the distance can not be less than $h$ — otherwise it would mean incorrect operation of the recursive function.
+Hãy nhớ rằng $h$ được lấy từ kết quả của hai lệnh gọi đệ quy - trên các tập hợp $A_1$ và $A_2$, và $A_1$ chứa các điểm ở bên trái đường phân vùng và một phần trên đó, $A_2$ chứa các điểm còn lại của đường phân vùng và điểm ở bên phải của nó. Đối với bất kỳ cặp điểm nào từ $A_1$, cũng như từ $A_2$, khoảng cách không thể nhỏ hơn $h$ — nếu không, điều đó có nghĩa là thao tác không chính xác của hàm đệ quy.
 
-To estimate the maximum number of points in the rectangle $2h \times h$ we divide it into two squares $h \times h$, the first square include all points $C(p_i) \cap A_1$, and the second contains all the others, i.e. $C(p_i) \cap A_2$. It follows from the above considerations that in each of these squares the distance between any two points is at least $h$.
+Để ước tính số lượng điểm tối đa trong hình chữ nhật $2h \times h$, chúng ta chia nó thành hai hình vuông $h \times h$, hình vuông thứ nhất bao gồm tất cả các điểm $C(p_i) \cap A_1$ và hình vuông thứ hai chứa tất cả các điểm còn lại, tức là $C(p_i) \cap A_2$. Từ những cân nhắc ở trên, suy ra rằng trong mỗi hình vuông này, khoảng cách giữa hai điểm bất kỳ là ít nhất $h$.
 
-We show that there are at most four points in each square. For example, this can be done as follows: divide the square into $4$ sub-squares with sides $h/2$. Then there can be no more than one point in each of these sub-squares (since even the diagonal is equal to $h / \sqrt{2}$, which is less than $h$). Therefore, there can be no more than $4$ points in the whole square.
+Chúng tôi chỉ ra rằng có nhiều nhất bốn điểm trong mỗi hình vuông. Ví dụ, điều này có thể được thực hiện như sau: chia hình vuông thành $4$ hình vuông con với các cạnh $h/2$. Sau đó, không thể có nhiều hơn một điểm trong mỗi hình vuông con này (vì ngay cả đường chéo cũng bằng $h / \sqrt{2}$, nhỏ hơn $h$). Do đó, không thể có nhiều hơn $4$ điểm trong toàn bộ hình vuông.
 
-So, we have proved that in a rectangle $2h \times h$ can not be more than $4 \cdot 2 = 8$ points, and, therefore, the size of the set $C(p_i)$ cannot exceed $7$, as required.
+Vì vậy, chúng ta đã chứng minh rằng trong một hình chữ nhật $2h \times h$ không thể có nhiều hơn $4 \cdot 2 = 8$ điểm, và do đó, kích thước của tập hợp $C(p_i)$ không thể vượt quá $7$, theo yêu cầu.
 
-## Implementation
+## Triển khai
 
-We introduce a data structure to store a point (its coordinates and a number) and comparison operators required for two types of sorting:
+Chúng ta giới thiệu một cấu trúc dữ liệu để lưu trữ một điểm (tọa độ của nó và một số) và các toán tử so sánh cần thiết cho hai loại sắp xếp:
 
 ```{.cpp file=nearest_pair_def}
 struct pt {
@@ -86,23 +89,23 @@ struct cmp_x {
         return a.x < b.x || (a.x == b.x && a.y < b.y);
     }
 };
- 
+
 struct cmp_y {
     bool operator()(const pt & a, const pt & b) const {
         return a.y < b.y;
     }
 };
- 
+
 int n;
 vector<pt> a;
 ```
 
-For a convenient implementation of recursion, we introduce an auxiliary function upd_ans(), which will calculate the distance between two points and check whether it is better than the current answer:
+Để thuận tiện cho việc triển khai đệ quy, chúng ta giới thiệu một hàm phụ trợ upd_ans(), hàm này sẽ tính toán khoảng cách giữa hai điểm và kiểm tra xem nó có tốt hơn câu trả lời hiện tại hay không:
 
 ```{.cpp file=nearest_pair_update}
 double mindist;
 pair<int, int> best_pair;
- 
+
 void upd_ans(const pt & a, const pt & b) {
     double dist = sqrt((a.x - b.x)*(a.x - b.x) + (a.y - b.y)*(a.y - b.y));
     if (dist < mindist) {
@@ -112,11 +115,11 @@ void upd_ans(const pt & a, const pt & b) {
 }
 ```
 
-Finally, the implementation of the recursion itself. It is assumed that before calling it, the array $a[]$ is already sorted by $x$-coordinate. In recursion we pass just two pointers $l, r$, which indicate that it should look for the answer for $a[l \ldots r)$. If the distance between $r$ and $l$ is too small, the recursion must be stopped, and perform a trivial algorithm to find the nearest pair and then sort the subarray by $y$-coordinate.
+Cuối cùng, việc triển khai chính đệ quy. Giả sử rằng trước khi gọi nó, mảng $a[]$ đã được sắp xếp theo tọa độ $x$. Trong đệ quy, chúng ta chỉ truyền hai con trỏ $l, r$, cho biết rằng nó nên tìm câu trả lời cho $a[l \ldots r)$. Nếu khoảng cách giữa $r$ và $l$ quá nhỏ, đệ quy phải được dừng lại và thực hiện thuật toán tầm thường để tìm cặp gần nhất, sau đó sắp xếp mảng con theo tọa độ $y$.
 
-To merge two sets of points received from recursive calls into one (ordered by $y$-coordinate), we use the standard STL $merge()$ function, and create an auxiliary buffer $t[]$(one for all recursive calls). (Using inplace_merge () is impractical because it generally does not work in linear time.)
+Để hợp nhất hai tập hợp điểm nhận được từ các lệnh gọi đệ quy thành một (được sắp xếp theo tọa độ $y$), chúng ta sử dụng hàm $merge()$ tiêu chuẩn của STL và tạo bộ đệm phụ trợ $t[]$ (một cho tất cả các lệnh gọi đệ quy). (Sử dụng inplace_merge () là không thực tế vì nó thường không hoạt động trong thời gian tuyến tính.)
 
-Finally, the set $B$ is stored in the same array $t$.
+Cuối cùng, tập hợp $B$ được lưu trữ trong cùng một mảng $t$.
 
 ```{.cpp file=nearest_pair_rec}
 vector<pt> t;
@@ -151,9 +154,9 @@ void rec(int l, int r) {
 }
 ```
 
-By the way, if all the coordinates are integer, then at the time of the recursion you can not move to fractional values, and store in $mindist$ the square of the minimum distance.
+Nhân tiện, nếu tất cả các tọa độ là số nguyên, thì tại thời điểm đệ quy, bạn không thể chuyển sang giá trị phân số và lưu trữ trong $mindist$ bình phương của khoảng cách tối thiểu.
 
-In the main program, recursion should be called as follows:
+Trong chương trình chính, đệ quy nên được gọi như sau:
 
 ```{.cpp file=nearest_pair_main}
 t.resize(n);
@@ -162,17 +165,21 @@ mindist = 1E20;
 rec(0, n);
 ```
 
-## Generalization: finding a triangle with minimal perimeter
+## Khái quát hóa: tìm tam giác có chu vi nhỏ nhất
 
-The algorithm described above is interestingly generalized to this problem: among a given set of points, choose three different points so that the sum of pairwise distances between them is the smallest.
+Thuật toán được mô tả ở trên được khái quát một cách thú vị cho bài toán này: trong một tập hợp điểm nhất định, hãy chọn ba điểm khác nhau sao cho tổng khoảng cách theo cặp giữa chúng là nhỏ nhất.
 
-In fact, to solve this problem, the algorithm remains the same: we divide the field into two halves of the vertical line, call the solution recursively on both halves, choose the minimum $minper$ from the found perimeters, build a strip with the thickness of $minper / 2$, and iterate through all triangles that can improve the answer. (Note that the triangle with perimeter $\le minper$ has the longest side $\le minper / 2$.)
+Trên thực tế, để giải quyết bài toán này, thuật toán vẫn giữ nguyên: chúng ta chia trường thành hai nửa của đường thẳng đứng, gọi giải pháp đệ quy trên cả hai nửa, chọn $minper$ tối thiểu từ chu vi đã tìm, xây dựng một dải có độ dày là $minper / 2$ và lặp lại tất cả các tam giác có thể cải thiện câu trả lời. (Lưu ý rằng tam giác có chu vi $\le minper$ có cạnh dài nhất $\le minper / 2$.)
 
-## Practice problems
+## Bài tập thực hành
 
-* [UVA 10245 "The Closest Pair Problem" [difficulty: low]](https://uva.onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=1186)
-* [SPOJ #8725 CLOPPAIR "Closest Point Pair" [difficulty: low]](https://www.spoj.com/problems/CLOPPAIR/)
-* [CODEFORCES Team Olympiad Saratov - 2011 "Minimum amount" [difficulty: medium]](http://codeforces.com/contest/120/problem/J)
-* [Google CodeJam 2009 Final " Min Perimeter "[difficulty: medium]](https://code.google.com/codejam/contest/311101/dashboard#s=a&a=1)
-* [SPOJ #7029 CLOSEST "Closest Triple" [difficulty: medium]](https://www.spoj.com/problems/CLOSEST/)
-* [TIMUS 1514 National Park [difficulty: medium]](https://acm.timus.ru/problem.aspx?space=1&num=1514)
+* [UVA 10245 "The Closest Pair Problem" [độ khó: thấp]](https://uva.onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=1186)
+* [SPOJ #8725 CLOPPAIR "Closest Point Pair" [độ khó: thấp]](https://www.spoj.com/problems/CLOPPAIR/)
+* [CODEFORCES Team Olympiad Saratov - 2011 "Số tiền tối thiểu" [độ khó: trung bình]](http://codeforces.com/contest/120/problem/J)
+* [Google CodeJam 2009 Final " Min Perimeter "[độ khó: trung bình]](https://code.google.com/codejam/contest/311101/dashboard#s=a&a=1)
+* [SPOJ #7029 CLOSEST "Closest Triple" [độ khó: trung bình]](https://www.spoj.com/problems/CLOSEST/)
+* [TIMUS 1514 Công viên quốc gia [độ khó: trung bình]](https://acm.timus.ru/problem.aspx?space=1&num=1514)
+
+--- 
+
+
