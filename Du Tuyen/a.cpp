@@ -23,6 +23,7 @@ void dfs(int u, int p, int val) {
         if(v == p) continue;
         
         par[v][0] = u;
+        h[v] = h[u] + 1;
         dfs(v, u, w);
     }
 
@@ -38,7 +39,7 @@ int lca(int u, int v) {
 
         for(int i = __lg(k); i >= 0; i--) 
             if(k >> i & 1)
-                h[u] = par[u][i];
+                u = par[u][i];
     }
 
     if(u == v) 
@@ -107,7 +108,7 @@ int32_t main() {
             w = b;
         }
         else {
-            int p = lca(a, b);
+            int p = lca(a, b); printf("check lca: %d \n", p);
             cout << get(1, 1, m, in[p], in[a]) + get(1, 1, m, in[p], in[b]) - f[p] << '\n';
         }
     }
