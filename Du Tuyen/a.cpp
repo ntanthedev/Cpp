@@ -1,84 +1,114 @@
-//created in 2024-08-31-19.32.28 in Code::Blocks 20.03
-#include<bits/stdc++.h>
+//problem "a"
+//created in 23:36:01 - Sat 31/08/2024
 
-#define int int64_t
+#include<bits/stdc++.h>
 
 using namespace std;
 
-const int N = 3e5 + 5;
+const int N = 2e5 + 5;
+typedef pair<int, long long> ii;
 typedef long long ll;
 
 int n, q, m = 0;
-ll w[N], in[N], out[N], h[N];
-ll tree[4 * N];
-vector<int> adj[N];
+int in[N], out[N], par[N][18], h[N];
+ll f[N], tree[4 * N];
+vector<ii> adj[N];
+tuple<int, int, int> edge[N];
 
-void dfs(int u, int p) {
+void dfs(int u, int p, int val) {
     in[u] = ++m;
-    h[m] = w[u];
+    f[m] = val;
 
-    for(int v : adj[u]) {
+    for(auto [v, w] : adj[u]) {
         if(v == p) continue;
-
-        dfs(v, u);
+        
+        par[v][0] = u;
+        dfs(v, u, w);
     }
 
     out[u] = ++m;
-    h[m] = -w[u];
+    f[m] = -val;
 }
 
-void update(int u, int v, int id = 1, int l = 1, int r = m) {
-    if(l > u || r < u)
+int lca(int u, int v) {
+    if(h[u] != h[v]) {
+        if(h[u] < h[v]) swap(u, v);
+
+        int k = h[u] - h[v];
+
+        for(int i = __lg(k); i >= 0; i--) 
+            if(k >> i & 1)
+                h[u] = par[u][i];
+    }
+
+    if(u == v) 
+        return u;
+
+    for(int i = __lg(h[u]); i >= 0; i--) 
+        if(par[u][i] != par[v][i]) 
+            u = par[u][i], v = par[v][i];
+    
+    return par[u][0];
+}
+
+void update(int id, int l, int r, int u, int w) {
+    if(l > u || r < u) 
         return;
-    if(l == r)
-        return tree[id] = v, void();
+    if(l == r) 
+        return tree[id] = w, void();
     int mid = (l + r) / 2;
-    update(u, v, id * 2, l, mid);
-    update(u, v, id * 2 + 1, mid + 1, r);
+    update(id * 2, l, mid, u, w);
+    update(id * 2 + 1, mid + 1, r, u, w);
     tree[id] = tree[id * 2] + tree[id * 2 + 1];
 }
 
-ll get(int u, int v, int id = 1, int l = 1, int r = m) {
-    if(l > v || r < u)
+ll get(int id, int l, int r, int u, int v) {
+    if(l > v || r < u) 
         return 0LL;
-    if(u <= l && r <= v)
+    if(u <= l && r <= v) 
         return tree[id];
     int mid = (l + r) / 2;
-    return get(u, v, id * 2, l, mid) + get(u, v, id * 2 + 1, mid + 1, r);
+    return get(id * 2, l, mid, u, v) + get(id * 2 + 1, mid + 1, r, u, v);
 }
 
-signed main() {
+int32_t main() {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
-
-    cin >> n >> q;
-
-    for(int i = 1; i <= n; i++)
-        cin >> w[i];
-
+    
+    cin >> n;
     for(int i = 1; i < n; i++) {
-        int a, b;
-        cin >> a >> b;
-        adj[a].push_back(b);
-        adj[b].push_back(a);
+        int u, v, w;
+        cin >> u >> v >> w;
+        adj[u].push_back({v, w});
+        adj[v].push_back({u, w});
+        edge[i] = {u, v, w};
     }
 
-    dfs(1, 0);
+    dfs(1, 0, 0);
 
-    for(int i = 1; i <= m; i++)
-        update(i, h[i]);
+    for(int i = 1; i <= 17; i++) 
+        for(int u = 1; u <= n; u++) 
+            par[u][i] = par[par[u][i - 1]][i - 1];
+        
+    for(int i = 1; i <= m; i++) 
+        update(1, 1, m, i, f[i]);
 
+    cin >> q;
     while(q--) {
-        int c, s, x;
-        cin >> c >> s;
+        int c, a, b;
+        cin >> c >> a >> b;
         if(c & 1) {
-            cin >> x;
-            update(in[s], x);
-            update(out[s], -x);
-            h[in[s]] = x;
-            h[out[s]] = -x;
+            auto &[u, v, w] = edge[a - 1];
+            if(in[u] > in[v])
+                swap(u, v);
+            update(1, 1, m, in[v], b);
+            update(1, 1, m, out[v], -b);
+            f[in[v]] = b;
+            f[out[v]] = -b;
+            w = b;
         }
         else {
-            cout << get(in[1], in[s]) << '\n';
+            int p = lca(a, b);
+            cout << get(1, 1, m, in[p], in[a]) + get(1, 1, m, in[p], in[b]) - f[p] << '\n';
         }
     }
 }
