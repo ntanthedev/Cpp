@@ -19,18 +19,18 @@ void update(int id, int l, int r, int u, int w) {
     int mid = (l + r) / 2;
     update(id * 2, l, mid, u, w);
     update(id * 2 + 1, mid + 1, r, u, w);
-    tree[id] = tree[id * 2] + tree[id * 2 + 1];    
+    tree[id] = min(tree[id * 2], tree[id * 2 + 1]);    
 }
 
 int get(int id, int l, int r, int u, int v) {
     if(l > v || r < u) 
-        return 0;
+        return LLONG_MAX;
     
     if(u <= l && r <= v) 
         return tree[id];
 
     int mid = (l + r) / 2;
-    return get(id * 2, l, mid, u, v) + get(id * 2 + 1, mid + 1, r, u, v);
+    return min(get(id * 2, l, mid, u, v), get(id * 2 + 1, mid + 1, r, u, v));
 }
 
 signed main() {
