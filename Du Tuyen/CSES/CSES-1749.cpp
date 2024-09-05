@@ -25,7 +25,7 @@ void update(int id, int l, int r, int u, int w) {
 }
 
 int get(int id, int l, int r, int u, int v) {
-    if(l > u || r < v)
+    if(l > v || r < u)
         return 0; 
 
     if(l == r) 
