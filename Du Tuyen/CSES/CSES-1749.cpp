@@ -2,9 +2,8 @@
 //created in 23:03:05 - Wed 04/09/2024
 
 #include<bits/stdc++.h>
-
-#define int int64_t
-
+#pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+#pragma GCC target("sse4,avx2,fma")
 using namespace std;
 
 const int N = 2e5 + 5;
@@ -42,9 +41,9 @@ int32_t main() {
     cin >> n;
     for(int i = 1; i <= n; i++) {
         cin >> a[i];
-        update(1, 1, n, a[i], 1);
+        update(1, 1, n, i, 1);
     }
-
+    //cout << get(1, 1, n, 1, n) << " ";
     for(int i = 1; i <= n; i++) {
         int x;
         cin >> x;
@@ -56,7 +55,7 @@ int32_t main() {
             else 
                 l = mid + 1;
         }
-        cout << ans << " ";
+        cout << a[ans] << " ";
         update(1, 1, n, ans, 0);
     }
 }
