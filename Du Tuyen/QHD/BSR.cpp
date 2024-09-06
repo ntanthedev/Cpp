@@ -11,6 +11,10 @@ using namespace std;
 int m, n;
 int a[N][N], f[N][N], d[N][N][9];
 
+int sum(int x1, int y1, int x2, int y2) {
+    return f[x2][y2] - f[x1 - 1][y2] - f[x2][y1 - 1] + f[x1 - 1][y1 - 1];
+}
+
 int32_t main() {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
     
