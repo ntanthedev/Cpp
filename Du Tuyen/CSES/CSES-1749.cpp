@@ -6,9 +6,38 @@
 #pragma GCC target("sse4,avx2,fma")
 using namespace std;
 
+template<typename T> inline void read(T& x) {
+    bool b = 0;
+    char c;
+    while(!isdigit(c = getchar()) && c != '-')
+        ;
+    if(c == '-') {
+        c = getchar();
+        b = 1;
+    }
+    x = c - 48;
+    while(isdigit(c = getchar())) {
+        x = (x << 3) + (x << 1) + (c - 48);
+    }
+    if(b) {
+        x = -x;
+    }
+}
+
 const int N = 2e5 + 5;
 
 int n, tree[N * 4], a[N];
+
+void build(int id, int l, int r) {
+    if(l == r) 
+        tree[id] = 1;
+    else {
+        int mid = (l + r) / 2;
+        build(id * 2, l, mid);
+        build(id * 2 + 1, mid + 1, r);
+        tree[id] = tree[id * 2] + tree[id * 2 + 1];
+    }
+}
 
 void update(int id, int l, int r, int u, int w) {
     if(l > u || r < u) 
@@ -38,16 +67,18 @@ int get(int id, int l, int r, int u, int v) {
 int32_t main() {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
     
-    cin >> n;
+    read(n);
     for(int i = 1; i <= n; i++) {
-        cin >> a[i];
-        update(1, 1, n, i, 1);
+        read(a[i]);
     }
+
+    build(1, 1, n);
+
     //cout << get(1, 1, n, 1, n) << " ";
     for(int i = 1; i <= n; i++) {
         int x;
-        cin >> x;
-        int l = 0, r = n + 1, ans = 0;
+        read(x);
+        int l = 1, r = n, ans = 0;
         while(l <= r) {
             int mid = (l + r) / 2;
             if(get(1, 1, n, 1, mid) >= x) // code have bugs
