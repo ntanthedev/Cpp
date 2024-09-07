@@ -75,7 +75,7 @@ pt query(int u, int v, int id = 1, int l = 1, int r = n) {
     return combine(query(u, v, id * 2, l, mid), query(u, v, id * 2 + 1, mid + 1, r));
 }
 
-int32_t main() {
+int main() {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
     
     #define task "a"

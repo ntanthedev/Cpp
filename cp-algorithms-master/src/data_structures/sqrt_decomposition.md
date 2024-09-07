@@ -1,26 +1,26 @@
---- START OF FILE sqrt_decomposition.md ---
+# Chia căn (Sqrt Decomposition)
 
 ---
 tags:
-  - Đã dịch
+  - Dịch
 e_maxx_link: sqrt_decomposition
 ---
 
-# Phân rã Sqrt
+# Chia căn (Sqrt Decomposition)
 
-Phân rã Sqrt là một phương pháp (hoặc một cấu trúc dữ liệu) cho phép bạn thực hiện một số thao tác phổ biến (tìm tổng các phần tử của mảng con, tìm phần tử nhỏ nhất/lớn nhất, v.v.) trong $O(\sqrt n)$ thao tác, nhanh hơn nhiều so với $O(n)$ của thuật toán đơn giản.
+Chia căn (Sqrt Decomposition) là một phương pháp (hoặc một cấu trúc dữ liệu) cho phép bạn thực hiện một số thao tác phổ biến (tìm tổng các phần tử của mảng con, tìm phần tử nhỏ nhất/lớn nhất, v.v.) trong $O(\sqrt{n})$ thao tác, nhanh hơn nhiều so với $O(n)$ cho thuật toán đơn giản.
 
-Đầu tiên, chúng ta sẽ mô tả cấu trúc dữ liệu cho một trong những ứng dụng đơn giản nhất của ý tưởng này, sau đó chỉ ra cách tổng quát hóa nó để giải quyết một số vấn đề khác và cuối cùng xem xét cách sử dụng ý tưởng này hơi khác một chút: chia các yêu cầu đầu vào thành các khối sqrt.
+Đầu tiên, chúng ta mô tả cấu trúc dữ liệu cho một trong những ứng dụng đơn giản nhất của ý tưởng này, sau đó chỉ ra cách khái quát hóa nó để giải quyết một số bài toán khác và cuối cùng xem xét một cách sử dụng ý tưởng này hơi khác một chút: chia các yêu cầu đầu vào thành các khối căn bậc hai.
 
-## Cấu trúc dữ liệu dựa trên phân rã sqrt
+## Cấu trúc dữ liệu dựa trên chia căn
 
-Cho một mảng $a[0 \dots n-1]$, hãy triển khai một cấu trúc dữ liệu cho phép tìm tổng các phần tử $a[l \dots r]$ cho $l$ và $r$ tùy ý trong $O(\sqrt n)$ thao tác.
+Cho một mảng $a[0 \dots n-1]$, hãy triển khai một cấu trúc dữ liệu cho phép tìm tổng các phần tử $a[l \dots r]$ cho $l$ và $r$ tùy ý trong $O(\sqrt{n})$ thao tác.
 
 ### Mô tả
 
-Ý tưởng cơ bản của phân rã sqrt là tiền xử lý. Chúng ta sẽ chia mảng $a$ thành các khối có độ dài xấp xỉ $\sqrt n$, và đối với mỗi khối $i$, chúng ta sẽ tính toán trước tổng các phần tử trong đó là $b[i]$.
+Ý tưởng cơ bản của chia căn là tiền xử lý. Chúng ta sẽ chia mảng $a$ thành các khối có độ dài xấp xỉ $\sqrt{n}$, và đối với mỗi khối $i$, chúng ta sẽ tính toán trước tổng các phần tử trong đó $b[i]$.
 
-Chúng ta có thể giả sử rằng cả kích thước của khối và số lượng khối đều bằng $\sqrt n$ làm tròn lên:
+Chúng ta có thể giả sử rằng cả kích thước khối và số khối đều bằng $\sqrt{n}$ được làm tròn lên:
 
 $$ s = \lceil \sqrt n \rceil $$
 
@@ -28,26 +28,26 @@ Sau đó, mảng $a$ được chia thành các khối theo cách sau:
 
 $$ \underbrace{a[0], a[1], \dots, a[s-1]}_{\text{b[0]}}, \underbrace{a[s], \dots, a[2s-1]}_{\text{b[1]}}, \dots, \underbrace{a[(s-1) \cdot s], \dots, a[n-1]}_{\text{b[s-1]}} $$
 
-Khối cuối cùng có thể có ít phần tử hơn các khối khác (nếu $n$ không phải là bội số của $s$), điều này không quan trọng trong cuộc thảo luận (vì nó có thể được xử lý dễ dàng).
-Do đó, đối với mỗi khối $k$, chúng ta biết tổng các phần tử trên đó là $b[k]$:
+Khối cuối cùng có thể có ít phần tử hơn các khối khác (nếu $n$ không phải là bội số của $s$), điều này không quan trọng đối với cuộc thảo luận (vì nó có thể được xử lý dễ dàng).
+Do đó, đối với mỗi khối $k$, chúng ta biết tổng các phần tử trên đó $b[k]$:
 
 $$ b[k] = \sum\limits_{i=k\cdot s}^{\min {(n-1,(k+1)\cdot s - 1})} a[i] $$
 
-Vì vậy, chúng ta đã tính toán các giá trị của $b[k]$ (điều này yêu cầu $O(n)$ thao tác). Làm thế nào chúng có thể giúp chúng ta trả lời mỗi truy vấn $[l, r]$?
-Lưu ý rằng nếu khoảng $[l, r]$ đủ dài, nó sẽ chứa một số khối nguyên, và đối với những khối đó, chúng ta có thể tìm tổng các phần tử trong chúng trong một thao tác duy nhất. Do đó, khoảng $[l, r]$ sẽ chỉ chứa các phần của hai khối và chúng ta sẽ phải tính toán tổng các phần tử trong các phần này một cách đơn giản.
+Vì vậy, chúng ta đã tính toán các giá trị của $b[k]$ (điều này yêu cầu $O(n)$ thao tác). Làm thế nào chúng có thể giúp chúng ta trả lời từng truy vấn $[l, r]$?
+Lưu ý rằng nếu khoảng $[l, r]$ đủ dài, nó sẽ chứa một số khối nguyên và đối với những khối đó, chúng ta có thể tìm tổng các phần tử trong chúng trong một thao tác duy nhất. Kết quả là, khoảng $[l, r]$ sẽ chỉ chứa các phần của hai khối và chúng ta sẽ phải tính toán tổng các phần tử trong các phần này một cách tầm thường.
 
-Như vậy, để tính tổng các phần tử trên khoảng $[l, r]$, chúng ta chỉ cần cộng các phần tử của hai "đuôi":
+Do đó, để tính tổng các phần tử trên khoảng $[l, r]$, chúng ta chỉ cần cộng các phần tử của hai "đuôi":
 $[l\dots (k + 1)\cdot s-1]$ và $[p\cdot s\dots r]$, và cộng các giá trị $b[i]$ trong tất cả các khối từ $k + 1$ đến $p-1$:
 
 $$ \sum\limits_{i=l}^r a[i] = \sum\limits_{i=l}^{(k+1) \cdot s-1} a[i] + \sum\limits_{i=k+1}^{p-1} b[i] + \sum\limits_{i=p\cdot s}^r a[i] $$
 
-_Lưu ý: Khi $k = p$, tức là $l$ và $r$ thuộc cùng một khối, công thức không thể áp dụng và tổng phải được tính toán theo cách đơn giản._
+_Lưu ý: Khi $k = p$, tức là $l$ và $r$ thuộc cùng một khối, công thức không thể được áp dụng và tổng phải được tính một cách tầm thường._
 
-Cách tiếp cận này cho phép chúng ta giảm đáng kể số lượng thao tác. Thật vậy, kích thước của mỗi "đuôi" không vượt quá độ dài khối $s$ và số lượng khối trong tổng không vượt quá $s$. Vì chúng ta đã chọn $s \approx \sqrt n$, tổng số thao tác cần thiết để tìm tổng các phần tử trên khoảng $[l, r]$ là $O(\sqrt n)$.
+Cách tiếp cận này cho phép chúng ta giảm đáng kể số lượng thao tác. Thật vậy, kích thước của mỗi "đuôi" không vượt quá độ dài khối $s$ và số khối trong tổng không vượt quá $s$. Vì chúng ta đã chọn $s \approx \sqrt{n}$, nên tổng số thao tác cần thiết để tìm tổng các phần tử trên khoảng $[l, r]$ là $O(\sqrt{n})$.
 
 ### Triển khai
 
-Hãy bắt đầu với việc triển khai đơn giản nhất:
+Hãy bắt đầu với cách triển khai đơn giản nhất:
 
 ```cpp
 // dữ liệu đầu vào
@@ -55,7 +55,7 @@ int n;
 vector<int> a (n);
 
 // tiền xử lý
-int len = (int) sqrt (n + .0) + 1; // kích thước của khối và số lượng khối
+int len = (int) sqrt (n + .0) + 1; // kích thước của khối và số khối
 vector<int> b (len);
 for (int i=0; i<n; ++i)
     b[i / len] += a[i];
@@ -67,7 +67,7 @@ for (;;) {
     int sum = 0;
     for (int i=l; i<=r; )
         if (i % len == 0 && i + len - 1 <= r) {
-            // nếu toàn bộ khối bắt đầu từ i thuộc [l, r]
+            // nếu toàn bộ khối bắt đầu từ i thuộc về [l, r]
             sum += b[i / len];
             i += len;
         }
@@ -78,7 +78,7 @@ for (;;) {
 }
 ```
 
-Triển khai này có quá nhiều phép chia (chậm hơn nhiều so với các phép toán số học khác). Thay vào đó, chúng ta có thể tính toán các chỉ số của các khối $c_l$ và $c_r$ chứa các chỉ số $l$ và $r$, và lặp qua các khối $c_l+1 \dots c_r-1$ với xử lý riêng biệt các "đuôi" trong các khối $c_l$ và $c_r$. Cách tiếp cận này tương ứng với công thức cuối cùng trong phần mô tả và làm cho trường hợp $c_l = c_r$ trở thành một trường hợp đặc biệt.
+Cách triển khai này có quá nhiều phép toán chia (chậm hơn nhiều so với các phép toán số học khác). Thay vào đó, chúng ta có thể tính toán các chỉ số của các khối $c_l$ và $c_r$ chứa các chỉ số $l$ và $r$ và lặp qua các khối $c_l+1 \dots c_r-1$ với xử lý riêng biệt các "đuôi" trong các khối $c_l$ và $c_r$. Cách tiếp cận này tương ứng với công thức cuối cùng trong phần mô tả và làm cho trường hợp $c_l = c_r$ trở thành một trường hợp đặc biệt.
 
 ```cpp
 int sum = 0;
@@ -98,52 +98,52 @@ else {
 
 ## Các bài toán khác
 
-Cho đến nay, chúng ta đã thảo luận về bài toán tìm tổng các phần tử của một mảng con liên tục. Bài toán này có thể được mở rộng để cho phép **cập nhật các phần tử mảng riêng lẻ**. Nếu một phần tử $a[i]$ thay đổi, chỉ cần cập nhật giá trị của $b[k]$ cho khối mà phần tử này thuộc về ($k = i / s$) trong một thao tác:
+Cho đến nay, chúng ta đã thảo luận về bài toán tìm tổng các phần tử của một mảng con liên tục. Bài toán này có thể được mở rộng để cho phép **cập nhật các phần tử mảng riêng lẻ**. Nếu một phần tử $a[i]$ thay đổi, thì chỉ cần cập nhật giá trị của $b[k]$ cho khối mà phần tử này thuộc về ($k = i / s$) trong một thao tác:
 
 $$ b[k] += a_{new}[i] - a_{old}[i] $$
 
-Mặt khác, nhiệm vụ tìm tổng các phần tử có thể được thay thế bằng nhiệm vụ tìm phần tử nhỏ nhất/lớn nhất của một mảng con. Nếu bài toán này cũng phải giải quyết việc cập nhật các phần tử riêng lẻ, việc cập nhật giá trị của $b[k]$ cũng có thể thực hiện được, nhưng nó sẽ yêu cầu lặp qua tất cả các giá trị của khối $k$ trong $O(s) = O(\sqrt{n})$ thao tác.
+Mặt khác, nhiệm vụ tìm tổng các phần tử có thể được thay thế bằng nhiệm vụ tìm phần tử nhỏ nhất/lớn nhất của mảng con. Nếu bài toán này cũng phải giải quyết các cập nhật của các phần tử riêng lẻ, thì việc cập nhật giá trị của $b[k]$ cũng có thể thực hiện được, nhưng nó sẽ yêu cầu lặp lại tất cả các giá trị của khối $k$ trong $O(s) = O(\sqrt{n})$ thao tác.
 
-Phân rã Sqrt có thể được áp dụng theo cách tương tự cho cả một lớp các bài toán khác: tìm số lượng phần tử bằng 0, tìm phần tử khác 0 đầu tiên, đếm các phần tử thỏa mãn một thuộc tính nhất định, v.v.
+Chia căn có thể được áp dụng theo cách tương tự cho cả một lớp các bài toán khác: tìm số lượng phần tử bằng không, tìm phần tử khác không đầu tiên, đếm các phần tử thỏa mãn một thuộc tính nhất định, v.v.
 
-Một lớp bài toán khác xuất hiện khi chúng ta cần **cập nhật các phần tử mảng trên khoảng**: tăng các phần tử hiện có hoặc thay thế chúng bằng một giá trị nhất định.
+Một lớp bài toán khác xuất hiện khi chúng ta cần **cập nhật các phần tử mảng trên các khoảng**: tăng các phần tử hiện có hoặc thay thế chúng bằng một giá trị nhất định.
 
-Ví dụ: giả sử chúng ta có thể thực hiện hai loại thao tác trên một mảng: thêm một giá trị $\delta$ nhất định vào tất cả các phần tử mảng trên khoảng $[l, r]$ hoặc truy vấn giá trị của phần tử $a[i]$. Hãy lưu trữ giá trị phải được thêm vào tất cả các phần tử của khối $k$ trong $b[k]$ (ban đầu tất cả $b[k] = 0$). Trong mỗi thao tác "thêm", chúng ta cần thêm $\delta$ vào $b[k]$ cho tất cả các khối thuộc khoảng $[l, r]$ và thêm $\delta$ vào $a[i]$ cho tất cả các phần tử thuộc "đuôi" của khoảng. Câu trả lời cho truy vấn $i$ đơn giản là $a[i] + b[i/s]$. Bằng cách này, thao tác "thêm" có độ phức tạp $O(\sqrt{n})$ và trả lời một truy vấn có độ phức tạp $O(1)$.
+Ví dụ: giả sử chúng ta có thể thực hiện hai loại thao tác trên một mảng: thêm một giá trị nhất định $\delta$ vào tất cả các phần tử mảng trên khoảng $[l, r]$ hoặc truy vấn giá trị của phần tử $a[i]$. Hãy lưu trữ giá trị phải được thêm vào tất cả các phần tử của khối $k$ trong $b[k]$ (ban đầu tất cả $b[k] = 0$). Trong mỗi thao tác "thêm", chúng ta cần thêm $\delta$ vào $b[k]$ cho tất cả các khối thuộc khoảng $[l, r]$ và thêm $\delta$ vào $a[i]$ cho tất cả các phần tử thuộc "đuôi" của khoảng. Câu trả lời cho truy vấn $i$ chỉ đơn giản là $a[i] + b[i/s]$. Bằng cách này, thao tác "thêm" có độ phức tạp $O(\sqrt{n})$ và việc trả lời truy vấn có độ phức tạp $O(1)$.
 
-Cuối cùng, hai lớp bài toán đó có thể được kết hợp nếu nhiệm vụ yêu cầu thực hiện **cả** cập nhật phần tử trên khoảng và truy vấn trên khoảng. Cả hai thao tác đều có thể được thực hiện với độ phức tạp $O(\sqrt{n})$. Điều này sẽ yêu cầu hai mảng khối $b$ và $c$: một để theo dõi các cập nhật phần tử và một để theo dõi các câu trả lời cho truy vấn.
+Cuối cùng, hai lớp bài toán đó có thể được kết hợp nếu nhiệm vụ yêu cầu thực hiện **cả** cập nhật phần tử trên một khoảng và truy vấn trên một khoảng. Cả hai thao tác đều có thể được thực hiện với độ phức tạp $O(\sqrt{n})$. Điều này sẽ yêu cầu hai mảng khối $b$ và $c$: một để theo dõi các cập nhật phần tử và một để theo dõi câu trả lời cho truy vấn.
 
-Có những bài toán khác có thể được giải quyết bằng cách sử dụng phân rã sqrt, ví dụ, bài toán về việc duy trì một tập hợp các số cho phép thêm/xóa số, kiểm tra xem một số có thuộc tập hợp hay không và tìm số lớn thứ $k$. Để giải quyết nó, người ta phải lưu trữ các số theo thứ tự tăng dần, chia thành nhiều khối với $\sqrt{n}$ số trong mỗi khối. Mỗi khi một số được thêm/xóa, các khối phải được cân bằng lại bằng cách di chuyển các số giữa đầu và cuối của các khối liền kề.
+Có những bài toán khác có thể được giải quyết bằng cách sử dụng chia căn, ví dụ, một bài toán về việc duy trì một tập hợp các số cho phép thêm/xóa số, kiểm tra xem một số có thuộc tập hợp hay không và tìm số lớn thứ $k$. Để giải quyết nó, người ta phải lưu trữ các số theo thứ tự tăng dần, chia thành một số khối với $\sqrt{n}$ số trong mỗi khối. Mỗi khi một số được thêm/xóa, các khối phải được cân bằng lại bằng cách di chuyển các số giữa đầu và cuối của các khối liền kề.
 
-## Thuật toán Mo's
+## Thuật toán Mo
 
-Một ý tưởng tương tự, dựa trên phân rã sqrt, có thể được sử dụng để trả lời các truy vấn trên đoạn ($Q$) ngoại tuyến trong $O((N+Q)\sqrt{N})$.
-Điều này nghe có vẻ tệ hơn nhiều so với các phương pháp trong phần trước, vì đây là độ phức tạp tệ hơn một chút so với trước đó và không thể cập nhật các giá trị giữa hai truy vấn.
+Một ý tưởng tương tự, dựa trên chia căn, có thể được sử dụng để trả lời các truy vấn phạm vi ($Q$) ngoại tuyến (offline) trong $O((N+Q)\sqrt{N})$.
+Điều này nghe có vẻ tệ hơn nhiều so với các phương pháp trong phần trước, vì đây là độ phức tạp hơi kém hơn so với trước đây và không thể cập nhật giá trị giữa hai truy vấn.
 Nhưng trong rất nhiều trường hợp, phương pháp này có những ưu điểm.
-Trong phân rã sqrt thông thường, chúng ta phải tính toán trước các câu trả lời cho mỗi khối và hợp nhất chúng trong khi trả lời các truy vấn.
+Trong chia căn thông thường, chúng ta phải tính toán trước các câu trả lời cho mỗi khối và hợp nhất chúng trong khi trả lời các truy vấn.
 Trong một số bài toán, bước hợp nhất này có thể khá khó khăn.
-Ví dụ: khi mỗi truy vấn yêu cầu tìm **yếu vị** của đoạn của nó (số xuất hiện thường xuyên nhất).
-Đối với điều này, mỗi khối sẽ phải lưu trữ số lượng mỗi số trong đó trong một số loại cấu trúc dữ liệu và chúng ta không còn thể thực hiện bước hợp nhất đủ nhanh nữa.
-**Thuật toán Mo's** sử dụng một cách tiếp cận hoàn toàn khác, có thể trả lời các loại truy vấn này một cách nhanh chóng, vì nó chỉ theo dõi một cấu trúc dữ liệu và các thao tác duy nhất với nó là dễ dàng và nhanh chóng.
+Ví dụ: khi mỗi truy vấn yêu cầu tìm **yếu vị** (mode) của phạm vi của nó (số xuất hiện thường xuyên nhất).
+Đối với điều này, mỗi khối sẽ phải lưu trữ số lượng của mỗi số trong đó trong một số loại cấu trúc dữ liệu và chúng ta không còn có thể thực hiện bước hợp nhất đủ nhanh nữa.
+**Thuật toán Mo** sử dụng một cách tiếp cận hoàn toàn khác, có thể trả lời các loại truy vấn này một cách nhanh chóng, bởi vì nó chỉ theo dõi một cấu trúc dữ liệu và các thao tác duy nhất với nó rất dễ dàng và nhanh chóng.
 
 Ý tưởng là trả lời các truy vấn theo một thứ tự đặc biệt dựa trên các chỉ số.
-Chúng ta sẽ trả lời tất cả các truy vấn có chỉ số trái trong khối 0, sau đó trả lời tất cả các truy vấn có chỉ số trái trong khối 1, v.v.
-Và chúng ta cũng sẽ phải trả lời các truy vấn của một khối theo một thứ tự đặc biệt, cụ thể là được sắp xếp theo chỉ số phải của các truy vấn.
+Đầu tiên, chúng ta sẽ trả lời tất cả các truy vấn có chỉ số bên trái trong khối 0, sau đó trả lời tất cả các truy vấn có chỉ số bên trái trong khối 1, v.v.
+Và chúng ta cũng sẽ phải trả lời các truy vấn của một khối theo một thứ tự đặc biệt, cụ thể là được sắp xếp theo chỉ số bên phải của các truy vấn.
 
 Như đã nói, chúng ta sẽ sử dụng một cấu trúc dữ liệu duy nhất.
-Cấu trúc dữ liệu này sẽ lưu trữ thông tin về đoạn.
-Lúc đầu, đoạn này sẽ trống.
-Khi chúng ta muốn trả lời truy vấn tiếp theo (theo thứ tự đặc biệt), chúng ta chỉ cần mở rộng hoặc thu hẹp đoạn, bằng cách thêm/loại bỏ các phần tử ở cả hai phía của đoạn hiện tại, cho đến khi chúng ta biến đổi nó thành đoạn truy vấn.
-Bằng cách này, chúng ta chỉ cần thêm hoặc loại bỏ một phần tử duy nhất mỗi lần, đây phải là các thao tác khá dễ dàng trong cấu trúc dữ liệu của chúng ta.
+Cấu trúc dữ liệu này sẽ lưu trữ thông tin về phạm vi.
+Ban đầu phạm vi này sẽ trống.
+Khi chúng ta muốn trả lời truy vấn tiếp theo (theo thứ tự đặc biệt), chúng ta chỉ cần mở rộng hoặc thu hẹp phạm vi, bằng cách thêm/xóa các phần tử ở cả hai phía của phạm vi hiện tại, cho đến khi chúng ta biến đổi nó thành phạm vi truy vấn.
+Bằng cách này, chúng ta chỉ cần thêm hoặc xóa một phần tử duy nhất mỗi lần, đây là những thao tác khá dễ dàng trong cấu trúc dữ liệu của chúng ta.
 
 Vì chúng ta thay đổi thứ tự trả lời các truy vấn, điều này chỉ có thể thực hiện được khi chúng ta được phép trả lời các truy vấn ở chế độ ngoại tuyến.
 
 ### Triển khai
 
-Trong thuật toán Mo's, chúng ta sử dụng hai hàm để thêm một chỉ số và để loại bỏ một chỉ số khỏi đoạn mà chúng ta hiện đang duy trì.
+Trong thuật toán Mo, chúng ta sử dụng hai hàm để thêm chỉ mục và xóa chỉ mục khỏi phạm vi mà chúng ta hiện đang duy trì.
 
 ```cpp
-void remove(idx);  // TODO: loại bỏ giá trị tại idx khỏi cấu trúc dữ liệu
-void add(idx);     // TODO: thêm giá trị tại idx vào cấu trúc dữ liệu
+void remove(idx);  // TODO: xóa giá trị tại idx khỏi cấu trúc dữ liệu
+void add(idx);     // TODO: thêm giá trị tại idx khỏi cấu trúc dữ liệu
 int get_answer();  // TODO: trích xuất câu trả lời hiện tại của cấu trúc dữ liệu
 
 int block_size;
@@ -165,7 +165,7 @@ vector<int> mo_s_algorithm(vector<Query> queries) {
 
     int cur_l = 0;
     int cur_r = -1;
-    // bất biến: cấu trúc dữ liệu sẽ luôn phản ánh đoạn [cur_l, cur_r]
+    // bất biến: cấu trúc dữ liệu sẽ luôn phản ánh phạm vi [cur_l, cur_r]
     for (Query q : queries) {
         while (cur_l > q.l) {
             cur_l--;
@@ -190,13 +190,13 @@ vector<int> mo_s_algorithm(vector<Query> queries) {
 ```
 
 Dựa trên bài toán, chúng ta có thể sử dụng một cấu trúc dữ liệu khác nhau và sửa đổi các hàm `add`/`remove`/`get_answer` cho phù hợp.
-Ví dụ: nếu chúng ta được yêu cầu tìm các truy vấn tổng đoạn, thì chúng ta sử dụng một số nguyên đơn giản làm cấu trúc dữ liệu, là $0$ lúc ban đầu.
+Ví dụ: nếu chúng ta được yêu cầu tìm các truy vấn tổng phạm vi, thì chúng ta sử dụng một số nguyên đơn giản làm cấu trúc dữ liệu, là $0$ lúc đầu.
 Hàm `add` sẽ chỉ đơn giản là thêm giá trị của vị trí và sau đó cập nhật biến câu trả lời.
 Mặt khác, hàm `remove` sẽ trừ giá trị tại vị trí và sau đó cập nhật biến câu trả lời.
 Và `get_answer` chỉ trả về số nguyên.
 
-Để trả lời các truy vấn yếu vị, chúng ta có thể sử dụng cây tìm kiếm nhị phân (ví dụ: `map<int, int>`) để lưu trữ tần suất xuất hiện của mỗi số trong đoạn hiện tại và một cây tìm kiếm nhị phân thứ hai (ví dụ: `set<pair<int, int>>`) để giữ số lượng các số (ví dụ: dưới dạng các cặp số lượng-số) theo thứ tự.
-Phương thức `add` loại bỏ số hiện tại khỏi BST thứ hai, tăng số lượng trong BST đầu tiên và chèn số trở lại BST thứ hai.
+Để trả lời các truy vấn yếu vị, chúng ta có thể sử dụng cây tìm kiếm nhị phân (ví dụ: `map<int, int>`) để lưu trữ tần suất xuất hiện của mỗi số trong phạm vi hiện tại và cây tìm kiếm nhị phân thứ hai (ví dụ: `set<pair<int, int>>`) để giữ số lượng của các số (ví dụ: dưới dạng cặp số lượng-số) theo thứ tự.
+Phương thức `add` xóa số hiện tại khỏi BST thứ hai, tăng số lượng trong BST thứ nhất và chèn số trở lại BST thứ hai.
 `remove` làm điều tương tự, nó chỉ giảm số lượng.
 Và `get_answer` chỉ nhìn vào cây thứ hai và trả về giá trị tốt nhất trong $O(1)$.
 
@@ -204,17 +204,17 @@ Và `get_answer` chỉ nhìn vào cây thứ hai và trả về giá trị tốt
 
 Việc sắp xếp tất cả các truy vấn sẽ mất $O(Q \log Q)$.
 
-Còn các thao tác khác thì sao?
-`add` và `remove` sẽ được gọi bao nhiêu lần?
+Còn các hoạt động khác thì sao?
+Hàm `add` và `remove` sẽ được gọi bao nhiêu lần?
 
 Giả sử kích thước khối là $S$.
 
-Nếu chúng ta chỉ xem xét tất cả các truy vấn có chỉ số trái trong cùng một khối, các truy vấn được sắp xếp theo chỉ số phải.
-Do đó, chúng ta sẽ chỉ gọi `add(cur_r)` và `remove(cur_r)` $O(N)$ lần cho tất cả các truy vấn này kết hợp.
-Điều này cho $O(\frac{N}{S} N)$ lần gọi cho tất cả các khối.
+Nếu chúng ta chỉ xem xét tất cả các truy vấn có chỉ số bên trái trong cùng một khối, thì các truy vấn được sắp xếp theo chỉ số bên phải.
+Do đó, chúng ta sẽ chỉ gọi `add(cur_r)` và `remove(cur_r)` $O(N)$ lần cho tất cả các truy vấn này được kết hợp.
+Điều này cho $O(\frac{N}{S} N)$ lệnh gọi cho tất cả các khối.
 
-Giá trị của `cur_l` có thể thay đổi tối đa $O(S)$ giữa hai truy vấn.
-Do đó, chúng ta có thêm $O(S Q)$ lần gọi `add(cur_l)` và `remove(cur_l)`.
+Giá trị của `cur_l` có thể thay đổi nhiều nhất $O(S)$ giữa hai truy vấn.
+Do đó, chúng ta có thêm $O(S Q)$ lệnh gọi `add(cur_l)` và `remove(cur_l)`.
 
 Đối với $S \approx \sqrt{N}$, điều này cho tổng cộng $O((N + Q) \sqrt{N})$ thao tác.
 Do đó, độ phức tạp là $O((N+Q)F\sqrt{N})$ trong đó $O(F)$ là độ phức tạp của hàm `add` và `remove`.
@@ -222,8 +222,8 @@ Do đó, độ phức tạp là $O((N+Q)F\sqrt{N})$ trong đó $O(F)$ là độ 
 ### Mẹo để cải thiện thời gian chạy
 
 * Kích thước khối chính xác là $\sqrt{N}$ không phải lúc nào cũng mang lại thời gian chạy tốt nhất. Ví dụ: nếu $\sqrt{N}=750$ thì có thể xảy ra trường hợp kích thước khối là $700$ hoặc $800$ có thể chạy tốt hơn.
-Quan trọng hơn, đừng tính toán kích thước khối trong thời gian chạy - hãy biến nó thành `const`. Phép chia cho hằng số được các trình biên dịch tối ưu hóa tốt.
-* Trong các khối lẻ, hãy sắp xếp chỉ số phải theo thứ tự tăng dần và trong các khối chẵn, hãy sắp xếp nó theo thứ tự giảm dần. Điều này sẽ giảm thiểu việc di chuyển con trỏ phải, vì cách sắp xếp thông thường sẽ di chuyển con trỏ phải từ cuối trở lại đầu vào đầu mỗi khối. Với phiên bản cải tiến, việc đặt lại này không còn cần thiết nữa.
+Quan trọng hơn, đừng tính kích thước khối khi chạy - hãy làm cho nó `const`. Phép chia cho hằng số được tối ưu hóa tốt bởi trình biên dịch.
+* Trong các khối lẻ, hãy sắp xếp chỉ số bên phải theo thứ tự tăng dần và trong các khối chẵn, hãy sắp xếp nó theo thứ tự giảm dần. Điều này sẽ giảm thiểu sự di chuyển của con trỏ bên phải, vì sắp xếp thông thường sẽ di chuyển con trỏ bên phải từ cuối trở lại đầu ở đầu mỗi khối. Với phiên bản cải tiến, việc đặt lại này không còn cần thiết nữa.
 
 ```cpp
 bool cmp(pair<int, int> p, pair<int, int> q) {
@@ -233,7 +233,7 @@ bool cmp(pair<int, int> p, pair<int, int> q) {
 }
 ```
 
-Bạn có thể đọc về cách tiếp cận sắp xếp thậm chí nhanh hơn [ở đây](https://codeforces.com/blog/entry/61203).
+Bạn có thể đọc về cách tiếp cận sắp xếp thậm chí nhanh hơn [tại đây](https://codeforces.com/blog/entry/61203).
 
 ## Bài tập thực hành
 
@@ -248,5 +248,7 @@ Bạn có thể đọc về cách tiếp cận sắp xếp thậm chí nhanh hơ
 * [Codeforces - Powerful array](http://codeforces.com/problemset/problem/86/D)
 * [SPOJ - DQUERY](https://www.spoj.com/problems/DQUERY)
 
+
+---
 
 

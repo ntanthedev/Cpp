@@ -1,75 +1,77 @@
+# Thuật toán Floyd-Warshall
+
 ---
 tags:
-  - Translated
+  - Dịch
 e_maxx_link: floyd_warshall_algorithm
 ---
 
-# Floyd-Warshall Algorithm
+# Thuật toán Floyd-Warshall
 
-Given a directed or an undirected weighted graph $G$ with $n$ vertices.
-The task is to find the length of the shortest path $d_{ij}$ between each pair of vertices $i$ and $j$.
+Cho một đồ thị có trọng số có hướng hoặc vô hướng $G$ với $n$ đỉnh.
+Nhiệm vụ là tìm độ dài của đường đi ngắn nhất $d_{ij}$ giữa mỗi cặp đỉnh $i$ và $j$.
 
-The graph may have negative weight edges, but no negative weight cycles.
+Đồ thị có thể có các cạnh có trọng số âm, nhưng không có chu trình có trọng số âm.
 
-If there is such a negative cycle, you can just traverse this cycle over and over, in each iteration making the cost of the path smaller.
-So you can make certain paths arbitrarily small, or in other words that shortest path is undefined.
-That automatically means that an undirected graph cannot have any negative weight edges, as such an edge forms already a negative cycle as you can move back and forth along that edge as long as you like.
+Nếu có một chu trình âm như vậy, bạn có thể chỉ cần đi qua chu trình này lặp đi lặp lại, trong mỗi lần lặp lại, làm cho chi phí của đường đi nhỏ hơn.
+Vì vậy, bạn có thể làm cho các đường dẫn nhất định nhỏ tùy ý, hoặc nói cách khác là đường dẫn ngắn nhất không xác định.
+Điều đó tự động có nghĩa là một đồ thị vô hướng không thể có bất kỳ cạnh nào có trọng số âm, vì một cạnh như vậy đã tạo thành một chu trình âm vì bạn có thể di chuyển qua lại dọc theo cạnh đó bao lâu tùy thích.
 
-This algorithm can also be used to detect the presence of negative cycles.
-The graph has a negative cycle if at the end of the algorithm, the distance from a vertex $v$ to itself is negative.
+Thuật toán này cũng có thể được sử dụng để phát hiện sự hiện diện của các chu trình âm.
+Đồ thị có chu trình âm nếu ở cuối thuật toán, khoảng cách từ một đỉnh $v$ đến chính nó là âm.
 
-This algorithm has been simultaneously published in articles by Robert Floyd and Stephen Warshall in 1962.
-However, in 1959, Bernard Roy published essentially the same algorithm, but its publication went unnoticed.
+Thuật toán này đã được xuất bản đồng thời trong các bài báo của Robert Floyd và Stephen Warshall vào năm 1962.
+Tuy nhiên, vào năm 1959, Bernard Roy đã xuất bản về cơ bản là cùng một thuật toán, nhưng ấn phẩm của ông đã không được chú ý.
 
-## Description of the algorithm
+## Mô tả thuật toán
 
-The key idea of the algorithm is to partition the process of finding the shortest path between any two vertices to several incremental phases.
+Ý tưởng chính của thuật toán là phân vùng quá trình tìm đường đi ngắn nhất giữa hai đỉnh bất kỳ thành một số giai đoạn tăng dần.
 
-Let us number the vertices starting from 1 to $n$.
-The matrix of distances is $d[ ][ ]$.
+Hãy đánh số các đỉnh bắt đầu từ 1 đến $n$.
+Ma trận khoảng cách là $d[ ][ ]$.
 
-Before $k$-th phase ($k = 1 \dots n$), $d[i][j]$ for any vertices $i$ and $j$ stores the length of the shortest path between the vertex $i$ and vertex $j$, which contains only the vertices $\{1, 2, ..., k-1\}$ as internal vertices in the path.
+Trước giai đoạn thứ $k$ ($k = 1 \dots n$), $d[i][j]$ cho bất kỳ đỉnh $i$ và $j$ nào lưu trữ độ dài của đường đi ngắn nhất giữa đỉnh $i$ và đỉnh $j$, chỉ chứa các đỉnh $\{1, 2, ..., k-1\}$ làm đỉnh bên trong trong đường dẫn.
 
-In other words, before $k$-th phase the value of $d[i][j]$ is equal to the length of the shortest path from vertex $i$ to the vertex $j$, if this path is allowed to enter only the vertex with numbers smaller than $k$ (the beginning and end of the path are not restricted by this property).
+Nói cách khác, trước giai đoạn thứ $k$, giá trị của $d[i][j]$ bằng với độ dài của đường đi ngắn nhất từ ​​đỉnh $i$ đến đỉnh $j$, nếu đường đi này chỉ được phép đi vào đỉnh có số nhỏ hơn $k$ (điểm đầu và điểm cuối của đường đi không bị hạn chế bởi thuộc tính này).
 
-It is easy to make sure that this property holds for the first phase. For $k = 0$, we can fill matrix with $d[i][j] = w_{i j}$ if there exists an edge between $i$ and $j$ with weight $w_{i j}$ and $d[i][j] = \infty$ if there doesn't exist an edge.
-In practice $\infty$ will be some high value.
-As we shall see later, this is a requirement for the algorithm.
+Rất dễ dàng để đảm bảo rằng thuộc tính này giữ cho giai đoạn đầu tiên. Đối với $k = 0$, chúng ta có thể điền vào ma trận với $d[i][j] = w_{i j}$ nếu tồn tại một cạnh giữa $i$ và $j$ với trọng số $w_{i j}$ và $d[i][j] = \infty$ nếu không tồn tại một cạnh.
+Trong thực tế, $\infty$ sẽ là một số giá trị cao.
+Như chúng ta sẽ thấy sau, đây là một yêu cầu đối với thuật toán.
 
-Suppose now that we are in the $k$-th phase, and we want to compute the matrix $d[ ][ ]$ so that it meets the requirements for the $(k + 1)$-th phase.
-We have to fix the distances for some vertices pairs $(i, j)$.
-There are two fundamentally different cases:
+Giả sử bây giờ chúng ta đang ở giai đoạn thứ $k$ và chúng ta muốn tính toán ma trận $d[ ][ ]$ sao cho nó đáp ứng các yêu cầu cho giai đoạn thứ $(k + 1)$.
+Chúng ta phải sửa khoảng cách cho một số cặp đỉnh $(i, j)$.
+Có hai trường hợp khác nhau cơ bản:
 
-*   The shortest way from the vertex $i$ to the vertex $j$ with internal vertices from the set $\{1, 2, \dots, k\}$ coincides with the shortest path with internal vertices from the set $\{1, 2, \dots, k-1\}$.
+*   Đường đi ngắn nhất từ ​​đỉnh $i$ đến đỉnh $j$ với các đỉnh bên trong từ tập hợp $\{1, 2, \dots, k\}$ trùng với đường đi ngắn nhất với các đỉnh bên trong từ tập hợp $\{1, 2, \dots, k-1\}$.
 
-    In this case, $d[i][j]$ will not change during the transition.
+    Trong trường hợp này, $d[i][j]$ sẽ không thay đổi trong quá trình chuyển đổi.
 
-*   The shortest path with internal vertices from $\{1, 2, \dots, k\}$ is shorter.
+*   Đường dẫn ngắn nhất với các đỉnh bên trong từ $\{1, 2, \dots, k\}$ ngắn hơn.
 
-    This means that the new, shorter path passes through the vertex $k$.
-    This means that we can split the shortest path between $i$ and $j$ into two paths:
-    the path between $i$ and $k$, and the path between $k$ and $j$.
-    It is clear that both this paths only use internal vertices of $\{1, 2, \dots, k-1\}$ and are the shortest such paths in that respect.
-    Therefore we already have computed the lengths of those paths before, and we can compute the length of the shortest path between $i$ and $j$ as $d[i][k] + d[k][j]$.
+    Điều này có nghĩa là đường dẫn mới, ngắn hơn đi qua đỉnh $k$.
+    Điều này có nghĩa là chúng ta có thể chia đường đi ngắn nhất giữa $i$ và $j$ thành hai đường đi:
+    đường đi giữa $i$ và $k$, và đường đi giữa $k$ và $j$.
+    Rõ ràng là cả hai đường đi này chỉ sử dụng các đỉnh bên trong của $\{1, 2, \dots, k-1\}$ và là những đường đi ngắn nhất như vậy về mặt đó.
+    Do đó, chúng ta đã tính toán độ dài của các đường dẫn đó trước đó và chúng ta có thể tính toán độ dài của đường đi ngắn nhất giữa $i$ và $j$ là $d[i][k] + d[k][j]$.
 
-Combining these two cases we find that we can recalculate the length of all pairs $(i, j)$ in the $k$-th phase in the following way:
+Kết hợp hai trường hợp này, chúng ta thấy rằng chúng ta có thể tính toán lại độ dài của tất cả các cặp $(i, j)$ trong giai đoạn thứ $k$ theo cách sau:
 
 $$d_{\text{new}}[i][j] = min(d[i][j], d[i][k] + d[k][j])$$
 
-Thus, all the work that is required in the $k$-th phase is to iterate over all pairs of vertices and recalculate the length of the shortest path between them.
-As a result, after the $n$-th phase, the value $d[i][j]$ in the distance matrix is the length of the shortest path between $i$ and $j$, or is $\infty$ if the path between the vertices $i$ and $j$ does not exist.
+Do đó, tất cả công việc cần thiết trong giai đoạn thứ $k$ là lặp lại tất cả các cặp đỉnh và tính toán lại độ dài của đường đi ngắn nhất giữa chúng.
+Kết quả là, sau giai đoạn thứ $n$, giá trị $d[i][j]$ trong ma trận khoảng cách là độ dài của đường đi ngắn nhất giữa $i$ và $j$, hoặc là $\infty$ nếu đường đi giữa các đỉnh $i$ và $j$ không tồn tại.
 
-A last remark - we don't need to create a separate distance matrix $d_{\text{new}}[ ][ ]$ for temporarily storing the shortest paths of the $k$-th phase, i.e. all changes can be made directly in the matrix $d[ ][ ]$ at any phase.
-In fact at any $k$-th phase we are at most improving the distance of any path in the distance matrix, hence we cannot worsen the length of the shortest path for any pair of the vertices that are to be processed in the $(k+1)$-th phase or later.
+Nhận xét cuối cùng - chúng ta không cần tạo một ma trận khoảng cách riêng $d_{\text{new}}[ ][ ]$ để tạm thời lưu trữ các đường đi ngắn nhất của giai đoạn thứ $k$, tức là tất cả các thay đổi có thể được thực hiện trực tiếp trong ma trận $d[ ][ ]$ ở bất kỳ giai đoạn nào.
+Trên thực tế, ở bất kỳ giai đoạn thứ $k$ nào, chúng ta đang cải thiện nhiều nhất khoảng cách của bất kỳ đường dẫn nào trong ma trận khoảng cách, do đó chúng ta không thể làm xấu đi độ dài của đường dẫn ngắn nhất cho bất kỳ cặp đỉnh nào sẽ được xử lý trong giai đoạn thứ $(k+1)$ hoặc sau đó.
 
-The time complexity of this algorithm is obviously $O(n^3)$.
+Độ phức tạp thời gian của thuật toán này rõ ràng là $O(n^3)$.
 
-## Implementation
+## Triển khai
 
-Let $d[][]$ is a 2D array of size $n \times n$, which is filled according to the $0$-th phase as explained earlier.
-Also we will set $d[i][i] = 0$ for any $i$ at the $0$-th phase.
+Cho $d[][]$ là một mảng 2D có kích thước $n \times n$, được điền theo giai đoạn thứ $0$ như đã giải thích trước đó.
+Ngoài ra, chúng ta sẽ đặt $d[i][i] = 0$ cho bất kỳ $i$ nào ở giai đoạn thứ $0$.
 
-Then the algorithm is implemented as follows:
+Sau đó, thuật toán được triển khai như sau:
 
 ```cpp
 for (int k = 0; k < n; ++k) {
@@ -81,12 +83,12 @@ for (int k = 0; k < n; ++k) {
 }
 ```
 
-It is assumed that if there is no edge between any two vertices $i$ and $j$, then the matrix at $d[i][j]$ contains a large number (large enough so that it is greater than the length of any path in this graph).
-Then this edge will always be unprofitable to take, and the algorithm will work correctly.
+Giả định rằng nếu không có cạnh nào giữa hai đỉnh $i$ và $j$ bất kỳ, thì ma trận tại $d[i][j]$ chứa một số lớn (đủ lớn để nó lớn hơn độ dài của bất kỳ đường dẫn nào trong đồ thị này).
+Khi đó, cạnh này sẽ luôn không có lợi để đi và thuật toán sẽ hoạt động chính xác.
 
-However if there are negative weight edges in the graph, special measures have to be taken.
-Otherwise the resulting values in matrix may be of the form $\infty - 1$,  $\infty - 2$, etc., which, of course, still indicates that between the respective vertices doesn't exist a path.
-Therefore, if the graph has negative weight edges, it is better to write the Floyd-Warshall algorithm in the following way, so that it does not perform transitions using paths that don't exist.
+Tuy nhiên, nếu có các cạnh có trọng số âm trong đồ thị, thì phải thực hiện các biện pháp đặc biệt.
+Nếu không, các giá trị kết quả trong ma trận có thể có dạng $\infty - 1$,  $\infty - 2$, v.v., điều này, tất nhiên, vẫn chỉ ra rằng giữa các đỉnh tương ứng không tồn tại đường đi.
+Do đó, nếu đồ thị có các cạnh có trọng số âm, thì tốt hơn hết là viết thuật toán Floyd-Warshall theo cách sau, để nó không thực hiện chuyển đổi bằng cách sử dụng các đường dẫn không tồn tại.
 
 ```cpp
 for (int k = 0; k < n; ++k) {
@@ -99,47 +101,47 @@ for (int k = 0; k < n; ++k) {
 }
 ```
 
-## Retrieving the sequence of vertices in the shortest path
+## Khôi phục chuỗi các đỉnh trong đường đi ngắn nhất
 
-It is easy to maintain additional information with which it will be possible to retrieve the shortest path between any two given vertices in the form of a sequence of vertices.
+Rất dễ dàng để duy trì thông tin bổ sung mà với thông tin đó, có thể truy xuất đường đi ngắn nhất giữa hai đỉnh nhất định bất kỳ dưới dạng chuỗi các đỉnh.
 
-For this, in addition to the distance matrix $d[ ][ ]$, a matrix of ancestors $p[ ][ ]$ must be maintained, which will contain the number of the phase where the shortest distance between two vertices was last modified.
-It is clear that the number of the phase is nothing more than a vertex in the middle of the desired shortest path.
-Now we just need to find the shortest path between vertices $i$ and $p[i][j]$, and between $p[i][j]$ and $j$.
-This leads to a simple recursive reconstruction algorithm of the shortest path.
+Đối với điều này, ngoài ma trận khoảng cách $d[ ][ ]$, ma trận tổ tiên $p[ ][ ]$ phải được duy trì, ma trận này sẽ chứa số của giai đoạn mà khoảng cách ngắn nhất giữa hai đỉnh được sửa đổi lần cuối.
+Rõ ràng là số của giai đoạn không gì khác hơn là một đỉnh ở giữa đường đi ngắn nhất mong muốn.
+Bây giờ chúng ta chỉ cần tìm đường đi ngắn nhất giữa các đỉnh $i$ và $p[i][j]$ và giữa $p[i][j]$ và $j$.
+Điều này dẫn đến một thuật toán tái tạo đệ quy đơn giản của đường đi ngắn nhất.
 
-## The case of real weights
+## Trường hợp trọng số thực
 
-If the weights of the edges are not integer but real, it is necessary to take the errors, which occur when working with float types, into account.
+Nếu trọng số của các cạnh không phải là số nguyên mà là số thực, thì cần phải tính đến các lỗi xảy ra khi làm việc với các kiểu dấu phẩy động.
 
-The Floyd-Warshall algorithm has the unpleasant effect, that the errors accumulate very quickly.
-In fact if there is an error in the first phase of $\delta$, this error may propagate to the second iteration as $2 \delta$, to the third iteration as $4 \delta$, and so on.
+Thuật toán Floyd-Warshall có tác dụng khó chịu là các lỗi tích lũy rất nhanh.
+Trên thực tế, nếu có lỗi trong giai đoạn đầu tiên là $\delta$, lỗi này có thể lan truyền sang lần lặp thứ hai là $2 \delta$, sang lần lặp thứ ba là $4 \delta$, v.v.
 
-To avoid this the algorithm can be modified to take the error (EPS = $\delta$) into account by using following comparison:
+Để tránh điều này, thuật toán có thể được sửa đổi để tính đến lỗi (EPS = $\delta$) bằng cách sử dụng so sánh sau:
 
 ```cpp
 if (d[i][k] + d[k][j] < d[i][j] - EPS)
     d[i][j] = d[i][k] + d[k][j]; 
 ```
 
-## The case of negative cycles
+## Trường hợp chu trình âm
 
-Formally the Floyd-Warshall algorithm does not apply to graphs containing negative weight cycle(s).
-But for all pairs of vertices $i$ and $j$ for which there doesn't exist a path starting at $i$, visiting a negative cycle, and end at $j$,  the algorithm will still work correctly.
+Về mặt hình thức, thuật toán Floyd-Warshall không áp dụng cho các đồ thị chứa chu trình có trọng số âm.
+Nhưng đối với tất cả các cặp đỉnh $i$ và $j$ mà không tồn tại đường dẫn bắt đầu từ $i$, đi qua chu trình âm và kết thúc tại $j$, thuật toán vẫn hoạt động chính xác.
 
-For the pair of vertices for which the answer does not exist (due to the presence of a negative cycle in the path between them), the Floyd algorithm will store any number (perhaps highly negative, but not necessarily) in the distance matrix.
-However it is possible to improve the Floyd-Warshall algorithm, so that it carefully treats such pairs of vertices, and outputs them, for example as $-\text{INF}$.
+Đối với cặp đỉnh mà câu trả lời không tồn tại (do sự hiện diện của chu trình âm trong đường dẫn giữa chúng), thuật toán Floyd sẽ lưu trữ bất kỳ số nào (có thể rất âm, nhưng không nhất thiết) trong ma trận khoảng cách.
+Tuy nhiên, có thể cải thiện thuật toán Floyd-Warshall, sao cho nó xử lý cẩn thận các cặp đỉnh như vậy và xuất ra chúng, ví dụ như $-\text{INF}$.
 
-This can be done in the following way:
-let us run the usual Floyd-Warshall algorithm for a given graph.
-Then a shortest path between vertices $i$ and $j$ does not exist, if and only if, there is a vertex $t$ that is reachable from $i$ and also from $j$, for which $d[t][t] < 0$.
+Điều này có thể được thực hiện theo cách sau:
+hãy chạy thuật toán Floyd-Warshall thông thường cho một đồ thị nhất định.
+Khi đó, đường đi ngắn nhất giữa các đỉnh $i$ và $j$ không tồn tại, nếu và chỉ khi, có một đỉnh $t$ có thể đạt được từ $i$ và cũng từ $j$, mà $d[t][t] < 0$.
 
-In addition, when using the Floyd-Warshall algorithm for graphs with negative cycles, we should keep in mind that situations may arise in which distances can get exponentially fast into the negative.
-Therefore integer overflow must be handled by limiting the minimal distance by some value (e.g. $-\text{INF}$).
+Ngoài ra, khi sử dụng thuật toán Floyd-Warshall cho các đồ thị có chu trình âm, chúng ta nên nhớ rằng có thể phát sinh các tình huống mà khoảng cách có thể nhanh chóng chuyển sang âm theo cấp số nhân.
+Do đó, tràn số nguyên phải được xử lý bằng cách giới hạn khoảng cách tối thiểu bằng một số giá trị (ví dụ: $-\text{INF}$).
 
-To learn more about finding negative cycles in a graph, see the separate article [Finding a negative cycle in the graph](finding-negative-cycle-in-graph.md).
+Để tìm hiểu thêm về cách tìm chu trình âm trong đồ thị, hãy xem bài viết riêng [Tìm chu trình âm trong đồ thị](finding-negative-cycle-in-graph.md).
 
-## Practice Problems
+## Bài tập thực hành
  - [UVA: Page Hopping](https://uva.onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=762)
  - [SPOJ: Possible Friends](http://www.spoj.com/problems/SOCIALNE/)
  - [CODEFORCES: Greg and Graph](http://codeforces.com/problemset/problem/295/B)
@@ -167,3 +169,7 @@ To learn more about finding negative cycles in a graph, see the separate article
  * [LOJ - 1086 - Jogging Trails](http://lightoj.com/volume_showproblem.php?problem=1086)
  * [SPOJ - Ingredients](http://www.spoj.com/problems/INGRED/)
  * [CSES - Shortest Routes II](https://cses.fi/problemset/task/1672)
+
+--- 
+
+

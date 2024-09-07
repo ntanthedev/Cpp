@@ -1,4 +1,4 @@
---- START OF FILE prefix-function.md ---
+# Hàm tiền tố (Prefix function). Thuật toán Knuth–Morris–Pratt
 
 ---
 tags:
@@ -6,12 +6,12 @@ tags:
 e_maxx_link: prefix_function
 ---
 
-# Hàm tiền tố. Thuật toán Knuth–Morris–Pratt
+# Hàm tiền tố (Prefix function). Thuật toán Knuth–Morris–Pratt
 
 ## Định nghĩa hàm tiền tố
 
 Cho một chuỗi $s$ có độ dài $n$.
-**Hàm tiền tố** cho chuỗi này được định nghĩa là một mảng $\pi$ có độ dài $n$, trong đó $\pi[i]$ là độ dài của tiền tố thực sự dài nhất của chuỗi con $s[0 \dots i]$ cũng là hậu tố của chuỗi con này.
+**Hàm tiền tố** (Prefix function) cho chuỗi này được định nghĩa là một mảng $\pi$ có độ dài $n$, trong đó $\pi[i]$ là độ dài của tiền tố thực sự dài nhất của chuỗi con $s[0 \dots i]$ cũng là hậu tố của chuỗi con này.
 Tiền tố thực sự của một chuỗi là một tiền tố không bằng chính chuỗi đó.
 Theo định nghĩa, $\pi[0] = 0$.
 
@@ -19,11 +19,11 @@ Về mặt toán học, định nghĩa của hàm tiền tố có thể được
 
 $$\pi[i] = \max_ {k = 0 \dots i} \{k : s[0 \dots k-1] = s[i-(k-1) \dots i] \}$$
 
-Ví dụ, hàm tiền tố của chuỗi "abcabcd" là $[0, 0, 0, 1, 2, 3, 0]$, và hàm tiền tố của chuỗi "aabaaab" là $[0, 1, 0, 1, 2, 2, 3]$.
+Ví dụ: hàm tiền tố của chuỗi "abcabcd" là $[0, 0, 0, 1, 2, 3, 0]$, và hàm tiền tố của chuỗi "aabaaab" là $[0, 1, 0, 1, 2, 2, 3]$.
 
 ## Thuật toán đơn giản
 
-Thuật toán sau đây tuân theo chính xác định nghĩa của hàm tiền tố:
+Một thuật toán tuân theo chính xác định nghĩa của hàm tiền tố như sau:
 
 ```{.cpp file=prefix_slow}
 vector<int> prefix_function(string s) {
@@ -37,7 +37,7 @@ vector<int> prefix_function(string s) {
 }
 ```
 
-Dễ dàng nhận thấy rằng độ phức tạp của nó là $O(n^3)$, điều này có thể cải thiện được.
+Dễ dàng nhận thấy rằng độ phức tạp của nó là $O(n^3)$, điều này có thể được cải thiện.
 
 ## Thuật toán hiệu quả
 
@@ -49,7 +49,7 @@ Nó được sử dụng như là hàm chính của thuật toán tìm kiếm ch
 Quan sát quan trọng đầu tiên là, giá trị của hàm tiền tố chỉ có thể tăng tối đa một.
 
 Thật vậy, nếu không, nếu $\pi[i + 1] \gt \pi[i] + 1$, thì chúng ta có thể lấy hậu tố kết thúc ở vị trí $i + 1$ với độ dài $\pi[i + 1]$ và xóa ký tự cuối cùng khỏi nó.
-Chúng ta kết thúc với một hậu tố kết thúc ở vị trí $i$ với độ dài $\pi[i + 1] - 1$, tốt hơn $\pi[i]$, tức là chúng ta nhận được một sự mâu thuẫn.
+Chúng ta kết thúc với một hậu tố kết thúc ở vị trí $i$ với độ dài $\pi[i + 1] - 1$, tốt hơn $\pi[i]$, tức là chúng ta nhận được một mâu thuẫn.
 
 Hình ảnh minh họa sau đây cho thấy sự mâu thuẫn này.
 Hậu tố thực sự dài nhất ở vị trí $i$ cũng là tiền tố có độ dài $2$, và ở vị trí $i+1$ là $4$.
@@ -91,7 +91,7 @@ cho độ dài hiện tại $j$ ở vị trí $i$ mà thuộc tính tiền tố 
 
 $$\overbrace{\underbrace{s_0 ~ s_1}_k ~ s_2 ~ s_3}^j ~ \dots ~ \overbrace{s_{i-3} ~ s_{i-2} ~ \underbrace{s_{i-1} ~ s_{i}}_k}^j ~s_{i+1}$$
 
-Hình minh họa cho thấy, đây phải là giá trị của $\pi[j-1]$, mà chúng ta đã tính toán trước đó.
+Hình ảnh minh họa cho thấy, đây phải là giá trị của $\pi[j-1]$, mà chúng ta đã tính toán trước đó.
 
 ### Thuật toán cuối cùng
 
@@ -105,9 +105,9 @@ Vì vậy, cuối cùng chúng ta có thể xây dựng một thuật toán khô
 Nếu chúng bằng nhau thì chúng ta gán $\pi[i] = j + 1$, ngược lại chúng ta giảm $j$ xuống $\pi[j-1]$ và lặp lại bước này.
 - Nếu chúng ta đã đạt đến độ dài $j = 0$ và vẫn không có kết quả khớp, thì chúng ta gán $\pi[i] = 0$ và chuyển sang chỉ mục tiếp theo $i + 1$.
 
-### Thực hiện
+### Triển khai
 
-Việc thực hiện hóa ra lại ngắn gọn và biểu cảm một cách đáng ngạc nhiên.
+Việc triển khai hóa ra lại ngắn gọn và biểu cảm một cách đáng ngạc nhiên.
 
 ```{.cpp file=prefix_fast}
 vector<int> prefix_function(string s) {
@@ -253,7 +253,7 @@ $$s_0 ~ s_1 ~ s_2 ~ \underbrace{\overbrace{s_3 ~ s_4 ~ s_5 ~ s_6}^p ~ s_7}_{\pi[
 
 $$s_4 = s_3, ~ s_5 = s_4, ~ s_6 = s_5, ~ s_7 = s_6 ~ \Rightarrow ~ s_0 = s_1 = s_2 = s_3$$
 
-### Xây dựng một máy tự động theo hàm tiền tố
+### Xây dựng một automaton theo hàm tiền tố
 
 Hãy quay trở lại với việc nối hai chuỗi thông qua một ký tự phân cách, tức là đối với các chuỗi $s$ và $t$, chúng ta tính toán hàm tiền tố cho chuỗi $s + \# + t$.
 Rõ ràng, vì $\#$ là ký tự phân cách, giá trị của hàm tiền tố sẽ không bao giờ vượt quá $|s|$.
@@ -263,7 +263,7 @@ $$\underbrace{s_0 ~ s_1 ~ \dots ~ s_{n-1} ~ \#}_{\text{cần lưu trữ}} ~ \und
 
 Thật vậy, trong tình huống như vậy, việc biết ký tự tiếp theo $c \in t$ và giá trị của hàm tiền tố của vị trí trước đó là đủ thông tin để tính toán giá trị tiếp theo của hàm tiền tố, mà không cần sử dụng bất kỳ ký tự nào trước đó của chuỗi $t$ và giá trị của hàm tiền tố trong chúng.
 
-Nói cách khác, chúng ta có thể xây dựng một **máy tự động** (máy trạng thái hữu hạn): trạng thái trong đó là giá trị hiện tại của hàm tiền tố, và việc chuyển đổi từ trạng thái này sang trạng thái khác sẽ được thực hiện thông qua ký tự tiếp theo.
+Nói cách khác, chúng ta có thể xây dựng một **_automaton_ (máy trạng thái hữu hạn)**: trạng thái trong đó là giá trị hiện tại của hàm tiền tố, và việc chuyển đổi từ trạng thái này sang trạng thái khác sẽ được thực hiện thông qua ký tự tiếp theo.
 
 Do đó, ngay cả khi không có chuỗi $t$, chúng ta vẫn có thể xây dựng bảng chuyển đổi $(\text{old}_\pi, c) \rightarrow \text{new}_\pi$ bằng cách sử dụng cùng một thuật toán như để tính toán bảng chuyển đổi:
 
@@ -307,17 +307,17 @@ void compute_automaton(string s, vector<vector<int>>& aut) {
 }
 ```
 
-Kết quả là chúng ta xây dựng được máy tự động trong thời gian $O(26 n)$.
+Kết quả là chúng ta xây dựng được _automaton_ trong thời gian $O(26 n)$.
 
-Khi nào thì máy tự động như vậy hữu ích? 
+Khi nào thì _automaton_ như vậy hữu ích? 
 Trước hết, hãy nhớ rằng chúng ta sử dụng hàm tiền tố cho chuỗi $s + \# + t$ và các giá trị của nó chủ yếu cho một mục đích duy nhất: tìm tất cả các lần xuất hiện của chuỗi $s$ trong chuỗi $t$.
 
-Do đó, lợi ích rõ ràng nhất của máy tự động này là **tăng tốc độ tính toán hàm tiền tố** cho chuỗi $s + \# + t$.
-Bằng cách xây dựng máy tự động cho $s + \#$, chúng ta không cần phải lưu trữ chuỗi $s$ hoặc các giá trị của hàm tiền tố trong đó. 
+Do đó, lợi ích rõ ràng nhất của _automaton_ này là **tăng tốc độ tính toán hàm tiền tố** cho chuỗi $s + \# + t$.
+Bằng cách xây dựng _automaton_ cho $s + \#$, chúng ta không cần phải lưu trữ chuỗi $s$ hoặc các giá trị của hàm tiền tố trong đó. 
 Tất cả các chuyển đổi đã được tính toán trong bảng.
 
 Nhưng có một ứng dụng thứ hai, ít rõ ràng hơn.
-Chúng ta có thể sử dụng máy tự động khi chuỗi $t$ là một **chuỗi khổng lồ được xây dựng bằng một số quy tắc**.
+Chúng ta có thể sử dụng _automaton_ khi chuỗi $t$ là một **chuỗi khổng lồ được xây dựng bằng một số quy tắc**.
 Ví dụ, đây có thể là các chuỗi Gray, hoặc một chuỗi được hình thành bằng cách kết hợp đệ quy một số chuỗi ngắn từ đầu vào.
 
 Để đầy đủ, chúng ta sẽ giải quyết một bài toán như vậy:
@@ -336,16 +336,16 @@ Trong những trường hợp như vậy, ngay cả việc xây dựng chuỗi $
 Chuỗi Gray thứ $k$ có độ dài $2^k-1$ ký tự. 
 Tuy nhiên, chúng ta có thể tính toán hiệu quả giá trị của hàm tiền tố ở cuối chuỗi, chỉ bằng cách biết giá trị của hàm tiền tố ở đầu.
 
-Ngoài bản thân máy tự động, chúng ta cũng tính toán các giá trị $G[i][j]$ - giá trị của máy tự động sau khi xử lý chuỗi $g_i$ bắt đầu bằng trạng thái $j$. 
+Ngoài bản thân _automaton_, chúng ta cũng tính toán các giá trị $G[i][j]$ - giá trị của _automaton_ sau khi xử lý chuỗi $g_i$ bắt đầu bằng trạng thái $j$. 
 Và thêm vào đó, chúng ta tính toán các giá trị $K[i][j]$ - số lần xuất hiện của $s$ trong $g_i$, trước khi xử lý $g_i$ bắt đầu bằng trạng thái $j$. 
 Thực ra $K[i][j]$ là số lần hàm tiền tố nhận giá trị $|s|$ trong khi thực hiện các thao tác. 
 Câu trả lời cho bài toán sau đó sẽ là $K[k][0]$.
 
 Làm thế nào chúng ta có thể tính toán những giá trị này?
 Đầu tiên, các giá trị cơ bản là $G[0][j] = j$ và $K[0][j] = 0$. 
-Và tất cả các giá trị tiếp theo có thể được tính toán từ các giá trị trước đó và sử dụng máy tự động. 
+Và tất cả các giá trị tiếp theo có thể được tính toán từ các giá trị trước đó và sử dụng _automaton_. 
 Để tính toán giá trị cho một số $i$ nào đó, chúng ta nhớ rằng chuỗi $g_i$ bao gồm $g_{i-1}$, ký tự thứ $i$ của bảng chữ cái và $g_{i-1}$.
-Do đó, máy tự động sẽ chuyển sang trạng thái:
+Do đó, _automaton_ sẽ chuyển sang trạng thái:
 
 $$\text{mid} = \text{aut}[G[i-1][j]][i]$$
 
@@ -372,7 +372,7 @@ Các phép thế đệ quy làm cho chuỗi tăng lên, do đó độ dài của
 
 Chúng ta phải tìm số lần xuất hiện của chuỗi $s$ trong mỗi chuỗi.
 
-Bài toán có thể được giải quyết theo cách tương tự bằng cách xây dựng máy tự động của hàm tiền tố, và sau đó chúng ta tính toán các chuyển đổi cho mỗi mẫu bằng cách sử dụng các kết quả trước đó.
+Bài toán có thể được giải quyết theo cách tương tự bằng cách xây dựng _automaton_ của hàm tiền tố, và sau đó chúng ta tính toán các chuyển đổi cho mỗi mẫu bằng cách sử dụng các kết quả trước đó.
 
 ## Bài tập luyện tập
 
@@ -387,3 +387,5 @@ Bài toán có thể được giải quyết theo cách tương tự bằng các
 * [Codeforces - Anthem of Berland](http://codeforces.com/contest/808/problem/G)
 * [Codeforces - MUH and Cube Walls](http://codeforces.com/problemset/problem/471/D)
 * [Codeforces - Prefixes and Suffixes](https://codeforces.com/contest/432/problem/D) 
+
+--- 

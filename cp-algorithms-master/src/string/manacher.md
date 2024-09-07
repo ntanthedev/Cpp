@@ -1,52 +1,54 @@
+# Thuật toán Manacher - Tìm tất cả các chuỗi con đối xứng trong $O(N)$
+
 ---
-title: Manacher's Algorithm - Finding all sub-palindromes in O(N)
 tags:
-  - Translated
+  - Dịch
 e_maxx_link: palindromes_count
 ---
-# Manacher's Algorithm - Finding all sub-palindromes in $O(N)$
 
-## Statement
+# Thuật toán Manacher - Tìm tất cả các chuỗi con đối xứng (palindrome) trong $O(N)$
 
-Given string $s$ with length $n$. Find all the pairs $(i, j)$ such that substring $s[i\dots j]$ is a palindrome. String $t$ is a palindrome when $t = t_{rev}$ ($t_{rev}$ is a reversed string for $t$).
+## Bài toán
 
-## More precise statement
+Cho chuỗi $s$ có độ dài $n$. Tìm tất cả các cặp $(i, j)$ sao cho chuỗi con $s[i\dots j]$ là chuỗi đối xứng. Chuỗi $t$ là chuỗi đối xứng khi $t = t_{rev}$ ($t_{rev}$ là chuỗi đảo ngược của $t$).
 
-In the worst case string might have up to $O(n^2)$ palindromic substrings, and at the first glance it seems that there is no linear algorithm for this problem.
+## Bài toán chi tiết hơn
 
-But the information about the palindromes can be kept **in a compact way**: for each position $i$ we will find the number of non-empty palindromes centered at this position.
+Trong trường hợp xấu nhất, chuỗi có thể có tới $O(n^2)$ chuỗi con đối xứng và thoạt nhìn có vẻ như không có thuật toán tuyến tính nào cho bài toán này.
 
-Palindromes with a common center form a contiguous chain, that is if we have a palindrome of length $l$ centered in $i$, we also have palindromes of lengths $l-2$, $l-4$ and so on also centered in $i$. Therefore, we will collect the information about all palindromic substrings in this way.
+Nhưng thông tin về các chuỗi đối xứng có thể được lưu giữ **theo một cách gọn nhẹ**: đối với mỗi vị trí $i$, chúng ta sẽ tìm số lượng chuỗi đối xứng không rỗng có tâm tại vị trí này.
 
-Palindromes of odd and even lengths are accounted for separately as $d_{odd}[i]$ and $d_{even}[i]$. For the palindromes of even length we assume that they're centered in the position $i$ if their two central characters are $s[i]$ and $s[i-1]$.
+Các chuỗi đối xứng có chung một tâm tạo thành một chuỗi liền kề, tức là nếu chúng ta có một chuỗi đối xứng có độ dài $l$ có tâm ở $i$, chúng ta cũng có các chuỗi đối xứng có độ dài $l-2$, $l-4$ và vân vân cũng có tâm ở $i$. Do đó, chúng ta sẽ thu thập thông tin về tất cả các chuỗi con đối xứng theo cách này.
 
-For instance, string $s = abababc$ has three palindromes with odd length with centers in the position $s[3] = b$, i. e. $d_{odd}[3] = 3$:
+Các chuỗi đối xứng có độ dài lẻ và chẵn được tính riêng biệt là $d_{odd}[i]$ và $d_{even}[i]$. Đối với các chuỗi đối xứng có độ dài chẵn, chúng ta giả sử rằng chúng có tâm ở vị trí $i$ nếu hai ký tự trung tâm của chúng là $s[i]$ và $s[i-1]$.
+
+Ví dụ: chuỗi $s = abababc$ có ba chuỗi đối xứng có độ dài lẻ với tâm ở vị trí $s[3] = b$, tức là $d_{odd}[3] = 3$:
 
 $$a\ \overbrace{b\ a\ \underbrace{b}_{s_3}\ a\ b}^{d_{odd}[3]=3} c$$
 
-And string $s = cbaabd$ has two palindromes with even length with centers in the position $s[3] = a$, i. e. $d_{even}[3] = 2$:
+Và chuỗi $s = cbaabd$ có hai chuỗi đối xứng có độ dài chẵn với tâm ở vị trí $s[3] = a$, tức là $d_{even}[3] = 2$:
 
 $$c\ \overbrace{b\ a\ \underbrace{a}_{s_3}\ b}^{d_{even}[3]=2} d$$
 
-It's a surprising fact that there is an algorithm, which is simple enough, that calculates these "palindromity arrays" $d_{odd}[]$ and $d_{even}[]$ in linear time. The algorithm is described in this article.
+Thật ngạc nhiên là có một thuật toán đủ đơn giản để tính toán các "mảng đối xứng" $d_{odd}[]$ và $d_{even}[]$ này trong thời gian tuyến tính. Thuật toán được mô tả trong bài viết này.
 
-## Solution
+## Giải pháp
 
-In general, this problem has many solutions: with [String Hashing](string-hashing.md) it can be solved in $O(n\cdot \log n)$, and with [Suffix Trees](suffix-tree-ukkonen.md) and fast LCA this problem can be solved in $O(n)$.
+Nhìn chung, bài toán này có nhiều giải pháp: với [Băm chuỗi](string-hashing.md), nó có thể được giải quyết trong $O(n\cdot \log n)$, và với [Cây hậu tố](suffix-tree-ukkonen.md) và LCA nhanh, bài toán này có thể được giải quyết trong $O(n)$.
 
-But the method described here is **sufficiently** simpler and has less hidden constant in time and memory complexity. This algorithm was discovered by **Glenn K. Manacher** in 1975.
+Nhưng phương pháp được mô tả ở đây **đủ** đơn giản hơn và có hằng số ẩn nhỏ hơn về độ phức tạp thời gian và bộ nhớ. Thuật toán này được phát hiện bởi **Glenn K. Manacher** vào năm 1975.
 
-Another modern way to solve this problem and to deal with palindromes in general is through the so-called palindromic tree, or eertree.
+Một cách hiện đại khác để giải quyết bài toán này và để xử lý các chuỗi đối xứng nói chung là thông qua cái gọi là cây đối xứng, hay eertree.
 
-## Trivial algorithm
+## Thuật toán đơn giản
 
-To avoid ambiguities in the further description we denote what "trivial algorithm" is.
+Để tránh sự mơ hồ trong phần mô tả tiếp theo, chúng ta biểu thị thuật toán "đơn giản" là gì.
 
-It's the algorithm that does the following. For each center position $i$ it tries to increase the answer by one as long as it's possible, comparing a pair of corresponding characters each time.
+Đó là thuật toán thực hiện như sau. Đối với mỗi vị trí trung tâm $i$, nó cố gắng tăng câu trả lời thêm một miễn là có thể, so sánh một cặp ký tự tương ứng mỗi lần.
 
-Such an algorithm is slow, it can calculate the answer only in $O(n^2)$.
+Một thuật toán như vậy rất chậm, nó chỉ có thể tính toán câu trả lời trong $O(n^2)$.
 
-The implementation of the trivial algorithm is:
+Cách triển khai thuật toán đơn giản là:
 
 ```cpp
 vector<int> manacher_odd(string s) {
@@ -62,21 +64,21 @@ vector<int> manacher_odd(string s) {
 }
 ```
 
-Terminal characters `$` and `^` were used to avoid dealing with ends of the string separately.
+Các ký tự kết thúc `$` và `^` được sử dụng để tránh phải xử lý riêng các đầu của chuỗi.
 
-## Manacher's algorithm
+## Thuật toán Manacher
 
-We describe the algorithm to find all the sub-palindromes with odd length, i. e. to calculate $d_{odd}[]$.
+Chúng ta mô tả thuật toán để tìm tất cả các chuỗi con đối xứng có độ dài lẻ, tức là để tính toán $d_{odd}[]$.
 
-For fast calculation we'll maintain the **borders $(l, r)$** of the rightmost found (sub-)palindrome (i. e. the current rightmost (sub-)palindrome is $s[l+1] s[l+2] \dots s[r-1]$). Initially we set $l = 0, r = 1$, which corresponds to the empty string.
+Để tính toán nhanh, chúng ta sẽ duy trì **ranh giới $(l, r)$** của chuỗi con đối xứng (hoặc chuỗi con) ngoài cùng bên phải được tìm thấy (tức là chuỗi con đối xứng (hoặc chuỗi con) ngoài cùng bên phải hiện tại là $s[l+1] s[l+2] \dots s[r-1]$). Ban đầu, chúng ta đặt $l = 0, r = 1$, tương ứng với chuỗi rỗng.
 
-So, we want to calculate $d_{odd}[i]$ for the next $i$, and all the previous values in $d_{odd}[]$ have been already calculated. We do the following:
+Vì vậy, chúng ta muốn tính toán $d_{odd}[i]$ cho $i$ tiếp theo và tất cả các giá trị trước đó trong $d_{odd}[]$ đã được tính toán. Chúng ta làm như sau:
 
-* If $i$ is outside the current sub-palindrome, i. e. $i \geq r$, we'll just launch the trivial algorithm.
+* Nếu $i$ nằm ngoài chuỗi con đối xứng hiện tại, tức là $i \geq r$, chúng ta sẽ chỉ khởi chạy thuật toán đơn giản.
     
-    So we'll increase $d_{odd}[i]$ consecutively and check each time if the current rightmost substring $[i - d_{odd}[i]\dots i + d_{odd}[i]]$ is a palindrome. When we find the first mismatch or meet the boundaries of $s$, we'll stop. In this case we've finally calculated $d_{odd}[i]$. After this, we must not forget to update $(l, r)$. $r$ should be updated in such a way that it represents the last index of the current rightmost sub-palindrome.
+    Vì vậy, chúng ta sẽ tăng $d_{odd}[i]$ liên tiếp và kiểm tra mỗi lần xem chuỗi con ngoài cùng bên phải hiện tại $[i - d_{odd}[i]\dots i + d_{odd}[i]]$ có phải là chuỗi đối xứng hay không. Khi chúng ta tìm thấy sự không khớp đầu tiên hoặc gặp ranh giới của $s$, chúng ta sẽ dừng lại. Trong trường hợp này, chúng ta cuối cùng đã tính toán được $d_{odd}[i]$. Sau đó, chúng ta không được quên cập nhật $(l, r)$. $r$ nên được cập nhật theo cách mà nó đại diện cho chỉ số cuối cùng của chuỗi con đối xứng ngoài cùng bên phải hiện tại.
 
-* Now consider the case when $i \le r$. We'll try to extract some information from the already calculated values in $d_{odd}[]$. So, let's find the "mirror" position of $i$ in the sub-palindrome $(l, r)$, i.e. we'll get the position $j = l + (r - i)$, and we check the value of $d_{odd}[j]$. Because $j$ is the position symmetrical to $i$ with respect to $(l+r)/2$, we can **almost always** assign $d_{odd}[i] = d_{odd}[j]$. Illustration of this (palindrome around $j$ is actually "copied" into the palindrome around $i$):
+* Bây giờ hãy xem xét trường hợp khi $i \le r$. Chúng ta sẽ cố gắng trích xuất một số thông tin từ các giá trị đã được tính toán trong $d_{odd}[]$. Vì vậy, hãy tìm vị trí "gương" của $i$ trong chuỗi con đối xứng $(l, r)$, tức là chúng ta sẽ nhận được vị trí $j = l + (r - i)$, và chúng ta kiểm tra giá trị của $d_{odd}[j]$. Bởi vì $j$ là vị trí đối xứng với $i$ đối với $(l+r)/2$, chúng ta có thể **gần như luôn luôn** gán $d_{odd}[i] = d_{odd}[j]$. Minh họa cho điều này (chuỗi đối xứng xung quanh $j$ thực sự được "sao chép" vào chuỗi đối xứng xung quanh $i$):
     
     $$
     \ldots\ 
@@ -94,11 +96,11 @@ So, we want to calculate $d_{odd}[i]$ for the next $i$, and all the previous val
     \ldots
     $$
     
-    But there is a **tricky case** to be handled correctly: when the "inner" palindrome reaches the borders of the "outer" one, i. e. $j - d_{odd}[j] \le l$ (or, which is the same, $i + d_{odd}[j] \ge r$). Because the symmetry outside the "outer" palindrome is not guaranteed, just assigning $d_{odd}[i] = d_{odd}[j]$ will be incorrect: we do not have enough data to state that the palindrome in the position $i$ has the same length.
+    Nhưng có một **trường hợp khó** cần được xử lý chính xác: khi chuỗi đối xứng "bên trong" chạm đến ranh giới của chuỗi đối xứng "bên ngoài", tức là $j - d_{odd}[j] \le l$ (hoặc, giống như vậy, $i + d_{odd}[j] \ge r$). Bởi vì tính đối xứng bên ngoài chuỗi đối xứng "bên ngoài" không được đảm bảo, việc chỉ gán $d_{odd}[i] = d_{odd}[j]$ sẽ không chính xác: chúng ta không có đủ dữ liệu để khẳng định rằng chuỗi đối xứng ở vị trí $i$ có cùng độ dài.
     
-    Actually, we should restrict the length of our palindrome for now, i. e. assign $d_{odd}[i] = r - i$, to handle such situations correctly. After this we'll run the trivial algorithm which will try to increase $d_{odd}[i]$ while it's possible.
+    Trên thực tế, chúng ta nên giới hạn độ dài của chuỗi đối xứng của mình cho đến bây giờ, tức là gán $d_{odd}[i] = r - i$, để xử lý các tình huống như vậy một cách chính xác. Sau đó, chúng ta sẽ chạy thuật toán đơn giản sẽ cố gắng tăng $d_{odd}[i]$ trong khi có thể.
     
-    Illustration of this case (the palindrome with center $j$ is restricted to fit the "outer" palindrome):
+    Minh họa cho trường hợp này (chuỗi đối xứng có tâm $j$ bị hạn chế để phù hợp với chuỗi đối xứng "bên ngoài"):
     
     $$
     \ldots\ 
@@ -113,32 +115,32 @@ So, we want to calculate $d_{odd}[i]$ for the next $i$, and all the previous val
     }^\text{palindrome}\ 
     \underbrace{
         \ldots \ldots \ldots \ldots \ldots
-    }_\text{try moving here}
+    }_\text{thử di chuyển đến đây}
     $$
     
-    It is shown in the illustration that though the palindrome with center $j$ could be larger and go outside the "outer" palindrome, but with $i$ as the center we can use only the part that entirely fits into the "outer" palindrome. But the answer for the position $i$ ($d_{odd}[i]$) can be much bigger than this part, so next we'll run our trivial algorithm that will try to grow it outside our "outer" palindrome, i. e. to the region "try moving here".
+    Hình minh họa cho thấy mặc dù chuỗi đối xứng có tâm $j$ có thể lớn hơn và đi ra ngoài chuỗi đối xứng "bên ngoài", nhưng với $i$ là tâm, chúng ta chỉ có thể sử dụng phần hoàn toàn nằm gọn trong chuỗi đối xứng "bên ngoài". Nhưng câu trả lời cho vị trí $i$ ($d_{odd}[i]$) có thể lớn hơn nhiều so với phần này, vì vậy tiếp theo chúng ta sẽ chạy thuật toán đơn giản của chúng ta, thuật toán này sẽ cố gắng phát triển nó ra bên ngoài chuỗi đối xứng "bên ngoài" của chúng ta, tức là đến vùng "thử di chuyển đến đây".
 
-Again, we should not forget to update the values $(l, r)$ after calculating each $d_{odd}[i]$.
+Một lần nữa, chúng ta không nên quên cập nhật các giá trị $(l, r)$ sau khi tính toán mỗi $d_{odd}[i]$.
 
-## Complexity of Manacher's algorithm
+## Độ phức tạp của thuật toán Manacher
 
-At the first glance it's not obvious that this algorithm has linear time complexity, because we often run the naive algorithm while searching the answer for a particular position.
+Thoạt nhìn, không rõ ràng rằng thuật toán này có độ phức tạp thời gian tuyến tính, bởi vì chúng ta thường chạy thuật toán ngây thơ trong khi tìm kiếm câu trả lời cho một vị trí cụ thể.
 
-However, a more careful analysis shows that the algorithm is linear. In fact, [Z-function building algorithm](z-function.md), which looks similar to this algorithm, also works in linear time.
+Tuy nhiên, phân tích kỹ hơn cho thấy thuật toán là tuyến tính. Trên thực tế, [thuật toán xây dựng hàm Z](z-function.md), trông giống như thuật toán này, cũng hoạt động trong thời gian tuyến tính.
 
-We can notice that every iteration of trivial algorithm increases $r$ by one. Also $r$ cannot be decreased during the algorithm. So, trivial algorithm will make $O(n)$ iterations in total.
+Chúng ta có thể nhận thấy rằng mọi lần lặp của thuật toán đơn giản đều làm tăng $r$ thêm một. Ngoài ra $r$ không thể giảm trong quá trình thuật toán. Vì vậy, thuật toán đơn giản sẽ thực hiện tổng cộng $O(n)$ lần lặp.
 
-Other parts of Manacher's algorithm work obviously in linear time. Thus, we get $O(n)$ time complexity.
+Các phần khác của thuật toán Manacher rõ ràng hoạt động trong thời gian tuyến tính. Do đó, chúng ta nhận được độ phức tạp thời gian $O(n)$.
 
-## Implementation of Manacher's algorithm
+## Triển khai thuật toán Manacher
 
-For calculating $d_{odd}[]$, we get the following code. Things to note:
+Để tính toán $d_{odd}[]$, chúng ta nhận được mã sau. Những điều cần lưu ý:
 
- - $i$ is the index of the center letter of the current palindrome.
- - If $i$ exceeds $r$, $d_{odd}[i]$ is initialized to 0.
- - If $i$ does not exceed $r$, $d_{odd}[i]$ is either initialized to the $d_{odd}[j]$, where $j$ is the mirror position of $i$ in $(l,r)$, or $d_{odd}[i]$ is restricted to the size of the "outer" palindrome.
- - The while loop denotes the trivial algorithm. We launch it irrespective of the value of $k$.
- - If the size of palindrome centered at $i$ is $x$, then $d_{odd}[i]$ stores $\frac{x+1}{2}$.
+- $i$ là chỉ số của ký tự trung tâm của chuỗi đối xứng hiện tại.
+- Nếu $i$ vượt quá $r$, $d_{odd}[i]$ được khởi tạo thành 0.
+- Nếu $i$ không vượt quá $r$, $d_{odd}[i]$ được khởi tạo thành $d_{odd}[j]$, trong đó $j$ là vị trí gương của $i$ trong $(l,r)$, hoặc $d_{odd}[i]$ bị hạn chế bởi kích thước của chuỗi đối xứng "bên ngoài".
+- Vòng lặp while biểu thị thuật toán đơn giản. Chúng ta khởi chạy nó bất kể giá trị của $k$ là bao nhiêu.
+- Nếu kích thước của chuỗi đối xứng có tâm ở $i$ là $x$, thì $d_{odd}[i]$ lưu trữ $\frac{x+1}{2}$.
 
 ```cpp
 vector<int> manacher_odd(string s) {
@@ -159,23 +161,23 @@ vector<int> manacher_odd(string s) {
 }
 ```
 
-## Working with parities
+## Làm việc với chẵn lẻ
 
-Although it is possible to implement Manacher's algorithm for odd and even lengths separately, the implementation of the version for even lengths is often deemed more difficult, as it is less natural and easily leads to off-by-one errors.
+Mặc dù có thể triển khai thuật toán Manacher cho độ dài lẻ và chẵn riêng biệt, nhưng việc triển khai phiên bản cho độ dài chẵn thường được coi là khó hơn, vì nó kém tự nhiên hơn và dễ dẫn đến lỗi lệch một.
 
-To mitigate this, it is possible to reduce the whole problem to the case when we only deal with the palindromes of odd length. To do this, we can put an additional `#` character between each letter in the string and also in the beginning and the end of the string:
+Để giảm thiểu điều này, có thể rút gọn toàn bộ bài toán thành trường hợp chúng ta chỉ xử lý các chuỗi đối xứng có độ dài lẻ. Để thực hiện việc này, chúng ta có thể đặt thêm ký tự `#` giữa mỗi chữ cái trong chuỗi và cả ở đầu và cuối chuỗi:
 
 $$abcbcba \to \#a\#b\#c\#b\#c\#b\#a\#,$$
 
 $$d = [1,2,1,2,1,4,1,8,1,4,1,2,1,2,1].$$
 
-As you can see, $d[2i]=2 d_{even}[i]+1$ and $d[2i+1]=2 d_{odd}[i]$ where $d$ denotes the Manacher array for odd-length palindromes in `#`-joined string, while $d_{odd}$ and $d_{even}$ correspond to the arrays defined above in the initial string.
+Như bạn có thể thấy, $d[2i]=2 d_{even}[i]+1$ và $d[2i+1]=2 d_{odd}[i]$ trong đó $d$ biểu thị mảng Manacher cho các chuỗi đối xứng có độ dài lẻ trong chuỗi được nối bằng `#`, trong khi $d_{odd}$ và $d_{even}$ tương ứng với các mảng được xác định ở trên trong chuỗi ban đầu.
 
-Indeed, `#` characters do not affect the odd-length palindromes, which are still centered in the initial string's characters, but now even-length palindromes of the initial string are odd-length palindromes of the new string centered in `#` characters.
+Thật vậy, các ký tự `#` không ảnh hưởng đến các chuỗi đối xứng có độ dài lẻ, chúng vẫn tập trung vào các ký tự của chuỗi ban đầu, nhưng bây giờ các chuỗi đối xứng có độ dài chẵn của chuỗi ban đầu là các chuỗi đối xứng có độ dài lẻ của chuỗi mới tập trung vào các ký tự `#`.
 
-Note that $d[2i]$ and $d[2i+1]$ are essentially the increased by $1$ lengths of the largest odd- and even-length palindromes centered in $i$ correspondingly.
+Lưu ý rằng $d[2i]$ và $d[2i+1]$ về cơ bản là độ dài tăng thêm $1$ của các chuỗi đối xứng có độ dài lẻ và chẵn lớn nhất tập trung vào $i$ tương ứng.
 
-The reduction is implemented in the following way:
+Việc rút gọn được thực hiện theo cách sau:
 
 ```cpp
 vector<int> manacher(string s) {
@@ -188,9 +190,9 @@ vector<int> manacher(string s) {
 }
 ```
 
-For simplicity, splitting the array into $d_{odd}$ and $d_{even}$ as well as their explicit calculation is omitted.
+Để đơn giản, việc chia mảng thành $d_{odd}$ và $d_{even}$ cũng như tính toán rõ ràng của chúng bị bỏ qua.
 
-## Problems
+## Bài tập
 
 - [Library Checker - Enumerate Palindromes](https://judge.yosupo.jp/problem/enumerate_palindromes)
 - [Longest Palindrome](https://cses.fi/problemset/task/1111)
@@ -199,4 +201,7 @@ For simplicity, splitting the array into $d_{odd}$ and $d_{even}$ as well as the
 - [CF - Prefix-Suffix Palindrome](https://codeforces.com/contest/1326/problem/D2)
 - [SPOJ - Number of Palindromes](https://www.spoj.com/problems/NUMOFPAL/)
 - [Kattis - Palindromes](https://open.kattis.com/problems/palindromes)
+
+
+
 

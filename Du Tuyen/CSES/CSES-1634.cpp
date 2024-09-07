@@ -1,27 +1,29 @@
+//created in 2024-08-27-09.00.53 in Code::Blocks 20.03
 #include<bits/stdc++.h>
-
-#define int int64_t
 
 using namespace std;
 
-int32_t main() {
+const int N = 1e6 + 9;
+
+int n, s;
+int dp[N], w[N];
+
+signed main() {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
-    
-    int n, s;
+
     cin >> n >> s;
-    vector<int> a(n), dp(s + 1, 0);
-    for(auto &i : a)
-        cin >> i;
-    
-    function<int(int)> cal = [&](int x) {
-        if(dp[x] != 0)
-            return dp[x];
-        
-        // for(auto i : s) {
-        //     if(i < s)
 
-        // }
-    };
+    for(int i = 1; i <= s; i++)
+        dp[i] = 1e9;
 
-    cout << cal(s);
+    for(int i = 1; i <= n; i++) {
+        cin >> w[i];
+    }
+    dp[0] = 0;
+    for(int i = 1; i <= s; i++) {
+        for(int j = 1; j <= n; j++)
+            if(i - w[j] >= 0)
+                dp[i] = min(dp[i], dp[i - w[j]] + 1);
+    }
+    cout << (dp[s] != 1e9 ? dp[s] : -1);
 }

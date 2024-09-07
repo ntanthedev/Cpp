@@ -1,35 +1,37 @@
+# Xóa khỏi cấu trúc dữ liệu trong $O(T(n) \log n)$
+
 ---
-title: Xóa khỏi cấu trúc dữ liệu trong O(T(n) log n)
 tags:
   - Bản gốc
 ---
-# Xóa khỏi cấu trúc dữ liệu trong $O(T(n)\log n)$
 
-Giả sử bạn có một cấu trúc dữ liệu cho phép thêm phần tử trong **đúng** $O(T(n))$.
-Bài viết này sẽ mô tả một kỹ thuật cho phép xóa trong $O(T(n)\log n)$ offline.
+# Xóa khỏi cấu trúc dữ liệu trong $O(T(n) \log n)$
+
+Giả sử bạn có một cấu trúc dữ liệu cho phép thêm các phần tử trong **thực sự** $O(T(n))$.
+Bài viết này sẽ mô tả một kỹ thuật cho phép xóa trong $O(T(n) \log n)$ ngoại tuyến (offline).
 
 ## Thuật toán
 
-Mỗi phần tử tồn tại trong cấu trúc dữ liệu trong một số đoạn thời gian giữa các thao tác thêm và xóa.
-Hãy xây dựng một cây phân đoạn trên các truy vấn.
-Mỗi đoạn khi một phần tử tồn tại sẽ được chia thành $O(\log n)$ nút của cây.
-Hãy đặt mỗi truy vấn khi chúng ta muốn biết điều gì đó về cấu trúc vào nút lá tương ứng.
+Mỗi phần tử tồn tại trong cấu trúc dữ liệu trong một số đoạn thời gian giữa các lần thêm và xóa.
+Hãy xây dựng một cây phân đoạn (segment tree) trên các truy vấn.
+Mỗi đoạn khi một số phần tử còn tồn tại sẽ được chia thành $O(\log n)$ nút của cây.
+Hãy đặt mỗi truy vấn khi chúng ta muốn biết điều gì đó về cấu trúc vào lá tương ứng.
 Bây giờ để xử lý tất cả các truy vấn, chúng ta sẽ chạy DFS trên cây phân đoạn.
-Khi đi vào một nút, chúng ta sẽ thêm tất cả các phần tử nằm bên trong nút đó.
-Sau đó, chúng ta sẽ đi tiếp đến các nút con của nút này hoặc trả lời các truy vấn (nếu nút đó là nút lá).
-Khi rời khỏi nút, chúng ta phải hoàn tác các thao tác thêm.
-Lưu ý rằng nếu chúng ta thay đổi cấu trúc trong $O(T(n))$, chúng ta có thể hoàn tác các thay đổi trong $O(T(n))$ bằng cách sử dụng một stack để lưu các thay đổi.
-Lưu ý rằng việc hoàn tác sẽ phá vỡ độ phức tạp khấu hao.
+Khi vào một nút, chúng ta sẽ thêm tất cả các phần tử nằm bên trong nút này.
+Sau đó, chúng ta sẽ đi xa hơn đến các con của nút này hoặc trả lời các truy vấn (nếu nút là lá).
+Khi rời khỏi nút, chúng ta phải hoàn tác các phép thêm.
+Lưu ý rằng nếu chúng ta thay đổi cấu trúc trong $O(T(n))$ thì chúng ta có thể khôi phục các thay đổi trong $O(T(n))$ bằng cách giữ một _stack_ (ngăn xếp) các thay đổi.
+Lưu ý rằng việc khôi phục phá vỡ độ phức tạp khấu hao (amortized complexity).
 
-## Lưu ý
+## Ghi chú
 
-Ý tưởng tạo một cây phân đoạn trên các đoạn khi một phần tử tồn tại có thể được sử dụng không chỉ cho các bài toán về cấu trúc dữ liệu.
+Ý tưởng tạo một cây phân đoạn trên các đoạn khi một thứ gì đó còn tồn tại có thể được sử dụng không chỉ cho các bài toán về cấu trúc dữ liệu.
 Xem một số bài toán bên dưới.
 
 ## Triển khai
 
-Triển khai này dành cho bài toán [liên thông động](https://vi.wikipedia.org/wiki/Liên_thông_động).
-Nó có thể thêm cạnh, xóa cạnh và đếm số thành phần liên thông.
+Cách triển khai này dành cho bài toán [kết nối động](https://en.wikipedia.org/wiki/Dynamic_connectivity).
+Nó có thể thêm cạnh, xóa cạnh và đếm số lượng thành phần được kết nối.
 
 ```{.cpp file=dynamic-conn}
 struct dsu_save {
@@ -155,3 +157,7 @@ struct QueryTree {
 - [Codeforces - Connect and Disconnect](https://codeforces.com/gym/100551/problem/A)
 - [Codeforces - Addition on Segments](https://codeforces.com/contest/981/problem/E)
 - [Codeforces - Extending Set of Points](https://codeforces.com/contest/1140/problem/F)
+
+
+
+--- 

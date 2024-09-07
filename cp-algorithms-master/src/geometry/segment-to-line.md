@@ -1,28 +1,30 @@
+# Tìm phương trình của đường thẳng cho một đoạn thẳng
+
 ---
 tags:
-  - Translated
+  - Dịch
 e_maxx_link: segment_to_line
 ---
 
-# Finding the equation of a line for a segment
+# Tìm phương trình của đường thẳng cho một đoạn thẳng
 
-The task is: given the coordinates of the ends of a segment, construct a line passing through it.
+Nhiệm vụ là: cho tọa độ của hai đầu của một đoạn thẳng, hãy xây dựng một đường thẳng đi qua nó.
 
-We assume that the segment is non-degenerate, i.e. has a length greater than zero (otherwise, of course, infinitely many different lines pass through it).
+Chúng ta giả sử rằng đoạn thẳng là không suy biến, tức là có độ dài lớn hơn 0 (nếu không, tất nhiên, vô số đường thẳng khác nhau đi qua nó).
 
-### Two-dimensional case
+### Trường hợp hai chiều
 
-Let the given segment be $PQ$ i.e. the known coordinates of its ends $P_x , P_y , Q_x , Q_y$ .
+Cho đoạn thẳng đã cho là $PQ$, tức là các tọa độ đã biết của hai đầu của nó là $P_x , P_y , Q_x , Q_y$.
 
-It is necessary to construct **the equation of a line in the plane** passing through this segment, i.e. find the coefficients $A , B , C$ in the equation of a line:
+Cần phải xây dựng **phương trình của một đường thẳng trên mặt phẳng** đi qua đoạn thẳng này, tức là tìm các hệ số $A , B , C$ trong phương trình của một đường thẳng:
 
 $$A x + B y + C = 0.$$
 
-Note that for the required triples $(A, B, C)$ there are **infinitely many** solutions which describe the given segment:
-you can multiply all three coefficients by an arbitrary non-zero number and get the same straight line.
-Therefore, our task is to find one of these triples.
+Lưu ý rằng đối với bộ ba $(A, B, C)$ cần thiết, có **vô số** giải pháp mô tả đoạn thẳng đã cho:
+bạn có thể nhân cả ba hệ số với một số khác không tùy ý và nhận được cùng một đường thẳng.
+Do đó, nhiệm vụ của chúng ta là tìm một trong những bộ ba này.
 
-It is easy to verify (by substitution of these expressions and the coordinates of the points $P$ and $Q$ into the equation of a straight line) that the following set of coefficients fits:
+Rất dễ dàng để xác minh (bằng cách thay thế các biểu thức này và tọa độ của các điểm $P$ và $Q$ vào phương trình của một đường thẳng) rằng tập hợp các hệ số sau phù hợp:
 
 $$\begin{align}
 A &= P_y - Q_y, \\
@@ -30,39 +32,44 @@ B &= Q_x - P_x, \\
 C &= - A P_x - B P_y.
 \end{align}$$
 
-### Integer case
+### Trường hợp số nguyên
 
-An important advantage of this method of constructing a straight line is that if the coordinates of the ends were integer, then the coefficients obtained will also be **integer** . In some cases, this allows one to perform geometric operations without resorting to real numbers at all.
+Một ưu điểm quan trọng của phương pháp xây dựng đường thẳng này là nếu tọa độ của hai đầu là số nguyên thì các hệ số thu được cũng sẽ là **số nguyên**. Trong một số trường hợp, điều này cho phép người ta thực hiện các phép toán hình học mà hoàn toàn không cần dùng đến số thực.
 
-However, there is a small drawback: for the same straight line different triples of coefficients can be obtained.
-To avoid this, but do not go away from the integer coefficients, you can apply the following technique, often called **rationing**. Find the [greatest common divisor](../algebra/euclid-algorithm.md) of numbers $| A | , | B | , | C |$ , we divide all three coefficients by it, and then we make the normalization of the sign: if $A <0$ or $A = 0, B <0$ then multiply all three coefficients by $-1$ .
-As a result, we will come to the conclusion that for identical straight lines, identical triples of coefficients will be obtained, which makes it easy to check straight lines for equality.
+Tuy nhiên, có một nhược điểm nhỏ: đối với cùng một đường thẳng, có thể thu được các bộ ba hệ số khác nhau.
+Để tránh điều này, nhưng không đi xa khỏi các hệ số nguyên, bạn có thể áp dụng kỹ thuật sau, thường được gọi là **hợp lý hóa** (rationing). Tìm [ước chung lớn nhất](../algebra/euclid-algorithm.md) của các số $| A | , | B | , | C |$, chúng ta chia cả ba hệ số cho nó, và sau đó chúng ta thực hiện chuẩn hóa dấu: nếu $A <0$ hoặc $A = 0, B <0$ thì nhân cả ba hệ số với $-1$.
+Kết quả là, chúng ta sẽ đi đến kết luận rằng đối với các đường thẳng giống hệt nhau, các bộ ba hệ số giống hệt nhau sẽ thu được, điều này giúp dễ dàng kiểm tra xem các đường thẳng có bằng nhau hay không.
 
-### Real case
+### Trường hợp số thực
 
-When working with real numbers, you should always be aware of errors.
+Khi làm việc với số thực, bạn nên luôn lưu ý đến các lỗi.
 
-The coefficients $A$ and $B$ will have the order of the original coordinates, the coefficient $C$ is of the order of the square of them. This may already be quite large numbers, and, for example, when we [intersect straight lines](lines-intersection.md), they will become even larger, which can lead to large rounding errors already when the coordinates of the end points are of order $10^3$.
+Các hệ số $A$ và $B$ sẽ có thứ tự của tọa độ ban đầu, hệ số $C$ có thứ tự là bình phương của chúng. Đây có thể đã là những con số khá lớn, và ví dụ, khi chúng ta [giao nhau các đường thẳng](lines-intersection.md), chúng sẽ trở nên lớn hơn nữa, điều này có thể dẫn đến sai số làm tròn lớn ngay cả khi tọa độ của các điểm cuối là theo thứ tự $10^3$.
 
-Therefore, when working with real numbers, it is desirable to produce the so-called **normalization**, this is straightforward: namely, to make the coefficients such that $A ^ 2 + B ^ 2 = 1$ . To do this, calculate the number $Z$ :
+Do đó, khi làm việc với số thực, người ta mong muốn tạo ra cái gọi là **chuẩn hóa** (normalization), điều này rất đơn giản: cụ thể là, để tạo các hệ số sao cho $A ^ 2 + B ^ 2 = 1$. Để làm điều này, hãy tính số $Z$:
 
 $$Z = \sqrt{A ^ 2 + B ^ 2},$$
 
-and divide all three coefficients $A , B , C$ by it.
+và chia cả ba hệ số $A , B , C$ cho nó.
 
-Thus, the order of the coefficients $A$ and $B$ will not depend on the order of the input coordinates, and the coefficient $C$ will be of the same order as the input coordinates. In practice, this leads to a significant improvement in the accuracy of calculations.
+Do đó, thứ tự của các hệ số $A$ và $B$ sẽ không phụ thuộc vào thứ tự của các tọa độ đầu vào, và hệ số $C$ sẽ có cùng thứ tự với các tọa độ đầu vào. Trong thực tế, điều này dẫn đến cải thiện đáng kể về độ chính xác của các phép tính.
 
-Finally, we mention the **comparison** of straight lines - in fact, after such a normalization, for the same straight line, only two triples of coefficients can be obtained: up to multiplication by $-1$.
-Accordingly, if we make an additional normalization taking into account the sign (if $A < -\varepsilon$  or $| A | < \varepsilon$, $B <- \varepsilon$ then multiply by $-1$ ), the resulting coefficients will be unique.
+Cuối cùng, chúng ta đề cập đến **so sánh** các đường thẳng - trên thực tế, sau khi chuẩn hóa như vậy, đối với cùng một đường thẳng, chỉ có thể thu được hai bộ ba hệ số: cho đến khi nhân với $-1$.
+Theo đó, nếu chúng ta thực hiện chuẩn hóa bổ sung có tính đến dấu (nếu $A < -\varepsilon$ hoặc $| A | < \varepsilon$, $B <- \varepsilon$ thì nhân với $-1$), các hệ số kết quả sẽ là duy nhất.
 
-### Three-dimensional and multidimensional case
+### Trường hợp ba chiều và nhiều chiều
 
-Already in the three-dimensional case there is **no simple equation** describing a straight line (it can be defined as the intersection of two planes, that is, a system of two equations, but this is an inconvenient method).
+Ngay cả trong trường hợp ba chiều, **không có phương trình đơn giản** nào mô tả một đường thẳng (nó có thể được định nghĩa là giao điểm của hai mặt phẳng, tức là một hệ hai phương trình, nhưng đây là một phương pháp bất tiện).
 
-Consequently, in the three-dimensional and multidimensional cases we must use the **parametric method of defining a straight line** , i.e. as a point $p$ and a vector $v$ :
+Do đó, trong trường hợp ba chiều và nhiều chiều, chúng ta phải sử dụng **phương pháp tham số để xác định một đường thẳng**, tức là một điểm $p$ và một vectơ $v$:
 
 $$p + v t, ~~~ t \in \mathbb{R}.$$
 
-Those. a straight line is all points that can be obtained from a point $p$ adding a vector $v$ with an arbitrary coefficient.
+Tức là. một đường thẳng là tất cả các điểm có thể thu được từ một điểm $p$ cộng với một vectơ $v$ với một hệ số tùy ý.
 
-The **construction** of a straight line in a parametric form along the coordinates of the ends of a segment is trivial, we just take one end of the segment for the point $p$, and the vector from the first to the second end — for the vector $v$.
+**Xây dựng** một đường thẳng ở dạng tham số dọc theo tọa độ của hai đầu của một đoạn thẳng là điều tầm thường, chúng ta chỉ cần lấy một đầu của đoạn thẳng cho điểm $p$ và vectơ từ đầu thứ nhất đến đầu thứ hai - cho vectơ $v$.
+
+---
+
+
+
