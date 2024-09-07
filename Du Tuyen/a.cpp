@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 //Written by: ntannn_
 //created in 08:14:39 - Fri 23/08/2024
 #include <bits/stdc++.h>
@@ -44,4 +42,3 @@ signed main() {
     }
     // cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }
->>>>>>> 5ea6772cf3d9db8cfbded0c6d3ac4e68d262083b
