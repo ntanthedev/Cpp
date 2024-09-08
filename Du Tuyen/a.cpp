@@ -12,7 +12,7 @@ int32_t main() {
     
     int n, m, x, y, k;
 
-    cin >> n >> m >> x >> y >> k;
+    cin >> n >> m >> x >> y >> k;;
 
     vector<int> a(n), b(m);
 
