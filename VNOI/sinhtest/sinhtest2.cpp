@@ -143,146 +143,26 @@ void sub1(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
 
-    int n, k, w, l, r;
-    n = Rand(5, 10);  
-    k = Rand(1, n);
-
-    inp << n << " " << k << '\n';
-
-    vector<tuple<int, int, int>> vt;
-
-    for(int i = 1; i <= n; i++) {
-        w = Rand(1, 100);
-
-        int t = Rand(1, 10);
-
-        if(i == 1) 
-            r = Rand(i + 1, n), l = r;
-        else if(i == n) 
-            l = Rand(1, i - 1), r = l;
-        else {
-            if(i <= 3) 
-                t = Rand(2, 4);
-            else if(i >= n - 3)
-                t = Rand(1, 3);
-                
-            if(t & 1) 
-                l = Rand(1, i - 1), r = l;
-            else 
-                r = Rand(i + 1, n), l = r;
-        }
-
-        vt.push_back({w, l, r});
-    }
-
-    // random_shuffle(all(vt));
-    
-    for(auto [w, l, r] : vt) 
-        inp << w << " " << l << " " << r << '\n';
 }
 
 void sub2(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
 
-    int n, k, w, l, r;
-    n = Rand(500, 10000);  
-    k = Rand(1, 100);
-
-    inp << n << " " << k << '\n';
-
-    vector<tuple<int, int, int>> vt;
-
-    for(int i = 1; i <= n; i++) {
-        int tt = Rand(1, 10);
-        if(tt <= 3) {
-            w = Rand(1, 1e6);
-        }
-        else 
-            w = Rand(-1e6, -1);
-
-        int t = Rand(1, 10);
-
-        if(i == 1) 
-            r = Rand(i + 1, n), l = r;
-        else if(i == n) 
-            l = Rand(1, i - 1), r = l;
-        else {
-            if(i <= 50) 
-                t = Rand(2, 4);
-            else if(i >= n - 50)
-                t = Rand(1, 3);
-                
-            if(t & 1) 
-                l = Rand(1, i - 1), r = l;
-            else 
-                r = Rand(i + 1, n), l = r;
-        }
-
-        vt.push_back({w, l, r});
-    }
-
-    // random_shuffle(all(vt));
     
-    for(auto [w, l, r] : vt) 
-        inp << w << " " << l << " " << r << '\n';
 }
 
 void sub3(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
     
-    int n, k, w, l, r;
-    n = Rand(500, 10000); 
-    if(x >= s2 + cal(50, s3))
-        n = 10000; 
-    k = Rand(50, 100);
-
-    inp << n << " " << k << '\n';
-
-    vector<tuple<int, int, int>> vt;
-
-    for(int i = 1; i <= n; i++) {
-        int tt = Rand(1, 10);
-        if(tt <= 3) {
-            w = Rand(1, 10000000);
-        }
-        else 
-            w = Rand(-1e6, -1);
-        if(x == 90) 
-            w = Rand(-1e9, -1);
-
-        int t = Rand(1, 10);
-
-        if(i == 1) 
-            r = Rand(i + 1, n), l = Rand(i + 1, r);
-        else if(i == n) 
-            l = Rand(1, i - 1), r = Rand(l, i - 1);
-        else {
-            if(i <= 50) 
-                t = Rand(2, 4);
-            else if(i >= n - 50)
-                t = Rand(1, 3);
-
-            if(t & 1) 
-                l = Rand(1, i - 1), r = Rand(l, i - 1);
-            else 
-                r = Rand(i + 1, n), l = Rand(i + 1, r);
-        }
-
-        vt.push_back({w, l, r});
-    }
-
-    // random_shuffle(all(vt));
     
-    for(auto [w, l, r] : vt) 
-        inp << w << " " << l << " " << r << '\n';
 }
 int main(){
     ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
     //srand(time(NULL));
     srand(static_cast<unsigned int>(std::time(nullptr)));
-    
+
     for (int i = btest; i <= etest; i++)
     {
         if(i <= s1)
