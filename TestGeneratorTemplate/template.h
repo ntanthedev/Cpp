@@ -1,6 +1,14 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+typedef long long ll;
+
+mt19937 rd(chrono :: steady_clock :: now().time_since_epoch().count());
+
+ll Rand(ll l, ll r) { // Rand trong khoang (l, r)
+    return uniform_int_distribution<ll>(l,r) (rd);
+} 
+
 long long Rnd() // tra ve mot so ngau nhien
 {
     long long ans = 0;
@@ -8,9 +16,6 @@ long long Rnd() // tra ve mot so ngau nhien
     return ans;
 }
 
-long long Rand(long long l, long long h) { // tra ve so random trong khoang tu l den r
-    return abs(Rnd()) % (h - l + 1) + l;
-}
 bool bit01() { // tra ve 0 hoac 1
     return Rand(1, 1e5)%2;
 }

@@ -1,21 +1,45 @@
+//Written by: ntannn_
+//created in 14:47:47 - Sat 14/09/2024
 #include <bits/stdc++.h>
+// #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+// #pragma GCC target("sse4,avx2,fma")
+#define fi first
+#define se second
+#define mp make_pair
+#define pb push_back
+#define eb emplace_back
+#define all(x) x.begin(), x.end()
+#define TIME (1.0 * clock() / CLOCKS_PER_SEC)
 
 using namespace std;
-long long n, s = 0;
-int main()
-{
-    ios_base::sync_with_stdio (false);
-    cin.tie(0); cout.tie(0);
-    #define task "sums"
+
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef pair<ll, ll> pll;
+typedef vector<int> vi;
+typedef vector<ll> vll;
+
+const int N = 1e6 + 10;
+const ll MOD = 1e9 + 7;
+
+
+
+void solve() {
+    
+}
+
+#define task "flo"
+signed main() {
+    cin.tie(NULL);
+    ios_base::sync_with_stdio(false);
     if(fopen(task ".inp", "r")) {
         freopen(task ".inp", "r", stdin);
         freopen(task ".out", "w", stdout);
     }
-    cin >> n;
-    for (long long i = 1; i <= n; i++)
-    {
-        s += 2 * i + 1;
+    int test_case = 1;
+    //cin >> test_case;
+    while(test_case--) {
+        solve();
     }
-    cout << s;
-    return 0;
+    // cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }
