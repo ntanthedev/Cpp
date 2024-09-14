@@ -33,7 +33,7 @@ const ll W = 1e6;
 const ll T = 10;
 map<ll, ll> M;
 vector<long long> vt;
-mt19937 rd(20092007);
+mt19937 rd(time(nullptr));
 
 int cal(int x, int n) {
     return double(n / 100.0) * x;

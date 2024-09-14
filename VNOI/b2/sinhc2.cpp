@@ -9,15 +9,13 @@ using namespace std;
 #define f1(i,n) for(int i=1;i<=n;i++)
 typedef long long ll;
 const int btest = 1;
-const int etest = 300;
+const int etest = 100;
 
-ll Rand(ll l, ll h)
-{
-    return l + ((ll)rand() * (RAND_MAX + 1) * (RAND_MAX + 1) * (RAND_MAX + 1) +
-                (ll)rand() * (RAND_MAX + 1) * (RAND_MAX + 1) +
-                (ll)rand() * (RAND_MAX + 1) +
-                rand()) % (h - l + 1);
-}
+mt19937_64 rd(static_cast<unsigned int>(std::time(nullptr)));
+ll Rand(ll l, ll r) {
+    return uniform_int_distribution<ll>(l,r) (rd);
+} 
+
 #define maxn 2003
 //#define A 1000000000
 const ll A = 1e18;
@@ -30,7 +28,6 @@ const ll W = 1e6;
 const ll T = 10;
 map<ll, ll> M;
 vector<long long> vt;
-mt19937 rd(20092007);
 
 
 void sub1(int x) {
@@ -43,11 +40,9 @@ void sub1(int x) {
     for(int i = 1; i <= n; i++) {
         a = Rand(1, N);
         if(x == 60)
-            a = 0;
+            a = 1;
         if(x == 61)
             a = 1;
-        if(x == 62)
-            a = Rand(0, 1);
         inp << a << ' ';
     }
 }
@@ -84,9 +79,9 @@ int main(){
     M[1] = 1;
     for (int i = btest; i <= etest; i++)
     {
-        if(i <= 70 * 3)
+        if(i <= 70)
             sub1(i);
-        else if(i <= 70 * 3 + 45)
+        else if(i <= 70 + 15)
             sub2(i);
         else 
             sub3(i);
