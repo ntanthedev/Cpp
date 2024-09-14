@@ -14,17 +14,10 @@ const int test_for_sub1 = 10; //% so luong test theo tung sub
 const int test_for_sub2 = 30;
 const int test_for_sub3 = 100;
 const int s1 = double(etest) / 100.0 * test_for_sub1 * 1.0;
-const int s2 = double(etest) / 100.0 * test_for_sub2 * 1.0;
+const int s2 = s1 + double(etest) / 100.0 * test_for_sub2 * 1.0;
 const int s3 = etest - s2;
 
 
-// ll Rand(ll l, ll h)
-// {
-//     return l + ((ll)rand() * (RAND_MAX + 1) * (RAND_MAX + 1) * (RAND_MAX + 1) +
-//                 (ll)rand() * (RAND_MAX + 1) * (RAND_MAX + 1) +
-//                 (ll)rand() * (RAND_MAX + 1) +
-//                 rand()) % (h - l + 1);
-// }
 
 mt19937_64 rd(static_cast<unsigned int>(std::time(nullptr)));
 ll Rand(ll l, ll r) {
@@ -139,10 +132,16 @@ int cal(int x, int n) {
     return double(n / 100.0) * x;
 }
 
+map<int, bool> m;
+
 void sub1(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
 
+    int n = Rand(1, 1e6);
+    while(m.count(n))
+        n = Rand(1, 1e6);
+    inp << n;
 }
 
 void sub2(int x) {
@@ -165,12 +164,12 @@ int main(){
 
     for (int i = btest; i <= etest; i++)
     {
-        if(i <= s1)
+        // if(i <= s1)
             sub1(i);
-        else if(i <= s1 + s2)
-            sub2(i);
-        else 
-            sub3(i);
+        // else if(i <= s2)
+        //     sub2(i);
+        // else 
+        //     sub3(i);
     }
 
     return 0;

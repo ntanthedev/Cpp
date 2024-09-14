@@ -10,8 +10,8 @@ using namespace std;
 typedef long long ll;
 const int btest = 1; 
 const int etest = 100; // so luong test
-const int test_for_sub1 = 10; //% so luong test theo tung sub
-const int test_for_sub2 = 30;
+const int test_for_sub1 = 0; //% so luong test theo tung sub
+const int test_for_sub2 = 70;
 const int test_for_sub3 = 100;
 const int s1 = double(etest) / 100.0 * test_for_sub1 * 1.0;
 const int s2 = double(etest) / 100.0 * test_for_sub2 * 1.0;
@@ -28,6 +28,7 @@ const int s3 = etest - s2;
 
 mt19937_64 rd(static_cast<unsigned int>(std::time(nullptr)));
 ll Rand(ll l, ll r) {
+    assert(l <= r);
     return uniform_int_distribution<ll>(l,r) (rd);
 } 
 
@@ -149,14 +150,24 @@ void sub2(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
 
-    
+    ll n = Rand(1, 1e6);
+
+    if(n >= s1 + cal(70, s2))
+        n = Rand(1e5, 1e6);
+
+    inp << n << " ";
 }
 
 void sub3(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
     
-    
+    ll n = Rand(1e6, 1e12);
+
+    if(n >= s2 + cal(70, s3))
+        n = Rand(1e10, 1e12);
+
+    inp << n << " ";
 }
 int main(){
     ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
