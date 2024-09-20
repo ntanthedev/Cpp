@@ -1,46 +1,26 @@
-//problem "gen"
-//created in 23:26:19 - Sat 17/08/2024
+//problem "aa"
+//created in 17:39:35 - Thu 19/09/2024
 
 #include<bits/stdc++.h>
 
 using namespace std;
 
-typedef long long ll;
-mt19937_64 rd(time(nullptr));
+const int N = 2e5 + 5;
 
-ll Rand(ll l, ll r) {
-    assert(l <= r);
-    return uniform_int_distribution<ll> (l, r) (rd);
-}
-
-const int end_test = 50;
+int n, Q;
+vector<int> adj[N];
 
 int32_t main() {
-
-    srand(time(nullptr));
-    system("g++ a.cpp -o a.exe");
-    system("g++ b.cpp -o b.exe");
+    ios_base::sync_with_stdio(false); cin.tie(NULL);
     
-    for(int i = 1; i <= end_test; i++) { 
-        ofstream inp("test.inp");
-        
-        int n = Rand(1, 100);
-        inp << n << '\n';
-        for(int i = 1; i <= n; i++) {
-            int a = Rand(1, 100);
-            inp << a << " ";
-        }
-        
-        inp.close();
+    cin >> n >> Q;
 
-        system("a.exe");
-        system("b.exe");
-
-        if(system("fc a.out b.out") != 0) {
-            printf("test %d wa\n", i);
-            return 0;
-        }
-        
-        printf("test %d ac\n", i);
+    for(int i = 1; i < n; i++) {
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
     }
+
+    
 }
