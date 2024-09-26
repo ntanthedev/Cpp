@@ -1,34 +1,22 @@
 //problem "code"
-//created in 16:13:07 - Sat 14/09/2024
+//created in 20:18:26 - Thu 26/09/2024
 
 #include<bits/stdc++.h>
 
-#define int long long
+#define int int64_t
 
 using namespace std;
 
 int32_t main() {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
-
+    
     #define task "code"
     if(fopen(task ".inp", "r")) {
         freopen(task ".inp", "r", stdin);
         freopen(task ".out", "w", stdout);
     }
 
-    int n, cnt = 0;
-    
+    int n;
     cin >> n;
-
-    for(int i = 1; i <= sqrt(n); i++) {
-        if(n % i == 0) {
-            if(i & 1) 
-                cnt++;
-            int j = n / i;
-            if(i != j && j & 1)
-                cnt++;
-        } 
-    }
-
-    cout << cnt;
+    cout << n * (n + 1);
 }

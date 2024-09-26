@@ -1,111 +1,45 @@
-//problem "CSES-2166"
-//created in 15:10:00 - Mon 09/09/2024
- 
-#include<bits/stdc++.h>
- 
-#define int int64_t
-const int N = 2e5 + 5;
- 
+//Written by: ntannn_
+//created in 20:16:06 - Thu 26/09/2024
+#include <bits/stdc++.h>
+// #pragma GCC optimize("O3,unroll-loops,no-stack-protector")
+// #pragma GCC target("sse4,avx2,fma")
+#define fi first
+#define se second
+#define mp make_pair
+#define pb push_back
+#define eb emplace_back
+#define all(x) x.begin(), x.end()
+#define TIME (1.0 * clock() / CLOCKS_PER_SEC)
+
 using namespace std;
- 
-int n, Q, tree[4 * N], a[N], lz[N * 4];
- 
-void build(int id, int l, int r) {
-    lz[id] = 0;
-    if(l == r) 
-        tree[id] = a[l];
-    else {
-        int mid = (l + r) / 2;
-        build(id * 2, l, mid);
-        build(id * 2 + 1, mid + 1, r);
-        tree[id] = max(tree[id * 2], tree[id * 2 + 1]);
-    }
-}
- 
-void update(int u, int v, int w, int id = 1, int l = 1, int r = n) {
-    if(lz[id]) {
-        tree[id] += lz[id];
-        if(l != r) 
-            lz[id * 2] += lz[id], lz[id * 2 + 1] += lz[id];
-        lz[id] = 0;
-    }    
- 
-    if(u > r || l > v)
-        return;
+
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef pair<ll, ll> pll;
+typedef vector<int> vi;
+typedef vector<ll> vll;
+
+const int N = 1e6 + 10;
+const ll MOD = 1e9 + 7;
+
+
+
+void solve() {
     
-    if(u <= l && r <= v) 
-        return tree[id] += w,
-        lz[id * 2] += w,
-        lz[id * 2 + 1] += w, void();
- 
-    int mid = (l + r) / 2;
- 
-    update(u, v, w, id * 2, l, mid);
-    update(u, v, w, id * 2 + 1, mid + 1, r);
- 
-    tree[id] = max(tree[id * 2], tree[id * 2 + 1]);
 }
- 
-int get(int u, int v, int id = 1, int l = 1, int r = n) {
-    if(lz[id]) {
-        tree[id] += lz[id];
-        if(l != r) 
-            lz[id * 2] += lz[id], lz[id * 2 + 1] += lz[id];
-        lz[id] = 0;
-    } 
- 
-    if(u > r || l > v)
-        return INT_MIN;
- 
-    if(u <= l && r <= v) 
-        return tree[id];
- 
-    int mid = (l + r) / 2;
- 
-    return max(get(u, v, id * 2, l, mid), get(u, v, id * 2 + 1, mid + 1, r));
-}
- 
-int32_t main() {
-    ios_base::sync_with_stdio(false); cin.tie(NULL);
-    
-    #define task "a"
-    // if(fopen(task ".inp", "r")) {
-        freopen( "test.inp", "r", stdin);
+
+#define task "a"
+signed main() {
+    cin.tie(NULL);
+    ios_base::sync_with_stdio(false);
+    if(fopen(task ".inp", "r")) {
+        freopen(task ".inp", "r", stdin);
         freopen(task ".out", "w", stdout);
-    // }
-
-    cin >> n >> Q;
- 
-    for(int i = 1; i <= n; i++) 
-        cin >> a[i], a[i] += a[i - 1];
- 
- 
-    build(1, 1, n);
- 
-    while(Q--) {
-        int c, x, y;
-        cin >> c >> x >> y;
-        
-        if(c & 1) {
-            int t = y - get(x, x);
-            // cout << x << " " << get(x, x) << '\n';
-            update(x, n, t);
-            // cout << x << " " << get(x, x) << '\n';
-        }
-        else {
-            // cout << "check: " << x - 1 << " " << get(x - 1, x - 1) << '\n';
-            int t = get(x - 1, y);
-            if(t > 0) 
-                cout << t - get(x - 1, x - 1) << '\n';
-            else 
-                cout << 0 << '\n';
-        }
     }
+    int test_case = 1;
+    //cin >> test_case;
+    while(test_case--) {
+        solve();
+    }
+    // cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }
-
-/*
-1 2 3 4 5 6 7 8
-1 2 -1 -2 1 -5 1 4
-1 3 2 0 1 -4 -3 1
-
-*/
