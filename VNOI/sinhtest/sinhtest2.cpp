@@ -10,8 +10,8 @@ using namespace std;
 typedef long long ll;
 const int btest = 1; 
 const int etest = 100; // so luong test
-const int test_for_sub1 = 10; //% so luong test theo tung sub
-const int test_for_sub2 = 30;
+const int test_for_sub1 = 35; //% so luong test theo tung sub
+const int test_for_sub2 = 15;
 const int test_for_sub3 = 100;
 const int s1 = double(etest) / 100.0 * test_for_sub1 * 1.0;
 const int s2 = double(etest) / 100.0 * test_for_sub2 * 1.0;
@@ -143,20 +143,24 @@ void sub1(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
 
+    int n = Rand(1, 20);
+
+    for(int i = 1; i <= n; i++) {
+        
+    }
 }
 
 void sub2(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
 
-    
 }
 
 void sub3(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
     
-    
+
 }
 int main(){
     ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);

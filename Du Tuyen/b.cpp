@@ -1,44 +1,35 @@
 //problem "b"
-//created in 17:00:18 - Tue 17/09/2024
+//created in 09:57:31 - Sun 29/09/2024
 
 #include<bits/stdc++.h>
+#define ll long long
 
-#define int int64_t
-const int N = 2e5 + 5;  
+const int N = 1e6 + 5;
 
 using namespace std;
 
-int n, a[N], Q, s[N];
+ll n, k, a[N];
 
 int32_t main() {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
     
-
-    #define task "b"
-    // if(fopen(task ".inp", "r")) {
-        freopen("test.inp", "r", stdin);
+    #define task "BALANSUB"
+    if(fopen(task ".inp", "r")) {
+        freopen(task ".inp", "r", stdin);
         freopen(task ".out", "w", stdout);
-    // }
+    }
 
-    cin >> n >> Q; s[0] = 0;
+    cin >> n;
 
     for(int i = 1; i <= n; i++) 
-        cin >> a[i], s[i] = s[i - 1] + a[i];
+        cin >> a[i];
 
-
-    while(Q--) {
-        int c, x, y;
-        cin >> c >> x >> y;
-        if(c & 1) {
-            a[x] = y;
+    int ans = 0; 
+    for(int i = 1; i <= n; i++) 
+        for(int j = i; j <= n; j++) {
+            if(a[j] < j - i + 1)
+                break;
+            ans = max(ans, j - i + 1);    
         }
-        else {
-            int ans = 0, res = 0;
-            for(int i = x; i <= y; i++) {
-                res += a[i];
-                ans = max(ans, res);
-            }
-            cout << ans << '\n';
-        }
-    }
+    cout << ans;
 }

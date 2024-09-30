@@ -1,38 +1,20 @@
-Cho dãy ~A~ gồm ~n~ số nguyên dương ~a_1, a_2, \dots, a_n~ và một số nguyên dương ~x~. Cho ~q~ truy vấn có dạng ~l, r~.
+Cho một dãy số ~A~ gồm ~n~ số nguyên dương ~a_1, a_2, ..., a_n~, mỗi số có giá trị không quá ~10^9~. Một dãy con từ ~l~ đến ~r~ (~l \leq r~) được gọi là một dãy cân bằng nếu ~a_l \geq 1~, ~a_{l+1} \geq 2~, ..., ~a_r \geq (r - l + 1)~. Hãy xác định độ dài dãy con cân bằng dài nhất của dãy số đã cho.
 
-## Yêu cầu:
-Với mỗi truy vấn ~l, r~, hãy đếm số lượng các giá trị dương và nhỏ hơn ~x~ từ phần tử thứ ~l~ đến phần tử thứ ~r~ của dãy ~A~.
+Dữ liệu vào từ tệp văn bản `BALANSUB.INP` có cấu trúc:
+- Dòng đầu tiên gồm duy nhất một số nguyên dương ~n~ (~1 \leq n \leq 10^5~);
+- Dòng thứ hai gồm ~n~ số nguyên dương ~a_1, a_2, \dots, a_n~ được ghi cách nhau ít nhất một dấu cách.
 
-## Dữ liệu:
-Vào từ file văn bản `COUNT.INP` có cấu trúc:
-- Dòng thứ nhất ghi 3 số nguyên dương ~n, x, q~ ~(1 \leq n, x, q \leq 10^5)~;
-- Dòng thứ hai ghi ~n~ số nguyên dương ~a_1, a_2, \dots, a_n~, số thứ ~i~ có giá trị là ~a_i~ ~(1 \leq i \leq n, |a_i| \leq 10^5)~;
-- ~q~ dòng tiếp theo, mỗi dòng chứa hai số nguyên dương ~l, r~ ~(1 \leq l \leq r \leq 10^5)~.
+Dữ liệu ra ghi vào tệp văn bản `BALANSUB.OUT` một số duy nhất là độ dài dãy con tìm được.
 
-Các số trên cùng một dòng ghi cách nhau một dấu cách.
+### Ràng buộc:
+- Có 35\% số test ứng với 35\% số điểm của bài có ~n \leq 200~;
+- 15\% số test ứng với 15\% số điểm của bài có ~n \leq 5 \times 10^3~;
+- 50\% số test còn lại ứng với 50\% số điểm không có ràng buộc gì thêm.
 
-## Kết quả:
-Ghi ra file văn bản `COUNT.OUT` gồm ~q~ dòng, mỗi dòng ghi một số nguyên là kết quả tìm được tương ứng với mỗi truy vấn.
+### Ví dụ:
 
-## Ràng buộc:
-- Có 50% số test ứng với 50% số điểm có ~q = 1~;
-- 50% số test còn lại ứng với 50% số điểm không có ràng buộc gì thêm.
-
-## Ví dụ:
-### COUNT.INP:
-```
-9 6 2
-8 -1 6 5 -2 7 -3 4 -8
-1 6
-4 9
-```
-
-### COUNT.OUT:
-```
-1
-2
-```
-
-## Giải thích: 
-- Đoạn từ phần tử thứ 1 đến phần tử thứ 6 có 1 số là số dương và nhỏ hơn 6 là số 5.
-- Đoạn từ phần tử thứ 4 đến phần tử thứ 9 có 2 số là số dương và nhỏ hơn 6 là số 5 à số 4.
+| BALANSUB.INP | BALANSUB.OUT | Giải thích                             |
+|--------------|--------------|----------------------------------------|
+| 6            | 4            | Dãy con cân bằng là ~1, 4, 3, 6~.      |
+|--------------|--------------|                                        |
+| 2 1 1 4 3 6  |              | ~l = 3~, ~r = 6~ và độ dài bằng 4.     |

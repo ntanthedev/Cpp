@@ -16,29 +16,21 @@ signed main() {
     system("g++ a.cpp -o a.exe");
     system("g++ b.cpp -o b.exe");
 
-    for(int i = 1; i <= 10; i++) {
+    for(int i = 1; i <= 1000; i++) {
         ofstream inp("test.inp");
 
-        int n = Rand(1, 10), q = Rand(1, 10);
-        inp << n << " " << q << '\n';
+        int n = Rand(1, 1000);
+        inp << n << '\n';
+
         for(int i = 1; i <= n; i++) {
-            int a = Rand(-10, 10);
+            int a = Rand(1, 100);
             inp << a << " ";
         }
-        for(int i = 1; i <= q; i++) {
-            int c = Rand(1, 2), x, y;
-            inp << c << " ";
-            if(c & 1) {
-                x = Rand(1, n), y = Rand(-10, 10);
-                inp << x << " " << y << '\n';
-            }
-            else {
-                x = Rand(1, n), y = Rand(x, n);
-                inp << x << " " << y << '\n';
-            }
-        }
-
+                
         inp.close();
+
+        system("a.exe");
+        system("b.exe");
 
         if(system("fc a.out b.out")) {
             printf("test %d WA\n", i);
