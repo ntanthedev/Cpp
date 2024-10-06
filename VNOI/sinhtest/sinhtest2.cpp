@@ -8,10 +8,10 @@ using namespace std;
 #define	f0(i,n) for(int i=0;i<n;i++)
 #define f1(i,n) for(int i=1;i<=n;i++)
 typedef long long ll;
-const int btest = 1; 
+const int btest = 15; 
 const int etest = 100; // so luong test
-const int test_for_sub1 = 35; //% so luong test theo tung sub
-const int test_for_sub2 = 15;
+const int test_for_sub1 = 15; //% so luong test theo tung sub
+const int test_for_sub2 = 85;
 const int test_for_sub3 = 100;
 const int s1 = double(etest) / 100.0 * test_for_sub1 * 1.0;
 const int s2 = double(etest) / 100.0 * test_for_sub2 * 1.0;
@@ -26,7 +26,7 @@ const int s3 = etest - s2;
 //                 rand()) % (h - l + 1);
 // }
 
-mt19937_64 rd(static_cast<unsigned int>(std::time(nullptr)));
+mt19937_64 rd(chrono::steady_clock::now().time_since_epoch().count());
 ll Rand(ll l, ll r) {
     return uniform_int_distribution<ll>(l,r) (rd);
 } 
@@ -145,15 +145,52 @@ void sub1(int x) {
 
     int n = Rand(1, 20);
 
-    for(int i = 1; i <= n; i++) {
-        
+    string s;
+
+    while(s.size() < n) {
+        int t = Rand(0, 4);
+        if(!t) {
+            int f = Rand(1, 5);
+            string res (f, char(Rand('a', 'z')));
+            s = s + res;
+        }
+        else {
+            s = s + char(Rand('a', 'z'));
+        }
     }
+
+
+    inp << s;
 }
 
 void sub2(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
 
+    int n = Rand(1, 1e6);
+
+    string s;
+
+    while(s.size() < n) {
+        int t = Rand(0, 30);
+        if(!t) {
+            int f = Rand(1, 30);
+            string res (f, char(Rand('a', 'z')));
+            s = s + res;
+        }
+        else {
+            s = s + char(Rand('a', 'z'));
+        }
+    }
+
+    if(x == 99) {
+        s.clear();
+
+        for(int i = 1; i <= n; i++) 
+            s = s + char(Rand('a', 'z'));
+
+    }
+    inp << s;
 }
 
 void sub3(int x) {
@@ -163,7 +200,7 @@ void sub3(int x) {
 
 }
 int main(){
-    ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    // ios_base::sync_with_stdio(false);
     //srand(time(NULL));
     srand(static_cast<unsigned int>(std::time(nullptr)));
 
@@ -175,6 +212,7 @@ int main(){
             sub2(i);
         else 
             sub3(i);
+        cerr << "test " << i << '\n';
     }
 
     return 0;

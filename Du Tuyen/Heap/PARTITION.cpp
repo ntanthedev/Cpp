@@ -10,6 +10,7 @@ struct Less {
     bool operator()(ll x, ll y) { return x > y; }
 };
 
+priority_queue<ll, vector<ll>, Less> q;
 
 // struct pt {
 //     int val, x, y, d;
@@ -18,7 +19,6 @@ struct Less {
 //     }
 // }
 
-priority_queue<ll, vector<ll>, Less> q;
 
 void solve() {
     a[n + 1] = L - sumarray;

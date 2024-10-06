@@ -23,7 +23,7 @@ signed main() {
         inp << n << '\n';
 
         for(int i = 1; i <= n; i++) {
-            int a = Rand(1, 100);
+            int a = Rand(1, 100000);
             inp << a << " ";
         }
                 

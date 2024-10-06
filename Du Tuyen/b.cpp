@@ -1,35 +1,45 @@
-//problem "b"
-//created in 09:57:31 - Sun 29/09/2024
+//problem "a"
+//created in 22:12:41 - Wed 02/10/2024
 
 #include<bits/stdc++.h>
-#define ll long long
 
-const int N = 1e6 + 5;
+#define int int64_t
 
 using namespace std;
 
-ll n, k, a[N];
-
 int32_t main() {
-    ios_base::sync_with_stdio(false); cin.tie(NULL);
-    
-    #define task "BALANSUB"
-    if(fopen(task ".inp", "r")) {
-        freopen(task ".inp", "r", stdin);
-        freopen(task ".out", "w", stdout);
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    // #define task "test"
+    // if(fopen(task ".inp", "r")) {
+    //     freopen(task ".inp", "r", stdin);
+    //     freopen("b.out", "w", stdout);
+    // }
+
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    for(auto &i: a)
+        cin >> i;
+
+    int ans = 0;
+    int bit = 0;                   
+    int cnt[4] = {0};  
+    cnt[0] = 1;        
+
+    for(auto num: a) {
+        if(num % 2 == 0) 
+            bit ^= 1;
+        else 
+            bit ^= 2;
+        
+        int res = bit ^ 1;
+
+        ans += cnt[res];
+
+        cnt[bit]++;
     }
 
-    cin >> n;
-
-    for(int i = 1; i <= n; i++) 
-        cin >> a[i];
-
-    int ans = 0; 
-    for(int i = 1; i <= n; i++) 
-        for(int j = i; j <= n; j++) {
-            if(a[j] < j - i + 1)
-                break;
-            ans = max(ans, j - i + 1);    
-        }
     cout << ans;
 }
