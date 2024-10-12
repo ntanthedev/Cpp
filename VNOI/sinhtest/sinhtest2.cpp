@@ -8,10 +8,10 @@ using namespace std;
 #define	f0(i,n) for(int i=0;i<n;i++)
 #define f1(i,n) for(int i=1;i<=n;i++)
 typedef long long ll;
-const int btest = 15; 
+const int btest = 1; 
 const int etest = 100; // so luong test
-const int test_for_sub1 = 15; //% so luong test theo tung sub
-const int test_for_sub2 = 85;
+const int test_for_sub1 = 80; //% so luong test theo tung sub
+const int test_for_sub2 = 20;
 const int test_for_sub3 = 100;
 const int s1 = double(etest) / 100.0 * test_for_sub1 * 1.0;
 const int s2 = double(etest) / 100.0 * test_for_sub2 * 1.0;
@@ -139,65 +139,46 @@ int cal(int x, int n) {
     return double(n / 100.0) * x;
 }
 
+map<int, bool> m;
+
 void sub1(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
 
-    int n = Rand(1, 20);
+    int n = Rand(1, 1e3);
 
-    string s;
+    while(m[n]) 
+        n = Rand(1, 1e3);
 
-    while(s.size() < n) {
-        int t = Rand(0, 4);
-        if(!t) {
-            int f = Rand(1, 5);
-            string res (f, char(Rand('a', 'z')));
-            s = s + res;
-        }
-        else {
-            s = s + char(Rand('a', 'z'));
-        }
-    }
+    m[n] = 1;
 
-
-    inp << s;
+    inp << n << '\n';
+    
 }
 
 void sub2(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
 
-    int n = Rand(1, 1e6);
 
-    string s;
+    int n = Rand(1e3, 1e9);
 
-    while(s.size() < n) {
-        int t = Rand(0, 30);
-        if(!t) {
-            int f = Rand(1, 30);
-            string res (f, char(Rand('a', 'z')));
-            s = s + res;
-        }
-        else {
-            s = s + char(Rand('a', 'z'));
-        }
-    }
+    inp << n << '\n';    
 
-    if(x == 99) {
-        s.clear();
-
-        for(int i = 1; i <= n; i++) 
-            s = s + char(Rand('a', 'z'));
-
-    }
-    inp << s;
 }
 
 void sub3(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
-    
 
+    int n = Rand(9e5, 1e6);
+
+    inp << n << '\n';
+    
+    for(int i = 1; i <= n; i++) {
+        int a = Rand(1, 1e6);
+        inp << a << " ";
+    }
 }
 int main(){
     // ios_base::sync_with_stdio(false);

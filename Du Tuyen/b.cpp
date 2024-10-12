@@ -1,45 +1,27 @@
-//problem "a"
-//created in 22:12:41 - Wed 02/10/2024
-
 #include<bits/stdc++.h>
-
-#define int int64_t
-
 using namespace std;
-
-int32_t main() {
-    ios::sync_with_stdio(false);
-    cin.tie(NULL);
-
-    // #define task "test"
-    // if(fopen(task ".inp", "r")) {
-    //     freopen(task ".inp", "r", stdin);
-    //     freopen("b.out", "w", stdout);
-    // }
-
-    int n;
-    cin >> n;
-    vector<int> a(n);
-    for(auto &i: a)
-        cin >> i;
-
-    int ans = 0;
-    int bit = 0;                   
-    int cnt[4] = {0};  
-    cnt[0] = 1;        
-
-    for(auto num: a) {
-        if(num % 2 == 0) 
-            bit ^= 1;
-        else 
-            bit ^= 2;
-        
-        int res = bit ^ 1;
-
-        ans += cnt[res];
-
-        cnt[bit]++;
+const long long maxN = 100022;
+long long a[maxN], n, b[maxN], smax, smin;
+int main()
+{
+    #define task "test"
+    if(fopen(task ".inp", "r")) {
+        freopen(task ".inp", "r", stdin);
+        freopen("b.out", "w", stdout);
     }
-
-    cout << ans;
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    cin>>n;
+    for(int i = 1; i <= n; ++i)
+    {
+        cin>>a[i];
+        b[i] = a[i];
+    }
+    sort(b+1, b+1+n);
+    for(int i = 1; i <= n; ++i)
+    {
+        smin = lower_bound(b+1,b+1+n,a[i]) - b - 1;
+        smax = n - (upper_bound(b+1, b+1+n,a[i]) - b) + 1;
+        cout<<smin<<'\n';
+    }
 }

@@ -19,11 +19,11 @@ signed main() {
     for(int i = 1; i <= 1000; i++) {
         ofstream inp("test.inp");
 
-        int n = Rand(1, 1000);
+        int n = Rand(1, 1e5);
         inp << n << '\n';
 
         for(int i = 1; i <= n; i++) {
-            int a = Rand(1, 100000);
+            int a = Rand(1, 1e6);
             inp << a << " ";
         }
                 

@@ -1,33 +1,34 @@
 #include "testlib.h"
-#include<string>
-
+#include <bits/stdc++.h>
 using namespace std;
-
-int main(int argc, char * argv[]) {
+int a[1000099],h[1000099];
+int n;
+int main(int argc, char** argv) {
     // Khởi tạo checker với các tham số đầu vào từ command line
     registerTestlibCmd(argc, argv);
 
-    string a = inf.readString();
-    string b = inf.readString();
-    string c = ouf.readString();
-    string d = ans.readString();
+    int i,k,ok=1;
 
-    if(c.size() != d.size()) 
-        quitf(_wa, "dap an sai");
+    n = inf.readInt();
+    for(int j=1;j<=n;j++) a[j] = inf.readInt();
+    for(int j=1;j<=n;j++) h[j]=0;
 
-    int i = 0, j = 0, k = 0;
+    i = ouf.readInt(), k = ouf.readInt(); //Du lieu cua hoc sinh
+    a[i]=k;
+    sort(a+1,a+n+1);
+    for(int j=1;j<=n;j++)
+      if(a[j]!=j)
+     {
+          ok=0;
+          break;
+     }
 
-    while(i < a.size() && j < b.size() && k < c.size()) {
-        if(a[i] == b[j] && b[j] == c[k])
-            i++, j++, k++;
-        if(a[i] != c[k]) 
-            i++;
-        if(b[j] != c[k]) 
-            j++;
+
+    if (ok==1) {
+            quitf(_ok, "ket qua dung");
+        }
+
+    else {
+        quitf(_wa, "ket qua sai");
     }
-
-    if(k == c.size()) 
-        quitf(_ok, "xau hop le");
-    else 
-        quitf(_wa, "xau khong thoa man");
 }
