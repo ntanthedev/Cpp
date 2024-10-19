@@ -1,20 +1,22 @@
-//problem "a"
-//created in 15:51:31 - Wed 16/10/2024
-
 #include<bits/stdc++.h>
-
-#define int int64_t
-
 using namespace std;
-
-int32_t main() {
-    ios_base::sync_with_stdio(false); cin.tie(NULL);
-    
-    
+int main()
+{
+    long long a;
+    cin>>a;
+    if(a>=1)
+    {
+        cout<<"1";
+    }
+    else 
+    {
+        if(a <= -1)
+        {
+            cout << -1;
+        }
+        else 
+        {
+            cout << 0;
+        }
+    }
 }
-
-/*
-
-dp[i][j][k]
-
-*/
