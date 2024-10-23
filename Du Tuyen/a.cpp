@@ -1,36 +1,44 @@
 //problem "a"
-//created in 09:00:38 - Sun 20/10/2024
+//created in 21:07:48 - Tue 22/10/2024
 
 #include<bits/stdc++.h>
 
-#define int int64_t
-
 using namespace std;
+
+string hieu(string a, string b) {
+    string ans;
+    
+    while(b.size() < a.size()) 
+        b = "0" + b;
+    ans.resize(a.size());
+
+    int n = a.size(), nho = 0;
+
+    for(int i = n - 1; i >= 0; i--) { 
+        int t;
+        if(a[i] < b[i]) {
+            t = (a[i] - '0' + 10) - (b[i] - '0' + nho);
+            nho = 1;
+        }
+        else {
+            t = (a[i] - '0') - (b[i] - '0' + nho);
+            nho = 0;
+        }
+        ans[i] = (t + '0');
+    }
+
+    while(ans[0] == '0')
+        ans.erase(ans.begin());
+
+    return ans;
+}
 
 int32_t main() {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
     
-    int n, q;
+    string a, b;
 
-    cin >> n >> q;
+    cin >> a >> b;
 
-    vector<set<int>> adj(n + 1);
-
-    for(int i = 1, u, v; i < n; i++) {
-        cin >> u >> v;
-        adj[u].insert(v);
-        adj[v].insert(u);
-    }
-
-    while(q--) {
-        int x, z, y;
-
-        cin >> x >> y >> z;
-
-        if(adj[x].count(y) && adj[y].count(z))
-            cout << "YES";
-        else 
-            cout << "NO";
-        cout << '\n';
-    }
+    cout << hieu(a, b);
 }
