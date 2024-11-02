@@ -1,44 +1,48 @@
 //problem "a"
-//created in 21:07:48 - Tue 22/10/2024
+//created in 09:58:00 - Sat 02/11/2024
 
 #include<bits/stdc++.h>
 
+#define int int64_t
+
 using namespace std;
 
-string hieu(string a, string b) {
-    string ans;
-    
-    while(b.size() < a.size()) 
-        b = "0" + b;
-    ans.resize(a.size());
-
-    int n = a.size(), nho = 0;
-
-    for(int i = n - 1; i >= 0; i--) { 
-        int t;
-        if(a[i] < b[i]) {
-            t = (a[i] - '0' + 10) - (b[i] - '0' + nho);
-            nho = 1;
+void dijkstra(int s, vector<vector<pair<int, int>>>& adj, vector<int>& dist) {
+    int n = adj.size();
+    dist.assign(n, INT64_MAX);
+    dist[s] = 0;
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    pq.push({0, s});
+    while (!pq.empty()) {
+        auto [d, u] = pq.top(); pq.pop();
+        if (d != dist[u]) continue;
+        for (auto [v, w] : adj[u]) {
+            if (dist[v] > dist[u] + w) {
+                dist[v] = dist[u] + w;
+                pq.push({dist[v], v});
+            }
         }
-        else {
-            t = (a[i] - '0') - (b[i] - '0' + nho);
-            nho = 0;
-        }
-        ans[i] = (t + '0');
     }
-
-    while(ans[0] == '0')
-        ans.erase(ans.begin());
-
-    return ans;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
     
-    string a, b;
+    int n, m;
+    cin >> n >> m;
+    vector<vector<pair<int, int>>> adj(n + 1);
 
-    cin >> a >> b;
+    for(int i = 1, u, v, w; i <= m; i++) {
+        cin >> u >> v >> w;
+        adj[u].push_back({v, w});
+        adj[v].push_back({u, w});
+    }
 
-    cout << hieu(a, b);
+    vector<int> D;
+
+    dijkstra(1, adj, D);
+
+    for(int i = 1; i <= n; i++) {
+        cout << D[i] << " ";
+    }    
 }
