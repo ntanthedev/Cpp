@@ -1,55 +1,46 @@
-//problem "a"
-//created in 09:58:00 - Sat 02/11/2024
-
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 
 #define int long long
 
 using namespace std;
 
-typedef pair<int, int> ii;
+struct segment_tree {
+    int n;
+    vector<int> st;
+    segment_tree(int n): n(n), st(2 * n) {}
 
-void dijkstra(int s, vector<vector<ii>>& adj, vector<int>& dist) {
-    int n = adj.size();
-    dist.assign(n, INT_MAX);
-    vector<bool> vis(n, false);
-    dist[s] = 0;
-    priority_queue<ii, vector<ii>, greater<ii>> pq;
-    pq.push({0, s});
-    while (!pq.empty()) {
-        int u = pq.top().second;
-        pq.pop();
-
-        if(vis[u]) continue;
-        vis[u] = true;
-
-        for(auto [v, w] : adj[u]) {
-            if(dist[v] > dist[u] + w) {
-                dist[v] = dist[u] + w;
-                pq.push({dist[v], v});
-            }
-        }
+    void update(int k, int x) {
+        st[k += n - 1] = x;
+        while (k /= 2)
+            st[k] = max(st[k * 2], st[k * 2 + 1]);
     }
-}
+
+    int get(int l, int r) {
+        int t = -1e18;
+        for (l += n - 1, r += n - 1; l <= r; l /= 2, r /= 2) {
+            if  (l & 1) t = max(t, st[l++]);
+            if (~r & 1) t = max(t, st[r--]);
+        }
+        return t;
+    }
+};
 
 int32_t main() {
-    ios_base::sync_with_stdio(false); cin.tie(NULL); 
+    ios::sync_with_stdio(0), cin.tie(0);
     
-    int n, m;
-    cin >> n >> m;
-    vector<vector<ii>> adj(n + 1);
+    int n, k;
+    cin >> n >> k;
+    vector<int> x(n + 1), l(n + 1), r(n + 1);
+    for (int i = 1; i <= n; ++i) cin >> x[i] >> l[i] >> r[i];
 
-    for(int i = 1, u, v, w; i <= m; i++) {
-        cin >> u >> v >> w;
-        adj[u].push_back({v, w});
-        // adj[v].push_back({u, w});
+
+    segment_tree p(n), q(n);
+    for (int i = 1; i <= k; ++i) {
+        for (int j = 1; j <= n; ++j)
+            q.update(j, p.get(l[j], r[j]) + x[j]);
+
+        swap(p, q);
     }
 
-    vector<int> D;
-
-    dijkstra(1, adj, D);
-
-    for(int i = 1; i <= n; i++) {
-        cout << D[i] << " ";
-    }    
+    cout << p.get(1, n);
 }
