@@ -3,16 +3,18 @@
 
 #include<bits/stdc++.h>
 
-#define int int64_t
+#define int long long
 
 using namespace std;
 
-void dijkstra(int s, vector<vector<pair<int, int>>>& adj, vector<int>& dist) {
+typedef pair<int, int> ii;
+
+void dijkstra(int s, vector<vector<ii>>& adj, vector<int>& dist) {
     int n = adj.size();
     dist.assign(n, INT_MAX);
     vector<bool> vis(n, false);
     dist[s] = 0;
-    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    priority_queue<ii, vector<ii>, greater<ii>> pq;
     pq.push({0, s});
     while (!pq.empty()) {
         int u = pq.top().second;
@@ -35,7 +37,7 @@ int32_t main() {
     
     int n, m;
     cin >> n >> m;
-    vector<vector<pair<int, int>>> adj(n + 1);
+    vector<vector<ii>> adj(n + 1);
 
     for(int i = 1, u, v, w; i <= m; i++) {
         cin >> u >> v >> w;
@@ -43,7 +45,7 @@ int32_t main() {
         // adj[v].push_back({u, w});
     }
 
-    vector<int> D(n + 1, INT_MAX);
+    vector<int> D;
 
     dijkstra(1, adj, D);
 
