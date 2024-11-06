@@ -1,44 +1,44 @@
-//problem "a"
-//created in 21:07:48 - Tue 22/10/2024
+#include<bits/stdc++.h> 
 
-#include<bits/stdc++.h>
+#define int int64_t
 
 using namespace std;
 
-string hieu(string a, string b) {
-    string ans;
-    
-    while(b.size() < a.size()) 
-        b = "0" + b;
-    ans.resize(a.size());
+signed main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
 
-    int n = a.size(), nho = 0;
-
-    for(int i = n - 1; i >= 0; i--) { 
-        int t;
-        if(a[i] < b[i]) {
-            t = (a[i] - '0' + 10) - (b[i] - '0' + nho);
-            nho = 1;
-        }
-        else {
-            t = (a[i] - '0') - (b[i] - '0' + nho);
-            nho = 0;
-        }
-        ans[i] = (t + '0');
+    #define task "select"
+    if(fopen(task ".inp", "r")) {
+        freopen(task ".inp", "r", stdin);
+        freopen(task ".out", "w", stdout);
     }
 
-    while(ans[0] == '0')
-        ans.erase(ans.begin());
+    int n;
+    cin >> n;
+    string s;
+    cin >> s;
+    s = ' ' + s;  
 
-    return ans;
+    vector<int> dd(n + 1, 0), cnt(n + 1, 0);
+    map<int, int> m;
+    int d = 0, ans = 0;
+
+
+    for(int i = 1; i <= n; i++) {
+        d += (s[i] == '+' ? 1 : -1);
+        dd[i] = d;
+        cnt[i] = m[d];
+        m[d]++;
+    }
+
+    for(int i = 1; i <= n; i++) {
+        ans += m[dd[i]] - cnt[i] * 2;
+    }
+    cout << ans;
 }
 
-int32_t main() {
-    ios_base::sync_with_stdio(false); cin.tie(NULL);
-    
-    string a, b;
-
-    cin >> a >> b;
-
-    cout << hieu(a, b);
-}
+/*
++ + - + - + + + -
+1 2 1 2 1 2 3 4 3
+*/
