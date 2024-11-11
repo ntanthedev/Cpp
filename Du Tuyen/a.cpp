@@ -1,44 +1,30 @@
-#include<bits/stdc++.h> 
-
-#define int int64_t
-
+#include<bits/stdc++.h>
 using namespace std;
+#define ll long long
 
-signed main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
+const int N = 1e5;
 
-    #define task "select"
-    if(fopen(task ".inp", "r")) {
-        freopen(task ".inp", "r", stdin);
-        freopen(task ".out", "w", stdout);
+ll n, q, a[N + 9], s[N + 9];
+
+bool check(ll x){
+    ll tcs = 0, y = x;;
+    while(y){
+        tcs += y % 10;
+        y /= 10;
     }
-
-    int n;
-    cin >> n;
-    string s;
-    cin >> s;
-    s = ' ' + s;  
-
-    vector<int> dd(n + 1, 0), cnt(n + 1, 0);
-    map<int, int> m;
-    int d = 0, ans = 0;
-
-
-    for(int i = 1; i <= n; i++) {
-        d += (s[i] == '+' ? 1 : -1);
-        dd[i] = d;
-        cnt[i] = m[d];
-        m[d]++;
-    }
-
-    for(int i = 1; i <= n; i++) {
-        ans += m[dd[i]] - cnt[i] * 2;
-    }
-    cout << ans;
+    if(x % tcs == 0) return true;
+    return false;
 }
 
-/*
-+ + - + - + + + -
-1 2 1 2 1 2 3 4 3
-*/
+int main(){
+    cin >> n >> q;
+    for(int i = 1; i <= n; i++){
+        cin >> a[i];
+        s[i] = s[i - 1] + check(a[i]);
+    }
+    while(q--){
+        ll l, r;
+        cin >> l >> r;
+        cout << s[r] - s[l - 1] << '\n';
+    }
+}
