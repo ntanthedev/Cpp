@@ -1,30 +1,19 @@
+//problem "a"
+//created in 21:24:11 - Thu 14/11/2024
+
 #include<bits/stdc++.h>
+
 using namespace std;
-#define ll long long
 
-const int N = 1e5;
+int main() {
+    
+   int a, b;
 
-ll n, q, a[N + 9], s[N + 9];
+   cin >> a >> b;
 
-bool check(ll x){
-    ll tcs = 0, y = x;;
-    while(y){
-        tcs += y % 10;
-        y /= 10;
-    }
-    if(x % tcs == 0) return true;
-    return false;
-}
+   int c;
 
-int main(){
-    cin >> n >> q;
-    for(int i = 1; i <= n; i++){
-        cin >> a[i];
-        s[i] = s[i - 1] + check(a[i]);
-    }
-    while(q--){
-        ll l, r;
-        cin >> l >> r;
-        cout << s[r] - s[l - 1] << '\n';
-    }
+   c = max(a, b);
+
+   cout << c; 
 }
