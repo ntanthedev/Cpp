@@ -86,5 +86,8 @@
     "cmake.configureOnOpen": true,
     "workbench.editor.tabSizing": "shrink",
     "editor.cursorBlinking": "expand",
-    "editor.lineNumbers": "relative"
+    "editor.lineNumbers": "relative",
+    "files.associations": {
+        "random": "cpp"
+    }
 }

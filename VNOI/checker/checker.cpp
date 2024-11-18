@@ -1,99 +1,79 @@
 #include "testlib.h"
-#include <iostream>
-#include <vector>
+#include<bits/stdc++.h>
 
 using namespace std;
 
-const int MAXN = 1009;
+const int N = 1e3 + 5;
+typedef long long ll;
 
-int a[MAXN + 2][MAXN + 2];
-int n, m, x, y;
+int n, m;
+bool w[N][N];
 
 int main(int argc, char* argv[]) {
     registerTestlibCmd(argc, argv);
 
-    n = inf.readInt();
+    int ouf_ans = ouf.readInt();
+    int ans_ans = ans.readInt();
+    
     m = inf.readInt();
-    x = inf.readInt();
-    y = inf.readInt();
+    n = inf.readInt();
+    int a = inf.readInt(), b = inf.readInt();
 
-    for (int i = 1; i <= m; ++i) {
-        for (int j = 1; j <= n; ++j) {
-            a[i][j] = inf.readInt();
+    for(int i = 1; i <= m; i++) 
+        for(int j = 1; j <= n; j++) 
+            w[i][j] = inf.readInt();
+
+    if(ans_ans == 0) {
+        if(ouf_ans != 0) {
+            quitp(0.0, "Me cung khong co duong di nhung nha tham hien co duong di");
         }
-    }
-
-    for (int i = 0; i <= n + 1; ++i) {
-        a[0][i] = 2;
-        a[m + 1][i] = 2;
-    }
-    for (int i = 0; i <= m + 1; ++i) {
-        a[i][0] = 2;
-        a[i][n + 1] = 2;
-    }
-
-    long long res = ouf.readLong();
-    long long reshs = ans.readLong();
-
-    if (res != 0) {
-        if (reshs != 0) {
-            int loi = 0;
-            int reshsSb = 1;
-
-            ans.skipBlanks();
-            if (ans.seekEof()) return 0;
-
-            while (!ans.seekEof()) {
-                int u = ans.readInt();
-                int v = ans.readInt();
-                reshsSb++;
-
-                if (a[u][v] == 1) {
-                    loi = 1;
-                    quitf(_wa, "Di chuyen den o (%d,%d) co cam bay", x, y);
-                    return 0;
+        else {
+            quitp(100.0, "Ket qua dung");
+        }
+    } 
+    else {
+        if(ouf_ans == 0) {
+            quitp(0.0, "Ket qua sai");
+        }
+        else {
+            bool ok = false;
+            vector<pair<int, int>> res;
+            for(int i = 1; i <= ouf_ans; i++) {
+                int x = ouf.readInt(), y = ouf.readInt();
+                if(w[x][y]) {
+                    quitp(0.0, "Di chuyen den o (%d, %d) co cam bay", x, y);
                 }
-
-                if (((x == u) && (y == v - 1)) ||
-                    ((x == u) && (y == v + 1)) ||
-                    ((y == v) && (x == u - 1)) ||
-                    ((y == v) && (x == u + 1))) {
-                    x = u;
-                    y = v;
-                } else {
-                    loi = 2;
-                    quitf(_wa, "Duong di khong phu hop\nO (%d %d) khong the den (%d %d)", x, y, u, v);
-                    return 0;
-                }
+                res.push_back({x, y});
             }
 
-            if (loi != 0) {
-                quitf(_wa, "Ket qua 'Sai'\n0.0");
-            } else if (x == 1 || y == 1 || x == m || y == n) {
-                if (reshsSb != reshs) {
-                    quitf(_fail, "Tien Hau Bat Nhat\nSo buoc thong bao: %lld. So buoc truy vet: %d\n0.5", reshs, reshsSb);
-                } else {
-                    if (res == reshs) {
-                        quitf(_ok, "Ket qua dung\n1.0");
-                    }
-                    if (res > reshs && loi == 0 && reshsSb == reshs) {
-                        quitf(_ok, "Ket qua \"Toi Uu\" hon dap an\n1.5");
-                    }
-                    if (res < reshs) {
-                        quitf(_wa, "Ket qua chua toi uu\nDap an: %lld\nTra loi: %lld\n0.5", res, reshs);
-                    }
-                }
-            } else {
-                quitf(_wa, "Nha tham hiem chua ra khoi me cung\n0.0");
+            if(!ouf.seekEof()) {
+                quitp(0.0, "File output con thua");
             }
-        } else {
-            quitf(_wa, "Ket qua 'Sai'\nDap an: Me cung co duong di\nTra loi: Khong co duong di\n0.0");
-        }
-    } else {
-        if (reshs == 0) {
-            quitf(_ok, "Ket qua dung\n1.0");
-        } else {
-            quitf(_wa, "Ket qua 'Sai'\n0.0");
+
+            if(make_pair(a, b) != res[0]) {
+                quitp(0.0, "Diem bat dau khong dung");
+            }
+
+            if(res.back().first != 1 && res.back().first != m && res.back().second != 1 && res.back().second != n) {
+                quitp(0.0, "Nha tham hien chua thoat khoi me cung");
+            }
+
+            auto [x, y] = res.front();
+
+            for(int i = 1; i < res.size(); i++) {
+                if(abs(res[i].first - x) + abs(res[i].second - y) != 1) {
+                    quitp(0.0, "Tu diem %lld, %lld khong the den diem %lld, %lld", x, y, res[i].first, res[i].second);
+                }
+                x = res[i].first;
+                y = res[i].second;
+            }
+
+            if(ouf_ans < ans_ans) 
+                quitp(150.0, "Output toi uu hon ket qua");
+            else if(ouf_ans == ans_ans)
+                quitp(100.0, "Ket qua dung");
+            else 
+                quitp(50.0, "Ket qua chua toi uu");
         }
     }
 
