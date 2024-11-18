@@ -39,6 +39,7 @@ int main(int argc, char* argv[]) {
         if (reshs != 0) {
             int loi = 0;
             int reshsSb = 1;
+            bool flag = inf.eof();
 
             ans.skipBlanks();
             if (ans.seekEof()) return 0;
