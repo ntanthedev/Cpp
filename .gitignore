@@ -6,5 +6,6 @@
 *.zip
 *.ini
 *.pdf
+*.ans
 .tmp.driveupload
 .tmp.drivedownload
