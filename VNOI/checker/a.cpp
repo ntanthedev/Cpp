@@ -1,63 +1,75 @@
 #include <bits/stdc++.h>
+#define ii pair<int, int>
+#define fi first
+#define se second
+#define task "a"
+
 using namespace std;
 
-using pii = pair<int, int>;
+const int maxN = 5001;
+int n, m;
+vector<int> adj[maxN];
+int d[maxN][maxN];
+queue<ii> q;
+ii trace[maxN][maxN];
 
-pii biases[4] = {{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
+void bfs() {
+    while (!q.empty()) {
+        ii u = q.front();
+        q.pop();
+        for (int x1 : adj[u.fi]) {
+            for (int y1 : adj[u.se]) {
+                if (d[x1][y1] != -1) continue;
+                d[x1][y1] = d[u.fi][u.se] + 1;
+                trace[x1][y1] = u;
+                if (x1 == 1 && y1 == n) return;
+                q.push({x1, y1});
+            }
+        }
+    }
+}
 
-int c(int x) { return x == -1 ? INT_MAX : x; }
+void trace_path() {
+    vector<int> path1, path2;
+    ii u = {1, n};
+    while (true) {
+        path1.push_back(u.fi);
+        path2.push_back(u.se);
+        if (u.fi == u.se) break;
+        u = trace[u.fi][u.se];
+    }
+//    reverse(path1.begin(), path1.end());
+//    reverse(path2.begin(), path2.end());
+    for (int i : path1) cout << i << " ";
+    cout << '\n';
+    for (int i : path2) cout << i << " ";
+}
 
 int main() {
-  cin.tie(nullptr)->ios_base::sync_with_stdio(false);
-  freopen("MECUNG.INP", "r", stdin);
-  freopen("MECUNG.OUT", "w", stdout);
-  int m, n, q, x, y, u, v, i, j;
-  cin >> m >> n >> x >> y;
-  pair<int, pii> mn = {INT_MAX, {}};
-  vector<vector<int>> mp(m + 2, vector<int>(n + 2, -1));
-  vector<vector<pair<int, pii>>> par(m + 1,
-                                     vector<pair<int, pii>>(n + 1, {-1, {}}));
-  vector<vector<bool>> visited(m + 1, vector<bool>(n + 1));
-  function<void(pii)> bfs = [&](const pii &s) {
-    queue<pair<int, int>> q;
-    q.push(s);
-    par[s.first][s.second].first = 0;
-    visited[s.first][s.second] = true;
-    while (!q.empty()) {
-      auto _u = q.front();
-      q.pop();
-      for (auto z : biases) {
-        int _x = _u.first + z.first, _y = _u.second + z.second;
-        if (mp[_x][_y] == 0 && !visited[_x][_y])
-          q.push({_x, _y}),
-              par[_x][_y] = {par[_u.first][_u.second].first + 1, _u},
-              visited[_x][_y] = true;
-      }
+    ios_base::sync_with_stdio(false);
+    cin.tie(0); cout.tie(0);
+
+    freopen(task".inp", "r", stdin);
+    freopen(task".out", "w", stdout);
+
+    cin >> n >> m;
+    for (int i = 1; i <= m; i++) {
+        int u, v;
+        cin >> u >> v;
+        adj[v].push_back(u);
     }
-  };
-  for (i = 1; i <= m; i++)
-    for (j = 1; j <= n; j++)
-      cin >> mp[i][j];
-  bfs({x, y});
-  for (i = 1; i <= m; i++) {
-    if (c(par[i][1].first) < mn.first)
-      mn = {par[i][1].first, {i, 1}};
-    if (c(par[i][n].first) < mn.first)
-      mn = {par[i][n].first, {i, n}};
-  }
-  for (i = 1; i <= n; i++) {
-    if (c(par[1][i].first) < mn.first)
-      mn = {par[1][i].first, {1, i}};
-    if (c(par[m][i].first) < mn.first)
-      mn = {par[m][i].first, {m, i}};
-  }
-  stack<pii, vector<pii>> res;
-  while (mn.second.first > 0) {
-    res.push(mn.second);
-    mn = par[mn.second.first][mn.second.second];
-  }
-  cout << res.size() << '\n';
-  while (!res.empty())
-    cout << res.top().first << ' ' << res.top().second << '\n', res.pop();
-  return 0;
+
+    fill(&d[0][0], &d[n + 1][0], -1);
+    for (int i = 1; i <= n; i++) {
+        d[i][i] = 0;
+        q.push({i, i});
+    }
+
+    bfs();
+    cout << d[1][n] << '\n';
+    if (d[1][n] != -1) {
+        trace_path();
+    }
+
+    return 0;
 }

@@ -13,12 +13,11 @@ int main(int argc, char* argv[]) {
     n = inf.readInt();
     m = inf.readInt();
     for(int i = 0; i < m; i++) {
-        int u = inf.readInt();
-        int v = inf.readInt();
+        int u = inf.readInt(1, n);
+        int v = inf.readInt(1, n);
         adj[u][v] = true;
     }
 
-    // Read answers
     int jury_ans = ans.readInt();
     int contestant_ans = ouf.readInt();
 
@@ -27,57 +26,63 @@ int main(int argc, char* argv[]) {
     }
 
     if (contestant_ans == -1) {
-        quitf(_ok, "Correct answer: -1");
+        quitf(_ok, "Correct answer: %d", contestant_ans);
     }
 
-    // Validate first robot path
-    int start1 = ouf.readInt();
+    if(contestant_ans == 0) {
+        if(ouf.readInt(1, n) == 1 && ouf.readInt(1, n) == 1)
+            quitf(_ok, "Correct answer: %d", contestant_ans);
+    }
+
+    int start1 = ouf.readInt(1, n);
     if (start1 != 1) {
         quitf(_wa, "Robot 1 must start from vertex 1, found: %d", start1);
     }
 
     int path_length1 = 0;
-    int prev = start1;
-    while (!ouf.seekEof()) {
-        int next = ouf.readInt();
-        if (next == 0) {
-            quitf(_wa, "Invalid vertex: 0");
+    int prev1 = start1;
+    while (!ouf.seekEoln()) {
+        int next = ouf.readInt(1, n);
+        if (!adj[prev1][next]) {
+            quitf(_wa, "No edge exists: %d->%d", prev1, next);
         }
-        if (!adj[prev][next]) {
-            quitf(_wa, "No edge exists: %d->%d", prev, next);
-        }
-        prev = next;
+        prev1 = next;
         path_length1++;
     }
 
-    if (path_length1 != contestant_ans) {
-        quitf(_wa, "Robot 1 path length mismatch. Expected: %d, Found: %d", 
-              contestant_ans, path_length1);
-    }
+    // if (path_length1 != contestant_ans) {
+    //     quitf(_wa, "Robot 1 path length mismatch. Expected: %d, Found: %d", 
+    //           contestant_ans, path_length1);
+    // }
 
-    // Validate second robot path
-    int start2 = ouf.readInt();
+
+    int start2 = ouf.readInt(1, n);
     if (start2 != n) {
         quitf(_wa, "Robot 2 must start from vertex %d, found: %d", n, start2);
     }
 
     int path_length2 = 0;
-    prev = start2;
-    while (!ouf.seekEof()) {
-        int next = ouf.readInt();
-        if (next == 0) {
-            quitf(_wa, "Invalid vertex: 0");
+    int prev2 = start2;
+    while (!ouf.seekEoln()) {
+        int next = ouf.readInt(1, n);
+        if (!adj[prev2][next]) {
+            quitf(_wa, "No edge exists: %d->%d", prev2, next);
         }
-        if (!adj[prev][next]) {
-            quitf(_wa, "No edge exists: %d->%d", prev, next);
-        }
-        prev = next;
+        prev2 = next;
         path_length2++;
     }
 
-    if (path_length2 != contestant_ans) {
-        quitf(_wa, "Robot 2 path length mismatch. Expected: %d, Found: %d", 
-              contestant_ans, path_length2);
+    // if (path_length2 != contestant_ans) {
+    //     quitf(_wa, "Robot 2 path length mismatch. Expected: %d, Found: %d", 
+    //           contestant_ans, path_length2);
+    // }
+
+    if(prev1 != prev2) {
+        quitf(_wa, "Both robots must end at the same vertex, found: %d and %d", prev1, prev2);
+    }
+
+    if(max(path_length1, path_length2) != contestant_ans) {
+        quitf(_wa, "Time taken by both robots must be equal to the maximum path length, found: %d, path1: %d, path2: %d", max(path_length1, path_length2), path_length1, path_length2);   
     }
 
     // If we got here, everything is correct
