@@ -21,8 +21,9 @@ int32_t main() {
     cin >> n >> m;
 
     vector<vector<int>> adj(n + 1, vector<int>());
-    vector<int> h(n + 1, 0);
+    vector<vector<int>> h(n + 1, vector<int>(2, 0));
     vector<int> res, path;
+    vector<bool> b(n + 1, 0);
 
     for(int i = 1, u, v; i <= m; i++) {
         cin >> u >> v;
@@ -33,40 +34,100 @@ int32_t main() {
     if(n == 1) 
         return cout << 0 << '\n' << 1 << '\n' << 1, signed();
 
-    h[1] = 1;
-    path.push_back(1);
 
-    function<void(int, int)> dfs = [&](int u, int p) {
-        for(int v : adj[u]) {
-            if(v == p || h[v]) 
-                continue;
-            path.push_back(v);
-            h[v] = h[u] + 1;
-            
-            if(v == n && h[v] & 1 && (path.size() < res.size() || res.empty())) {
-                res = path;
+    h[1] = {1, 1};
+    
+    function<vector<vector<int>>(int, int)> bfs = [&](int be, int en) {
+        vector<vector<int>> d(n + 1, vector<int>(2, INT_MAX));
+        queue<int> q;
+
+        d[be] = {0, 0};
+        q.push(be);
+
+        while(!q.empty()) {
+            int u = q.front();
+            q.pop();
+
+            if(u == be) {
+                for(int v : adj[u]) 
+                    d[v][0] = 1;
             }
             else {
-                dfs(v, u);
-            } 
-            path.pop_back();    
-        }    
+                for(int v : adj[u]) {
+                    if(d[v][0] == INT_MAX && d[v][1] == INT_MAX)
+                        q.push(v);
+                    if(d[u][0] != INT_MAX) 
+                        d[v][1] = min(d[v][1], d[u][0] + 1);
+                    if(d[u][1] != INT_MAX) 
+                        d[v][0] = min(d[v][0], d[u][1] + 1);
+                }
+            }
+        }
+
+        return d;
     };
 
-    dfs(1, 1);
+    vector<vector<int>> nguoc = bfs(n, 1);
+    vector<vector<int>> xuoi = bfs(1, n);
 
-    if(res.empty())
-        return cout << -1, signed();
+    int minn = INT_MAX;
+    bool flag = 0;
 
-    int t = res.size() / 2;
-
-    cout << t << '\n';
-
-    for(int i = 0; i <= t; i++) {
-        cout << res[i] << ' ';
+    for(int i = 1; i <= n; i++) {
+        if(nguoc[i][0] != INT_MAX && xuoi[i][0] != INT_MAX) {
+            if(nguoc[i][0] + xuoi[i][0]  - 1 < minn) {
+                minn = nguoc[i][0] + xuoi[i][0] - 1;
+            }
+            flag = 1;
+        }
+        if(nguoc[i][1] != INT_MAX && xuoi[i][1] != INT_MAX) {
+            if(nguoc[i][1] + xuoi[i][1]  - 1 < minn) {
+                minn = nguoc[i][1] + xuoi[i][1] - 1;
+            }
+            flag = 1;
+        }
     }
+
+    if(!flag)
+        cout << -1, signed(); 
+    //truy vết
+
+    for(int i = 1; i <= n; i++) {
+        if(nguoc[i][0] != INT_MAX && xuoi[i][0] != INT_MAX) {
+            if(nguoc[i][0] + xuoi[i][0] - 1 == minn) {
+                b[i] = 1;
+            }
+        }
+        if(nguoc[i][1] != INT_MAX && xuoi[i][1] != INT_MAX) {
+            if(nguoc[i][1] + xuoi[i][1] - 1 == minn) {
+                b[i] = 1;
+            }
+        }
+    }
+
+    for(int i = 1; i <= n; i++) {
+        if(b[i]) {
+            res.push_back(i);
+        }
+    }
+
+    cout << minn << '\n';
+
+    function<void(int)> dfs = [&](int u) {
+        path.push_back(u);
+        for(int v : adj[u]) {
+            if(b[v]) {
+                dfs(v);
+                break;
+            }
+        }
+    };
+
+    dfs(1);
+
+    for(int i = 0; i <= minn; i++) 
+        cout << path[i] << " ";
     cout << '\n';
-    for(int i = res.size() - 1; i >= t; i--) {
-        cout << res[i] << ' ';
-    }
+    for(int i = minn; i < path.size(); i++) 
+        cout << path[i] << " ";
 }

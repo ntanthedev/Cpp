@@ -1,4 +1,4 @@
- 
+
 {
     "workbench.colorTheme": "GitHub Dark Default",
     "editor.fontFamily": "Jetbrains Mono",
@@ -10,12 +10,12 @@
     "code-runner.runInTerminal": true,
     "code-runner.saveAllFilesBeforeRun": true,
     "files.autoSave": "afterDelay",
-    "terminal.integrated.enableMultiLinePasteWarning": false,
+    "terminal.integrated.enableMultiLinePasteWarning": "never",
     "terminal.integrated.defaultProfile.windows": "PowerShell",
     "workbench.panel.defaultLocation": "right",
     "code-runner.preserveFocus": false,
     "code-runner.executorMap": {
- 
+    
         "javascript": "node",
         "java": "cd $dir && javac $fileName && java $fileNameWithoutExt",
         "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
@@ -78,16 +78,21 @@
     "git.confirmSync": false,
     "git.autofetch": true,
     "workbench.colorCustomizations": {
- 
+        
     },
     "editor.fontLigatures": false,
     "editor.fontSize": 17,
     "debug.onTaskErrors": "abort",
     "cmake.configureOnOpen": true,
     "workbench.editor.tabSizing": "shrink",
-    "editor.cursorBlinking": "expand",
-    "editor.lineNumbers": "relative",
-    "files.associations": {
-        "random": "cpp"
-    }
+    // "CodeGPT.apiKey": "CodeGPT Plus Beta",
+    "workbench.iconTheme": "catppuccin-latte",
+    "explorer.confirmDelete": false,
+    // "remote.SSH.remotePlatform": {
+    //     "pealadau.org": "linux"
+    // },
+    // "bitoAI.appearance.fontSize (Match with IDE Font)": false,
+    // "bitoAI.codeCompletion.enableAutoCompletion": true,
+    // "bitoAI.codeCompletion.enableCommentToCode": true,
+    "editor.inlineSuggest.showToolbar": "onHover"
 }
