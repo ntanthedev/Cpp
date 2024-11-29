@@ -68,15 +68,15 @@ void solve(){
             cout << -1 << '\n';
     }
 
-    cout << "-----------\n";
-    for(int i = 1; i <= m; i++){
-        for(int j = 1; j <= n; j++)
-            if(d[i][j] == 1e18)
-                cout << 9 << " ";
-            else
-                cout << d[i][j] << " ";
-        cout << '\n';
-    }
+    // cout << "-----------\n";
+    // for(int i = 1; i <= m; i++){
+    //     for(int j = 1; j <= n; j++)
+    //         if(d[i][j] == 1e18)
+    //             cout << 9 << " ";
+    //         else
+    //             cout << d[i][j] << " ";
+    //     cout << '\n';
+    // }
 }
 
 void init(){
