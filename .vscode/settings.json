@@ -85,14 +85,14 @@
     "debug.onTaskErrors": "abort",
     "cmake.configureOnOpen": true,
     "workbench.editor.tabSizing": "shrink",
-    // "CodeGPT.apiKey": "CodeGPT Plus Beta",
+    "CodeGPT.apiKey": "CodeGPT Plus Beta",
     "workbench.iconTheme": "catppuccin-latte",
     "explorer.confirmDelete": false,
-    // "remote.SSH.remotePlatform": {
-    //     "pealadau.org": "linux"
-    // },
-    // "bitoAI.appearance.fontSize (Match with IDE Font)": false,
-    // "bitoAI.codeCompletion.enableAutoCompletion": true,
-    // "bitoAI.codeCompletion.enableCommentToCode": true,
+    "remote.SSH.remotePlatform": {
+        "pealadau.org": "linux"
+    },
+    "bitoAI.appearance.fontSize (Match with IDE Font)": false,
+    "bitoAI.codeCompletion.enableAutoCompletion": true,
+    "bitoAI.codeCompletion.enableCommentToCode": true,
     "editor.inlineSuggest.showToolbar": "onHover"
 }
