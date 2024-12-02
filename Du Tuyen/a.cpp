@@ -1,19 +1,14 @@
 //problem "a"
-//created in 21:24:11 - Thu 14/11/2024
+//created in 14:22:08 - Mon 02/12/2024
 
 #include<bits/stdc++.h>
 
+#define int int64_t
+
 using namespace std;
 
-int main() {
+int32_t main() {
+    ios_base::sync_with_stdio(false); cin.tie(NULL);
     
-   int a, b;
-
-   cin >> a >> b;
-
-   int c;
-
-   c = max(a, b);
-
-   cout << c; 
+    
 }

@@ -86,7 +86,7 @@
     "cmake.configureOnOpen": true,
     "workbench.editor.tabSizing": "shrink",
     "CodeGPT.apiKey": "CodeGPT Plus Beta",
-    "workbench.iconTheme": "catppuccin-latte",
+    "workbench.iconTheme": "material-icon-theme",
     "explorer.confirmDelete": false,
     "remote.SSH.remotePlatform": {
         "pealadau.org": "linux"
