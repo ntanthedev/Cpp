@@ -1,51 +1,44 @@
-//problem "a"
-//created in 03:28:12 - Tue 03/12/2024
+//Written by: ntannn_
+//created in 23:54:35 - Tue 03/12/2024
+#include <bits/stdc++.h>
 
-#include<bits/stdc++.h>
-
-#define int int64_t
+#define fi first
+#define se second
+#define mp make_pair
+#define pb push_back
+#define eb emplace_back
+#define all(x) x.begin(), x.end()
+#define TIME (1.0 * clock() / CLOCKS_PER_SEC)
 
 using namespace std;
 
-int32_t main() {
-    ios_base::sync_with_stdio(false); cin.tie(NULL);
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef pair<ll, ll> pll;
+typedef vector<int> vi;
+typedef vector<ll> vll;
+
+const int N = 1e6 + 10;
+const ll MOD = 1e9 + 7;
+
+
+
+void solve() {
     
-    #define task "SPIN"
+}
+
+#define task "a"
+signed main() {
+    cin.tie(NULL);
+    ios_base::sync_with_stdio(false);
     if(fopen(task ".inp", "r")) {
         freopen(task ".inp", "r", stdin);
         freopen(task ".out", "w", stdout);
     }
-
-    int M, K, n, T;
-    cin >> M >> K >> n >> T;
-    vector<int> b(n + 1);
-    int sum = 0;
-    for(int i = 1; i <= n; i++) 
-        cin >> b[i];
-
-    if(n + K > M) 
-        return cout << -1, 0;
-
-    b[0] = 0;
-    sort(b.begin(), b.end());
-
-    if(b[0] > K) {
-        cout << (K + 1) * K / 2 + K * T;
-        return 0;
+    int test_case = 1;
+    //cin >> test_case;
+    while(test_case--) {
+        solve();
     }
-
-    int cnt = 0, ans = 0;
-    for(int i = 1; i <= n; i++) {
-        int t = (b[i] - b[i - 1] - 1);
-        if(cnt + t <= K) {
-            cnt += t;
-            sum += (b[i - 1] + b[i]) * t / 2;
-        }
-        else {
-            int tt = K - cnt;
-            sum += (b[i - 1] + 1 + b[i - 1] + tt) * tt / 2;
-            break;
-        }
-    }
-    cout << sum + K * T;
+    // cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }
