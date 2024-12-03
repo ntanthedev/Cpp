@@ -16,15 +16,15 @@ int dx[] = {1, -1, 0, 0},
 int32_t main() {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
     
-    #define task "PATHGAME"
+    #define task "MECUNG3"
     if(fopen(task ".inp", "r")) {
         freopen(task ".inp", "r", stdin);
         freopen(task ".out", "w", stdout);
     }
 
-    int n, m, Q;
+    int n, m, Q, bx, by;
 
-    cin >> m >> n >> Q;
+    cin >> m >> n >> Q >> bx >> by;
 
     vector<vector<char>> a(m + 1, vector<char> (n + 1));
     vector<vector<int>> b(m + 1, vector<int> (n + 1, LLONG_MAX));
@@ -34,15 +34,14 @@ int32_t main() {
     for(int i = 1; i <= m; i++) 
         for(int j = 1; j <= n; j++) {
             cin >> a[i][j];
-            if(a[i][j] == '*') {
-                b[i][j] =  0;
-                dq.push_back(mp(0LL, mp(i, j)));
-            }
         }
 
     // int tt = 0;
     // vector<vector<int>> time(m + 1, vector<int> (n + 1, 0));
     
+    dq.push_back(mp(0, mp(bx, by)));
+    b[bx][by] = 0;
+
     while(!dq.empty()) {
         auto d = dq.front().first;
         auto [x, y] = dq.front().second;
