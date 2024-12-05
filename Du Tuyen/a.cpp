@@ -1,44 +1,40 @@
-//Written by: ntannn_
-//created in 23:54:35 - Tue 03/12/2024
-#include <bits/stdc++.h>
+//problem "a"
+//created in 10:24:41 - Wed 04/12/2024
 
-#define fi first
-#define se second
-#define mp make_pair
-#define pb push_back
-#define eb emplace_back
-#define all(x) x.begin(), x.end()
-#define TIME (1.0 * clock() / CLOCKS_PER_SEC)
+#include<bits/stdc++.h>
+
+#define int int64_t
 
 using namespace std;
 
-typedef long long ll;
-typedef pair<int, int> ii;
-typedef pair<ll, ll> pll;
-typedef vector<int> vi;
-typedef vector<ll> vll;
-
-const int N = 1e6 + 10;
-const ll MOD = 1e9 + 7;
-
-
-
-void solve() {
+int32_t main() {
+    ios_base::sync_with_stdio(false); cin.tie(NULL);
     
-}
+    int n;
+    cin >> n;
 
-#define task "a"
-signed main() {
-    cin.tie(NULL);
-    ios_base::sync_with_stdio(false);
-    if(fopen(task ".inp", "r")) {
-        freopen(task ".inp", "r", stdin);
-        freopen(task ".out", "w", stdout);
-    }
-    int test_case = 1;
-    //cin >> test_case;
-    while(test_case--) {
-        solve();
-    }
-    // cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
+    vector<int> a(n + 1);
+
+    for(int i = 1; i <= n; i++) 
+        cin >> a[i];
+
+    auto b = a;
+
+    reverse(b.begin() + 1, b.end());
+
+    vector<vector<int>> dp(n + 1, vector<int>(n + 1));
+
+    dp[0][0] = 0;
+
+    for(int i = 1; i <= n; i++) 
+        for(int j = 1; j <= n; j++) {
+            if(a[i] == b[j]) {
+                dp[i][j] = dp[i - 1][j - 1] + 1;
+            }
+            else {
+                dp[i][j] = max(dp[i][j - 1], dp[i - 1][j]);
+            }
+        }
+
+    cout << n - dp[n][n];
 }
