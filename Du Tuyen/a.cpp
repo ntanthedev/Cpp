@@ -1,40 +1,90 @@
-//problem "a"
-//created in 10:24:41 - Wed 04/12/2024
+#include <bits/stdc++.h>
 
-#include<bits/stdc++.h>
-
-#define int int64_t
+#define int long long
 
 using namespace std;
 
-int32_t main() {
-    ios_base::sync_with_stdio(false); cin.tie(NULL);
-    
+struct segment_tree {
     int n;
-    cin >> n;
+    vector<int> st;
+    segment_tree(int _n): n(_n), st(2 * n, 0) {}
 
-    vector<int> a(n + 1);
+    void update(int k, int x) {
+        st[k += n] = x;
+        while (k /= 2)
+            st[k] = max(st[k], x);
+    }
 
-    for(int i = 1; i <= n; i++) 
-        cin >> a[i];
-
-    auto b = a;
-
-    reverse(b.begin() + 1, b.end());
-
-    vector<vector<int>> dp(n + 1, vector<int>(n + 1));
-
-    dp[0][0] = 0;
-
-    for(int i = 1; i <= n; i++) 
-        for(int j = 1; j <= n; j++) {
-            if(a[i] == b[j]) {
-                dp[i][j] = dp[i - 1][j - 1] + 1;
-            }
-            else {
-                dp[i][j] = max(dp[i][j - 1], dp[i - 1][j]);
-            }
+    int get(int l, int r) {
+        int m = 0;
+        for (l += n, r += n; l <= r; l /= 2, r /= 2) {
+            if  (l & 1) m = max(m, st[l++]);
+            if (~r & 1) m = max(m, st[r--]);
         }
 
-    cout << n - dp[n][n];
+        return m;
+    }
+};
+
+struct DSU {
+    vector<int> e, h;
+    DSU(int n): e(n, -1), h(n) {
+        iota(h.begin(), h.end(), 0);
+    }
+
+    int anc(int a) {
+        return e[a] < 0 ? a : e[a] = anc(e[a]);
+    }
+
+    void unite(int a, int b) {
+        a = anc(a), b = anc(b);
+        if (a == b) return;
+
+        if (e[a] > e[b]) swap(a, b);
+        e[a] += e[b];
+        e[b] = a;
+        h[a] = min(h[a], h[b]);
+    }
+
+    int head(int a) {
+        return h[anc(a)];
+    }
+    int nxt(int a) {
+        a = anc(a);
+        return h[a] - e[a];
+    }
+};
+
+int32_t main() {
+    ios::sync_with_stdio(0), cin.tie(0);
+    
+    #define _ "imparr"
+    if (fopen(_ ".inp", "r")) {
+        freopen(_ ".inp", "r", stdin);
+        freopen(_ ".out", "w", stdout);
+    }
+    
+    int n, d;
+    cin >> n >> d;
+    vector<pair<int, int>> a(n);
+    for (int i = 0; i < n; ++i)
+        cin >> a[i].first,
+        a[i].second = i;
+        
+    sort(a.begin(), a.end(), [&](auto x, auto y) {
+        return x.first < y.first || (x.first == y.first && x.second > y.second);
+    });
+
+    segment_tree st(n);
+    DSU dsu(n);
+
+    for (auto [x, i] : a) {
+        for (int j = dsu.nxt(max(i - d, 0LL)); j <= i; j = dsu.nxt(j))
+            dsu.unite(j, j - 1);
+
+        int t = st.get(dsu.head(i), i) + 1;
+        st.update(i, t);
+    }
+
+    cout << st.get(0, n - 1);
 }
