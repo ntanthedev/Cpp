@@ -53,7 +53,7 @@ void solve() {
         else {
             l = mid+1;
         }
-    } 
+    }
     cout << ans;
 }
 
