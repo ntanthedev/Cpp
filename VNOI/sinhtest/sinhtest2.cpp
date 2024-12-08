@@ -9,9 +9,9 @@ using namespace std;
 #define f1(i,n) for(int i=1;i<=n;i++)
 typedef long long ll;
 const int btest = 1; 
-const int etest = 50; // so luong test
-const int test_for_sub1 = 20; //% so luong test theo tung sub
-const int test_for_sub2 = 80;
+const int etest = 30; // so luong test
+const int test_for_sub1 = 50; //% so luong test theo tung sub
+const int test_for_sub2 = 50;
 const int test_for_sub3 = 100;
 const int s1 = double(etest) / 100.0 * test_for_sub1 * 1.0;
 const int s2 = double(etest) / 100.0 * test_for_sub2 * 1.0;
@@ -143,16 +143,11 @@ void sub1(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
 
-    int n = Rand(1, 1e3);
-
-    inp << n << '\n';
-
-    auto a = tree(n);
-
-    cerr << n << " " << a.size() << '\n';
-
-    for(auto [u, v] : a) {
-        inp << u << " " << v << " " << Rand(1, 1e4) << '\n';
+    int t = Rand(1, 1e3);
+    inp << t << '\n';
+    while(t--) {
+        int n = Rand(1, 1e3);
+        inp << n << '\n';
     }
 }
 
@@ -160,17 +155,11 @@ void sub2(int x) {
     ofstream os;
     ofstream inp((to_string(x) + ".inp").c_str());
 
-    
-    int n = Rand(1e4, 1e5);
-
-    inp << n << '\n';
-
-    auto a = tree(n);
-
-    cerr << n << " " << a.size() << '\n';
-
-    for(auto [u, v] : a) {
-        inp << u << " " << v << " " << Rand(1, 1e4) << '\n';
+    int t = Rand(1, 1e5) ;
+    inp << t << '\n';
+    while(t--){
+        int n = Rand(1e4, 1e6);
+        inp << n << '\n';
     }
 }
 
