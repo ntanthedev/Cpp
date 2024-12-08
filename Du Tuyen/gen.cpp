@@ -4,7 +4,7 @@ using namespace std;
 
 typedef long long ll;
 
-mt19937_64 rd(time(nullptr));
+mt19937_64 rd(234);
 
 ll Rand(ll l, ll r) {
     assert(l <= r);
