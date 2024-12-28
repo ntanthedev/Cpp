@@ -4,7 +4,7 @@ using namespace std;
 
 typedef long long ll;
 
-mt19937_64 rd(234);
+mt19937_64 rd(time(nullptr));
 
 ll Rand(ll l, ll r) {
     assert(l <= r);
@@ -16,7 +16,7 @@ signed main() {
     system("g++ a.cpp -o a.exe");
     system("g++ b.cpp -o b.exe");
 
-    for(int i = 1; i <= 1000; i++) {
+    for(int i = 1; i <= 100; i++) {
         ofstream inp("test.inp");
 
         int n = Rand(1, 1e5);
