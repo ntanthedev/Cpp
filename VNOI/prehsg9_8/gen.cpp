@@ -19,26 +19,8 @@ signed main() {
     for(int i = 1; i <= 100; i++) {
         ofstream inp("test.inp");
 
-        int n = Rand(1, 1e4), k = Rand(1, 1e3);
-        vector<int> a;
-
-        for(int i = 1; i <= n; i++) {
-            a.push_back(Rand(1, 1e9));
-        }
-
-        sort(a.begin(), a.end());
-        a.erase(unique(a.begin(), a.end()), a.end());
-        n = a.size();
-
-        inp << n << " " << k << '\n';
-
-        for(auto i : a) 
-            inp << i << " "; 
-        inp << '\n';
-
-        for(int i = 1; i <= k; i++) {
-            inp << Rand(1, n) << " " << Rand(1, 1e9) << '\n';
-        }
+        int n = Rand(1e5, 5e6), k = Rand(1, 100);
+        inp << n << ' ' << k << '\n';
                 
         inp.close();
 

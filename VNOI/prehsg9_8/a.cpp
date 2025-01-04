@@ -1,55 +1,43 @@
+//problem "c4"
+//created in 18:23:52 - Sat 04/01/2025
+
 #include<bits/stdc++.h>
+#define TIME (1.0 * clock() / CLOCKS_PER_SEC)
 
-#define int long long
-
-const int N = 2e6 + 5;
-typedef long long ll;
+#define int int64_t
 
 using namespace std;
 
-ll n, q;
-ll a[N];
+int n, k;
 
-struct sub1 {
+struct sub1 { //n <= 1e3
     sub1() {
-        ll x, f;
-        while(q--) {
-            cin >> x >> f;
-            ll d = 1;
-            for(int i = x + 1; i <= n; i++) {
-                f -= (a[i] - a[i - 1]) * d;
-                if(f < 0) 
-                    break;
-                d++;
-            }
-            cout << d << '\n';
+        int ans = 0, p = 1;
+        while(k < n) {
+            p += k;
+            if(p > n) 
+                p %= n, k++;
+            ans++;
+            // cerr << p << " " << ans << " " << k << '\n';
         }
+        cout << ans << '\n';
     }
 };
+// sub1: O(nlogn)
 
 struct sub2 {
-    ll pre[N];
+
     sub2() {
-        ll x, f;
-        pre[0] = a[0] = 0;
-        for(int i = 1; i <= n; i++) {
-            pre[i] = pre[i - 1] + a[i];
+        int p = 1, ans = 0;
+        while(k < n) {
+            int t = (n - p) / k;
+            if(p + k * t <= n) 
+                t++;
+            p = (p + k * t) % n;
+            ans += t;
+            k++;
         }
-        while(q--) {
-            cin >> x >> f;
-            ll l = x, r = n, ans;
-
-            while(l <= r) {
-                ll mid = (l + r) / 2;
-                // cout << mid << " " << (mid - x) * a[mid] - (pre[mid - 1] - pre[x - 1]) << '\n'; 
-                if((mid - x) * a[mid] - (pre[mid - 1] - pre[x - 1]) <= f)
-                    ans = mid, l = mid + 1;
-                else 
-                    r = mid - 1;
-            }
-
-            cout << ans - x + 1 << '\n';
-        }
+        cout << ans << '\n';
     }
 };
 
@@ -58,13 +46,11 @@ int32_t main() {
     
     #define task "test"
     if(fopen(task ".inp", "r")) {
-        freopen("test.inp", "r", stdin);
+        freopen(task ".inp", "r", stdin);
         freopen("a.out", "w", stdout);
     }
 
-    cin >> n >> q;
-
-    for(int i = 1; i <= n; i++) 
-        cin >> a[i];
-    delete new sub1;
+    cin >> n >> k;
+    sub2();
+    cerr << '\n' << "\x1b[31msub2: " << TIME << "\e[39m";
 }
