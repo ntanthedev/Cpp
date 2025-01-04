@@ -1,122 +1,70 @@
-//problem "cau 1"
-//created in 20:25:52 - Fri 03/01/2025
-
 #include<bits/stdc++.h>
 
 #define int long long
 
+const int N = 2e6 + 5;
+typedef long long ll;
+
 using namespace std;
 
-// dp
-struct Sub1 {
-    int n, x;
-    vector<int> f, a;
+ll n, q;
+ll a[N];
 
-    Sub1(int _n, int _x): n(_n), x(_x), f(n + 2, INT_MAX), a(n + 1) {
-        for(int i = 1; i <= n; i++) 
-            cin >> a[i];
-    }
-
-    int solve() {
-        f[0] = 0; a[n + 1] = 0;
-
-        for(int i = 1; i <= n + 1; i++) 
-            for(int j = max(0LL, i - x); j < i; j++) 
-                f[i] = min(f[i], f[j] + a[i]);
-            
-        return f[n + 1];
-    }
-};
-
-//tree
-struct Sub2 {
-    int n, x;
-    vector<int> a, f, tree;        
-
-    Sub2(int _n, int _x): n(_n), x(_x), a(n + 2), f(n + 2), tree((n + 2) << 2) {
-        for(int i = 1; i <= n; i++) 
-            cin >> a[i];
-    }
-
-    void update(int id, int l, int r, int u, int w) {
-        if(l > u || r < u) 
-            return;
-        if(l == r) 
-            return tree[id] = w, void();
-        int mid = (l + r) << 2;
-        update(id << 1, l, mid, u, w);
-        update(id << 1 | 1, mid + 1, r, u, w);
-        tree[id] = min(tree[id << 1], tree[id << 1 | 1]);
-    }
-
-    int get(int id, int l, int r, int u, int v) {
-        if(l > v || r < u) 
-            return 0;
-        if(l >= u && r <= v) 
-            return tree[id];
-        int mid = (l + r) << 2;
-        return min(get(id << 1, l, mid, u, v), get(id << 1 | 1, mid + 1, r, u, v));
-    }
-
-    int solve() {
-        f[0] = 0; a[n + 1] = 0;
-
-        for(int i = 1; i <= n + 1; i++) 
-            update(1, 0, n, i, f[i] = get(1, 0, n, max(0LL, i - x), i - 1) + a[i]);
-            
-        return f[n + 1];
-    }
-};
-
-// deque
-struct Sub3 {
-    int n, x, ans;
-    vector<int> a, f;        
-
-    Sub3(int _n, int _x): n(_n), x(_x), a(n + 1), f(n + 2, INT_MAX) {
-        for(int i = 1; i <= n; i++) 
-            cin >> a[i];
-    }
-
-    int solve() {
-        deque<int> dq;
-        f[0] = 0;
-
-        for(int i = 1; i <= n + 1; i++) {
-            while(dq.size() && f[dq.back()] >= f[i - 1]) 
-                dq.pop_back();
-            dq.push_back(i - 1);
-            if(i - dq.front() > x)
-                dq.pop_front();
-            f[i] = f[dq.front()] + a[i];
+struct sub1 {
+    sub1() {
+        ll x, f;
+        while(q--) {
+            cin >> x >> f;
+            ll d = 1;
+            for(int i = x + 1; i <= n; i++) {
+                f -= (a[i] - a[i - 1]) * d;
+                if(f < 0) 
+                    break;
+                d++;
+            }
+            cout << d << '\n';
         }
-
-        // for(int i = 1; i <= n + 1; i ++) 
-        //     cerr << f[i] << " " ;
-        // cerr << '\n';
-
-        return f[n + 1];
     }
 };
 
+struct sub2 {
+    ll pre[N];
+    sub2() {
+        ll x, f;
+        pre[0] = a[0] = 0;
+        for(int i = 1; i <= n; i++) {
+            pre[i] = pre[i - 1] + a[i];
+        }
+        while(q--) {
+            cin >> x >> f;
+            ll l = x, r = n, ans;
+
+            while(l <= r) {
+                ll mid = (l + r) / 2;
+                // cout << mid << " " << (mid - x) * a[mid] - (pre[mid - 1] - pre[x - 1]) << '\n'; 
+                if((mid - x) * a[mid] - (pre[mid - 1] - pre[x - 1]) <= f)
+                    ans = mid, l = mid + 1;
+                else 
+                    r = mid - 1;
+            }
+
+            cout << ans - x + 1 << '\n';
+        }
+    }
+};
 
 int32_t main() {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
     
-    #define task "b"
+    #define task "test"
     if(fopen(task ".inp", "r")) {
-        freopen( "test.inp", "r", stdin);
-        freopen(task ".out", "w", stdout);
+        freopen("test.inp", "r", stdin);
+        freopen("b.out", "w", stdout);
     }
 
-    int n, x;
-    cin >> n >> x;
-    
-    Sub1 ans(n, x);
-    cout << ans.solve();
-}
+    cin >> n >> q;
 
-/*
-x = 1
-i-1 i
-*/
+    for(int i = 1; i <= n; i++) 
+        cin >> a[i];
+    delete new sub2;
+}
