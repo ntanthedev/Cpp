@@ -28,7 +28,7 @@ struct Sub1 {
     }
 };
 
-//tree
+//tree nhung ma sai me roi
 struct Sub2 {
     int n, x;
     vector<int> a, f, tree;        
