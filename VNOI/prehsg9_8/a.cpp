@@ -62,7 +62,7 @@ struct Sub2 {
         f[0] = 0; a[n + 1] = 0;
 
         for(int i = 1; i <= n + 1; i++) 
-            update(1, 1, n, i, f[i] = get(1, 1, n, max(0LL, i - x), i - 1) + a[i]);
+            update(1, 0, n, i, f[i] = get(1, 0, n, max(0LL, i - x), i - 1) + a[i]);
             
         return f[n + 1];
     }
@@ -71,21 +71,52 @@ struct Sub2 {
 // deque
 struct Sub3 {
     int n, x, ans;
-    vector<int> a;        
+    vector<int> a, f;        
 
-    Sub3(int _n, int _x): n(_n), x(_x), a(n + 1) {
+    Sub3(int _n, int _x): n(_n), x(_x), a(n + 1), f(n + 2, INT_MAX) {
         for(int i = 1; i <= n; i++) 
             cin >> a[i];
-        
+    }
+
+    int solve() {
+        deque<int> dq;
+        f[0] = 0;
+
+        for(int i = 1; i <= n + 1; i++) {
+            while(dq.size() && f[dq.back()] >= f[i - 1]) 
+                dq.pop_back();
+            dq.push_back(i - 1);
+            if(i - dq.front() > x)
+                dq.pop_front();
+            f[i] = f[dq.front()] + a[i];
+        }
+
+        // for(int i = 1; i <= n + 1; i ++) 
+        //     cerr << f[i] << " " ;
+        // cerr << '\n';
+
+        return f[n + 1];
     }
 };
+
 
 int32_t main() {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
     
+    #define task "a"
+    if(fopen(task ".inp", "r")) {
+        freopen( "test.inp", "r", stdin);
+        freopen(task ".out", "w", stdout);
+    }
+
     int n, x;
     cin >> n >> x;
     
-    Sub2 ans(n, x);
+    Sub3 ans(n, x);
     cout << ans.solve();
 }
+
+/*
+x = 1
+i-1 i
+*/
