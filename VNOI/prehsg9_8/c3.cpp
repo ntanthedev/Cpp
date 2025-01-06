@@ -37,7 +37,7 @@ struct sub2 {
         }
         while(q--) {
             cin >> x >> f;
-            ll l = x, r = n, ans;
+            ll l = x, r = n, ans = x;
 
             while(l <= r) {
                 ll mid = (l + r) / 2;

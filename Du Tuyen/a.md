@@ -1,97 +1,91 @@
-**Problem Statement**
+Recently, the instructors of "T-generation" needed to create a training contest. They were missing one problem, and there was not a single problem on graphs in the contest, so they came up with the following problem.
 
-*   Chris is given two arrays *a* and *b*, both consisting of *n* integers.
-*   Iris is interested in the largest possible value of  P =  ∏<sub>i=1</sub><sup>n</sup> min(a<sub>i</sub>, b<sub>i</sub>) after an arbitrary rearrangement of *b*. Note that she only wants to know the maximum value of *P*, and no actual rearrangement is performed on *b*.
-*   There will be *q* modifications. Each modification can be denoted by two integers *o* and *x* (*o* is either 1 or 2, 1 ≤ *x* ≤ *n*). If *o* = 1, then Iris will increase a<sub>x</sub> by 1; otherwise, she will increase b<sub>x</sub> by 1.
-*   Iris asks Chris the maximum value of *P* for *q* + 1 times: once before any modification, then after every modification.
-*   Since *P* might be huge, Chris only needs to calculate it modulo 998 244 353.
+You are given a connected weighted undirected graph with $n$ vertices and $m$ edges, which does not contain self-loops or multiple edges.
 
-Chris soon worked out this problem, but he was so tired that he fell asleep. Besides saying thanks to Chris, now it is your turn to write a program to calculate the answers for the given input data.
+There are $q$ queries of the form $(a, b, k)$: among all paths from vertex $a$ to vertex $b$, find the smallest $k$-th maximum weight of edges on the path$^\dagger$.
 
-**Note**: Since the input and output are large, you may need to optimize them for this problem.
+The instructors thought that the problem sounded very interesting, but there is one catch. They do not know how to solve it. Help them and solve the problem, as there are only a few hours left until the contest starts.
 
-For example, in C++, it is enough to use the following lines at the start of the main() function:
-
-```c++
-int main() {
-    std::ios::sync_with_stdio(false);
-    std::cin.tie(nullptr);
-    std::cout.tie(nullptr);
-}
-```
+$^\dagger$ Let $w_1 \ge w_2 \ge \dots \ge w_h$ be the weights of all edges in a path, in non-increasing order. The $k$-th maximum weight of the edges on this path is $w_k$.
 
 **Input**
 
-Each test contains multiple test cases. The first line of input contains a single integer *t* (1 ≤ *t* ≤ 10<sup>4</sup>) - the number of test cases. The description of test cases follows.
+Each test contains multiple test cases. The first line contains a single integer $t$ ($1 \le t \le 100$) — the number of test cases. The description of the test cases follows.
 
-The first line of each test case contains two integers *n* and *q* (1 ≤ *n* ≤ 2 ⋅ 10<sup>5</sup>, 1 ≤ *q* ≤ 2 ⋅ 10<sup>5</sup>) - the length of the array and the number of operations.
+The first line of each set of test case contains three integers $n$, $m$ and $q$ ($2 \le n \le 400$, $n - 1 \le m \le \min(400, \frac{n \cdot (n-1)}{2})$, $1 \le q \le 3 \cdot 10^5$) — the number of vertices, the number of edges, and the number of questions, respectively.
 
-The second line of each test case contains *n* integers a<sub>1</sub>, a<sub>2</sub>, ..., a<sub>n</sub> (1 ≤ a<sub>i</sub> ≤ 5 ⋅ 10<sup>8</sup>) - the array *a*.
+Each of the following $m$ lines of each set of test case contains three integers $u$, $v$ and $w$ ($1 \le v, u \le n$, $1 \le w \le 10^9$) — the ends of the next edge of the graph and its weight, respectively. It is guaranteed that the graph does not contain self-loops and multiple edges.
 
-The third line of each test case contains *n* integers b<sub>1</sub>, b<sub>2</sub>, ..., b<sub>n</sub> (1 ≤ b<sub>i</sub> ≤ 5 ⋅ 10<sup>8</sup>) - the array *b*.
+Each of the following $q$ lines of each set of test case contains three integers $a$, $b$ and $k$ ($1 \le a, b \le n$, $k \ge 1$) — the next question. It is guaranteed that any path from vertex $a$ to vertex $b$ contains at least $k$ edges.
 
-Then *q* lines follow, each line contains two integers *o* and *x* (*o* ∈ {1, 2}, 1 ≤ *x* ≤ *n*), representing an operation.
+It is guaranteed that the sum of the values of $n$ across all sets of test cases does not exceed $400$.
 
-It's guaranteed that the sum of *n* and the sum of *q* over all test cases does not exceed 4 ⋅ 10<sup>5</sup>, respectively.
+It is guaranteed that the sum of the values of $m$ across all sets of test cases does not exceed $400$.
+
+It is guaranteed that the sum of the values of $q$ across all sets of test cases does not exceed $3 \cdot 10^5$.
 
 **Output**
 
-For each test case, output *q* + 1 integers in a line, representing the answers that Chris will calculate, modulo 998 244 353.
-
-**Example*
-***input***
+For each test case, output the answers to all questions.
+**Example**
+***Input***
 ```
-4
-3 4
-1 1 2
-3 2 1
-1 3
-2 3
-1 1
-2 1
-6 8
-1 4 2 7 3 5
-7 6 5 6 3 3
-2 5
-1 6
-1 5
-1 5
-1 5
-2 3
-2 3
-1 6
-13 8
-7 7 6 6 5 5 5 2 2 3 4 5 1
-1 4 1 9 6 6 9 1 5 1 3 8 4
-2 2
-2 11
-2 4
-2 4
-1 7
-1 1
-2 12
-1 5
-5 3
-10000000 20000000 30000000 40000000 50000000
-10000000 20000000 30000000 40000000 50000000
-1 1
-2 2
-2 1
+3
+4 4 2
+1 2 2
+2 4 2
+1 3 4
+3 4 1
+1 4 2
+2 3 1
+6 7 3
+1 2 10
+2 3 3
+3 4 9
+4 5 2
+5 6 1
+2 4 10
+4 6 10
+1 6 3
+1 6 2
+2 4 1
+11 17 10
+1 4 5
+1 3 19
+1 2 10
+3 2 13
+4 5 1
+4 6 11
+3 5 9
+3 6 18
+2 7 17
+5 8 15
+5 10 8
+6 9 4
+7 10 20
+7 8 16
+8 11 3
+9 11 6
+10 11 14
+3 11 1
+3 11 3
+1 11 1
+1 11 4
+1 11 3
+8 2 2
+10 4 1
+3 9 2
+3 9 1
+6 7 3
 ```
-***ouput***
+***Output***
 ```
-2 3 3 6 6
-840 840 1008 1344 1680 2016 2016 2016 2352
-2116800 2646000 3528000 3528000 3528000 4233600 4838400 4838400 4838400
-205272023 205272023 205272023 264129429
+1 2
+2 9 9
+11 3 11 1 3 10 8 4 11 4
 ```
-
 **Note**
 
-In the first test case:
+In the first set of test cases, one of the optimal paths in the first query is the path $1 \to 3 \to 4$; the $2$-nd maximum weight of the edges on this path is $1$. In the second query, one of the optimal paths is $2 \to 4 \to 3$; 1-st maximum weight of the edges is $2$.
 
-*   Before the modifications, Chris can rearrange *b* to [1, 2, 3] so that P = ∏<sub>i=1</sub><sup>n</sup> min(a<sub>i</sub>, b<sub>i</sub>) = 1 ⋅ 1 ⋅ 2 = 2. We can prove that this is the maximum possible value. For example, if Chris rearranges *b* = [2, 3, 1], *P* will be equal 1 ⋅ 1 ⋅ 1 = 1 < 2, which is not optimal.
-*   After the first modification, Chris can rearrange *b* to [1, 2, 3] so that *P* = 1 ⋅ 1 ⋅ 3 = 3, which is maximized.
-*   After the second modification, Chris can rearrange *b* to [2, 2, 3] so that *P* = 1 ⋅ 1 ⋅ 3 = 3, which is maximized.
-*   After the third modification, Chris can rearrange *b* to [2, 2, 3] so that *P* = 6, which is maximized.
-*   After the fourth modification, Chris can rearrange *b* to [2, 2, 4] so that *P* = 6, which is maximized.
+In the second set of input data, one of the optimal paths in the first query is the path $1 \to 2 \to 4 \to 5 \to 6$; the 3-rd maximum weight of the edges on this path is $2$.

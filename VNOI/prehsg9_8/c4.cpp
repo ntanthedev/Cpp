@@ -55,5 +55,5 @@ int32_t main() {
         sub1();
     else 
         sub2();
-    cerr << '\n' << "\x1b[31msub2: " << TIME << "\e[39m";
+    // cerr << '\n' << "\x1b[31msub2: " << TIME << "\e[39m";
 }

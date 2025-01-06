@@ -16,14 +16,15 @@ signed main() {
     system("g++ a.cpp -o a.exe");
     system("g++ b.cpp -o b.exe");
 
-    for(int i = 1; i <= 100; i++) {
+    for(int i = 1; i <= 10; i++) {
         ofstream inp("test.inp");
 
-        int n = Rand(1e5, 5e6), k = Rand(1, 100);
+        int n = Rand(1e7, 2e7), k = Rand(1, 100);
         inp << n << ' ' << k << '\n';
                 
         inp.close();
 
+        printf("%d", n);
         system("a.exe");
         system("b.exe");
 

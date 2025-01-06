@@ -73,7 +73,7 @@ struct Sub3 {
     int n, x, ans;
     vector<int> a, f;        
 
-    Sub3(int _n, int _x): n(_n), x(_x), a(n + 1), f(n + 2, INT_MAX) {
+    Sub3(int _n, int _x): n(_n), x(_x), a(n + 2), f(n + 2, INT_MAX) {
         for(int i = 1; i <= n; i++) 
             cin >> a[i];
     }
@@ -81,6 +81,7 @@ struct Sub3 {
     int solve() {
         deque<int> dq;
         f[0] = 0;
+        a[0] = 0;
 
         for(int i = 1; i <= n + 1; i++) {
             while(dq.size() && f[dq.back()] >= f[i - 1]) 
