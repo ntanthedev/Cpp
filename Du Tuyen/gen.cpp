@@ -19,20 +19,24 @@ signed main() {
     for(int i = 1; i <= 100; i++) {
         ofstream inp("test.inp");
 
-        int n = Rand(1, 1e5);
-        inp << n << '\n';
+        int n = Rand(1, 20);
 
         for(int i = 1; i <= n; i++) {
-            int a = Rand(1, 1e6);
-            inp << a << " ";
+            int t = Rand(0, 4);
+            if(t == 0) 
+                inp << '(';
+            else if(t == 2)
+                inp << ')';
+            else 
+                inp << '?';
         }
-                
+
         inp.close();
 
         system("a.exe");
         system("b.exe");
 
-        if(system("fc a.out b.out")) {
+        if(system("fc a.out b.out") != 0) {
             printf("test %d WA\n", i);
             return signed();
         }

@@ -1,74 +1,131 @@
-#include<bits/stdc++.h>
+// problem "a"
+// created in 19:57:14 - Mon 03/03/2025
 
-#define int long long
-
-const int N = 2e6 + 5;
-typedef long long ll;
+#include <bits/stdc++.h>
 
 using namespace std;
 
-ll n, q;
-ll a[N];
+typedef long long ll;
+const int N = 1e6 + 9;
+
+int n, K;
+int a[N];
 
 struct sub1 {
+    int ans = 0;
+
     sub1() {
-        ll x, f;
-        while(q--) {
-            cin >> x >> f;
-            ll d = 1;
-            for(int i = x + 1; i <= n; i++) {
-                f -= (a[i] - a[i - 1]) * d;
-                if(f < 0) 
-                    break;
-                d++;
+        for(int i = 1; i <= n; i++) {
+            for(int j = i; j <= n; j++) {
+                int gmax = 0, gmin = INT_MAX;
+
+                for(int k = i; k <= j; k++)
+                    gmax = max(gmax, a[k]), gmin = min(gmin, a[k]);
+
+                if(gmax - gmin <= K)
+                    ans = max(ans, j - i + 1);
             }
-            cout << d << '\n';
         }
+
+        cout << ans;
     }
 };
 
 struct sub2 {
-    ll pre[N];
     sub2() {
-        ll x, f;
-        pre[0] = a[0] = 0;
+        int ans = 0;
         for(int i = 1; i <= n; i++) {
-            pre[i] = pre[i - 1] + a[i];
-        }
-        while(q--) {
-            cin >> x >> f;
-            ll l = x, r = n, ans = x;
-
-            while(l <= r) {
-                ll mid = (l + r) / 2;
-                // cout << mid << " " << (mid - x) * a[mid] - (pre[mid - 1] - pre[x - 1]) << '\n'; 
-                if((mid - x) * a[mid] - (pre[mid - 1] - pre[x - 1]) <= f)
-                    ans = mid, l = mid + 1;
-                else 
-                    r = mid - 1;
+            int gmax = 0, gmin = INT_MAX;
+            for(int j = i; j <= n; j++) {
+                gmax = max(gmax, a[j]);
+                gmin = min(gmin, a[j]);
+                if(gmax - gmin <= K)
+                    ans = max(ans, j - i + 1);
             }
-
-            cout << ans - x + 1 << '\n';
         }
+
+        cout << ans;
+    }
+};
+
+struct sub3 {
+    multiset<int> m;
+    int ans = 1;
+
+    sub3() {
+        int l = 1, r = 1;
+        m.insert(a[1]);
+
+        while(r <= n) {
+            if(*m.rbegin() - *m.begin() <= K) {
+                ans = max(ans, r - l + 1);
+                r++;
+                m.insert(a[r]);
+            } else {
+                m.erase(m.find(a[l]));
+                l++;
+            }
+        }
+
+        cout << ans;
+    }
+};
+
+struct sub4 {
+
+    deque<int> max_dq, min_dq;
+    int ans = 0;
+
+    sub4() {
+        int l = 1;
+        for (int r = 1; r <= n; r++) {
+            while (!max_dq.empty() && a[max_dq.back()] <= a[r])
+                max_dq.pop_back();
+            max_dq.push_back(r);
+            
+            while (!min_dq.empty() && a[min_dq.back()] >= a[r])
+                min_dq.pop_back();
+            min_dq.push_back(r);
+            
+            while (l <= r && a[max_dq.front()] - a[min_dq.front()] > K) {
+                l++;
+                while (!max_dq.empty() && max_dq.front() < l)
+                    max_dq.pop_front();
+                while (!min_dq.empty() && min_dq.front() < l)
+                    min_dq.pop_front();
+            }
+            
+            ans = max(ans, r - l + 1);
+        }
+        
+        cout << ans;
     }
 };
 
 int32_t main() {
-    ios_base::sync_with_stdio(false); cin.tie(NULL);
-    
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
     #define task "code"
     if(fopen(task ".inp", "r")) {
         freopen(task ".inp", "r", stdin);
         freopen(task ".out", "w", stdout);
     }
 
-    cin >> n >> q;
+    cin >> n >> K;
 
-    for(int i = 1; i <= n; i++) 
+    for(int i = 1; i <= n; i++) {
         cin >> a[i];
-    
-    if(n * q <= 1e6)    
-        new sub1;
-    else
-        new sub2;
+    }
+
+    delete new sub4();
+
+    // if(n <= 1e2) 
+    //     new sub1();
+    // else if(n <= 1e3)
+    //     new sub2();
+    // else if(n <= 1e5)
+    //     new sub3();
+    // else 
+    //     new sub4();
 }

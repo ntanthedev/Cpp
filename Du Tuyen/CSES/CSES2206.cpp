@@ -1,5 +1,5 @@
 //problem "CSES2206"
-//created in 08:51:42 - Mon 04/11/2024
+//created in 15:51:44 - Wed 26/02/2025
 
 #include<bits/stdc++.h>
 
@@ -9,45 +9,21 @@ const int N = 2e5 + 5;
 using namespace std;
 
 int n, Q;
-int p[N], t1[4 * N], t2[4 * N];
-
-void update_left(int u, int w, int id = 1, int l = 1, int r = n) {    
-    if(l > u || r < u) return;
-    
-    if(l == r) {
-        t1[id] = w;
-        return;
-    }
-
-    int mid = (l + r) >> 1;
-    update_left(u, w, id << 1, l, mid);
-    update_left(u, w, id << 1 | 1, mid + 1, r); 
-    t1[id] = max(t1[id << 1], t1[id << 1 | 1]);
-}
-
-void update_right(int u, int w, int id = 1, int l = 1, int r = n) {
-    if(l > u || r < u) return;
-    
-    if(l == r) {
-        t2[id] = w;
-        return;
-    }
-
-    int mid = (l + r) >> 1;
-    update_left(u, w, id << 1, l, mid);
-    update_left(u, w, id << 1 | 1, mid + 1, r); 
-    t2[id] = max(t2[id << 1], t2[id << 1 | 1]);
-}
-
-
+int a[N];
+vector<vector<int>> s;
 
 int32_t main() {
     ios_base::sync_with_stdio(false); cin.tie(NULL);
     
     cin >> n >> Q;
+    int sz = sqrt(n);
+    int m = (n - 1) / sz + 1;
+    s.resize(m + 1);
 
-    for(int i = 1; i <= n; i++) 
-        cin >> p[i];
+    for(int i = 0; i < n; i++) {
+        cin >> a[i];
+        s[i / sz].push_back(a[i]);
+    }
 
-
+       
 }

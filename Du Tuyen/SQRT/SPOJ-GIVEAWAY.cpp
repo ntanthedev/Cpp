@@ -49,15 +49,18 @@ int32_t main() {
                 if(a[i] >= z) 
                     cnt++;
             
-            for(int i = x / sz + 1; i < y / sz; i++) 
-                cnt += s[i].size() - (lower_bound(all(s[i]), z) - s[i].begin());
+            for(int i = x / sz + 1; i < y / sz; i++) { 
+                int t = (lower_bound(all(s[i]), z) - s[i].begin());
+                cnt += s[i].size() - t;
+            }
             
             cout << cnt << '\n';
         }
         else {
+            x--;
             int t = x / sz;
-            auto it = lower_bound(all(s[t]), a[x]);
-            *it = y;
+            auto it = lower_bound(all(s[t]), a[x]) - s[t].begin();
+            s[t][it] = y;
             sort(all(s[t]));
             a[x] = y;
         }

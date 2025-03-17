@@ -1,82 +1,80 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-struct Node {
-    int val, priority, sz;
-    Node *left, *right;
-    Node(int _val) : val(_val), priority(rand()), sz(1), left(nullptr), right(nullptr) {}
-};
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
 
-int getSize(Node* root) {
-    return root ? root->sz : 0;
-}
-
-void updateSize(Node* root) {
-    if(root)
-        root->sz = getSize(root->left) + getSize(root->right) + 1;
-}
-
-// Split treap 'root' thành 2 cây: 'left' chứa pos phần tử đầu tiên, 'right' chứa phần còn lại.
-void split(Node* root, int pos, Node*& left, Node*& right) {
-    if(!root) {
-        left = right = nullptr;
-        return;
+    #define task "test"
+    if(fopen(task ".inp", "r")) {
+        freopen(task ".inp", "r", stdin);
+        freopen("a.out", "w", stdout);
     }
-    int currPos = getSize(root->left);
-    if(pos <= currPos) {
-        split(root->left, pos, left, root->left);
-        right = root;
-    } else {
-        split(root->right, pos - currPos - 1, root->right, right);
-        left = root;
+
+    string s;
+    cin >> s;
+
+    int fixed_left = 0, fixed_right = 0, q = 0;
+    for (char c : s) {
+        if (c == '(') fixed_left++;
+        else if (c == ')') fixed_right++;
+        else q++;
     }
-    updateSize(root);
-}
 
-// Nối 2 treap 'left' và 'right'
-Node* merge(Node* left, Node* right) {
-    if(!left || !right)
-        return left ? left : right;
-    if(left->priority > right->priority) {
-        left->right = merge(left->right, right);
-        updateSize(left);
-        return left;
-    } else {
-        right->left = merge(left, right->left);
-        updateSize(right);
-        return right;
+    int a = (fixed_right + q - fixed_left) / 2;
+    int b = q - a;
+
+    int n = s.size();
+    vector<int> delta_suffix_close(n + 1, 0);
+    for (int i = n - 1; i >= 0; i--) {
+        char c = s[i];
+        if (c == '(') {
+            delta_suffix_close[i] = delta_suffix_close[i + 1] + 1;
+        } else if (c == ')') {
+            delta_suffix_close[i] = delta_suffix_close[i + 1] - 1;
+        } else {
+            delta_suffix_close[i] = delta_suffix_close[i + 1] - 1;
+        }
     }
-}
 
-// Chèn giá trị 'val' vào vị trí 'pos' (0-indexed)
-Node* insert(Node* root, int pos, int val) {
-    Node* newNode = new Node(val);
-    Node *L, *R;
-    split(root, pos, L, R);
-    return merge(merge(L, newNode), R);
-}
+    int curr_balance = 0;
+    int open_used = 0, close_used = 0;
+    int max_depth = 0;
 
-void inorder(Node* root) {
-    if(!root) return;
-    inorder(root->left);
-    cout << root->val << " ";
-    inorder(root->right);
-}
-
-int main(){
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    
-    Node* treap = nullptr;
-    
-    // Ví dụ: chèn dần các giá trị 1,2,3,4,5 theo thứ tự từ vị trí 0 đến 4
-    for (int i = 0; i < 5; i++) {
-        treap = insert(treap, i, i+1);
+    for (int i = 0; i < n; i++) {
+        char c = s[i];
+        if (c == '(') {
+            curr_balance++;
+            if (curr_balance > max_depth) {
+                max_depth = curr_balance;
+            }
+        } else if (c == ')') {
+            curr_balance--;
+        } else {
+            if (open_used < a) {
+                int remaining_open = a - open_used - 1;
+                int remaining_close = b - close_used;
+                if (remaining_open >= 0 && remaining_close >= 0) {
+                    int initial_delta = delta_suffix_close[i + 1];
+                    int minimal_delta = initial_delta + 2 * remaining_open;
+                    int current_balance_after = curr_balance + 1;
+                    int total_min = current_balance_after + minimal_delta;
+                    if (total_min >= 0) {
+                        open_used++;
+                        curr_balance++;
+                        if (curr_balance > max_depth) {
+                            max_depth = curr_balance;
+                        }
+                        continue;
+                    }
+                }
+            }
+            close_used++;
+            curr_balance--;
+        }
     }
-    
-    inorder(treap); // Kết quả: 1 2 3 4 5
-    cout << "\n";
+
+    cout << max_depth << endl;
     return 0;
 }
-
-// implicit treap
