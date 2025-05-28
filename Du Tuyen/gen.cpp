@@ -17,21 +17,21 @@ signed main() {
     system("g++ b.cpp -o b.exe");
 
     for(int i = 1; i <= 100; i++) {
-        ofstream inp("test.inp");
+        ofstream inp_a("a.inp");
+        ofstream inp_b("b.inp");
 
-        int n = Rand(1, 20);
-
+        int n = Rand(1, 100000);
+        inp_a << n << '\n';
+        inp_b << n << '\n';
+        
         for(int i = 1; i <= n; i++) {
-            int t = Rand(0, 4);
-            if(t == 0) 
-                inp << '(';
-            else if(t == 2)
-                inp << ')';
-            else 
-                inp << '?';
+            ll val = Rand(1, 1e9);
+            inp_a << val << " ";
+            inp_b << val << " ";
         }
 
-        inp.close();
+        inp_a.close();
+        inp_b.close();
 
         system("a.exe");
         system("b.exe");

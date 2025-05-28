@@ -1,37 +1,104 @@
 
-"Act as a university guidance counselor and industry analyst specializing in the Communications and Marketing fields within the Vietnamese context, with an understanding of international academic pathways.
+**D. Local Construction**
 
-I am a high school student in Vietnam (Context: IELTS 7.5, SAT 1500) exploring university options. My primary goal is a major that effectively bridges **Communications and Marketing**. I have a genuine interest and some prior experience in communications through high school activities. My intended career path lies within the broader Marketing field in Vietnam, leveraging strong communication skills.
+**time limit per test:** 2 seconds
+**memory limit per test:** 256 megabytes
+**input:** standard input
+**output:** standard output
 
-However, I am also considering the **possibility of pursuing a Master's degree abroad, specifically in International Communication, particularly if I choose the DAV program.**
+An element $b_i$ ($1\le i\le m$) in an array $b_1, b_2, \ldots, b_m$ is a **local minimum** if at least one of the following holds:
+* $2\le i\le m - 1$ and $b_i < b_{i - 1}$ and $b_i < b_{i + 1}$, or
+* $i = 1$ and $b_1 < b_2$, or
+* $i = m$ and $b_m < b_{m - 1}$.
 
-I need a detailed, objective comparison between two specific programs in Vietnam:
+Similarly, an element $b_i$ ($1\le i\le m$) in an array $b_1, b_2, \ldots, b_m$ is a **local maximum** if at least one of the following holds:
+* $2\le i\le m - 1$ and $b_i > b_{i - 1}$ and $b_i > b_{i + 1}$, or
+* $i = 1$ and $b_1 > b_2$, or
+* $i = m$ and $b_m > b_{m - 1}$.
 
-1.  **Marketing Major at National Economics University (NEU)**
-2.  **International Communication Major at the Diplomatic Academy of Vietnam (DAV)**
+Note that local minima and maxima are not defined for arrays with only one element.
 
-**Please compare these programs thoroughly based on the following criteria:**
+There is a hidden permutation$^{\text{∗}}$ $p$ of length $n$. The following two operations are applied to permutation $p$ alternately, starting from operation 1, until there is only one element left in $p$:
 
-*   **Curriculum Focus:** Analyze the depth and breadth of subjects related to both Communications and Marketing. How well does each curriculum integrate these fields and align with modern industry practices (including digital aspects)?
-*   **Faculty Expertise:** Information on faculty strengths/specializations in relevant Communications and/or Marketing areas.
-*   **Practical Experience & Industry Links (Vietnam Focus):** Quality and availability of internships, projects, case studies, and connections to the Communications/Marketing industry *within Vietnam*.
-*   **Alumni Network & Career Outcomes (Vietnam Focus):** Known career paths and success of alumni, particularly those in roles combining Communications and Marketing *within Vietnam*.
-*   **Learning Environment & Culture:** Compare NEU's business-centric environment with DAV's internationally-oriented environment. Analyze the potential implications (positive/negative) of DAV's international/diplomatic focus for a student aiming primarily for a Communications/Marketing career *in Vietnam*.
-*   **English Language Integration:** Briefly describe how English is used within the curriculum and co-curricular activities.
-*   **Preparation for International Postgraduate Study (Specifically relevant for DAV):** Evaluate the DAV International Communication program's suitability as a foundation for pursuing a Master's degree abroad (e.g., in International Communication). Consider factors like academic rigor, international recognition/reputation, theoretical grounding for graduate-level work, and potential faculty support/connections for overseas applications. How does this compare to NEU's potential (if any) in this regard?
+* **Operation 1** — remove all elements of $p$ which are **not** local minima.
+* **Operation 2** — remove all elements of $p$ which are **not** local maxima.
 
-**Additionally, incorporate an analysis of Future-Readiness concerning Trends and Pathways:**
+More specifically, operation 1 is applied during every odd iteration, and operation 2 is applied during every even iteration, until there is only one element left in $p$.
 
-*   **Future Trends Analysis (Vietnam & Global Influence):** Outline key future trends impacting Marketing and Communications (AI, data, digital channels, content, authentic comms).
-*   **Program Preparedness & Future Pathways:** Evaluate how well each program equips students for:
-    *   **Immediate careers** in the evolving Communications/Marketing landscape **in Vietnam**.
-    *   **(For DAV primarily)** Potential **future international graduate studies** in fields like International Communication.
-    *   Which program appears more adaptable or forward-looking considering these potential paths?
+For each index $i$ ($1\le i\le n$), let $a_i$ be the iteration number that element $p_i$ is removed, or $-1$ if it was never removed.
 
-**Output Requirements:**
+It can be proven that there will be only one element left in $p$ after at most $\lceil \log_2 n\rceil$ iterations (in other words, $a_i \le \lceil \log_2 n\rceil$).
 
-*   Provide a detailed, balanced, and objective comparison, outlining strengths and weaknesses of each program relative to my stated interest in **combining Communications and Marketing for a career in Vietnam**, *while also considering the potential pathway of further international study if choosing DAV*.
-*   Use a clear and organized structure (e.g., bullet points, possibly a summary table).
-*   The primary career context remains **Vietnam**.
-*   **The goal is to provide comprehensive information to aid my own decision-making process**, weighing both immediate career goals in Vietnam and the potential for future international study.
-*   Please answer in English."
+You are given the array $a_1, a_2, \ldots, a_n$. Your task is to construct any permutation $p$ of $n$ elements that satisfies array $a$.
+
+$^{\text{∗}}$A permutation of length $n$ is an array consisting of $n$ distinct integers from $1$ to $n$ in arbitrary order. For example, $[2,3,1,5,4]$ is a permutation, but $[1,2,2]$ is not a permutation ($2$ appears twice in the array), and $[1,3,4]$ is also not a permutation ($n=3$ but there is $4$ in the array).
+
+**Input**
+
+Each test contains multiple test cases. The first line contains the number of test cases $t$ ($1 \le t \le 10^4$). The description of the test cases follows.
+
+The first line of each test case contains a single integer $n$ ($2 \le n \le 2 \cdot 10^5$) — the number of elements in permutation $p$.
+
+The second line of each test case contains $n$ integers $a_1, a_2, \ldots, a_n$ ($1 \le a_i \le \lceil\log_2 n\rceil$ or $a_i = -1$) — the iteration number that element $p_i$ is removed.
+
+It is guaranteed that the sum of $n$ over all test cases does not exceed $2 \cdot 10^5$.
+
+It is guaranteed that there exists at least one permutation $p$ that satisfies array $a$.
+
+**Output**
+
+For each test case, output $n$ integers representing the elements of the permutation satisfying array $a$.
+
+If there are multiple solutions, you may output any of them.
+
+**Example**
+
+**Input**
+```
+7
+3
+1 1 -1
+5
+1 -1 1 2 1
+8
+3 1 2 1 -1 1 1 2
+7
+1 1 1 -1 1 1 1
+5
+1 1 1 1 -1
+5
+-1 1 1 1 1
+5
+-1 1 2 1 2
+```
+
+**Output**
+```
+3 2 1
+4 3 5 1 2
+6 7 2 4 3 8 5 1
+6 5 2 1 3 4 7
+5 4 3 2 1
+1 2 3 4 5
+4 5 2 3 1
+```
+
+**Note**
+
+In the first test case, operations will be applied to permutation $[3, 2, 1]$ as follows:
+1.  The only local minimum in $[3, 2, 1]$ is $1$. Hence, elements $3$ and $2$ are removed. There is only one remaining element; hence the process terminates.
+This satisfies array $a = [1, 1, -1]$ as both $p_1$ and $p_2$ were removed on iteration number $1$, while $p_3$ was not removed.
+
+In the second test case, operations will be applied to permutation $p = [4, 3, 5, 1, 2]$ as follows:
+1.  The local minima in $[4, 3, 5, 1, 2]$ are $3$ and $1$. Hence, elements $4$, $5$, and $2$ are removed.
+2.  The only local maximum in $[3, 1]$ is $3$. Hence, element $1$ is removed. There is only one remaining element; hence the process terminates.
+This satisfies array $a = [1, -1, 1, 2, 1]$ as elements $p_1 = 4$, $p_3 = 5$, and $p_5 = 2$ were removed on iteration $1$, element $p_4 = 1$ was removed on iteration $2$, and element $p_2 = 3$ was not removed.
+
+In the third test case, operations will be applied on permutation $[6, 7, 2, 4, 3, 8, 5, 1]$ as follows:
+1.  The local minima in $[6, 7, 2, 4, 3, 8, 5, 1]$ are $6$, $2$, $3$, and $1$. Hence, elements $7$, $4$, $8$, and $5$ are removed.
+2.  The local maxima in $[6, 2, 3, 1]$ are $6$ and $3$. Hence, elements $2$ and $1$ are removed.
+3.  The only local minimum in $[6, 3]$ is $3$. Hence, element $6$ is removed. There is only one remaining element; hence the process terminates.
+
+In the fourth test case, one permutation satisfying the constraints is $[6, 5, 2, 1, 3, 4, 7]$. $1$ is the only local minimum, so only it will stay after the first iteration. Note that there are other valid permutations; for example, $[6, 4, 3, 1, 2, 5, 7]$ would also be considered correct.
+
+---

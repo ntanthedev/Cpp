@@ -1,0 +1,9 @@
+TILII
+TLILII
+TLTILII
+TLTLILII
+
+
+1e4 -> 
+
+O(n^2)
