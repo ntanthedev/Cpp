@@ -20,12 +20,12 @@ signed main() {
         ofstream inp_a("a.inp");
         ofstream inp_b("b.inp");
 
-        int n = Rand(1, 100000);
+        int n = Rand(1, 15);
         inp_a << n << '\n';
         inp_b << n << '\n';
         
         for(int i = 1; i <= n; i++) {
-            ll val = Rand(1, 1e9);
+            ll val = Rand(-1e2, 1e2);
             inp_a << val << " ";
             inp_b << val << " ";
         }
