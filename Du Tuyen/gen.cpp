@@ -1,4 +1,5 @@
 #include<bits/stdc++.h>
+#define TIME (1.0 * clock() / CLOCKS_PER_SEC)
 
 using namespace std;
 
@@ -43,4 +44,6 @@ signed main() {
 
         printf("test %d AC\n", i);
     }
+    
+    // cerr << '\n' << "\x1b[31mtime is: " << TIME << "\e[39m";
 }
