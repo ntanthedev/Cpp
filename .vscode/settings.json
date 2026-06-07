@@ -190,6 +190,13 @@
         "typeinfo": "cpp",
         "valarray": "cpp",
         "variant": "cpp",
-        "ntan's": "cpp"
-    }
+        "ntan's": "cpp",
+        "flat_map": "cpp",
+        "flat_set": "cpp",
+        "queue": "cpp",
+        "stack": "cpp"
+    },
+    "python-envs.defaultEnvManager": "ms-python.python:system",
+    "python-envs.defaultPackageManager": "ms-python.python:pip",
+    "python-envs.pythonProjects": []
 }

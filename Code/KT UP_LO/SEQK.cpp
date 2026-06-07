@@ -15,8 +15,7 @@ int main()
         if(M[a[i]] == 0)
             M[a[i]] = i;
     }
-    // cout << a[95] << " " << a[39] << " " << a[95] - a[39];
-    // exit(0);
+
     for(int i = n; i >= 1; i--)
     {
         if(M[a[i] - k] > 0 && M[a[i] - k] != i)

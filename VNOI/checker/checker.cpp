@@ -1,92 +1,84 @@
 #include "testlib.h"
-#include <bits/stdc++.h>
+#include <vector>
+#include <cmath>
+#include <algorithm>
+#include <string>
+
 using namespace std;
 
-const int MAXN = 1009;
-int n, m;
-bool adj[MAXN][MAXN];
+struct Edge {
+    int u, v;
+    long long w; 
+
+    int id;
+};
 
 int main(int argc, char* argv[]) {
+
     registerTestlibCmd(argc, argv);
-    
-    // Read input
-    n = inf.readInt();
-    m = inf.readInt();
-    for(int i = 0; i < m; i++) {
-        int u = inf.readInt(1, n);
-        int v = inf.readInt(1, n);
-        adj[u][v] = true;
+
+    int n = inf.readInt();
+    int m = inf.readInt();
+
+    vector<long long> d(n + 1);
+    for (int i = 1; i <= n; ++i) {
+        d[i] = inf.readLong();
     }
 
-    int jury_ans = ans.readInt();
-    int contestant_ans = ouf.readInt();
-
-    if (contestant_ans != jury_ans) {
-        quitf(_wa, "Wrong answer\nExpected: %d\nFound: %d", jury_ans, contestant_ans);
+    vector<Edge> edges(m + 1);
+    for (int i = 1; i <= m; ++i) {
+        edges[i].u = inf.readInt();
+        edges[i].v = inf.readInt();
+        edges[i].w = abs(d[edges[i].u] - d[edges[i].v]);
+        edges[i].id = i;
     }
 
-    if (contestant_ans == -1) {
-        quitf(_ok, "Correct answer: %d", contestant_ans);
+    long long jury_min_max = ans.readLong(); 
+
+    long long user_min_max = ouf.readLong(); 
+
+    if (jury_min_max != user_min_max) {
+        quitf(_wa, "Ket qua sai lech: Jury = %lld, User = %lld", jury_min_max, user_min_max);
     }
 
-    if(contestant_ans == 0) {
-        if(ouf.readInt(1, n) == 1 && ouf.readInt(1, n) == 1)
-            quitf(_ok, "Correct answer: %d", contestant_ans);
+    if (ouf.seekEof()) {
+        quitp(0.1, "Dung do lech (10%% diem), nhung khong in ra duong di.");
     }
 
-    int start1 = ouf.readInt(1, n);
-    if (start1 != 1) {
-        quitf(_wa, "Robot 1 must start from vertex 1, found: %d", start1);
-    }
+    int current_node = 1;
+    long long path_max_diff = 0;
+    int edges_count = 0;
 
-    int path_length1 = 0;
-    int prev1 = start1;
-    while (!ouf.seekEoln()) {
-        int next = ouf.readInt(1, n);
-        if (!adj[prev1][next]) {
-            quitf(_wa, "No edge exists: %d->%d", prev1, next);
+    while (!ouf.seekEof()) {
+        int edge_id = ouf.readInt();
+        edges_count++;
+
+        if (edge_id < 1 || edge_id > m) {
+            quitp(0.1, "Dung do lech (10%% diem), nhung chi so canh khong hop le: %d", edge_id);
         }
-        prev1 = next;
-        path_length1++;
-    }
 
-    // if (path_length1 != contestant_ans) {
-    //     quitf(_wa, "Robot 1 path length mismatch. Expected: %d, Found: %d", 
-    //           contestant_ans, path_length1);
-    // }
+        int u = edges[edge_id].u;
+        int v = edges[edge_id].v;
+        long long w = edges[edge_id].w;
 
-
-    int start2 = ouf.readInt(1, n);
-    if (start2 != n) {
-        quitf(_wa, "Robot 2 must start from vertex %d, found: %d", n, start2);
-    }
-
-    int path_length2 = 0;
-    int prev2 = start2;
-    while (!ouf.seekEoln()) {
-        int next = ouf.readInt(1, n);
-        if (!adj[prev2][next]) {
-            quitf(_wa, "No edge exists: %d->%d", prev2, next);
+        if (u != current_node && v != current_node) {
+            quitp(0.1, "Dung do lech (10%% diem), nhung duong di bi dut quang. Canh %d (%d-%d) khong noi voi dinh %d", 
+                  edge_id, u, v, current_node);
         }
-        prev2 = next;
-        path_length2++;
+
+        current_node = (u == current_node) ? v : u;
+
+        path_max_diff = max(path_max_diff, w);
     }
 
-    // if (path_length2 != contestant_ans) {
-    //     quitf(_wa, "Robot 2 path length mismatch. Expected: %d, Found: %d", 
-    //           contestant_ans, path_length2);
-    // }
-
-    if(prev1 != prev2) {
-        quitf(_wa, "Both robots must end at the same vertex, found: %d and %d", prev1, prev2);
+    if (current_node != n) {
+        quitp(0.1, "Dung do lech (10%% diem), nhung duong di khong ket thuc tai N (ket thuc tai %d).", current_node);
     }
 
-    if(max(path_length1, path_length2) != contestant_ans) {
-        quitf(_wa, "Time taken by both robots must be equal to the maximum path length, found: %d, path1: %d, path2: %d", max(path_length1, path_length2), path_length1, path_length2);   
+    if (path_max_diff != user_min_max) {
+        quitp(0.1, "Dung do lech (10%% diem), nhung duong di in ra co do lech thuc te (%lld) khac voi gia tri da in (%lld).", 
+              path_max_diff, user_min_max);
     }
 
-    // If we got here, everything is correct
-    quitf(_ok, "Correct");
-    
-    return 0;
+    quitf(_ok, "Chinh xac hoan toan! MaxDiff = %lld, Do dai = %d canh.", user_min_max, edges_count);
 }

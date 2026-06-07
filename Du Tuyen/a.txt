@@ -1,9 +1,57 @@
-TILII
-TLILII
-TLTILII
-TLTLILII
+In Turn-Based Game Dynamics and Strategic Resource Planning, a two-player strategic
+simulation, participants oversee economic systems with the objective of assembling a military
+force capable of defeating their opponent. Players are responsible for coordinating the production
+of workers, facilities, and combat units, requiring a careful balance in the allocation of limited
+resources. The game operates on a turn-based mechanism, emphasizing planning, optimization,
+and strategic decision-making over time.
+• Workers give you income at the rate of 1 dollar per turn.
+• Production facilities let you produce either an army unit or a worker for the cost of 1 dollar.
+(only 1 army unit or worker can be produced per turn per facility)
+• It costs 1 dollar to create a production facility.
+• Your army, of course, lets you fight against your opponent.
+You start off with n workers and k production facilities. The game progresses in turns – at each
+turn, you can spend the income you get from your workers on a mixture of workers, army, and
+creating production facilities. Workers produced this round do not give you income until the next
+round; likewise, production facilities do not become active until the next round. Any unspent
+income from the current round carries over to the next.
+At the end of a round, you can take the total army you’ve produced and attack your opponent;
+if you have strictly more units than your opponent, the opponent loses immediately, and you retain
+the difference of the army sizes. Otherwise, your army is crushed and your opponent is left with
+the difference of the army sizes. (it would be wise for him to counter-attack after this, but you
+don’t lose immediately at least). The game ends after t turns, at which point both players will
+usually attack with the larger army reigning victorious.
+You’re playing against your friend, and since you’ve played against him so many times you
+know exactly what he’s going to spend his money on at every turn, and exactly when he’s going
+to attack. Knowing this, you’ve decided that the best strategy is to play defensively – you just want to survive every attack, and amass as large an army in the meantime so you can counterattack (and
+hopefully win) at the end of the game.
+What’s the largest army you can have at the end of the game, given that you must survive all
+your friend’s attacks?
 
+## Input 
+There will be up to 50 test cases in the input.
+Each test case will begin with a line with
+three integers: n k t
+where n (1 <= n <= 100) is the number of
+workers you start with, k (1 <= k <= 100) is
+the number of production facilities you have
+at the start, and t (1<= t <= 10qqqq000) is the
+number of turns.
+On the next line will be t-1 integers, ai (0 <=
+ai <= 2^63 - 1), separated by single spaces.
+The i
+th integer indicates the strength of the
+attack (that is, the number of army units your
+opponent is using in that attack) on turn i. The
+input will end with a line with three 0s.
 
-1e4 -> 
-
-O(n^2)
+## Output
+For each test case output a single integer
+indicating the maximum number of armies
+you could have at the end of the game.
+Output -1 if it is impossible to survive.
+Output each integer on its own line, with no
+spaces, and do not print any blank lines
+between answers. While it is possible for
+some inputs to generate unreasonably large
+answers, all judge inputs yield answers which
+will fit in a signed 64-bit integer.

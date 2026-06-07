@@ -635,8 +635,8 @@
 		],
 		"description": "bignum"
 	  },
-		"": {
-	"prefix": "module_calculation",
+		"calmod": {
+	"prefix": "calmod",
 	"body": [
 		"/* Calculation with MODULO*/",
 		"ll dec(ll x, ll y) {return (x-y+MOD)%MOD;}",

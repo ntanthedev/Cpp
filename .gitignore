@@ -9,3 +9,4 @@
 *.ans
 .tmp.driveupload
 .tmp.drivedownload
+*.in

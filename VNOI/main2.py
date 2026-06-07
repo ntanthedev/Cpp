@@ -43,29 +43,29 @@ def make_input(file_name:str,start_line:int,end_line:int,start_random:int,end_ra
 
 if __name__ == "__main__":
     mode:int = 2
-    if(mode == 1):
-        be_line:int = 1
-        ed_line:int = 2
-        be_random:int = 100
-        ed_random:int = 9999
-        file_name = "code"
-        try:
-            for _test in range(1,26):
-                make_input(file_name=file_name,start_line=be_line,end_line=ed_line,start_random=be_random,end_random=ed_random)
-                with open(f"{file_name}.out","w") as file:
-                    file.close()
-                if(os.path.exists(f"out/{file_name}") == False):
-                    os.mkdir(f"out/{file_name}")
-                if(os.path.exists(f"out/test{_test}") == False):
-                    os.mkdir(f"out/test{_test}")
-                os.system(f".\code\compile\{file_name}.exe")
-                time.sleep(2)
-                shutil.move(f"{file_name}.inp",f"out/test{_test}/{file_name}.inp")
-                shutil.move(f"{file_name}.out",f"out/test{_test}/{file_name}.out")
-        except Exception as error:
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            print(exc_type, fname, exc_tb.tb_lineno)
+    # if(mode == 1):
+    #     be_line:int = 1
+    #     ed_line:int = 2
+    #     be_random:int = 100
+    #     ed_random:int = 9999
+    #     file_name = "code"
+    #     try:
+    #         for _test in range(1,26):
+    #             make_input(file_name=file_name,start_line=be_line,end_line=ed_line,start_random=be_random,end_random=ed_random)
+    #             with open(f"{file_name}.out","w") as file:
+    #                 file.close()
+    #             if(os.path.exists(f"out/{file_name}") == False):
+    #                 os.mkdir(f"out/{file_name}")
+    #             if(os.path.exists(f"out/test{_test}") == False):
+    #                 os.mkdir(f"out/test{_test}")
+    #             os.system(f".\code\compile\{file_name}.exe")
+    #             time.sleep(2)
+    #             shutil.move(f"{file_name}.inp",f"out/test{_test}/{file_name}.inp")
+    #             shutil.move(f"{file_name}.out",f"out/test{_test}/{file_name}.out")
+    #     except Exception as error:
+    #         exc_type, exc_obj, exc_tb = sys.exc_info()
+    #         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+    #         print(exc_type, fname, exc_tb.tb_lineno)
 
     if mode == 2:
         try:

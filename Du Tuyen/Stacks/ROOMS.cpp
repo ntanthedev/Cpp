@@ -1,65 +1,73 @@
 #include <bits/stdc++.h>
 using namespace std;
-struct ii 
-{
-    int val;  
-    int kind;  
-    int conf;
-};
-ii ID[1000001];
-int n, u, v;
-int m; 
-int meet[1000001];
-vector<int>
-    room[1000001];
-stack<int> s;
 
-bool cmp(const ii& x, const ii& y) {
-    if(x.val == y.val)
-        return x.kind > y.kind;
-    else
-        return x.val < y.val;
+struct pt {
+    int id;
+    int s, f;
+};
+
+bool cmp(pt a, pt b) {
+    if(a.s != b.s)
+        return a.s < b.s;
+    return a.f < b.f;
 }
+
+typedef pair<int, int> pii;
 
 int main() {
     ios_base::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
-    freopen("ROOMS.inp", "r", stdin);
-    freopen("ROOMS.out", "w", stdout);
+    cin.tie(NULL);
+
+    if(fopen("ROOMS.INP", "r")) {
+        freopen("ROOMS.INP", "r", stdin);
+        freopen("ROOMS.OUT", "w", stdout);
+    }
+
+    int n;
     cin >> n;
-    for(int i = 1; i <= n; i++) {
-        cin >> u >> v;
-        ID[i * 2 - 1].val = u;
-        ID[i * 2].kind = 0;
-        ID[i * 2 - 1].conf = i;
 
-        ID[i * 2].val = v;
-        ID[i * 2].kind = 1;
-        ID[i * 2].conf = i;
+    vector<pt> a(n);
+    for(int i = 0; i < n; ++i) {
+        a[i].id = i + 1;
+        cin >> a[i].s >> a[i].f;
     }
-    for(int i = n; i >= 1; i--)
-        s.push(i);  
 
-    sort(ID + 1, ID + 2 * n + 1, cmp);
+    sort(a.begin(), a.end(), cmp);
 
-    for(int i = 1; i <= 2 * n; i++) {
-        if(ID[i].kind == 0) 
-        {
-            int meetNum = s.top();
-            s.pop();                     
-            meet[ID[i].conf] = meetNum;  
+    priority_queue<pii, vector<pii>, greater<pii>> pq;
+    priority_queue<int, vector<int>, greater<int>> free;
 
-            room[meetNum].push_back(
-                ID[i].conf);  
-            m = max(m, meetNum);  
-        } else
-            s.push(meet[ID[i].conf]);  
+    vector<vector<int>> rooms;
+
+    int ans = 0;
+
+    for(auto& conf: a) {
+        while(!pq.empty() && pq.top().first <= conf.s) {
+            free.push(pq.top().second);
+            pq.pop();
+        }
+
+        int cur;    
+
+        if(!free.empty()) {
+            cur = free.top();
+            free.pop();
+        } else {
+            ans++;
+            cur = ans;
+            rooms.resize(ans + 1);
+        }
+
+        rooms[cur].push_back(conf.id);
+
+        pq.push({conf.f, cur});
     }
-    cout << m << '\n';
-    for(int i = 1; i <= m; i++) {
-        for(int j = 0; j < room[i].size(); j++)
-            cout << room[i][j] << " ";
-        cout << '\n';
+
+    cout << ans << "\n";
+    for(int i = 1; i <= ans; ++i) {
+        for(int j = 0; j < rooms[i].size(); ++j) {
+            cout << rooms[i][j] << " ";
+        }
+        cout << "\n";
     }
 }

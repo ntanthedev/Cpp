@@ -1,104 +1,61 @@
+Ở Hà Tĩnh, đã nhắc đến quà quê mà quên kẹo cu đơ thì khác gì ăn bún bò mà quên ớt. Trước ngày đội tuyển học sinh giỏi lên đường đi thi, cô chủ lò cu đơ quyết định xếp các mẻ kẹo thành một hàng dài. Mẻ thứ ~i~ có độ ngon cơ bản ~a_i~. Nhưng đời không đơn giản: có hôm thêm lạc, có hôm thêm mật, cô phụ bếp "quá tay" nên một đoạn mẻ kẹo được tăng độ ngon đồng loạt. 
 
-**D. Local Construction**
+Sau mọi điều chỉnh, thầy giáo muốn chia toàn bộ dãy kẹo thành ít nhất ~M~ hộp quà liên tiếp, sao cho mỗi hộp đều có tổng độ ngon càng lớn càng tốt. Vì ai cũng muốn phần mình "không thua bạn ngồi cạnh", thầy yêu cầu giá trị nhỏ nhất trong các hộp quà phải được lớn nhất có thể. Nói ngắn gọn: hãy chia dãy thành ít nhất ~M~ đoạn liên tiếp, tối ưu hóa giá trị nhỏ nhất của tổng một đoạn.
 
-**time limit per test:** 2 seconds
-**memory limit per test:** 256 megabytes
-**input:** standard input
-**output:** standard output
+**Đề bài:** Cho dãy ~N~ mẻ cu đơ. Ban đầu mẻ thứ ~i~ có độ ngon ~a_i~. Có ~Q~ lần điều chỉnh, mỗi lần cho ~l, r, v~, nghĩa là cộng ~v~ vào mọi phần tử từ ~l~ đến ~r~. Sau khi hoàn tất mọi điều chỉnh, thu được dãy ~b[1..N]~.
 
-An element $b_i$ ($1\le i\le m$) in an array $b_1, b_2, \ldots, b_m$ is a **local minimum** if at least one of the following holds:
-* $2\le i\le m - 1$ and $b_i < b_{i - 1}$ and $b_i < b_{i + 1}$, or
-* $i = 1$ and $b_1 < b_2$, or
-* $i = m$ and $b_m < b_{m - 1}$.
+Hãy chia dãy ~b~ thành **ít nhất** ~M~ đoạn liên tiếp không rỗng. Gọi tổng của mỗi đoạn là độ ngon của hộp quà tương ứng. Tìm giá trị lớn nhất có thể của: ~\min(\text{tổng các đoạn})~ trong mọi cách chia hợp lệ.
 
-Similarly, an element $b_i$ ($1\le i\le m$) in an array $b_1, b_2, \ldots, b_m$ is a **local maximum** if at least one of the following holds:
-* $2\le i\le m - 1$ and $b_i > b_{i - 1}$ and $b_i > b_{i + 1}$, or
-* $i = 1$ and $b_1 > b_2$, or
-* $i = m$ and $b_m > b_{m - 1}$.
+## Input
+Vào từ tệp `QUAQUE.INP`:
+- Dòng 1: ~N, M, Q~ (~1 \le N \le 2 \cdot 10^5; 1 \le M \le N; 0 \le Q \le 2 \cdot 10^5~).
+- Dòng 2: ~N~ số nguyên ~a_1, a_2, \dots, a_N~ (~0 \le a_i \le 10^9~).
+- ~Q~ dòng tiếp theo: Mỗi dòng chứa ba số ~l, r, v~ (~0 \le v \le 10^9; 1 \le l \le r \le N~).
 
-Note that local minima and maxima are not defined for arrays with only one element.
+## Output
+Ghi ra tệp `QUAQUE.OUT` một số nguyên duy nhất: giá trị lớn nhất của tổng nhỏ nhất có thể đạt được.
 
-There is a hidden permutation$^{\text{∗}}$ $p$ of length $n$. The following two operations are applied to permutation $p$ alternately, starting from operation 1, until there is only one element left in $p$:
+## Subtask
+- **30% số điểm:** ~N \le 3000, Q \le 3000~.
+- **40% số điểm:** ~N, Q \le 10^5~.
+- **30% số điểm:** Không có ràng buộc gì thêm.
 
-* **Operation 1** — remove all elements of $p$ which are **not** local minima.
-* **Operation 2** — remove all elements of $p$ which are **not** local maxima.
-
-More specifically, operation 1 is applied during every odd iteration, and operation 2 is applied during every even iteration, until there is only one element left in $p$.
-
-For each index $i$ ($1\le i\le n$), let $a_i$ be the iteration number that element $p_i$ is removed, or $-1$ if it was never removed.
-
-It can be proven that there will be only one element left in $p$ after at most $\lceil \log_2 n\rceil$ iterations (in other words, $a_i \le \lceil \log_2 n\rceil$).
-
-You are given the array $a_1, a_2, \ldots, a_n$. Your task is to construct any permutation $p$ of $n$ elements that satisfies array $a$.
-
-$^{\text{∗}}$A permutation of length $n$ is an array consisting of $n$ distinct integers from $1$ to $n$ in arbitrary order. For example, $[2,3,1,5,4]$ is a permutation, but $[1,2,2]$ is not a permutation ($2$ appears twice in the array), and $[1,3,4]$ is also not a permutation ($n=3$ but there is $4$ in the array).
-
-**Input**
-
-Each test contains multiple test cases. The first line contains the number of test cases $t$ ($1 \le t \le 10^4$). The description of the test cases follows.
-
-The first line of each test case contains a single integer $n$ ($2 \le n \le 2 \cdot 10^5$) — the number of elements in permutation $p$.
-
-The second line of each test case contains $n$ integers $a_1, a_2, \ldots, a_n$ ($1 \le a_i \le \lceil\log_2 n\rceil$ or $a_i = -1$) — the iteration number that element $p_i$ is removed.
-
-It is guaranteed that the sum of $n$ over all test cases does not exceed $2 \cdot 10^5$.
-
-It is guaranteed that there exists at least one permutation $p$ that satisfies array $a$.
-
-**Output**
-
-For each test case, output $n$ integers representing the elements of the permutation satisfying array $a$.
-
-If there are multiple solutions, you may output any of them.
-
-**Example**
-
-**Input**
-```
-7
-3
-1 1 -1
-5
-1 -1 1 2 1
-8
-3 1 2 1 -1 1 1 2
-7
-1 1 1 -1 1 1 1
-5
-1 1 1 1 -1
-5
--1 1 1 1 1
-5
--1 1 2 1 2
+## Sample Input 1
+```text
+6 3 2
+2 1 3 2 4 2
+1 3 1
+5 6 2
 ```
 
-**Output**
+## Sample Output 1
+```text
+5
 ```
-3 2 1
-4 3 5 1 2
-6 7 2 4 3 8 5 1
-6 5 2 1 3 4 7
-5 4 3 2 1
-1 2 3 4 5
-4 5 2 3 1
+**Giải thích 1:**
+Sau cập nhật, dãy thành: ~b =[3, 2, 4, 2, 6, 4]~.
+Có thể chia thành 3 hộp: 
+- `[3, 2]` tổng 5.
+- `[4, 2]` tổng 6.
+- `[6, 4]` tổng 10.
+Giá trị nhỏ nhất là 5. Không thể đạt 6, vì khi đó không chia được ít nhất 3 đoạn đều có tổng từ 6 trở lên.
+
+## Sample Input 2
+```text
+7 4 1
+1 2 3 4 5 6 7
+2 6 1
 ```
 
-**Note**
-
-In the first test case, operations will be applied to permutation $[3, 2, 1]$ as follows:
-1.  The only local minimum in $[3, 2, 1]$ is $1$. Hence, elements $3$ and $2$ are removed. There is only one remaining element; hence the process terminates.
-This satisfies array $a = [1, 1, -1]$ as both $p_1$ and $p_2$ were removed on iteration number $1$, while $p_3$ was not removed.
-
-In the second test case, operations will be applied to permutation $p = [4, 3, 5, 1, 2]$ as follows:
-1.  The local minima in $[4, 3, 5, 1, 2]$ are $3$ and $1$. Hence, elements $4$, $5$, and $2$ are removed.
-2.  The only local maximum in $[3, 1]$ is $3$. Hence, element $1$ is removed. There is only one remaining element; hence the process terminates.
-This satisfies array $a = [1, -1, 1, 2, 1]$ as elements $p_1 = 4$, $p_3 = 5$, and $p_5 = 2$ were removed on iteration $1$, element $p_4 = 1$ was removed on iteration $2$, and element $p_2 = 3$ was not removed.
-
-In the third test case, operations will be applied on permutation $[6, 7, 2, 4, 3, 8, 5, 1]$ as follows:
-1.  The local minima in $[6, 7, 2, 4, 3, 8, 5, 1]$ are $6$, $2$, $3$, and $1$. Hence, elements $7$, $4$, $8$, and $5$ are removed.
-2.  The local maxima in $[6, 2, 3, 1]$ are $6$ and $3$. Hence, elements $2$ and $1$ are removed.
-3.  The only local minimum in $[6, 3]$ is $3$. Hence, element $6$ is removed. There is only one remaining element; hence the process terminates.
-
-In the fourth test case, one permutation satisfying the constraints is $[6, 5, 2, 1, 3, 4, 7]$. $1$ is the only local minimum, so only it will stay after the first iteration. Note that there are other valid permutations; for example, $[6, 4, 3, 1, 2, 5, 7]$ would also be considered correct.
-
----
+## Sample Output 2
+```text
+6
+```
+**Giải thích 2:**
+Sau cập nhật: ~b =[1, 3, 4, 5, 6, 7, 7]~.
+Một cách chia thành 4 đoạn: 
+- `[1, 3, 4] = 8`
+- `[5, 6] = 11`
+- `[7] = 7`
+- `[7] = 7`
+Giá trị nhỏ nhất là 7? Chưa chắc tối ưu. Nếu thử ngưỡng 6, có thể chia được ít nhất 4 đoạn. Nếu thử ngưỡng 8, không đủ 4 đoạn. Kết quả tối ưu là 6.
