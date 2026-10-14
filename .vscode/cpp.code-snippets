@@ -142,7 +142,7 @@
 	  "tan5": {
 		"prefix": "simplecodeforces",
 		"body": [
-		  "//template simple for codeforces by ntannn_",
+		  "//a simple template for codeforces by ntannn_",
 		  "//created in $CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND - $CURRENT_DAY_NAME_SHORT $CURRENT_DATE/$CURRENT_MONTH/$CURRENT_YEAR",
 		  "#include <bits/stdc++.h>",
 		  "#define int int64_t",
